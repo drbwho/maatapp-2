@@ -24,8 +24,8 @@ export class AppComponent implements OnInit {
 
   appPages = [
     {
-      title: 'Schedule',
-      url: '/app/tabs/schedule',
+      title: 'Program',
+      url: '/app/tabs/program',
       icon: 'calendar'
     },
     {

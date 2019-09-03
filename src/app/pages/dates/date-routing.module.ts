@@ -1,16 +1,13 @@
+import { SchedulePage } from './../schedule/schedule';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DatesPageModule } from './dates.module';
 
-import { SchedulePage } from './schedule';
 
 const routes: Routes = [
   {
     path: '',
-    component: SchedulePage
-  },
-  {
-    path: 'schedule/:dayId',
-    loadChildren: () => import('../schedule/schedule.module').then(m => m.ScheduleModule)
+    component: DatesPageModule
   }
 ];
 

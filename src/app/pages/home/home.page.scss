@@ -1,0 +1,35 @@
+.home-links {
+    font-size: 1.2em;
+    padding-top:20px;
+    padding-top:20px;
+    color: white;
+}
+
+.home-links ion-icon {
+    font-size:40px;
+}
+
+.home-buttons-grid {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+}
+
+ion-content {
+    --background: none;
+    background: url('/assets/img/Start_BG_screen_without_logo.jpg');
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+
+/* if ios flickering 
+:host {
+  ion-content {
+    --background:none;
+    background:url(''../../assets/images/cover.jpg');
+    background-size: cover;
+    background-position: center center;
+  }
+}*/

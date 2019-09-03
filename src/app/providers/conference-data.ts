@@ -178,7 +178,16 @@ export class ConferenceData {
   getMap() {
     return this.load().pipe(
       map((data: any) => {
-        return data.map;
+        let mapdata: any;
+        mapdata = [];
+        let mapval: any;
+        mapval = [];
+        mapdata.name = data.info[0].venue;
+        mapdata.lat = Number(data.info[0].lat);
+        mapdata.lng = Number(data.info[0].lng);
+        mapdata.center = true;
+        mapval.push(mapdata);
+        return mapval;
       })
     );
   }

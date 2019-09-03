@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonList, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonList, LoadingController, ModalController, ToastController, NavParams } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
@@ -15,7 +16,6 @@ export class SchedulePage implements OnInit {
   // Gets a reference to the list element
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
 
-  dayIndex = 0;
   queryText = '';
   segment = 'all';
   excludeTracks: any = [];
@@ -30,10 +30,15 @@ export class SchedulePage implements OnInit {
     public modalCtrl: ModalController,
     public router: Router,
     public toastCtrl: ToastController,
-    public user: UserData
+    public user: UserData,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    // this.updateSchedule();
+  }
+
+  ionViewWillEnter(){
     this.updateSchedule();
   }
 
@@ -42,8 +47,8 @@ export class SchedulePage implements OnInit {
     if (this.scheduleList) {
       this.scheduleList.closeSlidingItems();
     }
-
-    this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
+    const sessionId = Number(this.route.snapshot.paramMap.get('dayId')) - 1;
+    this.confData.getTimeline(sessionId, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.sessions = data.sessions;
     });

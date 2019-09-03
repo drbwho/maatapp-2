@@ -39,6 +39,11 @@
                   </ion-text>
                 </ion-item>
               </ion-list>
+            <ion-row>
+              <p>
+                {{session.date.replace("00:00:00","").trim() | date:' d MMMM yyyy'}}
+              </p>
+            </ion-row>
             <p>
               {{session.startTime}} &mdash; {{session.endTime}}: <ion-note slot="end"><strong>{{session.roomName}}</strong></ion-note>
             </p>

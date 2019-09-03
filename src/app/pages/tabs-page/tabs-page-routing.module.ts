@@ -1,7 +1,7 @@
+import { DatesPage } from './../dates/dates.page';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs-page';
-import { SchedulePage } from '../schedule/schedule';
 
 
 const routes: Routes = [
@@ -10,11 +10,20 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: 'program',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../dates/dates.module').then(m => m.DatesPageModule)
+          }
+        ]
+      },
+      {
         path: 'schedule',
         children: [
           {
             path: '',
-            component: SchedulePage,
+            loadChildren: () => import('../schedule/schedule.module').then(m => m.ScheduleModule)
           },
           {
             path: 'session/:sessionId',

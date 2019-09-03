@@ -14,7 +14,7 @@ export class MapPage implements AfterViewInit {
 
   async ngAfterViewInit() {
     const googleMaps = await getGoogleMaps(
-      'AIzaSyB8pf6ZdFQj5qw7rc_HSGrhUwQKfIe9ICw'
+      'AIzaSyB7pYPQaEe3TSN2bkEpXQhXb8Km-TVNX0c'
     );
     this.confData.getMap().subscribe((mapData: any) => {
       const mapEle = this.mapElement.nativeElement;
