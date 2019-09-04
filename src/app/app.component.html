@@ -21,7 +21,7 @@
               </ion-item>
           </ion-menu-toggle>
 
-          <ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i = index">
+          <!--<ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i = index">
             <ion-item [routerLink]="p.url" routerLinkActive="active" routerDirection="root">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
@@ -29,7 +29,89 @@
               </ion-label>
             </ion-item>
 
-          </ion-menu-toggle>
+          </ion-menu-toggle> -->
+
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/news" routerDirection="root">
+              <ion-icon slot="start" name="megaphone"></ion-icon>
+              <ion-label>Announces</ion-label>
+            </ion-item>
+         </ion-menu-toggle>
+
+         <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="/dates" routerDirection="root">
+            <ion-icon slot="start" name="calendar"></ion-icon>
+            <ion-label>Program</ion-label>
+          </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/speaker-list/speakers/all/0" routerDirection="root">
+          <ion-icon slot="start" name="person"></ion-icon>
+          <ion-label>Speakers</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/tracks" routerDirection="root">
+          <ion-icon slot="start" name="settings"></ion-icon>
+          <ion-label>Tracks</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/rooms" routerDirection="root">
+          <ion-icon slot="start" name="code-download"></ion-icon>
+          <ion-label>Venue</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-list-header>
+        Info
+      </ion-list-header>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/info/organiser" routerDirection="root">
+          <ion-icon slot="start" name="school"></ion-icon>
+          <ion-label>Local Organiser</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/taxonomy/actionpositions" routerDirection="root">
+          <ion-icon slot="start" name="key"></ion-icon>
+          <ion-label>Action Leaders</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/taxonomy/capacity" routerDirection="root">
+          <ion-icon slot="start" name="people"></ion-icon>
+          <ion-label>MC Members</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/taxonomy/wg" routerDirection="root">
+          <ion-icon slot="start" name="git-network"></ion-icon>
+          <ion-label>Working Groups</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/info/accomodation" routerDirection="root">
+          <ion-icon slot="start" name="information-circle"></ion-icon>
+          <ion-label>Hotem Info</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/map" routerDirection="root">
+          <ion-icon slot="start" name="map"></ion-icon>
+          <ion-label>City Map</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
         </ion-list>
 
         <ion-list *ngIf="loggedIn">
