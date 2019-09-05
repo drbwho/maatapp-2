@@ -1,9 +1,17 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>tracks</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Tracks</ion-title>
+    </ion-toolbar>
+  
+  </ion-header>
 
 <ion-content>
-
+ <ion-list *ngFor="let track of tracks">
+    <ion-item routerLink="/app/tabs/program/schedule/bytrack/{{track.id}}">
+      {{track.title}}
+    </ion-item>
+ </ion-list>
 </ion-content>

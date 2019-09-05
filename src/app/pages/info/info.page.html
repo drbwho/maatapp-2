@@ -1,9 +1,12 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>info</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{infotitle}}</ion-title>
+    </ion-toolbar>
 
-<ion-content>
 
-</ion-content>
+
+      <ion-text [innerHTML]="info"></ion-text>
+

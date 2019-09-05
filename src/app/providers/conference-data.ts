@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 
 import { UserData } from './user-data';
+import { analyzeFileForInjectables } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -45,18 +46,37 @@ export class ConferenceData {
         if (session.date === day.date) {
           // get speakers
           session.speakers = [];
+          // speaker sessions
           data.sessionSpeakers.forEach((sessionSpeaker: any) => {
             if (sessionSpeaker.sessionId === session.id) {
               const speaker = this.data.people.find(
                 (s: any) => s.id === sessionSpeaker.speakerId
               );
               if (speaker) {
+
+                // speaker capacities
+                speaker.capacity = data.capUsers.reduce ( (filtered: any, item: any) => {
+                  if ( item.speakerId === speaker.id ) {
+                    filtered.push(data.capacity.find( (s: any) => s.id === item.capacityId ));
+                  }
+                  return filtered;
+                }, []);
+
+                // speaker workgroups
+                speaker.wg = data.wgUsers.reduce ( (filtered: any, item: any) => {
+                  if ( item.speakerId === speaker.id ) {
+                    filtered.push(data.wg.find( (s: any) => s.id === item.wgId ));
+                  }
+                  return filtered;
+                }, []);
+
                 session.speakers.push(speaker);
                 speaker.sessions = speaker.sessions || [];
                 speaker.sessions.push(session);
               }
             }
           });
+
           // get track
           if (session.track != null) {
               const track = this.data.tracks.find(
@@ -85,35 +105,49 @@ export class ConferenceData {
 
   getTimeline(
     dayIndex: number,
+    trackIndex: number,
+    roomIndex: number,
     queryText = '',
     excludeTracks: any[] = [],
     segment = 'all'
   ) {
     return this.load().pipe(
       map((data: any) => {
-        const day = data.eventdates[dayIndex];
-        day.shownSessions = 0;
+        const result = {
+          shownSessions: 0,
+          sessions: []
+        };
 
         queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
         const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
 
-        day.sessions.forEach((session: any) => {
+        // limit to one day
+        if (dayIndex >= 0) {
+          result.sessions = data.eventdates[dayIndex].sessions;
+        } else {
+          data.eventdates.forEach( (day: any) => {
+            result.sessions.push.apply(result.sessions, day.sessions);
+          });
+        }
+        result.sessions.forEach((session: any) => {
             // check if this session should show or not
-            this.filterSession(session, queryWords, excludeTracks, segment);
+            this.filterSession(session, trackIndex, roomIndex, queryWords, excludeTracks, segment);
 
             if (!session.hide) {
               // if this session is not hidden then this group should show
-              day.shownSessions++;
+              result.shownSessions++;
             }
         });
 
-        return day;
+        return result;
       })
     );
   }
 
   filterSession(
     session: any,
+    trackIndex: number,
+    roomIndex: number,
     queryWords: string[],
     excludeTracks: any[],
     segment: string
@@ -122,7 +156,7 @@ export class ConferenceData {
     if (queryWords.length) {
       // of any query word is in the session name than it passes the query test
       queryWords.forEach((queryWord: string) => {
-        if (session.name.toLowerCase().indexOf(queryWord) > -1) {
+        if (session.title.toLowerCase().indexOf(queryWord) > -1) {
           matchesQueryText = true;
         }
       });
@@ -151,16 +185,74 @@ export class ConferenceData {
       matchesSegment = true;
     }
 
+    // if limit by track
+    let matchesTrack = false;
+    if (trackIndex) {
+      if (Number(session.track) === trackIndex ) {
+        matchesTrack = true;
+      }
+    } else {
+        matchesTrack = true;
+    }
+
+    // if limit by room
+    let matchesRoom = false;
+    if (roomIndex) {
+      if (Number(session.room) === roomIndex ) {
+        matchesRoom = true;
+      }
+    } else {
+        matchesRoom = true;
+    }
+
     // all tests must be true if it should not be hidden
-    session.hide = !(matchesQueryText && matchesTracks && matchesSegment);
+    session.hide = !(matchesQueryText && matchesTracks && matchesSegment && matchesTrack && matchesRoom);
   }
 
-  getSpeakers() {
+  getSpeakers(showWhat: any, taxName: any, taxId: any) {
     return this.load().pipe(
       map((data: any) => {
-        return data.speakers.sort((a: any, b: any) => {
-          const aName = a.name.split(' ').pop();
-          const bName = b.name.split(' ').pop();
+        let speakers = [];
+
+        // filter speakers or not
+        switch (showWhat) {
+          case 'all':
+            speakers = data.people;
+            break;
+          case 'speakers':
+            speakers = data.people.reduce ( (filtered: any, itempeople: any) => {
+                if ( data.sessionSpeakers.filter( (item: any) => {
+                      return item.speakerId === itempeople.id;
+                      }).length > 0
+                    ) {
+                  filtered.push( itempeople );
+                }
+                return filtered;
+            }, []);
+        }
+
+        // filter according to taxonomy tags
+        let table = [];
+        switch (taxName) {
+          case 'wg':
+            table = data.wgUsers;
+            break;
+          case 'capacity':
+            table = data.capacityUsers;
+            break;
+        }
+        if (Number(taxId)) {
+          speakers = table.reduce ( (filtered: any, option: any) => {
+            if (option.wgId === taxId) {
+                  filtered.push( speakers.find( (s: any) => s.id === option.speakerId ))
+            }
+            return filtered;
+          }, []);
+        }
+
+        return speakers.sort((a: any, b: any) => {
+          const aName = a.fname.split(' ').pop();
+          const bName = b.lname.split(' ').pop();
           return aName.localeCompare(bName);
         });
       })

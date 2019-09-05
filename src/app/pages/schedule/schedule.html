@@ -25,30 +25,37 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list #scheduleList [hidden]="shownSessions === 0">
-
+  <ion-list #scheduleList *ngIf="shownSessions > 0">
       <ion-item-sliding *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
-        <ion-item routerLink="/app/tabs/schedule/session/{{session.id}}">
-          <ion-label>
-            <h2><strong>{{session.title}}</strong></h2>
-            <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" no-padding>
-                <ion-item no-padding text-wrap>
-                  <ion-text>
-                  <ion-label color="primary" no-padding>{{speaker.fname}},{{speaker.lname}}</ion-label>
-                  <ion-note no-padding>{{speaker.org}}</ion-note>
-                  </ion-text>
-                </ion-item>
-              </ion-list>
+        <ion-card routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward">
+          <ion-card-content class="ion-padding-start">
+            <ion-label class="session-title ion-margin-bottom"><strong>{{session.title}}</strong></ion-label>
+            <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" class="ion-no-padding">
+                <ion-icon name="mic" slot="start"></ion-icon>
+                <ion-label color="default" no-padding>{{speaker.fname}},{{speaker.lname}}</ion-label>
+            </ion-list>
+          </ion-card-content>
+
+          <ion-card-content class="session-card-details">
+            <ion-grid class="session-grid-details">
             <ion-row>
-              <p>
-                {{session.date.replace("00:00:00","").trim() | date:' d MMMM yyyy'}}
-              </p>
+              <ion-col>
+                {{session.date.replace("00:00:00","").trim() | date:' d MMMM'}}
+              </ion-col>
+              <ion-col>
+              {{session.startTime}} - {{session.endTime}} 
+              </ion-col>
+              <ion-col>
+                <strong>{{session.roomName}}</strong>
+              </ion-col>
             </ion-row>
-            <p>
-              {{session.startTime}} &mdash; {{session.endTime}}: <ion-note slot="end"><strong>{{session.roomName}}</strong></ion-note>
-            </p>
-          </ion-label>
-        </ion-item>
+           </ion-grid>
+           <ion-icon *ngIf="session.trackTitle" name="settings" slot="start" color="success"></ion-icon>
+           &nbsp;<ion-note color="success">{{session.trackTitle}}</ion-note>
+           </ion-card-content>
+           
+        </ion-card>
+        
         <ion-item-options>
           <ion-item-option color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="segment === 'all'">
             Favorite
@@ -58,7 +65,6 @@
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
-
   </ion-list>
 
   <ion-list-header [hidden]="shownSessions > 0">

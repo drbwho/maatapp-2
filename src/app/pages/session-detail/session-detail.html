@@ -22,10 +22,20 @@
     </ion-grid>
     <h1>{{session.title}}</h1>
     <p>{{session.desc}}</p>
-    <ion-text color="medium">
-      {{session.startTime}} &ndash; {{session.endTime}}
-      <br /> {{session.roomName}}
+    <p *ngIf="session.trackName"><ion-icon name="settings" slot="start" color="success"></ion-icon><ion-note color="success">{{session.trackTitle}}</ion-note></p>
+    <ion-icon name="calendar" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
+    <ion-text color="tertiary">
+    {{session.date}}<br />
     </ion-text>
+    <ion-icon name="time" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
+    <ion-text color="tertiary">
+      {{session.startTime}} &ndash; {{session.endTime}}
+    </ion-text>
+      <br />
+    <ion-icon name="code-download" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
+    <ion-text color="tertiary">
+      {{session.roomName}}
+    </ion-text> 
   </div>
 
   <ion-list>
@@ -34,7 +44,7 @@
         <ion-col size="12" size-md="6" *ngFor="let speaker of session.speakers">
           <ion-card class="speaker-card">
             <ion-card-header>
-              <ion-item detail="false" lines="none" routerLink="/app/tabs/speakers/speaker-details/{{speaker.id}}">
+              <ion-item detail="false" lines="none" routerLink="/app/tabs/program/speaker-details/{{speaker.id}}">
                 <ion-avatar slot="start">
                   <img [src]="speaker.prof_img" alt="Speaker profile pic">
                 </ion-avatar>
@@ -44,11 +54,22 @@
 
             <ion-card-content no-padding>
               <ion-list>
-                <ion-item>
-                  <h3>{{speaker.org}}</h3>
-                </ion-item>
+                <ion-col class="ion-padding-start">
+                  {{speaker.org}}
+                </ion-col>
               </ion-list>
-            </ion-card-content>
+
+            <ion-list class="speaker-capacity ion-padding-start">
+              <div *ngFor="let capacity of speaker.capacity">
+                {{capacity.title}}
+              </div>
+            </ion-list>
+            <ion-list class="speaker-wg ion-padding-start">
+              <div *ngFor="let capacity of speaker.wg">
+                {{capacity.wg}}
+              </div>
+            </ion-list>
+          </ion-card-content>
 
             <ion-row class="ion-no-padding ion-justify-content-center">
               <ion-col size="4" class="ion-text-left">

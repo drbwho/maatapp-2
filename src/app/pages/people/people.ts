@@ -1,28 +1,33 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ActionSheetController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 import { ConferenceData } from '../../providers/conference-data';
 
+
 @Component({
-  selector: 'page-speaker-list',
-  templateUrl: 'speaker-list.html',
-  styleUrls: ['./speaker-list.scss'],
+  selector: 'page-people-list',
+  templateUrl: 'people.html',
+  styleUrls: ['./people.scss'],
 })
-export class SpeakerListPage {
+export class PeoplePage {
   speakers: any[] = [];
 
   constructor(
     public actionSheetCtrl: ActionSheetController,
     public confData: ConferenceData,
     public inAppBrowser: InAppBrowser,
-    public router: Router
+    public route: ActivatedRoute
   ) {}
 
   ionViewDidEnter() {
-    this.confData.getSpeakers().subscribe((speakers: any[]) => {
-      this.speakers = speakers;
+    // load people with filters
+    const showWhat = this.route.snapshot.paramMap.get('showWhat');
+    const taxName = this.route.snapshot.paramMap.get('taxName');
+    const taxId = this.route.snapshot.paramMap.get('taxId');
+    this.confData.getSpeakers(showWhat, taxName, taxId).subscribe((data: any = []) => {
+      this.speakers = data;
     });
   }
 

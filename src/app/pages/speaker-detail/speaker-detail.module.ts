@@ -12,7 +12,7 @@ import { IonicModule } from '@ionic/angular';
     SpeakerDetailPageRoutingModule
   ],
   declarations: [
-    SpeakerDetailPage,
+    SpeakerDetailPage
   ]
 })
 export class SpeakerDetailModule { }

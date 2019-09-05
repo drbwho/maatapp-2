@@ -1,3 +1,4 @@
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -24,7 +25,7 @@ import { environment } from '../environments/environment';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar],
+  providers: [InAppBrowser, SplashScreen, StatusBar, PhotoViewer],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

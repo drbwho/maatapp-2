@@ -47,8 +47,10 @@ export class SchedulePage implements OnInit {
     if (this.scheduleList) {
       this.scheduleList.closeSlidingItems();
     }
-    const sessionId = Number(this.route.snapshot.paramMap.get('dayId')) - 1;
-    this.confData.getTimeline(sessionId, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
+    const dayId = Number(this.route.snapshot.paramMap.get('dayId')) - 1 || -1;
+    const roomId = Number(this.route.snapshot.paramMap.get('roomId')) || 0;
+    const trackId = Number(this.route.snapshot.paramMap.get('trackId')) || 0;
+    this.confData.getTimeline(dayId, trackId, roomId, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.sessions = data.sessions;
     });

@@ -17,3 +17,23 @@ $categories: (
     padding-left: 10px;
   }
 }
+
+.session-card-details {
+  padding-top: 0px;
+}
+
+.session-grid-details {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  color: black;
+  font-size: 0.85em;
+  text-align: center;
+}
+
+.session-grid-details ion-col:first-child {
+  border-right: 1px solid #ccc;
+}
+
+.session-grid-details ion-col:last-child {
+  border-left: 1px solid #ccc;
+}

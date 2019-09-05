@@ -7,10 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: SchedulePage
-  },
-  {
-    path: 'schedule/:dayId',
-    loadChildren: () => import('../schedule/schedule.module').then(m => m.ScheduleModule)
   }
 ];
 

@@ -1,9 +1,25 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>rooms</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Venue</ion-title>
+    </ion-toolbar>
+  
+  </ion-header>
 
 <ion-content>
-
+ <div class='ion-text-center'>
+   <h3>{{venue}}</h3>
+ </div>
+ <ion-list *ngFor="let room of rooms">
+    <ion-item >
+      <ion-label routerLink="/app/tabs/program/schedule/byroom/{{room.id}}">
+      {{room.name}}
+      </ion-label>
+      <ion-label *ngIf="room.image" (click)="photoView(room.image)" >
+        <img src="{{room.image}}" width="200px" />
+      </ion-label>
+    </ion-item>
+ </ion-list>
 </ion-content>

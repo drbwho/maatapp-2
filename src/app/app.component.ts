@@ -9,7 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { Storage } from '@ionic/storage';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 
 import { UserData } from './providers/user-data';
 
@@ -134,9 +134,15 @@ export class AppComponent implements OnInit {
 
   // check if new version of conference data exists
   check_new_jsonfile() {
+    const headers = new HttpHeaders();
+    headers.append('Cache-control', 'no-cache');
+    headers.append('Cache-control', 'no-store');
+    headers.append('Expires', '0');
+    headers.append('Pragma', 'no-cache');
+
     this.storage.get(this.confdata.JSON_FILE).then( (res) => {
         this.http
-           .get(this.confdata.API_JSONFILE_URL)
+           .get(this.confdata.API_JSONFILE_URL, {headers})
            .subscribe( async (data: any) => {
               if (res) {
                 if (res.version < data.version) {
