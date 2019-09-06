@@ -19,7 +19,7 @@
                   <img [src]="speaker.prof_img" alt="Speaker profile pic">
                 </ion-avatar>
                 {{speaker.fname}} {{speaker.lname}}
-               
+
               </ion-item>
               <ion-col class="ion-padding-start">
               {{speaker.org}}
@@ -36,15 +36,15 @@
               </ion-list>
             </ion-card-header>
 
-           
+
               <ion-label>
                 <ion-item *ngFor="let session of speaker.sessions" routerLink="/app/tabs/people/session/{{session.id}}">
-                  <h3>{{session.title}}</h3>
+                  <h3><ion-icon name="mic" slot="start"></ion-icon>&nbsp;{{session.title}}</h3>
                 </ion-item>
               </ion-label>
-            
 
-            <ion-row class="ion-no-padding ion-justify-content-center" >
+
+            <ion-row class="ion-no-padding ion-justify-content-center social" >
               <ion-col size="4" class="ion-text-left">
                 <ion-button fill="clear" size="small" color="primary" (click)="goToSpeakerTwitter(speaker)">
                   <ion-icon name="logo-twitter" slot="start"></ion-icon>

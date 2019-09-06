@@ -43,20 +43,20 @@
                 {{session.date.replace("00:00:00","").trim() | date:' d MMMM'}}
               </ion-col>
               <ion-col>
-              {{session.startTime}} - {{session.endTime}} 
+              {{session.startTime}} - {{session.endTime}}
               </ion-col>
               <ion-col>
                 <strong>{{session.roomName}}</strong>
               </ion-col>
             </ion-row>
            </ion-grid>
-           <ion-icon *ngIf="session.trackTitle" name="settings" slot="start" color="success"></ion-icon>
-           &nbsp;<ion-note color="success">{{session.trackTitle}}</ion-note>
+           <ion-icon *ngIf="session.trackTitle" name="settings" slot="start" color="success" class="ion-padding-top"></ion-icon>
+           <ion-note color="success">{{session.trackTitle}}</ion-note>
            </ion-card-content>
-           
+
         </ion-card>
-        
-        <ion-item-options>
+
+        <ion-item-options >
           <ion-item-option color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="segment === 'all'">
             Favorite
           </ion-item-option>

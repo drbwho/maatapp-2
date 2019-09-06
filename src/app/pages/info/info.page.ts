@@ -1,3 +1,4 @@
+import { Events } from '@ionic/angular';
 import { ConferenceData } from './../../providers/conference-data';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -15,17 +16,27 @@ export class InfoPage implements OnInit {
 
   constructor(
     public dataProvider: ConferenceData,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private events: Events
     ) {}
 
   ngOnInit() {
+    this.events.subscribe('info:updated', (newPage) => {
+      // do something when updated data
+      this.updateData(newPage);
+  });
   }
 
   ionViewWillEnter() {
     const infotype = this.route.snapshot.paramMap.get('infoType');
+    this.updateData(infotype);
+  }
+
+  updateData (infotype: any) {
+    // const infotype = this.route.snapshot.paramMap.get('infoType');
     this.dataProvider.load().subscribe((data: any) => {
       if (data && data.eventdates) {
-          switch(infotype) {
+          switch (infotype) {
             case 'actionpositions':
               this.infotitle = 'Action Leaders';
               this.info = data.info[0].actionpositions;
@@ -42,4 +53,5 @@ export class InfoPage implements OnInit {
         }
       });
   }
+
 }

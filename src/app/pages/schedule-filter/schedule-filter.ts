@@ -12,7 +12,7 @@ import { ConferenceData } from '../../providers/conference-data';
 export class ScheduleFilterPage implements AfterViewInit {
   ios: boolean;
 
-  tracks: {name: string, icon: string, isChecked: boolean}[] = [];
+  tracks: {title: string, icon: string, isChecked: boolean}[] = [];
 
   constructor(
     public confData: ConferenceData,
@@ -33,9 +33,9 @@ export class ScheduleFilterPage implements AfterViewInit {
     this.confData.getTracks().subscribe((tracks: any[]) => {
       tracks.forEach(track => {
         this.tracks.push({
-          name: track.name,
+          title: track.title,
           icon: track.icon,
-          isChecked: (excludedTrackNames.indexOf(track.name) === -1)
+          isChecked: (excludedTrackNames.indexOf(track.title) === -1)
         });
       });
     });
@@ -50,7 +50,7 @@ export class ScheduleFilterPage implements AfterViewInit {
 
   applyFilters() {
     // Pass back a new array of track names to exclude
-    const excludedTrackNames = this.tracks.filter(c => !c.isChecked).map(c => c.name);
+    const excludedTrackNames = this.tracks.filter(c => !c.isChecked).map(c => c.title);
     this.dismiss(excludedTrackNames);
   }
 

@@ -26,11 +26,11 @@ export class SessionDetailPage {
     console.log('Clicked', item);
   }
   toggleFavorite() {
-    if (this.userProvider.hasFavorite(this.session.name)) {
-      this.userProvider.removeFavorite(this.session.name);
+    if (this.userProvider.hasFavorite(this.session.title)) {
+      this.userProvider.removeFavorite(this.session.title);
       this.isFavorite = false;
     } else {
-      this.userProvider.addFavorite(this.session.name);
+      this.userProvider.addFavorite(this.session.title);
       this.isFavorite = true;
     }
   }
@@ -72,7 +72,7 @@ export class SessionDetailPage {
 
   async openSpeakerShare(speaker: any) {
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Share ' + speaker.name,
+      header: 'Share ' + speaker.fname + speaker.lname,
       buttons: [
         {
           text: 'Copy Link',
@@ -107,7 +107,7 @@ export class SessionDetailPage {
     const mode = 'ios'; // this.config.get('mode');
 
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Contact ' + speaker.name,
+      header: 'Contact ' + speaker.fname + speaker.lname,
       buttons: [
         {
           text: `Email ( ${speaker.email} )`,

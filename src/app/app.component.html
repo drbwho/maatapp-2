@@ -32,7 +32,7 @@
           </ion-menu-toggle> -->
 
           <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/news" routerDirection="root">
+            <ion-item routerLink="/app/tabs/news" routerDirection="root">
               <ion-icon slot="start" name="megaphone"></ion-icon>
               <ion-label>Announces</ion-label>
             </ion-item>
@@ -71,14 +71,14 @@
       </ion-list-header>
 
       <ion-menu-toggle autoHide="false">
-        <ion-item routerLink="/app/tabs/info/organiser" routerDirection="root">
+        <ion-item routerDirection="root" routerLink="" (click)="loadInfoPage('organiser')" >
           <ion-icon slot="start" name="school"></ion-icon>
           <ion-label>Local Organiser</ion-label>
         </ion-item>
       </ion-menu-toggle>
 
       <ion-menu-toggle autoHide="false">
-        <ion-item routerLink="/app/tabs/info/actionpositions" routerDirection="root">
+        <ion-item routerLink="" (click)="loadInfoPage('actionpositions')" routerDirection="root">
           <ion-icon slot="start" name="key"></ion-icon>
           <ion-label>Action Leaders</ion-label>
         </ion-item>
@@ -99,7 +99,7 @@
       </ion-menu-toggle>
 
       <ion-menu-toggle autoHide="false">
-        <ion-item routerLink="/app/tabs/info/accomodation" routerDirection="root">
+        <ion-item routerLink="" (click)="loadInfoPage('accomodation')" routerDirection="root">
           <ion-icon slot="start" name="information-circle"></ion-icon>
           <ion-label>Hotem Info</ion-label>
         </ion-item>

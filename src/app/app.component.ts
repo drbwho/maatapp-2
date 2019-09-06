@@ -12,6 +12,7 @@ import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 
 import { UserData } from './providers/user-data';
+import { NewsData } from './providers/news-data';
 
 @Component({
   selector: 'app-root',
@@ -60,7 +61,8 @@ export class AppComponent implements OnInit {
     private userData: UserData,
     private swUpdate: SwUpdate,
     private toastCtrl: ToastController,
-    private confdata: ConferenceData
+    private confdata: ConferenceData,
+    private newsdata: NewsData
   ) {
     this.initializeApp();
   }
@@ -69,6 +71,16 @@ export class AppComponent implements OnInit {
     this.checkLoginStatus();
     this.listenForLoginEvents();
     this.check_new_jsonfile();
+    this.userData.loadFavorites();
+    this.newsdata.loadNews();
+
+    // check in background for news
+    setInterval(
+      () => {
+        this.newsdata.check_news(this.http);
+      },
+      10000
+    );
 
     this.swUpdate.available.subscribe(async res => {
       const toast = await this.toastCtrl.create({
@@ -180,6 +192,12 @@ export class AppComponent implements OnInit {
               }
             });
     });
+  }
+
+
+  loadInfoPage (page: any) {
+    this.events.publish('info:updated', page);
+    this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
   }
 
 }

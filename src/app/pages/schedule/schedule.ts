@@ -77,7 +77,7 @@ export class SchedulePage implements OnInit {
       this.removeFavorite(slidingItem, sessionData, 'Favorite already added');
     } else {
       // remember this session as a user favorite
-      this.user.addFavorite(sessionData.name);
+      this.user.addFavorite(sessionData.title);
 
       // create an alert instance
       const alert = await this.alertCtrl.create({
@@ -113,7 +113,7 @@ export class SchedulePage implements OnInit {
           text: 'Remove',
           handler: () => {
             // they want to remove this session from their favorites
-            this.user.removeFavorite(sessionData.name);
+            this.user.removeFavorite(sessionData.title);
             this.updateSchedule();
 
             // close the sliding item and hide the option buttons

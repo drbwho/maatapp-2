@@ -108,6 +108,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'news',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../news/news.module').then(m => m.NewsPageModule)
+          }
+        ]
+      },
+      {
         path: 'about',
         children: [
           {

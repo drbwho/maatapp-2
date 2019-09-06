@@ -33,7 +33,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialModule),
     canLoad: [CheckTutorial]
   },
-  { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' }
+  { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },  { path: 'news', loadChildren: './pages/news/news.module#NewsPageModule' }
+
 ];
 
 @NgModule({

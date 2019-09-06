@@ -169,7 +169,7 @@ export class ConferenceData {
     // exclude tracks then this session passes the track test
     let matchesTracks = false;
     // session.tracks.forEach((trackName: string) => {
-      if (excludeTracks.indexOf(session.track) === -1) {
+      if (excludeTracks.indexOf(session.trackTitle) === -1) {
         matchesTracks = true;
       }
     // });
@@ -178,7 +178,7 @@ export class ConferenceData {
     // then this session does not pass the segment test
     let matchesSegment = false;
     if (segment === 'favorites') {
-      if (this.user.hasFavorite(session.name)) {
+      if (this.user.hasFavorite(session.title)) {
         matchesSegment = true;
       }
     } else {
