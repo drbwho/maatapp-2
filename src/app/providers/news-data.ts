@@ -17,7 +17,8 @@ export class NewsData {
 
   constructor(
     public storage: Storage,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public events: Events
   ) { }
 
 
@@ -62,6 +63,7 @@ export class NewsData {
                     this._news = data;
                     this.storage.set(this.NEWS_FILE, data);
                     this.storage.set(this.HAS_UNREAD_NEWS, true);
+                    this.events.publish('user:unreadnews', true);
                     const alert = await this.alertController.create({
                       header: 'New Announcement!',
                       message: 'A new Announcement has been published. Please check it in the menu on the left',
@@ -81,9 +83,4 @@ export class NewsData {
   }
 
 
-  hasUnreadNews() {
-    this.storage.get(this.HAS_UNREAD_NEWS).then( (res) => {
-      return res;
-    });
-  }
 }

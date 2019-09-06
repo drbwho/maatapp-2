@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
     }
   ];
   loggedIn = false;
+  hasUnreadNews = false;
 
   constructor(
     private events: Events,
@@ -72,6 +73,7 @@ export class AppComponent implements OnInit {
     this.listenForLoginEvents();
     this.check_new_jsonfile();
     this.userData.loadFavorites();
+    this.listenForNewsEvents();
     this.newsdata.loadNews();
 
     // check in background for news
@@ -81,6 +83,9 @@ export class AppComponent implements OnInit {
       },
       10000
     );
+
+    // load status from storage
+    this.load_hasUnreadNews();
 
     this.swUpdate.available.subscribe(async res => {
       const toast = await this.toastCtrl.create({
@@ -134,7 +139,7 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.userData.logout().then(() => {
-      return this.router.navigateByUrl('/app/tabs/schedule');
+      return this.router.navigateByUrl('/home');
     });
   }
 
@@ -198,6 +203,24 @@ export class AppComponent implements OnInit {
   loadInfoPage (page: any) {
     this.events.publish('info:updated', page);
     this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
+  }
+
+
+  listenForNewsEvents() {
+    this.events.subscribe('user:unreadnews', (status: boolean) => {
+      this.hasUnreadNews = status;
+    });
+  }
+
+  load_hasUnreadNews() {
+    this.storage.get(this.newsdata.HAS_UNREAD_NEWS).then( (res) => {
+      if (res === null) { this.hasUnreadNews = false;
+      } else {  this.hasUnreadNews = true; }
+    })
+    .catch ((errorGet: any) => {
+      console.error(errorGet);
+      this.hasUnreadNews = false;
+    });
   }
 
 }

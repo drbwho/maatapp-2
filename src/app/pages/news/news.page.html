@@ -13,7 +13,7 @@
     <strong>Congress Announcements</strong>
   </ion-list-header>
  <ion-list *ngFor="let newsitem of news">
-    <ion-item>
+    <ion-item-sliding>
       <ion-card class="news-card">
         <ion-card-title class="ion-padding-start ion-padding-top">{{newsitem.title}}</ion-card-title>
         <ion-card-content>
@@ -21,7 +21,7 @@
           <ion-note color="primary">{{newsitem.date.trim() | date:' d MMMM yyyy HH:mm'}}</ion-note>
         </ion-card-content>
         </ion-card>
-    </ion-item>
+    </ion-item-sliding>
  </ion-list>
  <ion-note *ngIf='!news'>There are no Announces</ion-note>
 </ion-content>
