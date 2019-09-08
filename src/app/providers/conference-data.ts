@@ -1,24 +1,59 @@
+import { Events, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 
+import { Router } from '@angular/router';
+
 import { UserData } from './user-data';
 import { analyzeFileForInjectables } from '@angular/compiler';
+
+interface MyRatings {
+  sessionid: string;
+  uid: string;
+  rate: number;
+  synced: boolean;
+}
+
+interface MyReviews {
+  sessionid: string;
+  uid: string;
+  username: string;
+  text: string;
+  synced: boolean;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ConferenceData {
   data: any;
+  sessionratings: any;
+  mysessionratings: MyRatings[];
 
   JSON_FILE = 'JSON_FILE';
+  SESSION_RATINGS = 'SESSION_RATINGS';
+  MY_SESSION_RATINGS = 'MY_SESSION_RATINGS';
+  MY_SESSION_REVIEWS = 'MY_SESSION_REVIEWS';
   API_JSONFILE_VERSION = 'http://bkk-apps.com:8080/cod-mobile/json-version';
   API_JSONFILE_URL = 'http://bkk-apps.com:8080/sites/default/files/sessions.json';
+  API_GETRATINGS_URL = 'http://bkk-apps.com:8080/cod-mobile/get-session-rating';
+  API_SETRATING_URL = 'http://bkk-apps.com:8080/cod-mobile/session-rating';
+  API_SETREVIEWS_URL = 'http://bkk-apps.com:8080/cod-mobile/session-reviews';
 
-  constructor(public http: HttpClient, public user: UserData, public storage: Storage) {}
+  constructor(
+    public http: HttpClient,
+    public user: UserData,
+    public storage: Storage,
+    public alertController: AlertController,
+    public router: Router,
+    public events: Events
+  ) {}
 
   load(): any {
     if (this.data) {
@@ -37,6 +72,27 @@ export class ConferenceData {
     // build up the data by linking speakers to sessions
     this.data = data;
 
+    // loop throug each person
+    this.data.people.forEach( (person: any) => {
+      // speaker capacities
+      person.capacity = data.capUsers.reduce ( (filtered: any, item: any) => {
+        if ( item.speakerId === person.id ) {
+          filtered.push(data.capacity.find( (s: any) => s.id === item.capacityId ));
+        }
+      return filtered;
+      }, []);
+
+      // speaker workgroups
+      person.wg = data.wgUsers.reduce ( (filtered: any, item: any) => {
+        if ( item.speakerId === person.id ) {
+          filtered.push(data.wg.find( (s: any) => s.id === item.wgId ));
+        }
+        return filtered;
+      }, []);
+
+      person.sessions = [];
+    });
+
     // loop through each day in the schedule
     this.data.eventdates.forEach((day: any) => {
       // loop through each timeline group in the day
@@ -53,23 +109,6 @@ export class ConferenceData {
                 (s: any) => s.id === sessionSpeaker.speakerId
               );
               if (speaker) {
-
-                // speaker capacities
-                speaker.capacity = data.capUsers.reduce ( (filtered: any, item: any) => {
-                  if ( item.speakerId === speaker.id ) {
-                    filtered.push(data.capacity.find( (s: any) => s.id === item.capacityId ));
-                  }
-                  return filtered;
-                }, []);
-
-                // speaker workgroups
-                speaker.wg = data.wgUsers.reduce ( (filtered: any, item: any) => {
-                  if ( item.speakerId === speaker.id ) {
-                    filtered.push(data.wg.find( (s: any) => s.id === item.wgId ));
-                  }
-                  return filtered;
-                }, []);
-
                 session.speakers.push(speaker);
                 speaker.sessions = speaker.sessions || [];
                 speaker.sessions.push(session);
@@ -122,7 +161,7 @@ export class ConferenceData {
         const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
 
         // limit to one day
-        if (dayIndex >= 0) {
+        if (dayIndex >= 0 && segment !== 'favorites') {
           result.sessions = data.eventdates[dayIndex].sessions;
         } else {
           data.eventdates.forEach( (day: any) => {
@@ -232,22 +271,28 @@ export class ConferenceData {
         }
 
         // filter according to taxonomy tags
-        let table = [];
-        switch (taxName) {
-          case 'wg':
-            table = data.wgUsers;
-            break;
-          case 'capacity':
-            table = data.capacityUsers;
-            break;
-        }
         if (Number(taxId)) {
-          speakers = table.reduce ( (filtered: any, option: any) => {
-            if (option.wgId === taxId) {
-                  filtered.push( speakers.find( (s: any) => s.id === option.speakerId ))
-            }
-            return filtered;
-          }, []);
+          let table = [];
+          switch (taxName) {
+            case 'wg':
+              table = data.wgUsers;
+              speakers = table.reduce ( (filtered: any, option: any) => {
+                if (option.wgId === taxId) {
+                    filtered.push( speakers.find( (s: any) => s.id === option.speakerId ));
+                }
+                return filtered;
+              }, []);
+              break;
+            case 'capacity':
+              table = data.capUsers;
+              speakers = table.reduce ( (filtered: any, option: any) => {
+                if (option.capacityId === taxId) {
+                    filtered.push( speakers.find( (s: any) => s.id === option.speakerId ));
+                }
+                return filtered;
+              }, []);
+              break;
+          }
         }
 
         return speakers.sort((a: any, b: any) => {
@@ -267,20 +312,202 @@ export class ConferenceData {
     );
   }
 
-  getMap() {
+  getTaxonomy(type, taxid) {
+    return this.load().pipe(
+      map((data: any) => {
+        if (type === 'capacity') {
+          return data.capacity.filter( w => w.id === taxid);
+        } else if ( type === 'wg' ) {
+          return data.wg.filter( w => w.id === taxid);
+        }
+      })
+    );
+  }
+
+  getMap(type: string) {
     return this.load().pipe(
       map((data: any) => {
         let mapdata: any;
         mapdata = [];
         let mapval: any;
         mapval = [];
-        mapdata.name = data.info[0].venue;
-        mapdata.lat = Number(data.info[0].lat);
-        mapdata.lng = Number(data.info[0].lng);
-        mapdata.center = true;
+        if (type === 'venue') {
+          mapdata.name = data.info[0].venue;
+          mapdata.lat = Number(data.info[0].lat);
+          mapdata.lng = Number(data.info[0].lng);
+          mapdata.center = true;
+        } else if (type === 'city') {
+          mapdata.name = 'City Center';
+          mapdata.lat = Number(data.info[0].city_lat);
+          mapdata.lng = Number(data.info[0].city_lng);
+          mapdata.center = true;
+        }
         mapval.push(mapdata);
         return mapval;
       })
     );
+  }
+
+  loadSessionsRatings () {
+    this.storage.get(this.SESSION_RATINGS).then( (res) => {
+      if (res === null) {
+        this.sessionratings = [];
+      } else {
+        this.sessionratings = res;
+      }
+    });
+  }
+
+
+  loadMySessionsRatings () {
+    this.storage.get(this.MY_SESSION_RATINGS).then( (res) => {
+      if (res === null) {
+        this.mysessionratings = [];
+      } else {
+        this.mysessionratings = res;
+      }
+    });
+  }
+
+  getRemoteSessionsRatings(httpclient: HttpClient) {
+    const headers = new HttpHeaders();
+    headers.append('Cache-control', 'no-cache');
+    headers.append('Cache-control', 'no-store');
+    headers.append('Expires', '0');
+    headers.append('Pragma', 'no-cache');
+
+    httpclient
+    .get(this.API_GETRATINGS_URL, {headers})
+    .subscribe( async (data: any) => {
+        if (data.length > 0) {
+          this.storage.remove(this.SESSION_RATINGS).then( () => {
+            this.storage.set(this.SESSION_RATINGS, data);
+            this.sessionratings = data;
+          });
+        }
+    });
+  }
+
+  getSessionRatings(sessionid): Promise<number> {
+    const res = this.sessionratings.filter( w => {
+      return w.session_id === sessionid; } );
+    return Promise.all([res]).then( tab => {
+      if (tab[0].length === 0) {
+        return 0;
+      } else {
+        return Number(tab[0][0].average) / 20;
+      }
+    });
+  }
+
+  // filter myratings by uid and session
+  getMySessionRatings(sessionid): Promise<number> {
+    const loggedin = this.user.isLoggedIn();
+    const user: any = this.user.getUser();
+    return Promise.all ([loggedin, user]).then ( res => {
+       if (res[0]) {
+        const tab = this.mysessionratings.filter( w => (w.uid === res[1].uid && w.sessionid === sessionid) );
+        if (tab.length === 0) {
+          return 0;
+        } else {
+          return tab[0].rate;
+        }
+      } else {
+        return 0;
+      }
+    });
+  }
+
+  // store my ratings
+  async putSessionRating(sessionid, rate: number) {
+    if (await this.user.isLoggedIn()) {
+      // manage session rating
+      const user: any = await this.user.getUser();
+      const myrats = this.mysessionratings.filter( w => (w.uid === user.uid && w.sessionid === sessionid) );
+      if (myrats.length === 0) {
+        this.mysessionratings.push( {
+            sessionid: sessionid,
+            uid: user.uid,
+            rate: rate,
+            synced: false
+        });
+      } else {
+        myrats[0].rate = rate;
+        myrats[0].synced = false;
+      }
+      this.storage.set(this.MY_SESSION_RATINGS, this.mysessionratings);
+
+      // manage session review
+      const alert = await this.alertController.create({
+          header: 'Review!',
+          message: 'Please enter your review',
+          inputs: [
+            {
+              name: 'text',
+              type: 'text',
+              placeholder: 'Review'
+            }
+          ],
+          buttons: [
+            {
+              text: 'Submit',
+              handler: (data) => {
+                console.log('Review text:' + data.text);
+                this.storage.get(this.MY_SESSION_REVIEWS).then( (revs: MyReviews[]) => {
+                  if (revs === null) {
+                    revs = [];
+                  }
+                  revs.push({
+                    sessionid: sessionid,
+                    uid: user.uid,
+                    username: user.username,
+                    text: data.text,
+                    synced: false
+                  });
+                this.storage.set(this.MY_SESSION_REVIEWS, revs);
+                });
+              }
+            }
+          ]
+        });
+        await alert.present();
+    } else {
+        this.router.navigateByUrl('/login');
+      }
+  }
+
+  // sync myratings and myreviews with server
+  async postSessionRatings(http: HttpClient) {
+      // post ratings
+      this.mysessionratings.forEach(element => {
+        if ( !element.synced ) {
+          const url = this.API_SETRATING_URL + '?user_id=' + element.uid + '&fivestar_value='
+                      + element.rate + '&session_id=' + element.sessionid;
+          this.http.get(url).subscribe( async res => {
+            if (res) {
+              element.synced = true;
+              this.storage.set(this.MY_SESSION_RATINGS, this.mysessionratings);
+            }
+          });
+        }
+      });
+
+      // post reviews
+      this.storage.get(this.MY_SESSION_REVIEWS).then (reviews => {
+          if ( reviews.length > 0 ) {
+            reviews.forEach(element => {
+              if (!element.synced) {
+                const url = this.API_SETREVIEWS_URL + '?user_id=' + element.uid + '&comment_body=' + element.text
+                      + '&user_name=' + element.username + '&session_id=' + element.sessionid;
+                this.http.get(url).subscribe( async res => {
+                  if (res) {
+                    element.synced = true;
+                    this.storage.set(this.MY_SESSION_REVIEWS, reviews);
+                  }
+                });
+              }
+            });
+          }
+      });
   }
 }

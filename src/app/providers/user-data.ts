@@ -8,8 +8,10 @@ import { Storage } from '@ionic/storage';
 export class UserData {
   _favorites: string[] = [];
   FAVOURITES_FILE = 'FAVOURITES_FILE';
+  USER_FILE = 'USER_FILE';
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
+  user: any;
 
   constructor(
     public events: Events,
@@ -19,7 +21,7 @@ export class UserData {
 
   loadFavorites () {
     this.storage.get(this.FAVOURITES_FILE).then( (res) => {
-      if (res.lenth === 0) {
+      if (res === null || res.lenth === 0) {
         this._favorites = [];
       } else {
       this._favorites = res;
@@ -44,9 +46,9 @@ export class UserData {
     this.storage.set(this.FAVOURITES_FILE, this._favorites);
   }
 
-  login(username: string): Promise<any> {
+  login(user: any): Promise<any> {
     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
-      this.setUsername(username);
+      this.setUsername(user);
       return this.events.publish('user:login');
     });
   }
@@ -60,18 +62,18 @@ export class UserData {
 
   logout(): Promise<any> {
     return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
-      return this.storage.remove('username');
+      return this.storage.remove(this.USER_FILE);
     }).then(() => {
       this.events.publish('user:logout');
     });
   }
 
-  setUsername(username: string): Promise<any> {
-    return this.storage.set('username', username);
+  setUsername(user: any): Promise<any> {
+    return this.storage.set(this.USER_FILE, user);
   }
 
-  getUsername(): Promise<string> {
-    return this.storage.get('username').then((value) => {
+  getUser(): Promise<string> {
+    return this.storage.get(this.USER_FILE).then((value) => {
       return value;
     });
   }

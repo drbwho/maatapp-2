@@ -32,7 +32,7 @@
             <ion-label class="session-title ion-margin-bottom"><strong>{{session.title}}</strong></ion-label>
             <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" class="ion-no-padding">
                 <ion-icon name="mic" slot="start"></ion-icon>
-                <ion-label color="default" no-padding>{{speaker.fname}},{{speaker.lname}}</ion-label>
+                <ion-label color="default" no-padding>{{speaker.fname.trim()}}, {{speaker.lname}}</ion-label>
             </ion-list>
           </ion-card-content>
 

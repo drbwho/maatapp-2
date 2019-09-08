@@ -11,15 +11,19 @@
 <ion-content>
  <div class='ion-text-center'>
    <h3>{{venue}}</h3>
+   <ion-note routerLink="/app/tabs/map/venue" color="danger"><ion-icon name="map"></ion-icon>Show on map</ion-note>
  </div>
  <ion-list *ngFor="let room of rooms">
-    <ion-item >
+    <ion-item class="ion-text-wrap">
+      <ion-list>
       <ion-label routerLink="/app/tabs/program/schedule/byroom/{{room.id}}">
       {{room.name}}
-      </ion-label>
-      <ion-label *ngIf="room.image" (click)="photoView(room.image)" >
-        <img src="{{room.image}}" width="200px" />
-      </ion-label>
+      </ion-label>   
+      <div *ngIf="room.image" (click)="photoView(room.image)" >
+        <img src="{{room.image}}" width="200px" />       
+      </div>
+      <ion-note *ngIf="room.image" slot="start">(click to zoom)</ion-note>
+    </ion-list>
     </ion-item>
  </ion-list>
 </ion-content>

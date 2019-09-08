@@ -34,6 +34,10 @@ const routes: Routes = [
           {
             path: 'schedule/bytrack/:trackId',
             loadChildren: () => import('../schedule/schedule.module').then(m => m.ScheduleModule)
+          },
+          {
+            path: 'people/:showWhat/:taxName/:taxId',
+            loadChildren: () => import('../people/people.module').then(m => m.PeoplePageModule)
           }
         ]
       },
@@ -72,7 +76,7 @@ const routes: Routes = [
         loadChildren: () => import('../people/people.module').then(m => m.PeoplePageModule)
       },
       {
-        path: 'map',
+        path: 'map/:mapType',
         children: [
           {
             path: '',
@@ -107,6 +111,23 @@ const routes: Routes = [
           }
         ]
       },
+      {
+      path: 'taxonomy',
+      children: [
+        {
+          path: '',
+          loadChildren: () => import('../taxonomy/taxonomy.module').then(m => m.TaxonomyPageModule)
+        },
+        {
+          path: 'type/:taxonomyType',
+          loadChildren: () => import('../taxonomy/taxonomy.module').then(m => m.TaxonomyPageModule)
+        },
+        {
+          path: 'people/:showWhat/:taxName/:taxId',
+          loadChildren: () => import('../people/people.module').then(m => m.PeoplePageModule)
+        }
+      ]
+    },
       {
         path: 'news',
         children: [

@@ -12,7 +12,7 @@ import { from } from 'rxjs';
 export class NewsData {
   _news: any;
   NEWS_FILE = 'NEWS_FILE';
-  HAS_UNREAD_NEWS = 'HAS_UREAD_NEWS';
+  HAS_UNREAD_NEWS = 'has_unread_news';
   API_NEWS_URL = 'http://bkk-apps.com:8080/cod-mobile/get-news';
 
   constructor(

@@ -22,8 +22,8 @@
       </div>
     </ion-list>
     <ion-list *ngIf="speaker.wg.length > 0" class="speaker-wg">
-      <div *ngFor="let capacity of speaker.wg">
-        {{capacity.wg}}
+      <div *ngFor="let wg of speaker.wg">
+        {{wg.title}}
       </div>
     </ion-list>
 
@@ -38,7 +38,7 @@
     </ion-button>
   
 
-  <p>{{speaker?.desc}}</p>
+  <p [innerHTML]="speaker?.desc"></p>
 
   <ion-list *ngIf="speaker.sessions.length > 0">
 

@@ -10,8 +10,13 @@
 
 <ion-content>
     <div class="row">
-        <div class="conf-title" ng-if="conftitle != ''">
+        
+        <div class="conf-div ion-text-center" ng-if="conftitle != ''">
+        <img src="assets/img/bkk_logo.png"/>
+        <p>Event Management</p>
+        <div class="conf-title">
         {{conftitle}}
+        </div>
         </div>
     </div>
 
@@ -45,13 +50,13 @@
               </ion-col>
           </ion-row>
           <ion-row  class="home-links">
-              <ion-col  routerLink="/app/announces"  class="ion-text-center">
+              <ion-col  routerLink="/app/tabs/news"  class="ion-text-center">
                       <div>
                       <ion-icon name="megaphone"></ion-icon>
                       </div>
                       <ion-label>ANNOUNCES</ion-label>
               </ion-col>
-              <ion-col  routerLink="/app/tabs/venue" class="ion-text-center">
+              <ion-col  routerLink="/app/tabs/rooms" class="ion-text-center">
                       <div>
                       <ion-icon name="code-download"></ion-icon>
                       </div>

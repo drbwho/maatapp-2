@@ -10,6 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
+import { Network } from '@ionic-native/network/ngx';
 
 import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
@@ -63,7 +64,9 @@ export class AppComponent implements OnInit {
     private swUpdate: SwUpdate,
     private toastCtrl: ToastController,
     private confdata: ConferenceData,
-    private newsdata: NewsData
+    private newsdata: NewsData,
+    private network: Network,
+    private toast: ToastController
   ) {
     this.initializeApp();
   }
@@ -75,11 +78,17 @@ export class AppComponent implements OnInit {
     this.userData.loadFavorites();
     this.listenForNewsEvents();
     this.newsdata.loadNews();
+    this.confdata.loadSessionsRatings();
+    this.confdata.loadMySessionsRatings();
 
-    // check in background for news
+    // this.listenNetworkConnectionEvents();
+
+    // check in background for news and session ratings
     setInterval(
       () => {
         this.newsdata.check_news(this.http);
+        this.confdata.getRemoteSessionsRatings(this.http);
+        this.confdata.postSessionRatings(this.http);
       },
       10000
     );
@@ -164,8 +173,8 @@ export class AppComponent implements OnInit {
               if (res) {
                 if (res.version < data.version) {
                     const alert = await this.alertController.create({
-                      header: 'Information',
-                      message: 'New Conference Data <strong>Available</strong>!',
+                      header: 'Update available!',
+                      message: 'New Conference Data <strong>Available</strong>! Do you want to update now?',
                       buttons: [
                         {
                           text: 'Ignore',
@@ -205,17 +214,22 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
   }
 
+  loadTaxonomyPage (page: any) {
+    this.events.publish('taxonomy:updated', page);
+    this.router.navigate(['/app/tabs/taxonomy/type/' + page], {state: {updateInfos: true}});
+  }
 
   listenForNewsEvents() {
     this.events.subscribe('user:unreadnews', (status: boolean) => {
       this.hasUnreadNews = status;
+      this.storage.set(this.newsdata.HAS_UNREAD_NEWS, status);
     });
   }
 
   load_hasUnreadNews() {
     this.storage.get(this.newsdata.HAS_UNREAD_NEWS).then( (res) => {
       if (res === null) { this.hasUnreadNews = false;
-      } else {  this.hasUnreadNews = true; }
+      } else {  this.hasUnreadNews = res; }
     })
     .catch ((errorGet: any) => {
       console.error(errorGet);
@@ -223,4 +237,42 @@ export class AppComponent implements OnInit {
     });
   }
 
+  listenNetworkConnectionEvents() {
+    // watch network for a disconnection
+    // let disconnectSubscription =
+    this.network.onDisconnect().subscribe(async () => {
+      console.log('network was disconnected :-(');
+      const toast = await this.toast.create({
+        message: 'Network disconnected...',
+        duration: 2000
+      });
+      toast.present();
+    });
+
+    // stop disconnect watch
+    // disconnectSubscription.unsubscribe();
+
+
+    // watch network for a connection
+    // let connectSubscription =
+    this.network.onConnect().subscribe(() => {
+      console.log('network connected!');
+      // We just got a connection but we need to wait briefly
+      // before we determine the connection type. Might need to wait.
+      // prior to doing any api requests as well.
+      setTimeout(async () => {
+        if (this.network.type === 'wifi') {
+          console.log('we got a wifi connection, woohoo!');
+          const toast = await this.toast.create({
+            message: 'Network Connected!',
+            duration: 2000
+          });
+          toast.present();
+        }
+      }, 3000);
+    });
+
+    // stop connect watch
+    // connectSubscription.unsubscribe();
+  }
 }

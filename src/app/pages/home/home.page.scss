@@ -25,6 +25,29 @@ ion-content {
     
 }
 
+.conf-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  padding: 10px;
+  padding-top: 10%;
+  color: #f0f07f;
+  text-shadow: 1px 1px 10px #000;
+}
+
+.conf-div {
+  margin-top: 20px;
+}
+.conf-div p {
+  color: #ccc;
+  font-weight: bold;
+  margin: 0px;
+}
+
+.conf-div img {
+  width: 70px;
+  height: 30px;
+}
+
 /* if ios flickering 
 :host {
   ion-content {

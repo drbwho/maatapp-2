@@ -13,6 +13,8 @@ import { ConferenceData } from '../../providers/conference-data';
 })
 export class PeoplePage {
   speakers: any[] = [];
+  taxonomy: string;
+  pagetitle: string;
 
   constructor(
     public actionSheetCtrl: ActionSheetController,
@@ -26,6 +28,21 @@ export class PeoplePage {
     const showWhat = this.route.snapshot.paramMap.get('showWhat');
     const taxName = this.route.snapshot.paramMap.get('taxName');
     const taxId = this.route.snapshot.paramMap.get('taxId');
+    this.pagetitle = 'Speakers';
+    switch (taxName) {
+      case 'capacity':
+        this.pagetitle = 'People';
+        break;
+      case 'wg':
+        this.pagetitle = 'People';
+        break;
+    }
+    if (taxName && taxId) {
+      this.confData.getTaxonomy(taxName, taxId).subscribe( res => {
+        this.taxonomy = res[0].title;
+      });
+    }
+
     this.confData.getSpeakers(showWhat, taxName, taxId).subscribe((data: any = []) => {
       this.speakers = data;
     });

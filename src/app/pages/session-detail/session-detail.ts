@@ -14,7 +14,10 @@ import { UserData } from '../../providers/user-data';
 export class SessionDetailPage {
   session: any = [];
   isFavorite = false;
+  ratings: number;
+  myratings: number;
   defaultHref = '';
+
   constructor(
     private dataProvider: ConferenceData,
     private userProvider: UserData,
@@ -35,7 +38,7 @@ export class SessionDetailPage {
     }
   }
   ionViewWillEnter() {
-    this.dataProvider.load().subscribe((data: any) => {
+    this.dataProvider.load().subscribe(async (data: any) => {
       if (
         data &&
         data.eventdates &&
@@ -56,9 +59,18 @@ export class SessionDetailPage {
               }
             }
           }
+
+          this.dataProvider.getSessionRatings(sessionId).then( res => {
+            this.ratings = res;
+          });
+
+          this.dataProvider.getMySessionRatings(sessionId).then( res => {
+            this.myratings = res;
+          });
         }
     });
   }
+
   ionViewDidEnter() {
     this.defaultHref = `/app/tabs/schedule`;
   }
@@ -127,5 +139,14 @@ export class SessionDetailPage {
     });
 
     await actionSheet.present();
+  }
+
+  put_session_rating(sessionid, rate) {
+    this.dataProvider.putSessionRating(sessionid, rate);
+    this.userProvider.isLoggedIn().then(res => {
+      if (res) {
+        this.myratings = rate;
+      }
+    });
   }
 }

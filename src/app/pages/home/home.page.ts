@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConferenceData } from './../../providers/conference-data';
 
 @Component({
   selector: 'home',
@@ -6,10 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  conftitle: string;
 
-  constructor() { }
+  constructor(public dataProvider: ConferenceData) { }
 
   ngOnInit() {
+    this.dataProvider.load().subscribe((data: any) => {
+      if (data && data.eventdates) {
+          this.conftitle = data.info[0].title;;
+        }
+      });
   }
 
 }

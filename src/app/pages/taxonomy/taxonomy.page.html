@@ -1,9 +1,25 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>taxonomy</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{taxonomytitle}}</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-list-header color="success">
+        <strong>{{taxonomysubtitle}}</strong>
+    </ion-list-header>
+    <ion-list *ngFor="let taxonomyitem of taxonomy" >   
+      <div class="row empty-result2" *ngIf="!taxonomy.length">No Items found.</div>
+      <ion-item  type="item-text-wrap" class="item-listing item-remove-animate item-icon-right" 
+           routerLink="/app/tabs/taxonomy/people/all/{{taxtype}}/{{taxonomyitem.id}}">
+        <ion-text>
+        {{taxonomyitem.title}}
+        <div class="wrap taxonomyline1" *ngIf="taxonomyitem.line1">{{taxonomyitem.label1}}: {{taxonomyitem.line1}}</div>
+        <div class="wrap taxonomyline2" *ngIf="taxonomyitem.line2">{{taxonomyitem.label2}}: {{taxonomyitem.line2}}</div>
+        </ion-text>
+      </ion-item>
+    </ion-list>
 </ion-content>

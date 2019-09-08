@@ -12,7 +12,15 @@ import { UserData } from '../../providers/user-data';
   styleUrls: ['./account.scss'],
 })
 export class AccountPage implements AfterViewInit {
-  username: string;
+  user =
+    {
+      username: '',
+      uid: 0,
+      img: '',
+      fname: '',
+      lname: '',
+      org: ''
+    };
 
   constructor(
     public alertCtrl: AlertController,
@@ -21,7 +29,7 @@ export class AccountPage implements AfterViewInit {
   ) { }
 
   ngAfterViewInit() {
-    this.getUsername();
+    this.getUser();
   }
 
   updatePicture() {
@@ -40,7 +48,7 @@ export class AccountPage implements AfterViewInit {
           text: 'Ok',
           handler: (data: any) => {
             this.userData.setUsername(data.username);
-            this.getUsername();
+            this.getUser();
           }
         }
       ],
@@ -48,7 +56,7 @@ export class AccountPage implements AfterViewInit {
         {
           type: 'text',
           name: 'username',
-          value: this.username,
+          value: this.user.username,
           placeholder: 'username'
         }
       ]
@@ -56,9 +64,9 @@ export class AccountPage implements AfterViewInit {
     await alert.present();
   }
 
-  getUsername() {
-    this.userData.getUsername().then((username) => {
-      this.username = username;
+  getUser() {
+    this.userData.getUser().then((user: any) => {
+      this.user = user;
     });
   }
 

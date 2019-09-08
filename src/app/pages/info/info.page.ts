@@ -24,7 +24,7 @@ export class InfoPage implements OnInit {
     this.events.subscribe('info:updated', (newPage) => {
       // do something when updated data
       this.updateData(newPage);
-  });
+    });
   }
 
   ionViewWillEnter() {

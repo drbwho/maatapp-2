@@ -1,11 +1,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+        <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Speakers</ion-title>
+    <ion-title>{{pagetitle}}</ion-title>
   </ion-toolbar>
 </ion-header>
+
+<ion-list-header color="success" *ngIf="taxonomy" >
+    {{taxonomy}}
+</ion-list-header>
 
 <ion-content class="outer-content">
   <ion-list>
@@ -16,7 +20,8 @@
             <ion-card-header>
               <ion-item detail="false" lines="none" routerLink="/app/tabs/program/speaker-details/{{speaker.id}}">
                 <ion-avatar slot="start">
-                  <img [src]="speaker.prof_img" alt="Speaker profile pic">
+                  <img *ngIf="speaker.prof_img" [src]="speaker.prof_img" alt="Speaker profile pic">
+                  <img *ngIf="!speaker.prof_img" src="/assets/img/avatar.png" alt="Speaker profile pic">
                 </ion-avatar>
                 {{speaker.fname}} {{speaker.lname}}
 
@@ -30,8 +35,8 @@
                 </div>
               </ion-list>
               <ion-list class="speaker-wg ion-padding-start">
-                <div *ngFor="let capacity of speaker.wg">
-                  {{capacity.wg}}
+                <div *ngFor="let wg of speaker.wg">
+                  {{wg.title}}
                 </div>
               </ion-list>
             </ion-card-header>
