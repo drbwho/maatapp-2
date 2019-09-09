@@ -35,12 +35,19 @@
           <ion-menu-toggle autoHide="false">
             <ion-item  *ngIf="!hasUnreadNews" routerLink="/app/tabs/news" routerDirection="root">
               <ion-icon slot="start" name="megaphone"></ion-icon>
-              <ion-label>Announces</ion-label>             
+              <ion-label>Announces</ion-label>
             </ion-item>
-            <ion-item *ngIf="hasUnreadNews" routerLink="/app/tabs/news" routerDirection="root" >  
+            <ion-item *ngIf="hasUnreadNews" routerLink="/app/tabs/news" routerDirection="root" >
               <ion-icon slot="start" name="megaphone" color="danger"></ion-icon>
-              <ion-label color="danger"><strong>Announces!</strong></ion-label>             
+              <ion-label color="danger"><strong>Announces!</strong></ion-label>
             </ion-item>
+         </ion-menu-toggle>
+
+         <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="/twitter-timeline" routerDirection="root">
+            <ion-icon slot="start" name="tweeter"></ion-icon>
+            <ion-label>Tweets</ion-label>
+          </ion-item>
          </ion-menu-toggle>
 
          <ion-menu-toggle autoHide="false">
@@ -48,7 +55,7 @@
             <ion-icon slot="start" name="calendar"></ion-icon>
             <ion-label>Program</ion-label>
           </ion-item>
-      </ion-menu-toggle>
+        </ion-menu-toggle>
 
       <ion-menu-toggle autoHide="false">
         <ion-item routerLink="/app/tabs/program/people/speakers/all/0" routerDirection="root">
@@ -184,7 +191,7 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle>-->
-          
+
         </ion-list>
 
        <!-- <ion-list>

@@ -81,6 +81,8 @@
             <application android:usesCleartextTraffic="true" />
         </edit-config>
     </platform>
+    <preference name="TwitterConsumerKey" value="&lt;Twitter Consumer Key&gt;" />
+    <preference name="TwitterConsumerSecret" value="&lt;Twitter Consumer Secret&gt;" />
     <access origin="*" />
     <allow-navigation href="http://*/*" />
     <allow-intent href="*://*.twitter.com/*" />
