@@ -35,8 +35,6 @@ const routes: Routes = [
   },
   { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
   { path: 'news', loadChildren: './pages/news/news.module#NewsPageModule' },
-  { path: 'twitter-login', loadChildren: './pages/twitter-login/twitter-login.module#TwitterLoginPageModule' },
-  { path: 'twitter-timeline', loadChildren: './pages/twitter-timeline/twitter-timeline.module#TwitterTimelinePageModule' }
 
 ];
 

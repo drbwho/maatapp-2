@@ -1,10 +1,12 @@
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ActionSheetController } from '@ionic/angular';
 import { Component } from '@angular/core';
+import { Calendar } from '@ionic-native/calendar/ngx';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
+import { start } from 'repl';
 
 @Component({
   selector: 'page-session-detail',
@@ -23,7 +25,8 @@ export class SessionDetailPage {
     private userProvider: UserData,
     private route: ActivatedRoute,
     public actionSheetCtrl: ActionSheetController,
-    public inAppBrowser: InAppBrowser
+    public inAppBrowser: InAppBrowser,
+    public calendar: Calendar
   ) {}
   sessionClick(item: string) {
     console.log('Clicked', item);
@@ -148,5 +151,30 @@ export class SessionDetailPage {
         this.myratings = rate;
       }
     });
+  }
+
+  createCalendar(session) {
+    const title  = 'Attend session: ' + session.title;
+    const startDate = new Date(session.date + ' ' + session.startTime + ':00');
+    const endDate = new Date(session.date + ' ' + session.endTime);
+    const success = function(message) { alert('Success: ' + JSON.stringify(message)); };
+    const error = function(message) { alert('Error: ' + message); };
+    const eventLocation = '';
+    const notes = '';
+
+    const calOptions = this.calendar.getCalendarOptions(); // grab the defaults
+    calOptions.firstReminderMinutes = 60; // default is 60, pass in null for no reminder (alarm)
+    calOptions.secondReminderMinutes = 5;
+
+    calOptions.recurrence = 'none'; // supported are: daily, weekly, monthly, yearly
+    calOptions.recurrenceEndDate = endDate; // leave null to add events into infinity and beyond
+    calOptions.calendarName = 'MySessions'; // iOS only
+    // calOptions.calendarId = 1; // Android only, use id obtained from listCalendars() call which is described below.
+    // This will be ignored on iOS in favor of calendarName and vice versa. Default: 1.
+
+    // This is new since 4.2.7:
+    calOptions.recurrenceInterval = 1;
+
+    this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
   }
 }
