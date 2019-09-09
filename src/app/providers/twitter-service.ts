@@ -1,4 +1,4 @@
-import { TwitterService } from 'ng2-twitter';
+// import { TwitterService } from 'ng2-twitter';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 
@@ -9,7 +9,7 @@ export class TwitterProvider {
   consumerKey = 'YOURCONSUMERKEY';
   consumerSecret = 'YOURCONSUMERSECRET';
 
-  constructor(private twitter: TwitterService) { }
+  /*constructor(private twitter: TwitterService) { }
 
   setTokens(token, tokenSecret) {
     this.token = token;
@@ -51,5 +51,5 @@ export class TwitterProvider {
     )
       .map(res => res.json());
   }
-
+*/
 }

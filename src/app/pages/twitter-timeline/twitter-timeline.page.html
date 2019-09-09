@@ -12,6 +12,9 @@
 </ion-header>
 
 <ion-content>
+
+    <ng4-twitter-timeline [dataSrc]="{sourceType: 'profile',screenName: 'EVAlondonconf'}" [opts]="{tweetLimit: 2}"></ng4-twitter-timeline>
+
   <ion-refresher (ionRefresh)="loadTimeline($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

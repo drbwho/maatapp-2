@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { Network } from '@ionic-native/network/ngx';
+import { Ng4TwitterTimelineModule } from 'ng4-twitter-timeline/lib/index';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { Network } from '@ionic-native/network/ngx';
     IonicStorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
-    })
+    }),
+    Ng4TwitterTimelineModule
   ],
   declarations: [AppComponent],
   providers: [InAppBrowser, SplashScreen, StatusBar, PhotoViewer, Network],

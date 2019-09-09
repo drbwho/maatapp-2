@@ -1,7 +1,7 @@
 
 import { Component } from '@angular/core';
 import { TwitterProvider } from './../../providers/twitter-service';
-import { TwitterConnect } from '@ionic-native/twitter-connect/ngx';
+// import { TwitterConnect } from '@ionic-native/twitter-connect/ngx';
 import { NavController, AlertController, LoadingController } from '@ionic/angular';
 
 
@@ -13,6 +13,7 @@ import { NavController, AlertController, LoadingController } from '@ionic/angula
 export class TwitterLoginPage {
   loading: any;
 
+/*
   constructor(
       public navCtrl: NavController,
       private twitter: TwitterConnect,
@@ -51,5 +52,5 @@ export class TwitterLoginPage {
       await alert.present();
     });
   }
-
+*/
 }

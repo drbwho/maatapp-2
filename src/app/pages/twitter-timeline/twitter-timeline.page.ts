@@ -2,7 +2,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { Component } from '@angular/core';
 import { TwitterProvider } from './../../providers/twitter-service';
 import { NavController, LoadingController, AlertController, ToastController } from '@ionic/angular';
-
+import { Ng4TwitterTimelineService } from 'ng4-twitter-timeline/lib/index';
 
 @Component({
   selector: 'twitter-timeline',
@@ -14,6 +14,11 @@ export class TwitterTimelinePage {
   tweets: any;
   loading: any;
 
+  constructor(private ng4TwitterTimelineService: Ng4TwitterTimelineService) {
+  }
+
+
+/*
   constructor(
     public navCtrl: NavController,
     private twitterProvider: TwitterProvider,
@@ -104,6 +109,6 @@ export class TwitterTimelinePage {
     });
     alert.present();
   }
-
+*/
 }
 
