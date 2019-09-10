@@ -324,6 +324,15 @@ export class ConferenceData {
     );
   }
 
+  // return sessions' files
+  getFiles(sessionid) {
+    return this.load().pipe(
+      map((data: any) => {
+          return data.files.filter( w => w.sessionId === sessionid);
+      })
+    );
+  }
+
   getMap(type: string) {
     return this.load().pipe(
       map((data: any) => {
@@ -494,6 +503,7 @@ export class ConferenceData {
 
       // post reviews
       this.storage.get(this.MY_SESSION_REVIEWS).then (reviews => {
+        if (reviews) {
           if ( reviews.length > 0 ) {
             reviews.forEach(element => {
               if (!element.synced) {
@@ -508,6 +518,7 @@ export class ConferenceData {
               }
             });
           }
+        }
       });
   }
 }

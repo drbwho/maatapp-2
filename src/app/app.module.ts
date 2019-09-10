@@ -1,3 +1,4 @@
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -27,7 +28,7 @@ import { Calendar } from '@ionic-native/calendar/ngx';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar, PhotoViewer, Network, Calendar],
+  providers: [InAppBrowser, SplashScreen, StatusBar, PhotoViewer, Network, Calendar, SocialSharing],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

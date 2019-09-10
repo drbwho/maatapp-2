@@ -44,7 +44,7 @@
         <ion-icon *ngIf=" ratings >= 4" name="star" color="danger"></ion-icon>
         <ion-icon *ngIf=" ratings < 5" name="star-outline"></ion-icon>
         <ion-icon *ngIf=" ratings >= 5" name="star" color="danger"></ion-icon>
-     </div> 
+     </div>
 
      <ion-icon *ngIf="session.trackTitle" name="settings" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
      <ion-text *ngIf="session.trackTitle" color="success">
@@ -62,7 +62,7 @@
     <ion-icon name="code-download" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
     <ion-text color="tertiary">
       {{session.roomName}}
-    </ion-text> 
+    </ion-text>
   </div>
 
   <ion-list>
@@ -129,15 +129,15 @@
       <ion-label color="primary">Add to Calendar</ion-label>
       <ion-icon slot="end" color="primary" size="small" name="calendar"></ion-icon>
     </ion-item>
-    <ion-item (click)="sessionClick('mark as unwatched')" button>
+    <ion-item (click)="open_file(session, 'document')" button>
       <ion-label color="primary">Open Abstract</ion-label>
       <ion-icon slot="end" color="primary" size="small" name="document"></ion-icon>
     </ion-item>
-    <ion-item (click)="sessionClick('download video')" button>
+    <ion-item (click)="open_file(session, 'video')" button>
       <ion-label color="primary">View Video</ion-label>
       <ion-icon slot="end" color="primary" size="small" name="cloud-download"></ion-icon>
     </ion-item>
-    <ion-item (click)="sessionClick('leave feedback')" button>
+    <ion-item (click)="evaluate_session(session)" button>
       <ion-label color="primary">Evaluate Session</ion-label>
     </ion-item>
   </ion-list>

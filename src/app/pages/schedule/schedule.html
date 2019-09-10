@@ -24,10 +24,14 @@
     <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+
+<ion-content class="outer-content">
   <ion-list #scheduleList *ngIf="shownSessions > 0">
-      <ion-item-sliding *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
+    <ion-grid fixed>
+      <ion-row class="ion-align-items-stretch">
+        <ion-col size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
         <ion-card routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward">
+
           <ion-card-content class="ion-padding-start">
             <ion-label class="session-title ion-margin-bottom"><strong>{{session.title}}</strong></ion-label>
             <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" class="ion-no-padding">
@@ -64,7 +68,10 @@
             Remove
           </ion-item-option>
         </ion-item-options>
-      </ion-item-sliding>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-list>
 
   <ion-list-header [hidden]="shownSessions > 0">
@@ -88,4 +95,5 @@
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
+
 </ion-content>

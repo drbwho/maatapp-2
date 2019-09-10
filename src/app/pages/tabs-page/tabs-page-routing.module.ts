@@ -36,6 +36,10 @@ const routes: Routes = [
             loadChildren: () => import('../schedule/schedule.module').then(m => m.ScheduleModule)
           },
           {
+            path: 'schedule/type/:typeId',
+            loadChildren: () => import('../schedule/schedule.module').then(m => m.ScheduleModule)
+          },
+          {
             path: 'people/:showWhat/:taxName/:taxId',
             loadChildren: () => import('../people/people.module').then(m => m.PeoplePageModule)
           }

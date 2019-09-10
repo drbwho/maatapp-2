@@ -1,12 +1,12 @@
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, AlertController } from '@ionic/angular';
 import { Component } from '@angular/core';
 import { Calendar } from '@ionic-native/calendar/ngx';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
-import { start } from 'repl';
 
 @Component({
   selector: 'page-session-detail',
@@ -26,7 +26,10 @@ export class SessionDetailPage {
     private route: ActivatedRoute,
     public actionSheetCtrl: ActionSheetController,
     public inAppBrowser: InAppBrowser,
-    public calendar: Calendar
+    public calendar: Calendar,
+    public alertController: AlertController,
+    public socialsharing: SocialSharing
+
   ) {}
   sessionClick(item: string) {
     console.log('Clicked', item);
@@ -106,7 +109,43 @@ export class SessionDetailPage {
           }
         },
         {
-          text: 'Share via ...'
+          text: 'Share via SMS',
+          handler: async () => {
+            // ask for phonenumber
+            const alert = await this.alertController.create({
+            header: 'Send SMS!',
+            message: 'Please enter the phonenumber of one or more recipients, separated by commas',
+            inputs: [
+              {
+              name: 'text',
+              type: 'text',
+              placeholder: 'phone number'
+              }
+            ],
+            buttons: [
+              {
+              text: 'Submit',
+              handler: (data) => {
+                console.log('Send SMS to:' + data.text);
+                this.socialsharing.shareViaSMS('Speaker: ' + speaker.fname + speaker.lname + ' / ' + speaker.org, data);
+                }
+              }
+            ]
+            });
+            await alert.present();
+          }
+        },
+        {
+          text: 'Share via facebook',
+          handler: () => {
+             this.socialsharing.shareViaFacebook('Speaker: ' + speaker.fname + speaker.lname + ' / ' + speaker.org);
+          }
+        },
+        {
+          text: 'Share via instagram',
+          handler: () => {
+             this.socialsharing.shareViaInstagram('Speaker: ' + speaker.fname + speaker.lname + ' / ' + speaker.org, speaker.prof_img);
+          }
         },
         {
           text: 'Cancel',
@@ -153,6 +192,31 @@ export class SessionDetailPage {
     });
   }
 
+  open_file(session, type) {
+    this.dataProvider.getFiles(session.id).subscribe( async res => {
+      const file = res.filter( (item: any) => {
+                          return item.type === type;
+                        });
+      if (file.length === 0) {
+        const alert = await this.alertController.create({
+          header: 'Info',
+          message: 'Session has no files yet',
+          buttons: [
+            {
+            text: 'Ok',
+            handler: () => {
+              console.log('No file');
+              }
+            }
+          ]
+        });
+        await alert.present();
+      } else {
+        window.open(file[0].fileUrl, '_system', 'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
+      }
+    });
+  }
+
   createCalendar(session) {
     const title  = 'Attend session: ' + session.title;
     const startDate = new Date(session.date + ' ' + session.startTime + ':00');
@@ -176,5 +240,20 @@ export class SessionDetailPage {
     calOptions.recurrenceInterval = 1;
 
     this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
+  }
+
+  async evaluate_session(session) {
+    const alert = await this.alertController.create({
+      header: 'Info',
+      message: 'Session Evaluation is not enabled',
+      buttons: [
+        {
+        text: 'Ok',
+        handler: () => {
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

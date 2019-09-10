@@ -1,6 +1,7 @@
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 
 import { ConferenceData } from '../../providers/conference-data';
@@ -20,7 +21,9 @@ export class PeoplePage {
     public actionSheetCtrl: ActionSheetController,
     public confData: ConferenceData,
     public inAppBrowser: InAppBrowser,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public socialsharing: SocialSharing,
+    public alertController: AlertController
   ) {}
 
   ionViewDidEnter() {
@@ -57,7 +60,7 @@ export class PeoplePage {
 
   async openSpeakerShare(speaker: any) {
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Share ' + speaker.name,
+      header: 'Share ' + speaker.fname + speaker.lname,
       buttons: [
         {
           text: 'Copy Link',
@@ -76,7 +79,43 @@ export class PeoplePage {
           }
         },
         {
-          text: 'Share via ...'
+          text: 'Share via SMS',
+          handler: async () => {
+            // ask for phonenumber
+            const alert = await this.alertController.create({
+            header: 'Send SMS!',
+            message: 'Please enter the phonenumber of one or more recipients, separated by commas',
+            inputs: [
+              {
+              name: 'text',
+              type: 'text',
+              placeholder: 'phone number'
+              }
+            ],
+            buttons: [
+              {
+              text: 'Submit',
+              handler: (data) => {
+                console.log('Send SMS to:' + data.text);
+                this.socialsharing.shareViaSMS('Speaker: ' + speaker.fname + speaker.lname + ' / ' + speaker.org, data);
+                }
+              }
+            ]
+            });
+            await alert.present();
+          }
+        },
+        {
+          text: 'Share via facebook',
+          handler: () => {
+             this.socialsharing.shareViaFacebook('Speaker: ' + speaker.fname + speaker.lname + ' / ' + speaker.org);
+          }
+        },
+        {
+          text: 'Share via instagram',
+          handler: () => {
+             this.socialsharing.shareViaInstagram('Speaker: ' + speaker.fname + speaker.lname + ' / ' + speaker.org, speaker.prof_img);
+          }
         },
         {
           text: 'Cancel',
