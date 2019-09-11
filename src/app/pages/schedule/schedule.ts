@@ -22,6 +22,7 @@ export class SchedulePage implements OnInit {
   shownSessions: any = [];
   sessions: any = [];
   confDate: string;
+  isfavoritepage = false;
 
   constructor(
     public alertCtrl: AlertController,
@@ -52,11 +53,12 @@ export class SchedulePage implements OnInit {
     const trackId = Number(this.route.snapshot.paramMap.get('trackId')) || 0;
     const typeId = this.route.snapshot.paramMap.get('typeId') || '';
     // load favourites page
-    if (typeId === 'favorites') { this.segment = 'favorites'; }
+    if (typeId === 'favorites') { this.segment = 'favorites'; this.isfavoritepage = true; }
     this.confData.getTimeline(dayId, trackId, roomId, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.sessions = data.sessions;
     });
+
   }
 
   async presentFilter() {

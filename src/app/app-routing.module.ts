@@ -34,7 +34,8 @@ const routes: Routes = [
     canLoad: [CheckTutorial]
   },
   { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
-  { path: 'news', loadChildren: './pages/news/news.module#NewsPageModule' },
+  { path: 'news', loadChildren: './pages/news/news.module#NewsPageModule' },  { path: 'tweets', loadChildren: './pages/tweets/tweets.module#TweetsPageModule' },
+
 
 ];
 

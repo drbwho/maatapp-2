@@ -1,0 +1,22 @@
+manifest.xml
+<uses-permission android:name="android.permission.READ_PHONE_STATE" toolsNs:node="remove" />
+
+
+twitter
+bkkapps / info@bkk-apps.com
+!@34%^qwe
+
+Consumer API keys
+TyIOYJ7He8PbhP5iaOaSoNgRl (API key)
+qFJ265oOVpU3PQrz6ogpM5iMVws0QCQ89ePC1bR6xqheklrLCC (API secret key)
+
+Access token & access token secret
+1168161377346867200-IsbPqVbtdcouSNWGTriHZ9XlSceSI0 (Access token)
+YNgiiXMjkPhDH777A137tvoCkEp4glwxRsnjFBZ1bwss9 (Access token secret)
+
+
+fabric
+info@bkk-apps.com / !@34%^qwe
+key: f4d1752fd32a9661a5591b845231cc3cba391769
+
+ionic cordova plugin add https://github.com/chroa/twitter-connect-plugin --variable FABRIC_KEY=f4d1752fd32a9661a5591b845231cc3cba391769 --variable TWITTER_KEY=TyIOYJ7He8PbhP5iaOaSoNgRl --variable TWITTER_SECRET=qFJ265oOVpU3PQrz6ogpM5iMVws0QCQ89ePC1bR6xqheklrLCC

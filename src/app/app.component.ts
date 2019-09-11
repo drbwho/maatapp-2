@@ -14,6 +14,7 @@ import { Network } from '@ionic-native/network/ngx';
 
 import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
+import { TwitterService } from './providers/twitter-service';
 
 @Component({
   selector: 'app-root',
@@ -66,7 +67,8 @@ export class AppComponent implements OnInit {
     private confdata: ConferenceData,
     private newsdata: NewsData,
     private network: Network,
-    private toast: ToastController
+    private toast: ToastController,
+    private twitter: TwitterService
   ) {
     this.initializeApp();
   }

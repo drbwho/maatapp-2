@@ -15,6 +15,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { Network } from '@ionic-native/network/ngx';
 import { Calendar } from '@ionic-native/calendar/ngx';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { Calendar } from '@ionic-native/calendar/ngx';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar, PhotoViewer, Network, Calendar, SocialSharing],
+  providers: [InAppBrowser, SplashScreen, StatusBar, PhotoViewer, Network, Calendar, SocialSharing, HTTP],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

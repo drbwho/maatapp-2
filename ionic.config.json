@@ -1,5 +1,5 @@
 {
-  "name": "ionic-conference-app",
+  "name": "bkk-conf-app",
   "type": "angular",
   "integrations": {
     "cordova": {}

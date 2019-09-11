@@ -4,12 +4,13 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
 
-    <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
+    <ion-title *ngIf="isfavoritepage" >Favourites</ion-title>
+    <ion-segment *ngIf="!isfavoritepage" [(ngModel)]="segment" (ionChange)="updateSchedule()">
       <ion-segment-button value="all">
         All
       </ion-segment-button>
       <ion-segment-button value="favorites">
-        Favorites
+        Favourites
       </ion-segment-button>
     </ion-segment>
 
