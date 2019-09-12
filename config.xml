@@ -85,6 +85,7 @@
     <allow-navigation href="http://*/*" />
     <allow-intent href="*://*.twitter.com/*" />
     <allow-navigation href="*://*.twitter.com/*" />
+    <allow-navigation href="about:*" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
