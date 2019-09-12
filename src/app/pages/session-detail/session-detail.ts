@@ -56,8 +56,10 @@ export class SessionDetailPage {
             for (const session of day.sessions) {
               if (session && session.id === sessionId) {
                 this.session = session;
-                this.session.date = new Date(this.session.date).toLocaleDateString('en-US',
-                          { day: 'numeric', month: 'long', year: 'numeric' });
+                this.session.datestr = new Date(this.session.date.replace(/-/g, '/')).toLocaleDateString('en-US',
+                            { day: 'numeric', month: 'long', year: 'numeric' });
+                // this.session.date = new Date(this.session.date).toLocaleDateString('en-US',
+                   //         { day: 'numeric', month: 'long', year: 'numeric' });
                 this.isFavorite = this.userProvider.hasFavorite(
                   this.session.title
                 );
