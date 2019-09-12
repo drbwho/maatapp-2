@@ -1,6 +1,6 @@
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { ActionSheetController, AlertController } from '@ionic/angular';
+import { ActionSheetController, AlertController, Platform } from '@ionic/angular';
 import { Component } from '@angular/core';
 import { Calendar } from '@ionic-native/calendar/ngx';
 
@@ -28,7 +28,8 @@ export class SessionDetailPage {
     public inAppBrowser: InAppBrowser,
     public calendar: Calendar,
     public alertController: AlertController,
-    public socialsharing: SocialSharing
+    public socialsharing: SocialSharing,
+    public plt: Platform
 
   ) {}
   sessionClick(item: string) {
@@ -229,7 +230,9 @@ export class SessionDetailPage {
     const notes = '';
 
     const calendarName = 'My Sessions';
-    this.calendar.createCalendar(calendarName);
+    if (this.plt.is('ios')) {
+      this.calendar.createCalendar(calendarName);
+    }
     const calOptions = this.calendar.getCalendarOptions(); // grab the defaults
     calOptions.firstReminderMinutes = 60; // default is 60, pass in null for no reminder (alarm)
     calOptions.secondReminderMinutes = 5;
