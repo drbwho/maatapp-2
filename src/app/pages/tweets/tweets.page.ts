@@ -1,3 +1,6 @@
+import { ConferenceData } from './../../providers/conference-data';
+import { TwitterService } from './../../providers/twitter-service';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,30 +9,45 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tweets.page.scss'],
 })
 export class TweetsPage implements OnInit {
+  tweets: any;
+  loading: any;
+  conftwitter: any;
 
-  constructor() { }
+  constructor(
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
+    public toastCtrl: ToastController,
+    public twitterProvider: TwitterService,
+    public dataProvider: ConferenceData
+  ) { }
 
   ngOnInit() {
+    this.dataProvider.load().subscribe((data: any) => {
+      if (data && data.eventdates) {
+          this.conftwitter = data.info[0].twitter;
+        }
+      });
   }
+
   ionViewWillEnter() {
-    this.loadTimeline();
+    this.loadUserTimeline();
   }
- 
-  public loadTimeline(refresher?) {
-    this.showLoading();
-    this.tweets = this.twitterProvider.getHomeTimeline();
-    this.tweets.subscribe(data => {
-      this.loading.dismiss();
-      refresher.complete();
+
+  public async loadUserTimeline(refresher?) {
+    this.loading = this.showLoading();
+    this.twitterProvider.getUserTimeline(this.conftwitter).then( async data => {
+       this.tweets = JSON.parse(data);
+       (await this.loading).dismiss();
+      if ( refresher) { refresher.target.complete(); }
     }, err => {
-      refresher.complete();
-      this.showError(err);
+      if ( refresher) { refresher.target.complete(); }
+      this.showError(err.errors);
     });
   }
-  public composeTweet() {
-    let prompt = this.alertCtrl.create({
-      title: 'New Tweet',
-      message: "Write your Tweet message below",
+  public async composeTweet() {
+    const prompt = await this.alertCtrl.create({
+      header: 'New Tweet',
+      message: 'Write your Tweet message below',
       inputs: [
         {
           name: 'text'
@@ -47,50 +65,52 @@ export class TweetsPage implements OnInit {
         }
       ]
     });
-    prompt.present();
+    await prompt.present();
   }
   public dateForTweet(dateString) {
-    let d = new Date(Date.parse(dateString));
- 
+    const d = new Date(Date.parse(dateString));
+
     // http://stackoverflow.com/questions/3552461/how-to-format-a-javascript-date
-    var datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
-      d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
- 
+    const datestring = ('0' + d.getDate()).slice(-2) + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' +
+      d.getFullYear() + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+
     return datestring;
   }
- 
+
   public openLinkUrl(url) {
-    let browser = this.iab.create(url, 'blank');
+    const browser = window.open(url, 'blank');
   }
- 
+
   public postTweet(text) {
     this.showLoading();
-    this.twitterProvider.postTweet(text).subscribe(res => {
-      this.loading.dismiss();
-      let toast = this.toastCtrl.create({
+    this.twitterProvider.postTweet(text).then(async res => {
+      // this.loading.dismiss();
+      const toast = await this.toastCtrl.create({
         message: 'Tweet posted!',
         duration: 3000
       });
-      toast.present();
+      await toast.present();
     }, err => {
       this.showError(err);
     });
   }
-  private showLoading() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+
+  private async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Please wait...'
     });
-    this.loading.present();
+    await loading.present();
+    return loading;
   }
- 
-  private showError(text) {
-    this.loading.dismiss();
-    let alert = this.alertCtrl.create({
-      title: 'Error',
+
+  private async showError(text) {
+    (await this.loading).dismiss();
+    const alert = await this.alertCtrl.create({
+      header: 'Error',
       message: text,
       buttons: ['OK']
     });
-    alert.present(prompt);
+    await alert.present();
   }
- 
+
 }

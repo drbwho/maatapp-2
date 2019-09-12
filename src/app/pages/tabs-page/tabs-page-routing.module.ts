@@ -142,6 +142,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'tweets',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../tweets/tweets.module').then(m => m.TweetsPageModule)
+          }
+        ]
+      },
+      {
         path: 'about',
         children: [
           {
