@@ -56,10 +56,10 @@ export class SessionDetailPage {
             for (const session of day.sessions) {
               if (session && session.id === sessionId) {
                 this.session = session;
-                this.session.datestr = new Date(this.session.date.replace(/-/g, '/')).toLocaleDateString('en-US',
+                /*this.session.datestr = new Date(this.session.date.replace(/-/g, '/')).toLocaleDateString('en-US',
+                            { day: 'numeric', month: 'long', year: 'numeric' });*/
+                this.session.date = new Date(this.session.date).toLocaleDateString('en-US',
                             { day: 'numeric', month: 'long', year: 'numeric' });
-                // this.session.date = new Date(this.session.date).toLocaleDateString('en-US',
-                   //         { day: 'numeric', month: 'long', year: 'numeric' });
                 this.isFavorite = this.userProvider.hasFavorite(
                   this.session.title
                 );
@@ -228,13 +228,15 @@ export class SessionDetailPage {
     const eventLocation = '';
     const notes = '';
 
+    const calendarName = 'My Sessions';
+    this.calendar.createCalendar(calendarName);
     const calOptions = this.calendar.getCalendarOptions(); // grab the defaults
     calOptions.firstReminderMinutes = 60; // default is 60, pass in null for no reminder (alarm)
     calOptions.secondReminderMinutes = 5;
 
     calOptions.recurrence = 'none'; // supported are: daily, weekly, monthly, yearly
     calOptions.recurrenceEndDate = endDate; // leave null to add events into infinity and beyond
-    calOptions.calendarName = 'MySessions'; // iOS only
+    calOptions.calendarName = calendarName; // iOS only
     // calOptions.calendarId = 1; // Android only, use id obtained from listCalendars() call which is described below.
     // This will be ignored on iOS in favor of calendarName and vice versa. Default: 1.
 
