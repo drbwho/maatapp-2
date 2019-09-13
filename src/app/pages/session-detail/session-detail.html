@@ -52,7 +52,7 @@
      </ion-text>
     <ion-icon name="calendar" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
     <ion-text color="tertiary">
-    {{session.date}}<br />
+    {{session.datestr}}<br />
     </ion-text>
     <ion-icon name="time" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
     <ion-text color="tertiary">
@@ -79,7 +79,7 @@
               </ion-item>
             </ion-card-header>
 
-            <ion-card-content no-padding>
+            <ion-card-content class="ion-no-padding">
               <ion-list>
                 <ion-col class="ion-padding-start">
                   {{speaker.org}}
