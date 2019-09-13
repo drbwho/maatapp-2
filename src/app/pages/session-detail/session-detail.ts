@@ -245,7 +245,7 @@ export class SessionDetailPage {
 
     if (this.plt.is('ios')) {
       this.calendar.createCalendar(calendarName).then( () => {
-        this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes);
+        this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
       });
     } else {
       this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
