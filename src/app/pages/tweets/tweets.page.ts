@@ -41,7 +41,7 @@ export class TweetsPage implements OnInit {
       if ( refresher) { refresher.target.complete(); }
     }, err => {
       if ( refresher) { refresher.target.complete(); }
-      this.showError(err.errors);
+      this.showError(err);
     });
   }
   public async composeTweet() {

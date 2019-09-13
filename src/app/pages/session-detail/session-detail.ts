@@ -230,13 +230,10 @@ export class SessionDetailPage {
     const notes = '';
 
     const calendarName = 'My Sessions';
-    if (this.plt.is('ios')) {
-      this.calendar.createCalendar(calendarName);
-    }
+
     const calOptions = this.calendar.getCalendarOptions(); // grab the defaults
     calOptions.firstReminderMinutes = 60; // default is 60, pass in null for no reminder (alarm)
     calOptions.secondReminderMinutes = 5;
-
     calOptions.recurrence = 'none'; // supported are: daily, weekly, monthly, yearly
     calOptions.recurrenceEndDate = endDate; // leave null to add events into infinity and beyond
     calOptions.calendarName = calendarName; // iOS only
@@ -246,7 +243,14 @@ export class SessionDetailPage {
     // This is new since 4.2.7:
     calOptions.recurrenceInterval = 1;
 
-    this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
+    if (this.plt.is('ios')) {
+      this.calendar.createCalendar(calendarName).then( () => {
+        this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
+      });
+    } else {
+      this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
+    }
+
   }
 
   async evaluate_session(session) {

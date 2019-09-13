@@ -18,11 +18,11 @@
 
 ion-content {
     --background: none;
-    background: url('/assets/img/Start_BG_screen_without_logo.jpg');
+    /*background: url('/assets/img/Start_BG_screen_without_logo.jpg');*/
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;
-    
+
 }
 
 .conf-title {
@@ -48,7 +48,7 @@ ion-content {
   height: 30px;
 }
 
-/* if ios flickering 
+/* if ios flickering
 :host {
   ion-content {
     --background:none;

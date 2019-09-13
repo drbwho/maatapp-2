@@ -40,7 +40,7 @@ export class PeoplePage {
         this.pagetitle = 'People';
         break;
     }
-    if (taxName && taxId) {
+    if (taxName && taxId && Number(taxId) > 0 ) {
       this.confData.getTaxonomy(taxName, taxId).subscribe( res => {
         this.taxonomy = res[0].title;
       });

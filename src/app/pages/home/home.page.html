@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngStyle]="{'background': 'url(' + backimage + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
     <div class="row">
 
         <div class="conf-div ion-text-center" ng-if="conftitle != ''">
