@@ -227,7 +227,7 @@ export class SessionDetailPage {
     const success = function(message) { alert('Success: ' + JSON.stringify(message)); };
     const error = function(message) { alert('Error: ' + message); };
     const eventLocation = '';
-    const notes = '';
+    const notes = 'Session Reminder: ' + session.title;
 
     const calendarName = 'My Sessions';
 
@@ -245,7 +245,7 @@ export class SessionDetailPage {
 
     if (this.plt.is('ios')) {
       this.calendar.createCalendar(calendarName).then( () => {
-        this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
+        this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes);
       });
     } else {
       this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);

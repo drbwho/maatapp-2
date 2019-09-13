@@ -12,11 +12,11 @@
     <img [src]="speaker.prof_img" [alt]="speaker.name">
     <br>
     <ion-col>
-      <div class="ion-text-center">   
+      <div class="ion-text-center">
         {{speaker.org}}
       </div>
     </ion-col>
-    <ion-list  *ngIf="speaker.capacity.length > 0" class="speaker-capacity" no-padding>
+    <ion-list  *ngIf="speaker.capacity.length > 0" class="speaker-capacity ion-no-padding">
       <div *ngFor="let capacity of speaker.capacity">
         {{capacity.title}}
       </div>
@@ -36,7 +36,7 @@
     <ion-button fill="clear" size="small" color="instagram">
       <ion-icon name="logo-instagram" slot="icon-only"></ion-icon>
     </ion-button>
-  
+
 
   <p [innerHTML]="speaker?.desc"></p>
 
