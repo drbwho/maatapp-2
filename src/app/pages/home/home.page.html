@@ -17,8 +17,9 @@
         {{conftitle}}
         </div>
         </div>
+        <button class="btn" ion-button full (click)="add_to_home($event)" *ngIf="showBtn" >Install</button>
     </div>
-
+    
           <ion-grid class="home-buttons-grid">
             <ion-row class="home-links">
               <ion-col routerLink="/app/tabs/tracks"  class="ion-text-center home-link">
