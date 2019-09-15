@@ -1,8 +1,7 @@
+import { Platform } from '@ionic/angular';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
-import { promise } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +17,37 @@ export class TwitterService {
 */
   auth_token: string;
 
-  constructor(public nativeHttp: HTTP) { }
+  constructor(public nativeHttp: HTTP, public http: HttpClient, public plt: Platform) { }
 
-  async getToken() {
+ getUserTimeline(user) {
+    const plats = this.plt.platforms();
+    if (this.plt.is('mobileweb')) {
+      return this.getUserTimeline_web(user);
+    } else {
+      return this.getUserTimeline_native(user);
+    }
+ }
+
+ // browser
+ async getToken_web() {
+    const b64 = btoa(this.oauth_consumer_key + ':' + this.consumerSecret);
+    const body = 'grant_type=client_credentials';
+
+  const headers = new HttpHeaders({
+    'Accept': 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    'Authorization': 'Basic ' + b64
+  });
+
+  return this.http.post(this.urlLink_token, body, {headers: headers}).subscribe ( (res: any) => {
+    const data = JSON.parse(res.data);
+    console.log('Token' + data.access_token);
+    return data.access_token;
+  });
+ }
+
+ // device
+ async getToken_native() {
     const b64 = btoa(this.oauth_consumer_key + ':' + this.consumerSecret);
     const body = 'grant_type=client_credentials';
 
@@ -33,10 +60,37 @@ export class TwitterService {
     const data = JSON.parse(res.data);
     console.log('Token' + data.access_token);
     return data.access_token;
+ }
+
+  // browser
+  // get timeline of specific user (twitter name)
+  getUserTimeline_web(user): Promise<any> {
+    if (this.auth_token) {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.auth_token
+      });
+      return (this.http.get(this.urlLink_timeline, {headers: headers})).toPromise().then ( (reslt: any) => {
+        return reslt.data;
+      });
+    } else {
+      return this.getToken_web().then ( (tok: any) => {
+        this.auth_token = tok;
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.auth_token
+        });
+        return (this.http.get(this.urlLink_timeline, {headers: headers})).toPromise().then ( (reslt: any) => {
+          return reslt.data;
+        });
+      });
+    }
+
   }
 
+  // device
   // get timeline of specific user (twitter name)
-  getUserTimeline(user): Promise<any> {
+  getUserTimeline_native(user): Promise<any> {
 
     if (this.auth_token) {
       this.nativeHttp.setHeader('*', 'Authorization', 'Bearer ' + this.auth_token);
@@ -46,7 +100,7 @@ export class TwitterService {
       });
      } else {
 
-        const dat: any = this.getToken().then( tok => {
+        const dat: any = this.getToken_native().then( (tok: any) => {
           this.auth_token = tok;
           this.nativeHttp.setHeader('*', 'Authorization', 'Bearer ' + this.auth_token);
           this.nativeHttp.setHeader('*', 'Content-Type', 'application/json');
