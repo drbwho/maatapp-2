@@ -19,7 +19,7 @@ import { LookupAllOptions } from 'dns';
 export class LoginPage {
   login: UserOptions = { username: '', password: '' };
   submitted = false;
-  API_LOGIN_URL = 'https://bkk-apps.com:9443/cod-mobile/user-authorization';
+  API_LOGIN_URL = 'https://bkk-apps.com:8443/cod-mobile/user-authorization';
 
   constructor(
     public userData: UserData,
