@@ -40,11 +40,11 @@ export class ConferenceData {
   SESSION_RATINGS = 'SESSION_RATINGS';
   MY_SESSION_RATINGS = 'MY_SESSION_RATINGS';
   MY_SESSION_REVIEWS = 'MY_SESSION_REVIEWS';
-  API_JSONFILE_VERSION = 'http://bkk-apps.com:8080/cod-mobile/json-version';
-  API_JSONFILE_URL = 'http://bkk-apps.com:8080/sites/default/files/sessions.json';
-  API_GETRATINGS_URL = 'http://bkk-apps.com:8080/cod-mobile/get-session-rating';
-  API_SETRATING_URL = 'http://bkk-apps.com:8080/cod-mobile/session-rating';
-  API_SETREVIEWS_URL = 'http://bkk-apps.com:8080/cod-mobile/session-reviews';
+  API_JSONFILE_VERSION = 'https://bkk-apps.com:9443/cod-mobile/json-version';
+  API_JSONFILE_URL = 'https://bkk-apps.com:9443/sites/default/files/sessions.json';
+  API_GETRATINGS_URL = 'https://bkk-apps.com:9443/cod-mobile/get-session-rating';
+  API_SETRATING_URL = 'https://bkk-apps.com:9443/cod-mobile/session-rating';
+  API_SETREVIEWS_URL = 'https://bkk-apps.com:9443/cod-mobile/session-reviews';
 
   constructor(
     public http: HttpClient,
