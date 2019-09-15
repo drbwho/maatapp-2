@@ -16,6 +16,8 @@ import { environment } from '../environments/environment';
 import { Network } from '@ionic-native/network/ngx';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
+import {enableProdMode} from '@angular/core';
+enableProdMode();
 
 @NgModule({
   imports: [

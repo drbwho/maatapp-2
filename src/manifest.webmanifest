@@ -1,6 +1,6 @@
 {
-  "name": "app",
-  "short_name": "app",
+  "name": "Bkk Confapp Demo",
+  "short_name": "bkk-confappdemo",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

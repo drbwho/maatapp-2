@@ -31,7 +31,7 @@
     <ion-grid fixed>
       <ion-row class="ion-align-items-stretch">
         <ion-col size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
-        <ion-card routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward">
+        <ion-card routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward" class="session-card">
 
           <ion-card-content class="ion-padding-start">
             <ion-label class="session-title ion-margin-bottom"><strong>{{session.title}}</strong></ion-label>
