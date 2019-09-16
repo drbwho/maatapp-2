@@ -14,8 +14,6 @@ import { Network } from '@ionic-native/network/ngx';
 
 import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
-import { TwitterService } from './providers/twitter-service';
-
 
 @Component({
   selector: 'app-root',
