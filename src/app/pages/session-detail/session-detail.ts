@@ -238,35 +238,38 @@ export class SessionDetailPage {
       ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) + 'T' + ('0' +
       d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + '00Z';
 
-      window.open(
+      if (this.plt.is('android')) {
+       window.open(
         `https://www.google.com/calendar/render?action=TEMPLATE&text=${session.title}&location=Venue&` +
          'dates=' + startDate + '%2F' + endDate,
         '_system', 'location=no,toolbar=yes,closebuttoncaption=Close,enableViewportScale=yes');
-      /*const body = `
+      } else {
+      const body = `
       BEGIN:VCALENDAR
       PRODID:-//AT Content Types//AT Event//EN
       VERSION:2.0
       METHOD:PUBLISH
       BEGIN:VEVENT
-      DTSTAMP:20120801T133822Z
-      CREATED:20120801T042948Z
-      LAST-MODIFIED:20120801T043003Z
-      SUMMARY:Olympic Games
-      DTSTART:20120727T000000Z
-      DTEND:20120812T000000Z
-      LOCATION:London
-      URL:http://www.london2012.com/
+      DTSTAMP:` + startDate + `
+      CREATED:` + startDate + `
+      LAST-MODIFIED:` + startDate + `
+      SUMMARY:` + session.title + `
+      DTSTART:` + startDate + `
+      DTEND:` + endDate + `
+      LOCATION:Venue
+      URL:http://bkk-apps.com/
       CLASS:PUBLIC
       END:VEVENT
       END:VCALENDAR`;
-      const blob = new Blob([body], { type: 'text/x-vCalendar' });  // text/plain
-      const url = window.URL.createObjectURL(blob);
-      window.open(url);
+       const blob = new Blob([body], { type: 'text/x-vCalendar' });  // text/plain
+       const url = window.URL.createObjectURL(blob);
+       window.open(url);
       /*this.file.writeFile(this.file.dataDirectory, 'calendar.vcs', blob, {replace: true, append: false}).then( () => {
         this.inAppBrowser.create(this.file.dataDirectory + 'calendar.vcs', '_system',
                    'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
         // this.fileopener.open(this.file.dataDirectory + 'calendar.vcs', 'application/vCalendar');
       });*/
+    }
 
    } else {
     const title  = 'Attend session: ' + session.title;
