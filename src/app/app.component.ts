@@ -68,8 +68,7 @@ export class AppComponent implements OnInit {
     private confdata: ConferenceData,
     private newsdata: NewsData,
     private network: Network,
-    private toast: ToastController,
-    private twitter: TwitterService
+    private toast: ToastController
   ) {
     this.initializeApp();
   }
@@ -188,14 +187,23 @@ export class AppComponent implements OnInit {
                           }
                         }, {
                           text: 'Update',
-                          handler: () => {
+                          handler: async () => {
+                            const loading = await this.loadingcontroller.create({
+                              message: 'Please wait...'
+                            });
+                            loading.present();
+                            setTimeout(() => {
+                              loading.dismiss();
+                            }, 3000);
                             this.storage.set(this.confdata.JSON_FILE, data);
-                            console.log('Confirm Okay');
+                            this.confdata.processData(data);
                           }
                         }
                       ]
                     });
                     await alert.present();
+                } else {
+                  this.confdata.processData(res);
                 }
               } else {
                 const loading = await this.loadingcontroller.create({
@@ -204,8 +212,9 @@ export class AppComponent implements OnInit {
                 loading.present();
                 setTimeout(() => {
                   loading.dismiss();
-                }, 2000);
+                }, 3000);
                 this.storage.set(this.confdata.JSON_FILE, data);
+                this.confdata.processData(data);
               }
             });
     });

@@ -1,4 +1,3 @@
-import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
@@ -37,7 +36,7 @@ enableProdMode();
   ],
   declarations: [AppComponent, ImageViewerComponent],
   entryComponents: [ImageViewerComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar, PhotoViewer, Network, Calendar, SocialSharing, HTTP, File, FileOpener],
+  providers: [InAppBrowser, SplashScreen, StatusBar, PhotoViewer, Network, Calendar, SocialSharing, HTTP, File],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

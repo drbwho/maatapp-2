@@ -4,7 +4,6 @@ import { ActionSheetController, AlertController, Platform } from '@ionic/angular
 import { Component } from '@angular/core';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
@@ -32,8 +31,7 @@ export class SessionDetailPage {
     public alertController: AlertController,
     public socialsharing: SocialSharing,
     public plt: Platform,
-    public file: File,
-    public fileopener: FileOpener
+    public file: File
 
   ) {}
   sessionClick(item: string) {
