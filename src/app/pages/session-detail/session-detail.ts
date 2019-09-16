@@ -226,11 +226,23 @@ export class SessionDetailPage {
 
   createCalendar(session) {
    const plat = this.plt.platforms();
-   if (this.plt.is('hybrid')) {
-      /* window.open(
-        'https://www.google.com/calendar/render?action=TEMPLATE&text=My+session&location=City&dates=20190917T045800Z%2F20190918T045900Z',
-        '_system', 'location=no,toolbar=yes,closebuttoncaption=Close,enableViewportScale=yes'); */
-      const body = `
+   if (this.plt.is('mobileweb')) {
+
+      let d = new Date(session.date + ' ' + session.startTime + ':00');
+      const startDate = d.getFullYear() +
+      ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) + 'T' + ('0' +
+      d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + '00Z';
+
+      d = new Date(session.date + ' ' + session.endTime + ':00');
+      const endDate = d.getFullYear() +
+      ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) + 'T' + ('0' +
+      d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + '00Z';
+
+      window.open(
+        `https://www.google.com/calendar/render?action=TEMPLATE&text=${session.title}&location=Venue&` +
+         'dates=' + startDate + '%2F' + endDate,
+        '_system', 'location=no,toolbar=yes,closebuttoncaption=Close,enableViewportScale=yes');
+      /*const body = `
       BEGIN:VCALENDAR
       PRODID:-//AT Content Types//AT Event//EN
       VERSION:2.0
@@ -247,12 +259,14 @@ export class SessionDetailPage {
       CLASS:PUBLIC
       END:VEVENT
       END:VCALENDAR`;
-      const blob = new Blob([body], { type: 'text/plain' });
-      this.file.writeFile(this.file.dataDirectory, 'calendar.vcs', blob, {replace: true, append: false}).then( () => {
+      const blob = new Blob([body], { type: 'text/x-vCalendar' });  // text/plain
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
+      /*this.file.writeFile(this.file.dataDirectory, 'calendar.vcs', blob, {replace: true, append: false}).then( () => {
         this.inAppBrowser.create(this.file.dataDirectory + 'calendar.vcs', '_system',
                    'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
         // this.fileopener.open(this.file.dataDirectory + 'calendar.vcs', 'application/vCalendar');
-      });
+      });*/
 
    } else {
     const title  = 'Attend session: ' + session.title;
