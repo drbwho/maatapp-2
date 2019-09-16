@@ -3,6 +3,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ActionSheetController, AlertController, Platform } from '@ionic/angular';
 import { Component } from '@angular/core';
 import { Calendar } from '@ionic-native/calendar/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
@@ -29,7 +31,9 @@ export class SessionDetailPage {
     public calendar: Calendar,
     public alertController: AlertController,
     public socialsharing: SocialSharing,
-    public plt: Platform
+    public plt: Platform,
+    public file: File,
+    public fileopener: FileOpener
 
   ) {}
   sessionClick(item: string) {
@@ -221,6 +225,36 @@ export class SessionDetailPage {
   }
 
   createCalendar(session) {
+   const plat = this.plt.platforms();
+   if (this.plt.is('hybrid')) {
+      /* window.open(
+        'https://www.google.com/calendar/render?action=TEMPLATE&text=My+session&location=City&dates=20190917T045800Z%2F20190918T045900Z',
+        '_system', 'location=no,toolbar=yes,closebuttoncaption=Close,enableViewportScale=yes'); */
+      const body = `
+      BEGIN:VCALENDAR
+      PRODID:-//AT Content Types//AT Event//EN
+      VERSION:2.0
+      METHOD:PUBLISH
+      BEGIN:VEVENT
+      DTSTAMP:20120801T133822Z
+      CREATED:20120801T042948Z
+      LAST-MODIFIED:20120801T043003Z
+      SUMMARY:Olympic Games
+      DTSTART:20120727T000000Z
+      DTEND:20120812T000000Z
+      LOCATION:London
+      URL:http://www.london2012.com/
+      CLASS:PUBLIC
+      END:VEVENT
+      END:VCALENDAR`;
+      const blob = new Blob([body], { type: 'text/plain' });
+      this.file.writeFile(this.file.dataDirectory, 'calendar.vcs', blob, {replace: true, append: false}).then( () => {
+        this.inAppBrowser.create(this.file.dataDirectory + 'calendar.vcs', '_system',
+                   'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
+        // this.fileopener.open(this.file.dataDirectory + 'calendar.vcs', 'application/vCalendar');
+      });
+
+   } else {
     const title  = 'Attend session: ' + session.title;
     const startDate = new Date(session.date + ' ' + session.startTime + ':00');
     const endDate = new Date(session.date + ' ' + session.endTime);
@@ -250,6 +284,7 @@ export class SessionDetailPage {
     } else {
       this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
     }
+  }
 
   }
 

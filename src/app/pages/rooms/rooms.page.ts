@@ -1,3 +1,5 @@
+import { ImageViewerComponent } from './../../component/image-viewer/image-viewer.component';
+import { Platform, ModalController } from '@ionic/angular';
 import { ConferenceData } from './../../providers/conference-data';
 import { Component, OnInit } from '@angular/core';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
@@ -13,7 +15,12 @@ export class RoomsPage implements OnInit {
   lat: any;
   lng: any;
 
-  constructor(public dataProvider: ConferenceData, private photoViewer: PhotoViewer) { }
+  constructor(
+    public dataProvider: ConferenceData,
+    private photoViewer: PhotoViewer,
+    private plt: Platform,
+    private modalcontroller: ModalController
+  ) { }
 
   ngOnInit() {
   }
@@ -29,7 +36,23 @@ export class RoomsPage implements OnInit {
       });
   }
 
-  photoView (url: string) {
-    this.photoViewer.show(url, 'Room Plan');
+  async photoView (url: string, name: string) {
+    const plat = this.plt.platforms();
+    if (this.plt.is('mobileweb')) {
+        const modal = await this.modalcontroller.create({
+          component: ImageViewerComponent,
+          componentProps: {
+            imgSource: url,
+            imgTitle: name,
+            imgDescription: 'Venue Plan'
+          },
+          cssClass: 'modal-fullscreen',
+          keyboardClose: true,
+          showBackdrop: true
+        });
+        await modal.present();
+    } else {
+      this.photoViewer.show(url, name);
+    }
   }
 }
