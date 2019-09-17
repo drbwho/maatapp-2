@@ -19,7 +19,11 @@ $categories: (
 }
 
 .session-card-details {
-  padding-top: 0px;
+  padding-top: 15px;
+}
+
+.session-card-details ion-row {
+  color: var(--ion-color-medium-tint);
 }
 
 .session-grid-details {
@@ -48,5 +52,5 @@ $categories: (
 }
 
 .md .day-segment .segment-button-checked  {
-  background-color: #eff2f794;
+  background-color: var(--ion-color-light-tint); 
 }

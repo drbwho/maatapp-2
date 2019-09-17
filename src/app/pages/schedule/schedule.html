@@ -53,8 +53,8 @@
                 <ion-icon name="mic" slot="start"></ion-icon>
                 <ion-label class="ion-no-padding">{{speaker.fname.trim()}}, {{speaker.lname}}</ion-label>
             </ion-list>
-            <ion-icon *ngIf="session.trackTitle" name="settings" slot="start" color="success"></ion-icon>
-            <ion-note color="success">{{session.trackTitle}}</ion-note>
+            
+            <ion-note color="success" class="session-track ion-float-end ion-no-padding">{{session.trackTitle}}</ion-note>
           </ion-card-content>
 
           <ion-card-content class="session-card-details">
