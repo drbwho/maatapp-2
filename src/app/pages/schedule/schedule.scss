@@ -42,6 +42,11 @@ $categories: (
   color: grey;
 }
 
-.day-segment .segment-button-checked {
-  background-color:#eff2f794;
+.session-card {
+  box-shadow: none;
+  margin: 0;
+}
+
+.md .day-segment .segment-button-checked  {
+  background-color: #eff2f794;
 }

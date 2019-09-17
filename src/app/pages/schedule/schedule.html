@@ -43,9 +43,9 @@
 <ion-content class="outer-content">
   <ion-list #scheduleList *ngIf="shownSessions > 0">
     <ion-grid fixed>
-      <ion-row class="ion-align-items-stretch">
-        <ion-col size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
-         <div routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward" class="session-card">
+      <ion-row class="ion-align-items-stretch" class="ion-no-padding">
+        <ion-col class="ion-no-padding" size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
+         <ion-card routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward" class="session-card">
 
           <ion-card-content class="ion-padding-start">
             <ion-label class="session-title ion-margin-bottom"><strong>{{session.title}}</strong></ion-label>
@@ -73,7 +73,7 @@
            </ion-grid>
            </ion-card-content>
 
-         </div>
+         </ion-card>
 
          <ion-item-options >
           <ion-item-option color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="segment === 'all'">
@@ -90,7 +90,7 @@
   </ion-list>
 
   <ion-list-header [hidden]="shownSessions > 0">
-    No Sessions Found
+    No Lectures Found
   </ion-list-header>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" #fab>
