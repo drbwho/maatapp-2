@@ -38,6 +38,10 @@ $categories: (
   border-left: 1px solid #ccc;
 }
 
-.session-card {
-  border-top: 2px solid #2c9ddd;
+.speakerlist ion-label {
+  color: grey;
+}
+
+.day-segment .segment-button-checked {
+  background-color:#eff2f794;
 }

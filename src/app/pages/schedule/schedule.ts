@@ -18,11 +18,14 @@ export class SchedulePage implements OnInit {
 
   queryText = '';
   segment = 'all';
+  daysegment = 1;
   excludeTracks: any = [];
   shownSessions: any = [];
   sessions: any = [];
   confDate: string;
   isfavoritepage = false;
+  confdates: any;
+  filter: string;
 
   constructor(
     public alertCtrl: AlertController,
@@ -36,10 +39,14 @@ export class SchedulePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.updateSchedule();
+    this.confData.load().subscribe((data: any) => {
+      if (data && data.eventdates) {
+          this.confdates = data.eventdates;
+        }
+      });
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.updateSchedule();
   }
 
@@ -48,15 +55,23 @@ export class SchedulePage implements OnInit {
     if (this.scheduleList) {
       this.scheduleList.closeSlidingItems();
     }
-    const dayId = Number(this.route.snapshot.paramMap.get('dayId')) - 1;
+    const dayId = this.daysegment - 1; // Number(this.route.snapshot.paramMap.get('dayId')) - 1;
     const roomId = Number(this.route.snapshot.paramMap.get('roomId')) || 0;
     const trackId = Number(this.route.snapshot.paramMap.get('trackId')) || 0;
     const typeId = this.route.snapshot.paramMap.get('typeId') || '';
-    // load favourites page
+    // load directly favourites page
     if (typeId === 'favorites') { this.segment = 'favorites'; this.isfavoritepage = true; }
     this.confData.getTimeline(dayId, trackId, roomId, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.sessions = data.sessions;
+      // display filter
+      if (trackId) {
+        this.filter = 'filter by: track';
+      } else if (roomId) {
+        this.filter = 'filter by: room';
+      } else {
+        this.filter = '';
+      }
     });
 
   }

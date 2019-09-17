@@ -24,21 +24,37 @@
   <ion-toolbar>
     <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search"></ion-searchbar>
   </ion-toolbar>
+
+  <ion-segment (ionChange)="updateSchedule()" [(ngModel)]="daysegment" *ngIf="segment === 'all'" class="day-segment">
+    <ion-segment-button *ngFor="let day of confdates" value="{{day.id}}">
+      {{day.date.replace("00:00:00","").trim() | date:'EEE d'}}
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
+
+<ion-list-header *ngIf="filter" color="success">
+    <div>
+    {{filter}}
+    <ion-icon name="close" slot="end" routerLink="/app/tabs/program/schedule"></ion-icon>
+    </div>
+</ion-list-header>
+
 
 <ion-content class="outer-content">
   <ion-list #scheduleList *ngIf="shownSessions > 0">
     <ion-grid fixed>
       <ion-row class="ion-align-items-stretch">
         <ion-col size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
-        <ion-card routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward" class="session-card">
+         <div routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward" class="session-card">
 
           <ion-card-content class="ion-padding-start">
             <ion-label class="session-title ion-margin-bottom"><strong>{{session.title}}</strong></ion-label>
-            <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" class="ion-no-padding">
+            <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" class="ion-no-padding speakerlist">
                 <ion-icon name="mic" slot="start"></ion-icon>
-                <ion-label color="default" class="ion-no-padding">{{speaker.fname.trim()}}, {{speaker.lname}}</ion-label>
+                <ion-label class="ion-no-padding">{{speaker.fname.trim()}}, {{speaker.lname}}</ion-label>
             </ion-list>
+            <ion-icon *ngIf="session.trackTitle" name="settings" slot="start" color="success"></ion-icon>
+            <ion-note color="success">{{session.trackTitle}}</ion-note>
           </ion-card-content>
 
           <ion-card-content class="session-card-details">
@@ -55,20 +71,18 @@
               </ion-col>
             </ion-row>
            </ion-grid>
-           <ion-icon *ngIf="session.trackTitle" name="settings" slot="start" color="success" class="ion-padding-top"></ion-icon>
-           <ion-note color="success">{{session.trackTitle}}</ion-note>
            </ion-card-content>
 
-        </ion-card>
+         </div>
 
-        <ion-item-options >
+         <ion-item-options >
           <ion-item-option color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="segment === 'all'">
             Favorite
           </ion-item-option>
           <ion-item-option color="danger" (click)="removeFavorite(slidingItem, session, 'Remove Favorite')" *ngIf="segment === 'favorites'">
             Remove
           </ion-item-option>
-        </ion-item-options>
+         </ion-item-options>
 
         </ion-col>
       </ion-row>
