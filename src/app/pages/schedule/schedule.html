@@ -42,18 +42,18 @@
 
 <ion-content class="outer-content">
   <ion-list #scheduleList *ngIf="shownSessions > 0">
-    <ion-grid fixed>
+    <ion-grid fixed class="ion-no-padding">
       <ion-row class="ion-align-items-stretch" class="ion-no-padding">
-        <ion-col class="ion-no-padding" size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
+        <ion-col class="ion-no-padding session-item" size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
          <ion-card routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward" class="session-card">
 
           <ion-card-content class="ion-padding-start">
-            <ion-label class="session-title ion-margin-bottom"><strong>{{session.title}}</strong></ion-label>
+            <ion-label class="session-title ion-margin-bottom" color="primary"><strong>{{session.title}}</strong></ion-label>
             <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" class="ion-no-padding speakerlist">
-                <ion-icon name="mic" slot="start"></ion-icon>
+                <ion-icon name="person" slot="start" color="tertiary"></ion-icon>&nbsp;
                 <ion-label class="ion-no-padding">{{speaker.fname.trim()}}, {{speaker.lname}}</ion-label>
             </ion-list>
-            
+
             <ion-note color="success" class="session-track ion-float-end ion-no-padding">{{session.trackTitle}}</ion-note>
           </ion-card-content>
 
