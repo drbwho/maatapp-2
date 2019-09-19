@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.bkk.democonfapp" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Bkk Demo Conference App</name>
-    <description>Congress management and info.</description>
+<widget id="com.bkk.cademo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Bkk Demo CA Action Conference App</name>
+    <description>CA Congress management and info.</description>
     <author email="info@bkk-apps.com" href="http://bkk-apps.com/">Bkk Apps</author>
     <content src="index.html" />
     <access origin="*" />

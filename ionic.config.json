@@ -1,5 +1,5 @@
 {
-  "name": "bkk-conf-app",
+  "name": "bkk-ca-demo",
   "type": "angular",
   "integrations": {
     "cordova": {}
