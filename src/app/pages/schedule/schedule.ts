@@ -46,7 +46,7 @@ export class SchedulePage implements OnInit {
       });
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     this.updateSchedule();
   }
 
@@ -64,9 +64,20 @@ export class SchedulePage implements OnInit {
     this.confData.getTimeline(dayId, trackId, roomId, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.sessions = data.sessions;
+
+      // filter shown tracks
+      let curtrack = '';
+      this.sessions.forEach(session => {
+        if ((!curtrack || session.trackTitle !== curtrack) && session.trackTitle) {
+          curtrack = session.trackTitle;
+          session.showtrack = true;
+        } else {
+          session.showtrack = false;
+        }
+      });
       // display filter
       if (trackId) {
-        this.filter = 'filter by: track';
+        this.filter = 'filter by: topic';
       } else if (roomId) {
         this.filter = 'filter by: room';
       } else {

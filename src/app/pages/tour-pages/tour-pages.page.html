@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Local Tours</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-content>
+        <ion-list >
+          <ion-item *ngFor="let tourpage of tourpages" routerLink="/app/tabs/info/{{tourpage.title}}">
+            <ion-icon name="bus" slot="start"></ion-icon>
+            <ion-text>
+            {{tourpage.title.replace("tour -","")}}
+            </ion-text>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+</ion-content>

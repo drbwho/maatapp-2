@@ -24,7 +24,7 @@
         <img src="{{tweet.user.profile_image_url}}">
       </ion-avatar>
       <h2>{{tweet.user.name}}</h2>
-      <p>{{dateForTweet(tweet.created_at)}}</p>
+      <ion-note slot="end" >{{dateForTweet(tweet.created_at)}}</ion-note>
     </ion-item>
 
     <img src="{{tweet.extended_entities.media[0].media_url}}" *ngIf="tweet.extended_entities">

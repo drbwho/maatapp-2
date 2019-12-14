@@ -23,7 +23,7 @@ export class SupportPage {
       message: 'This does not actually send a support request.',
       duration: 3000
     });
-    await toast.present();
+    // await toast.present();
   }
 
   async submit(form: NgForm) {

@@ -11,10 +11,11 @@
     <ion-list-header color="success">
         <strong>{{taxonomysubtitle}}</strong>
     </ion-list-header>
-    <ion-list *ngFor="let taxonomyitem of taxonomy" >   
+    <ion-list *ngFor="let taxonomyitem of taxonomy" >
       <div class="row empty-result2" *ngIf="!taxonomy.length">No Items found.</div>
-      <ion-item  type="item-text-wrap" class="item-listing item-remove-animate item-icon-right" 
+      <ion-item  type="item-text-wrap" class="item-listing item-remove-animate item-icon-right"
            routerLink="/app/tabs/taxonomy/people/all/{{taxtype}}/{{taxonomyitem.id}}">
+           <ion-icon name="ribbon" slot="start"></ion-icon>
         <ion-text>
         {{taxonomyitem.title}}
         <div class="wrap taxonomyline1" *ngIf="taxonomyitem.line1">{{taxonomyitem.label1}}: {{taxonomyitem.line1}}</div>

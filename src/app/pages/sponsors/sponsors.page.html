@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Exhibitors/Sponsors</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-list *ngFor="let sponsor of sponsors">
+  <ion-card class="ion-text-center sponsor-card">
+    <ion-card-header>
+      <img src="{{sponsor.logo}}">
+    </ion-card-header>
+    <ion-title>
+      {{sponsor.title}}
+    </ion-title>
+    <ion-card-content [innerHTML]="sponsor.description">
+    </ion-card-content>
+    <ion-card-content>
+    <a href="{{sponsor.url}}">{{sponsor.url}}</a>
+    </ion-card-content>
+  </ion-card>
+</ion-list>
+<ion-list-header [hidden]="sponsors !=''">
+  No Sponsors Found
+</ion-list-header>
+</ion-content>

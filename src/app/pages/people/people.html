@@ -18,10 +18,10 @@
         <ion-col size="12" size-md="6" *ngFor="let speaker of speakers">
           <ion-card class="speaker-card">
             <ion-card-header>
-              <ion-item detail="false" lines="none" routerLink="/app/tabs/program/speaker-details/{{speaker.id}}">
+              <ion-item detail="false" lines="none" routerLink="/app/tabs/{{rootpage}}program/speaker-details/{{speaker.id}}">
                 <ion-avatar slot="start">
-                  <img *ngIf="speaker.prof_img" [src]="speaker.prof_img" alt="Speaker profile pic">
-                  <img *ngIf="!speaker.prof_img" src="/assets/img/avatar.png" alt="Speaker profile pic">
+                  <img *ngIf="speaker.prof_img" [src]="speaker.prof_img" alt="">
+                  <img *ngIf="!speaker.prof_img" src="/assets/img/avatar.png" alt="">
                 </ion-avatar>
                 {{speaker.fname}} {{speaker.lname}}
 

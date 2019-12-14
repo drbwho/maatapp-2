@@ -1,3 +1,4 @@
+import { ConfigData } from './config-data';
 import { Events, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
@@ -7,9 +8,7 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 
 import { Router } from '@angular/router';
-
 import { UserData } from './user-data';
-import { analyzeFileForInjectables } from '@angular/compiler';
 
 interface MyRatings {
   sessionid: string;
@@ -36,23 +35,14 @@ export class ConferenceData {
   sessionratings: any;
   mysessionratings: MyRatings[];
 
-  JSON_FILE = 'JSON_FILE';
-  SESSION_RATINGS = 'SESSION_RATINGS';
-  MY_SESSION_RATINGS = 'MY_SESSION_RATINGS';
-  MY_SESSION_REVIEWS = 'MY_SESSION_REVIEWS';
-  API_JSONFILE_VERSION = 'https://bkk-apps.com:8443/cod-mobile/json-version';
-  API_JSONFILE_URL = 'https://bkk-apps.com:8443/sites/default/files/sessions.json';
-  API_GETRATINGS_URL = 'https://bkk-apps.com:8443/cod-mobile/get-session-rating';
-  API_SETRATING_URL = 'https://bkk-apps.com:8443/cod-mobile/session-rating';
-  API_SETREVIEWS_URL = 'https://bkk-apps.com:8443/cod-mobile/session-reviews';
-
   constructor(
     public http: HttpClient,
     public user: UserData,
     public storage: Storage,
     public alertController: AlertController,
     public router: Router,
-    public events: Events
+    public events: Events,
+    public config: ConfigData
   ) {}
 
   load(): any {
@@ -61,7 +51,7 @@ export class ConferenceData {
     } else {
         // always load data from local stored file
         return from(this.storage
-            .get(this.JSON_FILE))
+            .get(this.config.JSON_FILE))
             .pipe(map(this.processData, this));
     }
   }
@@ -123,6 +113,7 @@ export class ConferenceData {
               );
               if (track) {
                 session.trackTitle = track.title;
+                session.trackChair = track.chair;
               }
           }
           // get room
@@ -358,7 +349,7 @@ export class ConferenceData {
   }
 
   loadSessionsRatings () {
-    this.storage.get(this.SESSION_RATINGS).then( (res) => {
+    this.storage.get(this.config.SESSION_RATINGS).then( (res) => {
       if (res === null) {
         this.sessionratings = [];
       } else {
@@ -369,7 +360,7 @@ export class ConferenceData {
 
 
   loadMySessionsRatings () {
-    this.storage.get(this.MY_SESSION_RATINGS).then( (res) => {
+    this.storage.get(this.config.MY_SESSION_RATINGS).then( (res) => {
       if (res === null) {
         this.mysessionratings = [];
       } else {
@@ -386,11 +377,11 @@ export class ConferenceData {
     headers.append('Pragma', 'no-cache');
 
     httpclient
-    .get(this.API_GETRATINGS_URL, {headers})
+    .get(this.config.API_GETRATINGS_URL, {headers})
     .subscribe( async (data: any) => {
         if (data.length > 0) {
-          this.storage.remove(this.SESSION_RATINGS).then( () => {
-            this.storage.set(this.SESSION_RATINGS, data);
+          this.storage.remove(this.config.SESSION_RATINGS).then( () => {
+            this.storage.set(this.config.SESSION_RATINGS, data);
             this.sessionratings = data;
           });
         }
@@ -444,7 +435,7 @@ export class ConferenceData {
         myrats[0].rate = rate;
         myrats[0].synced = false;
       }
-      this.storage.set(this.MY_SESSION_RATINGS, this.mysessionratings);
+      this.storage.set(this.config.MY_SESSION_RATINGS, this.mysessionratings);
 
       // manage session review
       const alert = await this.alertController.create({
@@ -462,7 +453,7 @@ export class ConferenceData {
               text: 'Submit',
               handler: (data) => {
                 console.log('Review text:' + data.text);
-                this.storage.get(this.MY_SESSION_REVIEWS).then( (revs: MyReviews[]) => {
+                this.storage.get(this.config.MY_SESSION_REVIEWS).then( (revs: MyReviews[]) => {
                   if (revs === null) {
                     revs = [];
                   }
@@ -473,7 +464,7 @@ export class ConferenceData {
                     text: data.text,
                     synced: false
                   });
-                this.storage.set(this.MY_SESSION_REVIEWS, revs);
+                this.storage.set(this.config.MY_SESSION_REVIEWS, revs);
                 });
               }
             }
@@ -490,29 +481,29 @@ export class ConferenceData {
       // post ratings
       this.mysessionratings.forEach(element => {
         if ( !element.synced ) {
-          const url = this.API_SETRATING_URL + '?user_id=' + element.uid + '&fivestar_value='
+          const url = this.config.API_SETRATING_URL + '?user_id=' + element.uid + '&fivestar_value='
                       + element.rate + '&session_id=' + element.sessionid;
           this.http.get(url).subscribe( async res => {
             if (res) {
               element.synced = true;
-              this.storage.set(this.MY_SESSION_RATINGS, this.mysessionratings);
+              this.storage.set(this.config.MY_SESSION_RATINGS, this.mysessionratings);
             }
           });
         }
       });
 
       // post reviews
-      this.storage.get(this.MY_SESSION_REVIEWS).then (reviews => {
+      this.storage.get(this.config.MY_SESSION_REVIEWS).then (reviews => {
         if (reviews) {
           if ( reviews.length > 0 ) {
             reviews.forEach(element => {
               if (!element.synced) {
-                const url = this.API_SETREVIEWS_URL + '?user_id=' + element.uid + '&comment_body=' + element.text
+                const url = this.config.API_SETREVIEWS_URL + '?user_id=' + element.uid + '&comment_body=' + element.text
                       + '&user_name=' + element.username + '&session_id=' + element.sessionid;
                 this.http.get(url).subscribe( async res => {
                   if (res) {
                     element.synced = true;
-                    this.storage.set(this.MY_SESSION_REVIEWS, reviews);
+                    this.storage.set(this.config.MY_SESSION_REVIEWS, reviews);
                   }
                 });
               }
@@ -521,4 +512,5 @@ export class ConferenceData {
         }
       });
   }
+
 }

@@ -1,7 +1,7 @@
 {
-  "name": "bkk-ca-demo",
-  "version": "0.0.0",
-  "description": "Bkk CA Action Conference App",
+  "name": "bkk-caconfapp",
+  "version": "1.0.0",
+  "description": "CA Conference App",
   "author": "Bkk <info@bkk-apps.com>",
   "license": "Apache-2.0",
   "scripts": {
@@ -39,7 +39,7 @@
     "@ionic/angular": "^4.7.0",
     "@ionic/storage": "^2.1.3",
     "com-sarriaroman-photoviewer": "^1.2.4",
-    "cordova-android": "^8.0.0",
+    "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-advanced-http": "^2.1.1",
     "cordova-plugin-calendar": "git+https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin.git",

@@ -1,3 +1,4 @@
+import { ConfigData } from './../../providers/config-data';
 import { HttpClientModule } from '@angular/common/http';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -10,7 +11,6 @@ import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { LookupAllOptions } from 'dns';
 
-
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
@@ -19,20 +19,20 @@ import { LookupAllOptions } from 'dns';
 export class LoginPage {
   login: UserOptions = { username: '', password: '' };
   submitted = false;
-  API_LOGIN_URL = 'https://bkk-apps.com:8443/cod-mobile/user-authorization';
 
   constructor(
     public userData: UserData,
     public router: Router,
     public http: HttpClient,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public config: ConfigData
   ) { }
 
   onLogin(form: NgForm) {
     this.submitted = true;
 
     if (form.valid) {
-      this.http.get(this.API_LOGIN_URL + '?uname=' + this.login.username + '&pass=' + this.login.password)
+      this.http.get(this.config.API_LOGIN_URL + '?uname=' + this.login.username + '&pass=' + this.login.password)
       .subscribe( async (data: any) => {
         console.log('logged in:' + data['_body']);
         if (data.uid) {

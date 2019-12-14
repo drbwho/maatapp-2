@@ -16,6 +16,7 @@ export class PeoplePage {
   speakers: any[] = [];
   taxonomy: string;
   pagetitle: string;
+  rootpage = '';
 
   constructor(
     public actionSheetCtrl: ActionSheetController,
@@ -44,6 +45,7 @@ export class PeoplePage {
       this.confData.getTaxonomy(taxName, taxId).subscribe( res => {
         this.taxonomy = res[0].title;
       });
+      this.rootpage = 'taxonomy/';
     }
 
     this.confData.getSpeakers(showWhat, taxName, taxId).subscribe((data: any = []) => {
@@ -134,10 +136,10 @@ export class PeoplePage {
       header: 'Contact ' + speaker.name,
       buttons: [
         {
-          text: `Email ( ${speaker.email} )`,
+          text: `Email ( ${speaker.mail} )`,
           icon: mode !== 'ios' ? 'mail' : null,
           handler: () => {
-            window.open('mailto:' + speaker.email);
+            window.open('mailto:' + speaker.mail, '_system');
           }
         },
         {

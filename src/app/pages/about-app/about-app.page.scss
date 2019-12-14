@@ -1,0 +1,32 @@
+.about-header {
+    padding-top: 16px;
+    width: 100%;
+    text-align: center;
+    color: lemonchiffon;
+  }
+
+  .about-header img {
+    max-height: 100%;
+  }
+
+  .about-info {
+    background: rgba(235, 235, 224, 0.7);
+    padding: 10px;
+    margin: 10px;
+    color:#800000;
+  }
+
+  .about-info ion-icon {
+    margin-inline-end: 32px;
+  }
+  
+  .ios .about-info {
+    text-align: center;
+  }
+
+  ion-content {
+    --background: none;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }

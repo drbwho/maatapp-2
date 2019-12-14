@@ -3,6 +3,7 @@
     padding-top:20px;
     padding-top:20px;
     color: white;
+    text-shadow: 2px 2px 2px #000;
 }
 
 .home-links ion-icon {
@@ -46,6 +47,11 @@ ion-content {
 .conf-div img {
   width: 70px;
   height: 30px;
+}
+
+.home-links ion-col:active {
+  border: none;
+  background-color: #b4b8b5;
 }
 
 /* if ios flickering

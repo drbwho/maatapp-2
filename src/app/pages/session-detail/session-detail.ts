@@ -169,10 +169,10 @@ export class SessionDetailPage {
       header: 'Contact ' + speaker.fname + speaker.lname,
       buttons: [
         {
-          text: `Email ( ${speaker.email} )`,
+          text: `Email ( ${speaker.mail} )`,
           icon: mode !== 'ios' ? 'mail' : null,
           handler: () => {
-            window.open('mailto:' + speaker.email);
+            window.open('mailto:' + speaker.mail, '_system');
           }
         },
         {
@@ -223,8 +223,8 @@ export class SessionDetailPage {
   }
 
   createCalendar(session) {
-   const plat = this.plt.platforms();
-   if (this.plt.is('mobileweb')) {
+   // const plat = this.plt.platforms();
+   /*if (this.plt.is('mobileweb')) {
 
       let d = new Date(session.date + ' ' + session.startTime + ':00');
       const startDate = d.getFullYear() +
@@ -236,7 +236,7 @@ export class SessionDetailPage {
       ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) + 'T' + ('0' +
       d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + '00Z';
 
-      if (this.plt.is('android')) {
+      /*if (this.plt.is('android')) {
        window.open(
         `https://www.google.com/calendar/render?action=TEMPLATE&text=${session.title}&location=Venue&` +
          'dates=' + startDate + '%2F' + endDate,
@@ -267,12 +267,29 @@ export class SessionDetailPage {
                    'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
         // this.fileopener.open(this.file.dataDirectory + 'calendar.vcs', 'application/vCalendar');
       });*/
-    }
+    /*}
 
-   } else {
+   } else {*/
     const title  = 'Attend session: ' + session.title;
-    const startDate = new Date(session.date + ' ' + session.startTime + ':00');
-    const endDate = new Date(session.date + ' ' + session.endTime);
+    let startDate;
+    let endDate;
+    if (this.plt.is('ios')) {
+      startDate = new Date(session.datestr + ' ' + session.startTime + ':00');
+      endDate = new Date(session.datestr + ' ' + session.endTime);
+      startDate = new Date(startDate.getFullYear(),
+          Number(('0' + (startDate.getMonth())).slice(-2)),
+          Number(('0' + startDate.getDate()).slice(-2)),
+          Number(('0' + startDate.getHours()).slice(-2)),
+          Number(('0' + startDate.getMinutes()).slice(-2)) );
+      endDate = new Date(endDate.getFullYear(),
+        Number(('0' + (endDate.getMonth())).slice(-2)),
+        Number(('0' + endDate.getDate()).slice(-2)),
+        Number(('0' + endDate.getHours()).slice(-2)),
+        Number(('0' + endDate.getMinutes()).slice(-2)) );
+    } else {
+      startDate = new Date(session.date + ' ' + session.startTime + ':00');
+      endDate = new Date(session.date + ' ' + session.endTime);
+    }
     const success = function(message) { alert('Success: ' + JSON.stringify(message)); };
     const error = function(message) { alert('Error: ' + message); };
     const eventLocation = '';
@@ -299,7 +316,7 @@ export class SessionDetailPage {
     } else {
       this.calendar.createEventInteractivelyWithOptions(title, eventLocation, notes, startDate, endDate, calOptions);
     }
-  }
+  // }
 
   }
 

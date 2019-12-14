@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs-page';
 
-
 const routes: Routes = [
   {
     path: 'tabs',
@@ -129,6 +128,10 @@ const routes: Routes = [
         {
           path: 'people/:showWhat/:taxName/:taxId',
           loadChildren: () => import('../people/people.module').then(m => m.PeoplePageModule)
+        },
+        {
+          path: 'program/speaker-details/:speakerId',
+          loadChildren: () => import('../speaker-detail/speaker-detail.module').then(m => m.SpeakerDetailModule)
         }
       ]
     },
@@ -151,11 +154,60 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'sponsors',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../sponsors/sponsors.module').then(m => m.SponsorsPageModule)
+          }
+        ]
+      },
+      {
+        path: 'events',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../events/events.module').then(m => m.EventsPageModule)
+          }
+        ]
+      },
+      {
+            path: 'event/:eventTitle',
+            loadChildren: () => import('../event-detail/event-detail.module').then(m => m.EventDetailPageModule)
+      },
+      {
+        path: 'infopages',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../info-pages/info-pages.module').then(m => m.InfoPagesPageModule)
+          }
+        ]
+      },
+      {
+        path: 'notifications/:data',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../notifications/notifications.module').then(m => m.NotificationsPageModule)
+          }
+        ]
+      },
+      {
+        path: 'tourpages',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../tour-pages/tour-pages.module').then(m => m.TourPagesPageModule)
+          }
+        ]
+      },
+      {
         path: 'about',
         children: [
           {
             path: '',
-            loadChildren: () => import('../about/about.module').then(m => m.AboutModule)
+            loadChildren: () => import('../about/about.module').then(m => m.AboutPageModule)
           }
         ]
       },

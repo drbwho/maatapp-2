@@ -1,3 +1,4 @@
+import { ConfigData } from './config-data';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -11,14 +12,12 @@ import { from } from 'rxjs';
 })
 export class NewsData {
   _news: any;
-  NEWS_FILE = 'NEWS_FILE';
-  HAS_UNREAD_NEWS = 'has_unread_news';
-  API_NEWS_URL = 'https://bkk-apps.com:8443/cod-mobile/get-news';
 
   constructor(
     public storage: Storage,
     public alertController: AlertController,
-    public events: Events
+    public events: Events,
+    public config: ConfigData
   ) { }
 
 
@@ -28,12 +27,12 @@ export class NewsData {
     } else {
         // always load data from local stored file
         return from(this.storage
-            .get(this.NEWS_FILE));
+            .get(this.config.NEWS_FILE));
     }
   }
 
   loadNews () {
-    this.storage.get(this.NEWS_FILE).then( (res) => {
+    this.storage.get(this.config.NEWS_FILE).then( (res) => {
       if (res === null) {
         this._news = [];
       } else {
@@ -52,17 +51,17 @@ export class NewsData {
 
     let maxlocalid = 0;
     if (this._news) {
-      maxlocalid = Math.max(this._news.map( (o: any) => Number(o.id)), 0);
+      maxlocalid = Math.max.apply(Math, this._news.map( (o: any) => Number(o.id), 0));
     }
         httpclient
-           .get(this.API_NEWS_URL, {headers})
+           .get(this.config.API_NEWS_URL, {headers})
            .subscribe( async (data: any) => {
               if (data.length > 0) {
-                const maxremoteid = Math.max(data.map( (o: any) => Number(o.id)), 0);
+                const maxremoteid = Math.max.apply(Math, data.map( (o: any) => Number(o.id), 0));
                 if (maxlocalid < maxremoteid) {
                     this._news = data;
-                    this.storage.set(this.NEWS_FILE, data);
-                    this.storage.set(this.HAS_UNREAD_NEWS, true);
+                    this.storage.set(this.config.NEWS_FILE, data);
+                    this.storage.set(this.config.HAS_UNREAD_NEWS, true);
                     this.events.publish('user:unreadnews', true);
                     const alert = await this.alertController.create({
                       header: 'New Announcement!',

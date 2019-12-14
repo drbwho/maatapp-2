@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>New Notification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        {{message.subject}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>{{message.message}}</h2>
+    </ion-card-content>
+  </ion-card>
+  <ion-row>
+      <ion-col>
+        <ion-button routerLink="/home" routerDirection="root">Close</ion-button>
+      </ion-col>
+    </ion-row>
+</ion-content>

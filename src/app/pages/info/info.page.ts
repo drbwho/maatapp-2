@@ -13,6 +13,8 @@ export class InfoPage implements OnInit {
   info: any;
   infotitle: any;
   pagetitle: any;
+  defaultHref = '';
+  infoimage = '';
 
   constructor(
     public dataProvider: ConferenceData,
@@ -33,23 +35,29 @@ export class InfoPage implements OnInit {
   }
 
   updateData (infotype: any) {
-    // const infotype = this.route.snapshot.paramMap.get('infoType');
     this.dataProvider.load().subscribe((data: any) => {
-      if (data && data.eventdates) {
+      if (data && data.infopages) {
           switch (infotype) {
             case 'actionpositions':
               this.infotitle = 'Action Leaders';
-              this.info = data.info[0].actionpositions;
               break;
             case 'organiser':
-              this.infotitle = 'Local Organiser';
-              this.info = data.info[0].organiser;
+              this.infotitle = 'Organiser';
+              this.infoimage = 'assets/img/organiser.png';
               break;
             case 'accomodation':
-              this.infotitle = 'Hotel Info';
-              this.info = data.info[0].accomodation;
+              this.infotitle = 'Hotels';
               break;
+            default :
+              if ( infotype.indexOf('info - ') > -1) {
+                this.infotitle = infotype.replace('info - ', '');
+                this.defaultHref = '/app/tabs/infopages';
+              } else {
+                this.infotitle = infotype.replace('tour - ', '');
+                this.defaultHref = '/app/tabs/tourpages';
+              }
           }
+          this.info = data.infopages.find( d => d.title === infotype ).body;
         }
       });
   }

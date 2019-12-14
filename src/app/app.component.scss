@@ -15,18 +15,36 @@
 
 .session-title {
   font-size: 1.1em;
+  color: var(--ion-col-dark);
 }
 
-.menu-header {
+.md .menu-header {
   color: #cac8c8;
-  padding: 10px !important;
-}
-
-.menu-header img {
-  width:80px;
-  height: 30px;
+  padding: 5px !important;
 }
 
 ion-card {
   border-radius: 0px !important;
 }
+
+.header-img-ios {
+  width: 170px;
+}
+
+.header-img-md {
+  height: 30px;
+}
+
+.ios .header-title-md {
+  display: none;
+}
+
+.ios .header-img-md {
+  display: none;
+}
+
+.md .header-img-ios {
+  display: none;
+}
+
+

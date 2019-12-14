@@ -4,10 +4,12 @@
     <ion-menu>
       <ion-header>
         <ion-toolbar class="ion-text-center menu-header">
-          <img src="/assets/img/bkk_logo.png">
-          <ion-title>event Management</ion-title>
+          <img src="/assets/img/bkk_logo.png" class="header-img-md">
+          <img src="/assets/img/bkk_logo_bl.png" class="header-img-ios">
+          <ion-title class="header-title-md md" >event Management</ion-title>
         </ion-toolbar>
       </ion-header>
+
       <ion-content>
 
         <ion-list>
@@ -31,11 +33,11 @@
           <ion-menu-toggle autoHide="false">
             <ion-item  *ngIf="!hasUnreadNews" routerLink="/app/tabs/news" routerDirection="root">
               <ion-icon slot="start" name="megaphone"></ion-icon>
-              <ion-label>Announces</ion-label>
+              <ion-label>Announcements</ion-label>
             </ion-item>
             <ion-item *ngIf="hasUnreadNews" routerLink="/app/tabs/news" routerDirection="root" >
               <ion-icon slot="start" name="megaphone" color="danger"></ion-icon>
-              <ion-label color="danger"><strong>Announces!</strong></ion-label>
+              <ion-label color="danger"><strong>Announcements!</strong></ion-label>
             </ion-item>
          </ion-menu-toggle>
 
@@ -54,69 +56,101 @@
         </ion-menu-toggle>
 
         <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="/app/tabs/tracks" routerDirection="root">
+            <ion-icon slot="start" name="options"></ion-icon>
+            <ion-label>Session Topics</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle autoHide="false">
           <ion-item routerLink="/app/tabs/program/schedule/type/favorites"  routerDirection="root">
             <ion-icon slot="start" name="checkmark-circle"></ion-icon>
             <ion-label>Favourites</ion-label>
           </ion-item>
         </ion-menu-toggle>
 
-      <ion-menu-toggle autoHide="false">
-        <ion-item routerLink="/app/tabs/program/people/speakers/all/0" routerDirection="root">
-          <ion-icon slot="start" name="person"></ion-icon>
-          <ion-label>Speakers</ion-label>
-        </ion-item>
-      </ion-menu-toggle>
+        <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="/app/tabs/rooms" routerDirection="root">
+            <ion-icon slot="start" name="code-download"></ion-icon>
+            <ion-label>Venue</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
 
-      <ion-menu-toggle autoHide="false">
-        <ion-item routerLink="/app/tabs/tracks" routerDirection="root">
-          <ion-icon slot="start" name="settings"></ion-icon>
-          <ion-label>Tracks</ion-label>
-        </ion-item>
-      </ion-menu-toggle>
+        <ion-list-header>
+          People
+        </ion-list-header>
 
-      <ion-menu-toggle autoHide="false">
-        <ion-item routerLink="/app/tabs/rooms" routerDirection="root">
-          <ion-icon slot="start" name="code-download"></ion-icon>
-          <ion-label>Venue</ion-label>
+        <ion-menu-toggle autoHide="false">
+          <ion-item routerDirection="root" routerLink="" (click)="loadInfoPage('organiser')" >
+            <ion-icon slot="start" name="school"></ion-icon>
+            <ion-label>Local Organiser</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+  
+        <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="" (click)="loadInfoPage('actionpositions')" routerDirection="root">
+            <ion-icon slot="start" name="key"></ion-icon>
+            <ion-label>Action Leaders</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+  
+        <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="" (click)="loadTaxonomyPage('capacity')" routerDirection="root">
+            <ion-icon slot="start" name="people"></ion-icon>
+            <ion-label>MC Members</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+  
+        <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="" (click)="loadTaxonomyPage('wg')" routerDirection="root">
+            <ion-icon slot="start" name="git-network"></ion-icon>
+            <ion-label>Working Groups</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+      <!-- <ion-menu-toggle autoHide="false">
+        <ion-item (click)="loadTaxonomyPage('capacity')" routerDirection="root">
+          <ion-icon slot="start" name="people"></ion-icon>
+          <ion-label>Participants</ion-label>
         </ion-item>
-      </ion-menu-toggle>
+      </ion-menu-toggle> -->
+
+      <!-- <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/app/tabs/sponsors" routerDirection="root">
+          <ion-icon slot="start" name="shirt"></ion-icon>
+          <ion-label>Exhibitors/Sponsors</ion-label>
+        </ion-item>
+      </ion-menu-toggle> -->
 
       <ion-list-header>
         Info
       </ion-list-header>
 
       <ion-menu-toggle autoHide="false">
-        <ion-item routerDirection="root" routerLink="" (click)="loadInfoPage('organiser')" >
-          <ion-icon slot="start" name="school"></ion-icon>
-          <ion-label>Local Organiser</ion-label>
-        </ion-item>
-      </ion-menu-toggle>
-
-      <ion-menu-toggle autoHide="false">
-        <ion-item routerLink="" (click)="loadInfoPage('actionpositions')" routerDirection="root">
+        <ion-item routerLink="/app/tabs/infopages" routerDirection="root">
           <ion-icon slot="start" name="key"></ion-icon>
-          <ion-label>Action Leaders</ion-label>
-        </ion-item>
-      </ion-menu-toggle>
-
-      <ion-menu-toggle autoHide="false">
-        <ion-item routerLink="" (click)="loadTaxonomyPage('capacity')" routerDirection="root">
-          <ion-icon slot="start" name="people"></ion-icon>
-          <ion-label>MC Members</ion-label>
-        </ion-item>
-      </ion-menu-toggle>
-
-      <ion-menu-toggle autoHide="false">
-        <ion-item routerLink="" (click)="loadTaxonomyPage('wg')" routerDirection="root">
-          <ion-icon slot="start" name="git-network"></ion-icon>
-          <ion-label>Working Groups</ion-label>
+          <ion-label>Arrival info</ion-label>
         </ion-item>
       </ion-menu-toggle>
 
       <ion-menu-toggle autoHide="false">
         <ion-item routerLink="" (click)="loadInfoPage('accomodation')" routerDirection="root">
           <ion-icon slot="start" name="information-circle"></ion-icon>
-          <ion-label>Hotel Info</ion-label>
+          <ion-label>Hotel info</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/app/tabs/events" routerDirection="root">
+          <ion-icon slot="start" name="wine"></ion-icon>
+          <ion-label>Social Events</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="/app/tabs/tourpages" routerDirection="root">
+          <ion-icon slot="start" name="bus"></ion-icon>
+          <ion-label>Local Tours</ion-label>
         </ion-item>
       </ion-menu-toggle>
 
@@ -177,11 +211,20 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-menu-toggle autoHide="false">
+          <!-- <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/support" routerDirection="root">
               <ion-icon slot="start" name="help"></ion-icon>
               <ion-label>
                 Support
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle> -->
+
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/about-app" routerDirection="root">
+              <ion-icon slot="start" name="phone-portrait"></ion-icon>
+              <ion-label>
+                About App
               </ion-label>
             </ion-item>
           </ion-menu-toggle>

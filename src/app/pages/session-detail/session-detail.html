@@ -46,23 +46,24 @@
         <ion-icon *ngIf=" ratings >= 5" name="star" color="danger"></ion-icon>
      </div>
 
-     <ion-icon *ngIf="session.trackTitle" name="settings" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
-     <ion-text *ngIf="session.trackTitle" color="success">
+     <ion-icon *ngIf="session.trackTitle" name="options" color="primary" slot="start" style="font-size:1.2em; vertical-align: bottom;"></ion-icon>
+     <ion-text *ngIf="session.trackTitle" color="primary">
      {{session.trackTitle}}<br />
      </ion-text>
-    <ion-icon name="calendar" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
+    <ion-icon name="calendar" color="primary" slot="start" style="font-size:1.2em; vertical-align: bottom;"></ion-icon>
     <ion-text color="tertiary">
      {{session.datestr}}<br />
     </ion-text>
-    <ion-icon name="time" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
+    <ion-icon name="time" color="primary" slot="start" style="font-size:1.2em; vertical-align: bottom;"></ion-icon>
     <ion-text color="tertiary">
       {{session.startTime}} &ndash; {{session.endTime}}
     </ion-text>
       <br />
-    <ion-icon name="code-download" color="primary" slot="start" style="font-size:1.2em;"></ion-icon>
+    <ion-icon name="code-download" color="primary" slot="start" style="font-size:1.2em; vertical-align: bottom;"></ion-icon>
     <ion-text color="tertiary">
       {{session.roomName}}
     </ion-text>
+    <ion-note color="success" slot="end" style="float:right;">{{session.experiencelevel}}</ion-note>
   </div>
 
   <ion-list>
@@ -73,7 +74,8 @@
             <ion-card-header>
               <ion-item detail="false" lines="none" routerLink="/app/tabs/program/speaker-details/{{speaker.id}}">
                 <ion-avatar slot="start">
-                  <img [src]="speaker.prof_img" alt="Speaker profile pic">
+                  <img *ngIf="speaker.prof_img" [src]="speaker.prof_img" alt="">
+                  <img *ngIf="!speaker.prof_img" src="/assets/img/avatar.png" alt="">
                 </ion-avatar>
                 {{speaker.fname.trim()}}, {{speaker.lname}}
               </ion-item>

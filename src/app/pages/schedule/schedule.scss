@@ -19,7 +19,8 @@ $categories: (
 }
 
 .session-card-details {
-  padding-top: 10px;
+  padding-top: 8px;
+  font-size: 0.85em;
 }
 
 .session-card-details ion-row {
@@ -43,12 +44,20 @@ $categories: (
 }
 
 .speakerlist ion-label {
-  color: grey;
   font-size: 0.85em;
 }
 
 .speakerlist {
   background-color: transparent;
+}
+
+.speaker-org {
+  padding-left: 20px;
+  display: block;
+}
+
+.speaker-name {
+  color: #73071b;
 }
 
 .speakerlist ion-icon {
@@ -65,9 +74,25 @@ $categories: (
 }
 
 .session-track {
-  font-size: 0.85em;
+  font-size: 0.8em;
+  background-color: #8da3b9;
+  color: whitesmoke;
 }
 
 .md .day-segment .segment-button-checked  {
   background-color: var(--ion-color-light-tint);
+}
+
+.ios .day-segment {
+  margin-bottom: 5px;
+}
+
+.filter {
+  width: 100%;
+  padding-right: 20px;
+}
+
+.filter ion-icon {
+  font-size:20px;
+  float: right;
 }

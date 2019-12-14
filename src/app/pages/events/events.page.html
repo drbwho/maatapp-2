@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Social Events</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="event-content">
+  <img src="assets/img/connect.png" class="events-image">
+  <ion-list *ngFor="let event of events">
+    <ion-item routerLink="/app/tabs/event/{{event.title}}">
+      <ion-icon name="bonfire" slot="start"></ion-icon>
+      <ion-text>
+      {{event.title}}
+      <ion-note>
+        <div>{{event.date.trim() | date:'EEEE d MMMM'}}</div>
+      </ion-note>
+      </ion-text>
+    </ion-item>
+  </ion-list>
+  <ion-list-header [hidden]="events != ''">
+    No Events Found
+  </ion-list-header>
+</ion-content>

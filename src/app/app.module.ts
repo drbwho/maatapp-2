@@ -18,6 +18,7 @@ import { Network } from '@ionic-native/network/ngx';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
+// import { FCM } from '@ionic-native/fcm/ngx';
 
 import {enableProdMode} from '@angular/core';
 enableProdMode();

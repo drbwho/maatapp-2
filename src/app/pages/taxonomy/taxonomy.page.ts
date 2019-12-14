@@ -50,8 +50,8 @@ export class TaxonomyPage implements OnInit {
             });
             break;
           case 'capacity':
-            this.taxonomytitle = 'MC Members/Substitutes';
-            this.taxonomysubtitle = 'Congress Members Capacities';
+            this.taxonomytitle = 'Participants';
+            this.taxonomysubtitle = 'Congress People';
             this.taxonomy = data.capacity;
             break;
         }

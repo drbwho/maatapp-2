@@ -1,6 +1,7 @@
+import { ConfigData } from './providers/config-data';
 import { ConferenceData } from './providers/conference-data';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
 import { Events, MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
@@ -11,6 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Network } from '@ionic-native/network/ngx';
+// import { FCM } from '@ionic-native/fcm/ngx';
 
 import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
@@ -65,8 +67,10 @@ export class AppComponent implements OnInit {
     private toastCtrl: ToastController,
     private confdata: ConferenceData,
     private newsdata: NewsData,
+    private config: ConfigData,
     private network: Network,
-    private toast: ToastController
+    private toast: ToastController,
+    // private fcm: FCM
   ) {
     this.initializeApp();
   }
@@ -118,6 +122,32 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+
+    // firebase push notifications
+    /*if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
+      this.fcm.getToken().then(token => {
+        console.log(token);
+      });
+      this.fcm.onTokenRefresh().subscribe(token => {
+        console.log(token);
+      });
+      this.fcm.onNotification().subscribe(notification => {
+        console.log(notification);
+        const navigationExtras: NavigationExtras = {
+          queryParams: {
+            special: JSON.stringify(notification)
+          }
+        };
+        if (notification.wasTapped) {
+          console.log('Received in background');
+        } else {
+          console.log('Received in foreground');
+        }
+        // this.router.navigate(['/app/tabs/notifications'], navigationExtras);
+        this.router.navigate(['/app/tabs/notifications', JSON.stringify(notification)]);
+      });
+      // this.fcm.subscribeToTopic('people'); /topics/all
+    }*/
   }
 
   checkLoginStatus() {
@@ -163,12 +193,13 @@ export class AppComponent implements OnInit {
     const headers = new HttpHeaders();
     headers.append('Cache-control', 'no-cache');
     headers.append('Cache-control', 'no-store');
+    headers.append('Cache-control', 'max-age=0');
     headers.append('Expires', '0');
     headers.append('Pragma', 'no-cache');
 
-    this.storage.get(this.confdata.JSON_FILE).then( (res) => {
+    this.storage.get(this.config.JSON_FILE).then( (res) => {
         this.http
-           .get(this.confdata.API_JSONFILE_URL, {headers})
+           .get(this.config.API_JSONFILE_URL, {headers})
            .subscribe( async (data: any) => {
               if (res) {
                 if (res.version < data.version) {
@@ -193,8 +224,9 @@ export class AppComponent implements OnInit {
                             setTimeout(() => {
                               loading.dismiss();
                             }, 3000);
-                            this.storage.set(this.confdata.JSON_FILE, data);
-                            this.confdata.processData(data);
+                            this.storage.set(this.config.JSON_FILE, data);
+                            this.confdata.processData(res);
+                            window.location.reload();
                           }
                         }
                       ]
@@ -211,8 +243,7 @@ export class AppComponent implements OnInit {
                 setTimeout(() => {
                   loading.dismiss();
                 }, 3000);
-                this.storage.set(this.confdata.JSON_FILE, data);
-                this.confdata.processData(data);
+                this.storage.set(this.config.JSON_FILE, data);
               }
             });
     });
@@ -232,12 +263,12 @@ export class AppComponent implements OnInit {
   listenForNewsEvents() {
     this.events.subscribe('user:unreadnews', (status: boolean) => {
       this.hasUnreadNews = status;
-      this.storage.set(this.newsdata.HAS_UNREAD_NEWS, status);
+      this.storage.set(this.config.HAS_UNREAD_NEWS, status);
     });
   }
 
   load_hasUnreadNews() {
-    this.storage.get(this.newsdata.HAS_UNREAD_NEWS).then( (res) => {
+    this.storage.get(this.config.HAS_UNREAD_NEWS).then( (res) => {
       if (res === null) { this.hasUnreadNews = false;
       } else {  this.hasUnreadNews = res; }
     })

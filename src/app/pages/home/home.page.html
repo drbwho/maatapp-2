@@ -21,13 +21,11 @@
 
           <ion-grid class="home-buttons-grid">
             <ion-row class="home-links">
-              <ion-col   class="ion-text-center home-link">
-                <div routerLink="/app/tabs/tracks">
-                     <div>
-                        <ion-icon name="settings"></ion-icon>
-                     </div>
-                      <ion-label>TRACKS</ion-label>
-                </div>
+              <ion-col  routerLink="/app/tabs/people/speakers/all/0"  class="ion-text-center">
+                  <div>
+                  <ion-icon name="person"></ion-icon>
+                  </div>
+                  <ion-label>SPEAKERS</ion-label>
               </ion-col>
               <ion-col  routerLink="/app/tabs/program/schedule"  class="ion-text-center">
                       <div>
@@ -37,11 +35,11 @@
               </ion-col>
           </ion-row>
           <ion-row  class="home-links">
-              <ion-col  routerLink="/app/tabs/people/speakers/all/0"  class="ion-text-center">
-                      <div>
-                      <ion-icon name="person"></ion-icon>
-                      </div>
-                      <ion-label>SPEAKERS</ion-label>
+              <ion-col  routerLink="/app/tabs/news"  class="ion-text-center">
+                <div>
+                <ion-icon name="megaphone"></ion-icon>
+                </div>
+                <ion-label>ANNOUNCES</ion-label>
               </ion-col>
               <ion-col  routerLink="/app/tabs/program/schedule/type/favorites"  class="ion-text-center">
                       <div>
@@ -51,12 +49,14 @@
               </ion-col>
           </ion-row>
           <ion-row  class="home-links">
-              <ion-col  routerLink="/app/tabs/news"  class="ion-text-center">
-                      <div>
-                      <ion-icon name="megaphone"></ion-icon>
-                      </div>
-                      <ion-label>ANNOUNCES</ion-label>
-              </ion-col>
+              <ion-col routerLink="/app/tabs/tracks" class="ion-text-center">
+                <div >
+                     <div>
+                        <ion-icon name="options"></ion-icon>
+                     </div>
+                      <ion-label>SESSION TOPICS</ion-label>
+                </div>
+              </ion-col>             
               <ion-col  routerLink="/app/tabs/rooms" class="ion-text-center">
                       <div>
                       <ion-icon name="code-download"></ion-icon>

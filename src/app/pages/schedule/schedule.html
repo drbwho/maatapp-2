@@ -27,13 +27,16 @@
 
   <ion-segment (ionChange)="updateSchedule()" [(ngModel)]="daysegment" *ngIf="segment === 'all'" class="day-segment">
     <ion-segment-button *ngFor="let day of confdates" value="{{day.id}}">
-      {{day.date.replace("00:00:00","").trim() | date:'EEE d'}}
+      <div>
+      {{day.date.replace("00:00:00","").trim() | date:'EEE d'}}<br>
+      {{day.date.replace("00:00:00","").trim() | date:'MMM'}}
+      </div>
     </ion-segment-button>
   </ion-segment>
 </ion-header>
 
 <ion-list-header *ngIf="filter" color="success">
-    <div>
+    <div class="filter">
     {{filter}}
     <ion-icon name="close" slot="end" routerLink="/app/tabs/program/schedule"></ion-icon>
     </div>
@@ -45,34 +48,45 @@
     <ion-grid fixed class="ion-no-padding">
       <ion-row class="ion-align-items-stretch" class="ion-no-padding">
         <ion-col class="ion-no-padding session-item" size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
-         <ion-card routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward" class="session-card">
 
-          <ion-card-content class="ion-padding-start">
-            <ion-label class="session-title ion-margin-bottom" color="primary"><strong>{{session.title}}</strong></ion-label>
+          <ion-list-header *ngIf="session.showtrack" class="session-track">
+            <ion-text class="ion-no-padding">
+           <h5 class="ion-no-margin">{{session.trackTitle}}</h5>
+           <p class="ion-no-margin" *ngIf="session.trackChair">Chair: {{session.trackChair}}</p>
+           </ion-text>
+         </ion-list-header>
+
+         <ion-card *ngIf="session.type === 'session'" routerLink="/app/tabs/program/schedule/session/{{session.id}}" routerDirection="forward" class="session-card">
+          <ion-grid>
+            <ion-row>
+            <ion-col size="3" class="session-card-details">
+              {{session.startTime}} - {{session.endTime}}
+              <div><strong>{{session.roomName}}</strong></div>
+            </ion-col>
+            <ion-col size="9">
+            <ion-label class="session-title ion-margin-bottom" color="dark"><strong>{{session.title}}</strong></ion-label>
             <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" class="ion-no-padding speakerlist">
                 <ion-icon name="person" slot="start" color="tertiary"></ion-icon>&nbsp;
-                <ion-label class="ion-no-padding">{{speaker.fname.trim()}}, {{speaker.lname}}</ion-label>
+                <ion-label class="speaker-name ion-no-padding">{{speaker.fname.trim()}}, {{speaker.lname}}</ion-label>
+                <ion-label class="speaker-org"><div>({{speaker.org}})</div></ion-label>
             </ion-list>
-
-            <ion-note color="success" class="session-track ion-float-end ion-no-padding">{{session.trackTitle}}</ion-note>
-          </ion-card-content>
-
-          <ion-card-content class="session-card-details">
-            <ion-grid class="session-grid-details">
-            <ion-row>
-              <ion-col>
-                {{session.date.replace("00:00:00","").trim() | date:' d MMMM'}}
-              </ion-col>
-              <ion-col>
-              {{session.startTime}} - {{session.endTime}}
-              </ion-col>
-              <ion-col>
-                <strong>{{session.roomName}}</strong>
-              </ion-col>
+            </ion-col>
             </ion-row>
-           </ion-grid>
-           </ion-card-content>
+          </ion-grid>
+         </ion-card>
 
+         <ion-card *ngIf="session.type != 'session'" class="session-card">
+          <ion-grid>
+            <ion-row>
+            <ion-col size="3" class="session-card-details">
+              {{session.startTime}} - {{session.endTime}}
+              <div><strong>{{session.roomName}}</strong></div>
+            </ion-col>
+            <ion-col size="9">
+            <ion-label class="session-title ion-margin-bottom" color="secondary"><strong>{{session.title}}</strong></ion-label>
+            </ion-col>
+            </ion-row>
+          </ion-grid>
          </ion-card>
 
          <ion-item-options >
@@ -92,7 +106,7 @@
   <ion-list-header [hidden]="shownSessions > 0">
     No Lectures Found
   </ion-list-header>
-
+<!--
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" #fab>
     <ion-fab-button><ion-icon name="share"></ion-icon></ion-fab-button>
     <ion-fab-list side="top">
@@ -110,5 +124,5 @@
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
-
+-->
 </ion-content>
