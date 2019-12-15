@@ -217,7 +217,6 @@ const routes: Routes = [
           {
             path: '',
             redirectTo: '/home',
-            // loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
           }
         ]
       },
