@@ -1,3 +1,4 @@
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { Platform, Events } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { ConferenceData } from './../../providers/conference-data';
@@ -13,12 +14,14 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
   conftitle: string;
   backimage: string;
+  confpage: string;
 
   constructor(
     private events: Events,
     private router: Router,
     public dataProvider: ConferenceData,
-    public plt: Platform
+    public plt: Platform,
+    public inAppBrowser: InAppBrowser
     ) { }
 
   ngOnInit() {
@@ -31,6 +34,7 @@ export class HomePage implements OnInit {
     this.dataProvider.load().subscribe((data: any) => {
       if (data && data.eventdates) {
           this.conftitle = data.info[0].title;
+          this.confpage = data.info[0].page;
         }
       });
   }
@@ -38,6 +42,18 @@ export class HomePage implements OnInit {
   loadTaxonomyPage (page: any) {
     this.events.publish('taxonomy:updated', page);
     this.router.navigate(['/app/tabs/taxonomy/type/' + page], {state: {updateInfos: true}});
+  }
+
+  loadInfoPage (page: any) {
+    this.events.publish('info:updated', page);
+    this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
+  }
+
+  loadCongressPage () {
+    this.inAppBrowser.create(
+      this.confpage,
+      '_blank'
+    );
   }
 
 }
