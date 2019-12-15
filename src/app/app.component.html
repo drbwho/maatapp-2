@@ -83,7 +83,7 @@
         <ion-menu-toggle autoHide="false">
           <ion-item routerDirection="root" routerLink="" (click)="loadInfoPage('organiser')" >
             <ion-icon slot="start" name="school"></ion-icon>
-            <ion-label>Local Organiser</ion-label>
+            <ion-label>Local Organiser/Commitee</ion-label>
           </ion-item>
         </ion-menu-toggle>
   
@@ -95,9 +95,16 @@
         </ion-menu-toggle>
   
         <ion-menu-toggle autoHide="false">
-          <ion-item routerLink="" (click)="loadTaxonomyPage('capacity')" routerDirection="root">
+          <ion-item routerLink="" (click)="loadInfoPage('mcmembers')" routerDirection="root">
             <ion-icon slot="start" name="people"></ion-icon>
             <ion-label>MC Members</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="" (click)="loadTaxonomyPage('capacity')" routerDirection="root">
+            <ion-icon slot="start" name="people"></ion-icon>
+            <ion-label>Participants/Roles</ion-label>
           </ion-item>
         </ion-menu-toggle>
   
@@ -161,9 +168,16 @@
         </ion-item>
       </ion-menu-toggle>
 
-        </ion-list>
+      <ion-menu-toggle autoHide="false">
+        <ion-item routerLink="" (click)="loadInfoPage('eventphotos')" routerDirection="root">
+          <ion-icon slot="start" name="people"></ion-icon>
+          <ion-label>Action Photos/Videos</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
 
-        <ion-list *ngIf="loggedIn">
+      </ion-list>
+
+      <ion-list *ngIf="loggedIn">
           <ion-list-header>
             Account
           </ion-list-header>

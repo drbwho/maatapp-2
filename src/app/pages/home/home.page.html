@@ -21,17 +21,25 @@
 
           <ion-grid class="home-buttons-grid">
             <ion-row class="home-links">
+              <ion-col  routerLink="/app/tabs/program/schedule"  class="ion-text-center">
+                <div>
+                <ion-icon name="calendar"></ion-icon>
+                </div>
+                <ion-label>PROGRAM</ion-label>
+              </ion-col>
               <ion-col  routerLink="/app/tabs/people/speakers/all/0"  class="ion-text-center">
                   <div>
-                  <ion-icon name="person"></ion-icon>
+                  <ion-icon name="mic"></ion-icon>
                   </div>
                   <ion-label>SPEAKERS</ion-label>
-              </ion-col>
-              <ion-col  routerLink="/app/tabs/program/schedule"  class="ion-text-center">
-                      <div>
-                      <ion-icon name="mic"></ion-icon>
-                      </div>
-                      <ion-label>PROGRAM</ion-label>
+              </ion-col>             
+              <ion-col routerLink="/app/tabs/tracks" class="ion-text-center">
+                <div >
+                     <div>
+                        <ion-icon name="options"></ion-icon>
+                     </div>
+                      <ion-label>SESSION TOPICS</ion-label>
+                </div>
               </ion-col>
           </ion-row>
           <ion-row  class="home-links">
@@ -47,22 +55,36 @@
                       </div>
                       <ion-label>FAVOURITES</ion-label>
               </ion-col>
-          </ion-row>
-          <ion-row  class="home-links">
-              <ion-col routerLink="/app/tabs/tracks" class="ion-text-center">
-                <div >
-                     <div>
-                        <ion-icon name="options"></ion-icon>
-                     </div>
-                      <ion-label>SESSION TOPICS</ion-label>
+              <ion-col  routerLink="" (click)="loadTaxonomyPage('capacity')" routerDirection="root"  class="ion-text-center">
+                <div>
+                <ion-icon name="people"></ion-icon>
                 </div>
-              </ion-col>             
+                <ion-label>PARTICIPANTS</ion-label>
+            </ion-col>    
+          </ion-row>
+          <ion-row  class="home-links">           
               <ion-col  routerLink="/app/tabs/rooms" class="ion-text-center">
                       <div>
                       <ion-icon name="code-download"></ion-icon>
                       </div>
                       <ion-label>VENUE</ion-label>
               </ion-col>
+              <ion-col routerLink="/app/tabs/map/city" class="ion-text-center">
+                <div >
+                     <div>
+                        <ion-icon name="map"></ion-icon>
+                     </div>
+                      <ion-label>CITY MAP</ion-label>
+                </div>
+              </ion-col>
+              <ion-col routerLink="" (click)="loadTaxonomyPage('wg')" routerDirection="root" class="ion-text-center">
+                <div >
+                     <div>
+                        <ion-icon name="git-network"></ion-icon>
+                     </div>
+                      <ion-label>WORK. GROUPS</ion-label>
+                </div>
+              </ion-col>    
           </ion-row>
        </ion-grid>
 </ion-content>

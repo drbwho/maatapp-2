@@ -1,15 +1,19 @@
 .home-links {
-    font-size: 1em;
-    padding-top:20px;
+    font-size: 0.7em;
     padding-top:20px;
     color: white;
     text-shadow: 2px 2px 2px #000;
 }
 
 .home-links ion-icon {
-    font-size:35px;
+    font-size:20px;
 }
 
+ion-col {
+  margin:10px;
+  background-color: var(--ion-color-primary-shade);;
+  border-radius: 5px;
+}
 
 .home-buttons-grid {
     position: absolute;

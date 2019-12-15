@@ -41,6 +41,9 @@ export class InfoPage implements OnInit {
             case 'actionpositions':
               this.infotitle = 'Action Leaders';
               break;
+            case 'mcmembers':
+                this.infotitle = 'MC Members';
+                break;
             case 'organiser':
               this.infotitle = 'Organiser';
               this.infoimage = 'assets/img/organiser.png';
@@ -48,6 +51,9 @@ export class InfoPage implements OnInit {
             case 'accomodation':
               this.infotitle = 'Hotels';
               break;
+            case 'eventphotos':
+                this.infotitle = 'Event Photos / Videos';
+                break;
             default :
               if ( infotype.indexOf('info - ') > -1) {
                 this.infotitle = infotype.replace('info - ', '');

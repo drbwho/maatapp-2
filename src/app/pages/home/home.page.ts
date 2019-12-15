@@ -1,6 +1,7 @@
-import { Platform } from '@ionic/angular';
+import { Platform, Events } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { ConferenceData } from './../../providers/conference-data';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'home',
@@ -13,7 +14,12 @@ export class HomePage implements OnInit {
   conftitle: string;
   backimage: string;
 
-  constructor(public dataProvider: ConferenceData, public plt: Platform) { }
+  constructor(
+    private events: Events,
+    private router: Router,
+    public dataProvider: ConferenceData,
+    public plt: Platform
+    ) { }
 
   ngOnInit() {
 
@@ -27,6 +33,11 @@ export class HomePage implements OnInit {
           this.conftitle = data.info[0].title;
         }
       });
+  }
+
+  loadTaxonomyPage (page: any) {
+    this.events.publish('taxonomy:updated', page);
+    this.router.navigate(['/app/tabs/taxonomy/type/' + page], {state: {updateInfos: true}});
   }
 
 }
