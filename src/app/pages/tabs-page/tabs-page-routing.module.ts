@@ -212,6 +212,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'home',
+        children: [
+          {
+            path: '',
+            redirectTo: '/home',
+            // loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/app/tabs/program',
         pathMatch: 'full'
