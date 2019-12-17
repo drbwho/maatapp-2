@@ -1,7 +1,7 @@
 {
   "name": "bkk-caconfapp",
   "version": "1.0.0",
-  "description": "CA Conference App",
+  "description": "Bkk Action Meeting App",
   "author": "Bkk <info@bkk-apps.com>",
   "license": "Apache-2.0",
   "scripts": {
