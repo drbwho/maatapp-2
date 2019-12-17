@@ -54,6 +54,10 @@ export class InfoPage implements OnInit {
             case 'eventphotos':
                 this.infotitle = 'Event Photos / Videos';
                 break;
+            case 'bookofabstracts':
+                this.infotitle = 'Book of Abstracts / Posters';
+                this.infoimage = 'assets/img/abstracts.png';
+                break;
             default :
               if ( infotype.indexOf('info - ') > -1) {
                 this.infotitle = infotype.replace('info - ', '');

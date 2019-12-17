@@ -56,6 +56,13 @@
         </ion-menu-toggle>
 
         <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="" (click)="loadInfoPage('bookofabstracts')" routerDirection="root">
+            <ion-icon slot="start" name="book"></ion-icon>
+            <ion-label>Book of Abstracts/Posters</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle autoHide="false">
           <ion-item routerLink="/app/tabs/tracks" routerDirection="root">
             <ion-icon slot="start" name="options"></ion-icon>
             <ion-label>Session Topics</ion-label>
@@ -86,14 +93,14 @@
             <ion-label>Local Organiser/Commitee</ion-label>
           </ion-item>
         </ion-menu-toggle>
-  
+
         <ion-menu-toggle autoHide="false">
           <ion-item routerLink="" (click)="loadInfoPage('actionpositions')" routerDirection="root">
             <ion-icon slot="start" name="ribbon"></ion-icon>
             <ion-label>Action Leaders</ion-label>
           </ion-item>
         </ion-menu-toggle>
-  
+
         <ion-menu-toggle autoHide="false">
           <ion-item routerLink="" (click)="loadInfoPage('mcmembers')" routerDirection="root">
             <ion-icon slot="start" name="contacts"></ion-icon>
@@ -107,7 +114,7 @@
             <ion-label>Participants/Roles</ion-label>
           </ion-item>
         </ion-menu-toggle>
-  
+
         <ion-menu-toggle autoHide="false">
           <ion-item routerLink="" (click)="loadTaxonomyPage('wg')" routerDirection="root">
             <ion-icon slot="start" name="git-network"></ion-icon>
