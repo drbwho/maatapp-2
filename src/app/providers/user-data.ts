@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Events } from '@ionic/angular';
+import { Events } from './events';
 import { Storage } from '@ionic/storage';
 
 @Injectable({

@@ -4,7 +4,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
-import { Events, MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
 
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -14,6 +14,8 @@ import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular
 import { Network } from '@ionic-native/network/ngx';
 // import { FCM } from '@ionic-native/fcm/ngx';
 
+
+import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
 
@@ -103,9 +105,8 @@ export class AppComponent implements OnInit {
     this.swUpdate.available.subscribe(async res => {
       const toast = await this.toastCtrl.create({
         message: 'Update available!',
-        showCloseButton: true,
+        buttons: ['Close', 'Reload'],
         position: 'bottom',
-        closeButtonText: `Reload`
       });
 
       await toast.present();
