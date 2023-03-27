@@ -1,7 +1,8 @@
 {
-  "name": "bkk-caconfapp",
-  "type": "angular",
+  "name": "bkk-ca-conf",
   "integrations": {
-    "cordova": {}
-  }
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
 }

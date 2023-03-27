@@ -33,14 +33,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialModule),
     canLoad: [CheckTutorial]
   },
-  { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
-  { path: 'news', loadChildren: './pages/news/news.module#NewsPageModule' },
-  { path: 'tweets', loadChildren: './pages/tweets/tweets.module#TweetsPageModule' },
-  { path: 'sponsors', loadChildren: './pages/sponsors/sponsors.module#SponsorsPageModule' },
-  { path: 'events', loadChildren: './pages/events/events.module#EventsPageModule' },
-  { path: 'event-detail', loadChildren: './pages/event-detail/event-detail.module#EventDetailPageModule' },
-  { path: 'info-pages', loadChildren: './pages/info-pages/info-pages.module#InfoPagesPageModule' },
-  { path: 'about-app', loadChildren: './pages/about-app/about-app.module#AboutAppPageModule' },
+  { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule) },
+  { path: 'news', loadChildren: () => import('./pages/news/news.module').then(m => m.NewsPageModule) },
+  { path: 'tweets', loadChildren: () => import('./pages/tweets/tweets.module').then(m => m.TweetsPageModule) },
+  { path: 'sponsors', loadChildren: () => import('./pages/sponsors/sponsors.module').then(m => m.SponsorsPageModule) },
+  { path: 'events', loadChildren: () => import('./pages/events/events.module').then(m => m.EventsPageModule) },
+  { path: 'event-detail', loadChildren: () => import('./pages/event-detail/event-detail.module').then(m => m.EventDetailPageModule) },
+  { path: 'info-pages', loadChildren: () => import('./pages/info-pages/info-pages.module').then(m => m.InfoPagesPageModule) },
+  { path: 'about-app', loadChildren: () => import('./pages/about-app/about-app.module').then(m => m.AboutAppPageModule) },
 
 
 ];
