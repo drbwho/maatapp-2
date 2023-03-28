@@ -1,8 +1,7 @@
-import { Events } from '@ionic/angular';
 import { ConferenceData } from './../../providers/conference-data';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
+import { Events } from '../../providers/events';
 
 @Component({
   selector: 'info',

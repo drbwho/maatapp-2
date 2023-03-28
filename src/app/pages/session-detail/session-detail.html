@@ -12,7 +12,7 @@
     <ion-grid class="ion-no-padding">
       <ion-row>
         <ion-col size="6">
-            <div class="ion-text-center" class="Button_Rating_Class">
+            <div class="ion-text-center Button_Rating_Class">
                 <ion-icon (click)="put_session_rating(session.id, 20)"  name="star-outline" [size]="myratings === 20 ? 'large' : ''"></ion-icon>
                 <ion-icon (click)="put_session_rating(session.id, 40)"  name="star-outline" [size]="myratings === 40 ? 'large' : ''"></ion-icon>
                 <ion-icon (click)="put_session_rating(session.id, 60)"  name="star-outline" [size]="myratings === 60 ? 'large' : ''"></ion-icon>
@@ -22,7 +22,7 @@
         </ion-col>
 
         <ion-col size="6" [ngClass]="{'show-favorite': isFavorite}" class="ion-text-right">
-          <ion-icon name="heart-empty" size="large" class="icon-heart-empty" (click)="toggleFavorite()"></ion-icon>
+          <ion-icon name="heart-outline" size="large" class="icon-heart-empty" (click)="toggleFavorite()"></ion-icon>
           <ion-icon name="heart" color="danger" size="large" class="icon-heart" (click)="toggleFavorite()"></ion-icon>
         </ion-col>
       </ion-row>
@@ -33,7 +33,7 @@
       <ion-icon name="settings" slot="start" color="success"></ion-icon>
       <ion-note color="success">{{session.trackTitle}}</ion-note>
     </p>
-    <div class="ion-text-center" class="Rating_Class">
+    <div class="ion-text-center Rating_Class">
         <ion-icon *ngIf=" ratings < 1" name="star-outline"></ion-icon>
         <ion-icon *ngIf=" ratings >= 1" name="star" color="danger"></ion-icon>
         <ion-icon *ngIf=" ratings < 2" name="star-outline"></ion-icon>
@@ -109,13 +109,13 @@
               </ion-col>
               <ion-col size="4" class="ion-text-center">
                 <ion-button fill="clear" size="small" color="primary" (click)="openSpeakerShare(speaker)">
-                  <ion-icon name="share-alt" slot="start"></ion-icon>
+                  <ion-icon name="share-social" slot="start"></ion-icon>
                   Share
                 </ion-button>
               </ion-col>
               <ion-col size="4" lass="ion-text-right">
                 <ion-button fill="clear" size="small" color="primary" (click)="openContact(speaker)">
-                  <ion-icon name="chatboxes" slot="start"></ion-icon>
+                  <ion-icon name="chatbox-outline" slot="start"></ion-icon>
                   Contact
                 </ion-button>
               </ion-col>
@@ -141,6 +141,7 @@
     </ion-item>
     <ion-item (click)="evaluate_session(session)" button>
       <ion-label color="primary">Evaluate Session</ion-label>
+      <ion-icon slot="end" color="primary" size="small" name="star"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

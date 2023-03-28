@@ -1,9 +1,9 @@
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { ActionSheetController, AlertController, Platform } from '@ionic/angular';
 import { Component } from '@angular/core';
-import { Calendar } from '@ionic-native/calendar/ngx';
-import { File } from '@ionic-native/file/ngx';
+import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';

@@ -2,7 +2,7 @@ import { ImageViewerComponent } from './../../component/image-viewer/image-viewe
 import { Platform, ModalController } from '@ionic/angular';
 import { ConferenceData } from './../../providers/conference-data';
 import { Component, OnInit } from '@angular/core';
-import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import { PhotoViewer } from '@awesome-cordova-plugins/photo-viewer/ngx';
 
 @Component({
   selector: 'rooms',

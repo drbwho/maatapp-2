@@ -1,8 +1,9 @@
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { Platform, Events } from '@ionic/angular';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { Platform } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { ConferenceData } from './../../providers/conference-data';
 import { Router } from '@angular/router';
+import { Events } from '../../providers/events';
 
 @Component({
   selector: 'home',

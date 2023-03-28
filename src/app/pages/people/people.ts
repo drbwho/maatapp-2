@@ -1,6 +1,6 @@
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { Component, ViewEncapsulation } from '@angular/core';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser';
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 

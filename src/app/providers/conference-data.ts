@@ -1,5 +1,5 @@
 import { ConfigData } from './config-data';
-import { Events, AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -9,6 +9,7 @@ import { from } from 'rxjs';
 
 import { Router } from '@angular/router';
 import { UserData } from './user-data';
+import { Events } from './events';
 
 interface MyRatings {
   sessionid: string;

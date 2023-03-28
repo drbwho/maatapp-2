@@ -2,7 +2,7 @@ import { from, Observable } from 'rxjs';
 import { Platform } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HTTP } from '@ionic-native/http/ngx';
+import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 
 @Injectable({
   providedIn: 'root'

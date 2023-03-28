@@ -6,14 +6,13 @@ import { SwUpdate } from '@angular/service-worker';
 
 import { MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
 
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
+import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
-import { Network } from '@ionic-native/network/ngx';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
 // import { FCM } from '@ionic-native/fcm/ngx';
-
 
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';

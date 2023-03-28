@@ -1,11 +1,11 @@
 import { ConfigData } from './config-data';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Events, MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { HttpHeaders } from '@angular/common/http';
+import { AlertController } from '@ionic/angular';
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { Events } from './events';
 
 @Injectable({
   providedIn: 'root'

@@ -1,7 +1,6 @@
 import { NewsData } from './../../providers/news-data';
-import { UserData } from './../../providers/user-data';
 import { Component, OnInit } from '@angular/core';
-import { Events, MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { Events } from '../../providers/events';
 
 @Component({
   selector: 'news',
