@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonList, LoadingController, ModalController, ToastController, NavParams } from '@ionic/angular';
+import { AlertController, IonList, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
@@ -103,7 +103,7 @@ export class SchedulePage implements OnInit {
 
   async addFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any) {
     if (this.user.hasFavorite(sessionData.name)) {
-      // woops, they already favorited it! What shall we do!?
+      // already favorited it! What shall we do!?
       // prompt them to remove it
       this.removeFavorite(slidingItem, sessionData, 'Favorite already added');
     } else {

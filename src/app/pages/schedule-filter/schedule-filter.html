@@ -1,13 +1,11 @@
 <ion-header translucent>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button *ngIf="ios" (click)="dismiss()">Cancel</ion-button>
-      <ion-button *ngIf="!ios" (click)="selectAll(false)">Reset</ion-button>
+      <ion-button color="medium" *ngIf="ios" (click)="dismiss()">Cancel</ion-button>
+      <ion-button color="medium" *ngIf="!ios" (click)="selectAll(false)">Reset</ion-button>
     </ion-buttons>
 
-    <ion-title>
-      Filter Sessions
-    </ion-title>
+    <ion-title>Filter Sessions</ion-title>
 
     <ion-buttons slot="end">
       <ion-button (click)="applyFilters()" strong>Done</ion-button>
@@ -15,17 +13,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
+<ion-content class="ion-padding" fullscreen>
 
   <ion-list [lines]="ios ? 'inset' : 'full'">
-    <ion-list-header>Tracks</ion-list-header>
-
-    <ion-item *ngFor="let track of tracks" [attr.track]="track.title | lowercase">
+    <ion-list-header>Session Topics</ion-list-header>
+    <ion-item  *ngFor="let track of tracks" [attr.track]="track.title | lowercase">
       <ion-icon *ngIf="ios" slot="start" [name]="track.icon" color="medium"></ion-icon>
       <ion-label>{{track.title}}</ion-label>
       <ion-checkbox [(ngModel)]="track.isChecked"></ion-checkbox>
     </ion-item>
-
   </ion-list>
 
 </ion-content>

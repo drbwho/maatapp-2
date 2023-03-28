@@ -23,13 +23,9 @@ export class ScheduleFilterPage implements AfterViewInit {
 
   ionViewWillEnter() {
     this.ios = this.config.get('mode') === `ios`;
-  }
 
-  // TODO use the ionViewDidEnter event
-  ngAfterViewInit() {
     // passed in array of track names that should be excluded (unchecked)
     const excludedTrackNames = this.navParams.get('excludedTracks');
-
     this.confData.getTracks().subscribe((tracks: any[]) => {
       tracks.forEach(track => {
         this.tracks.push({
@@ -39,6 +35,11 @@ export class ScheduleFilterPage implements AfterViewInit {
         });
       });
     });
+  }
+
+  // TODO use the ionViewDidEnter event
+  ngAfterViewInit() {
+   
   }
 
   selectAll(check: boolean) {
