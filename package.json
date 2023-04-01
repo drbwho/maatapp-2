@@ -52,6 +52,7 @@
     "cordova-browser": "^6.0.0",
     "cordova-plugin-calendar": "^5.1.6",
     "cordova-plugin-x-socialsharing": "^6.0.4",
+    "es6-promise-plugin": "4.2.2",
     "ionic-cordova-oauth": "0.0.9",
     "node-gyp": "^9.3.1",
     "photo": "2.4.0",
