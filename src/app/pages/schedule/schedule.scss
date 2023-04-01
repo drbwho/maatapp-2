@@ -18,6 +18,11 @@ $categories: (
   }
 }
 
+ion-segment {
+  --ion-toolbar-segment-color: grey;
+  --ion-toolbar-segment-color-checked: white;
+}
+
 .session-card-details {
   padding-top: 8px;
   font-size: 0.85em;

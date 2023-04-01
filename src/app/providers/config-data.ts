@@ -7,7 +7,7 @@ export class ConfigData {
 
   ENABLE_PUSH_NOTIFICATIONS = false;
 
-  API_URL = 'https://bkk-apps.com:8443';
+  API_URL = 'https://bkk-apps.com:8445';
 
   JSON_FILE = 'JSON_FILE';
   API_JSONFILE_VERSION = this.API_URL + '/cod-mobile/json-version';
