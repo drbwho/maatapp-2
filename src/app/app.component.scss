@@ -24,7 +24,10 @@
 }
 
 ion-card {
-  border-radius: 0px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ccc;
+  padding-right: 5px;
+  box-shadow: none;
 }
 
 .header-img-ios {

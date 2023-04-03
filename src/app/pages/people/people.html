@@ -51,7 +51,7 @@
 
             <ion-row class="ion-no-padding ion-justify-content-center social" >
               <ion-col size="4" class="ion-text-left">
-                <ion-button fill="clear" size="small" color="primary" (click)="goToSpeakerTwitter(speaker)">
+                <ion-button fill="clear" size="small" color="primary" (click)="goToSpeakerTwitter(speaker)" [disabled]="!speaker.twitter">
                   <ion-icon name="logo-twitter" slot="start"></ion-icon>
                   Tweet
                 </ion-button>

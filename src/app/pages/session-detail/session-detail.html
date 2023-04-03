@@ -102,7 +102,7 @@
 
             <ion-row class="ion-no-padding ion-justify-content-center">
               <ion-col size="4" class="ion-text-left">
-                <ion-button fill="clear" size="small" color="primary" (click)="goToSpeakerTwitter(speaker)">
+                <ion-button fill="clear" size="small" color="primary" (click)="goToSpeakerTwitter(speaker)" [disabled]="!speaker.twitter">
                   <ion-icon name="logo-twitter" slot="start"></ion-icon>
                   Tweet
                 </ion-button>
@@ -141,7 +141,7 @@
     </ion-item>
     <ion-item (click)="evaluate_session(session)" button>
       <ion-label color="primary">Evaluate Session</ion-label>
-      <ion-icon slot="end" color="primary" size="small" name="star"></ion-icon>
+      <ion-icon slot="end" color="primary" size="small" name="checkmark-circle"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>
