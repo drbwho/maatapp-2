@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'bkk-ca-conf',
+  appId: 'com.bkk.ca2023',
+  appName: 'CCA TS 2023',
   webDir: 'www',
   bundledWebRuntime: false,
   cordova: {
