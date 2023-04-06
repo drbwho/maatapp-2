@@ -1,0 +1,8 @@
+
+Xcode Archive command fails with Ionic Capacitor - Command PhaseScriptExecution failed with a nonzero exit code
+
+/ios/App/Pods/Target Support Files/Pods-App/Pods-App-frameworks.sh
+replace:
+source="$(readlink "${source}")"
+with:
+source="$(readlink -f "${source}")"

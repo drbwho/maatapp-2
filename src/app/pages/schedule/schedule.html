@@ -68,7 +68,7 @@
             <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" class="ion-no-padding speakerlist">
                 <ion-icon name="person" slot="start" color="tertiary"></ion-icon>&nbsp;
                 <ion-label class="speaker-name ion-no-padding">{{speaker.fname.trim()}}, {{speaker.lname}}</ion-label>
-                <ion-label class="speaker-org"><div>({{speaker.org}})</div></ion-label>
+                <ion-label class="speaker-org ion-no-padding"><div>{{speaker.org}}</div></ion-label>
             </ion-list>
             </ion-col>
             </ion-row>
@@ -84,6 +84,12 @@
             </ion-col>
             <ion-col size="9">
             <ion-label class="session-title ion-margin-bottom" color="secondary"><strong>{{session.title}}</strong></ion-label>
+            <ion-list #speakerList *ngFor="let speaker of session.speakers" lines="none" class="ion-no-padding speakerlist">
+                <ion-icon name="person" slot="start" color="tertiary"></ion-icon>&nbsp;
+                <ion-label class="speaker-name ion-no-padding">{{speaker.fname.trim()}}, {{speaker.lname}}</ion-label>
+                <ion-label class="speaker-org"><div>{{speaker.desgn}}</div></ion-label>
+                <ion-label class="speaker-org"><div>{{speaker.org}}</div></ion-label>
+            </ion-list>
             </ion-col>
             </ion-row>
           </ion-grid>
