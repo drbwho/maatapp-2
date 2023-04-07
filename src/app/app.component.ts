@@ -3,6 +3,7 @@ import { ConferenceData } from './providers/conference-data';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
+import { SplashScreen, SplashScreenPlugin } from '@capacitor/splash-screen';
 
 import { MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
 
@@ -65,7 +66,7 @@ export class AppComponent implements OnInit {
     private newsdata: NewsData,
     private config: ConfigData,
     private network: Network,
-    private toast: ToastController,
+    private toast: ToastController
     // private fcm: FCM
   ) {
     this.initializeApp();
@@ -113,10 +114,10 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
-    //this.platform.ready().then(() => {
+    this.platform.ready().then(() => {
       //this.statusBar.styleDefault();
-      //this.splashScreen.hide();
-    //});
+      SplashScreen.hide();
+    });
 
     // firebase push notifications
     /*if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
