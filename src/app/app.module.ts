@@ -5,8 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
-import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
-import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -36,7 +34,7 @@ enableProdMode();
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ],
     declarations: [AppComponent, ImageViewerComponent],
-    providers: [InAppBrowser, SplashScreen, StatusBar, PhotoViewer, Network, Calendar, SocialSharing, HTTP, File],
+    providers: [InAppBrowser, PhotoViewer, Network, Calendar, SocialSharing, HTTP, File],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

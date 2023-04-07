@@ -6,9 +6,6 @@ import { SwUpdate } from '@angular/service-worker';
 
 import { MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
 
-import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
-import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
-
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Network } from '@awesome-cordova-plugins/network/ngx';
@@ -57,8 +54,6 @@ export class AppComponent implements OnInit {
     private menu: MenuController,
     private platform: Platform,
     private router: Router,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
     private storage: Storage,
     private http: HttpClient,
     public alertController: AlertController,
@@ -118,10 +113,10 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
+    //this.platform.ready().then(() => {
+      //this.statusBar.styleDefault();
+      //this.splashScreen.hide();
+    //});
 
     // firebase push notifications
     /*if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
