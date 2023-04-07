@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.bkk.ca2023',
+  appId: 'com.bkk.cca2023',
   appName: 'CCA TS 2023',
   webDir: 'www',
   bundledWebRuntime: false,
