@@ -32,5 +32,7 @@ npm-debug.log*
 /www
 /.angular
 
+android/*
+ios/*
 resources/android/**/*
 resources/ios/**/*
