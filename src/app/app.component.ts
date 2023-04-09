@@ -3,7 +3,7 @@ import { ConferenceData } from './providers/conference-data';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
-import { SplashScreen, SplashScreenPlugin } from '@capacitor/splash-screen';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 import { MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
 
@@ -73,6 +73,9 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    this.storage.create();
+
     this.checkLoginStatus();
     this.listenForLoginEvents();
     this.check_new_jsonfile();
@@ -185,17 +188,19 @@ export class AppComponent implements OnInit {
   }
 
   // check if new version of conference data exists
-  check_new_jsonfile() {
+  async check_new_jsonfile() {
     const headers = new HttpHeaders();
     headers.append('Cache-control', 'no-cache');
     headers.append('Cache-control', 'no-store');
     headers.append('Cache-control', 'max-age=0');
     headers.append('Expires', '0');
     headers.append('Pragma', 'no-cache');
-
+    
     this.storage.get(this.config.JSON_FILE).then( (res) => {
+        // trick to disable response caching
+        const salt = (new Date()).getTime();
         this.http
-           .get(this.config.API_JSONFILE_URL, {headers})
+           .get(this.config.API_JSONFILE_URL + '?' + salt, {headers})
            .subscribe( async (data: any) => {
               if (res) {
                 if (res.version < data.version) {
@@ -208,7 +213,7 @@ export class AppComponent implements OnInit {
                           role: 'cancel',
                           cssClass: 'secondary',
                           handler: (blah) => {
-                            console.log('Confirm Cancel: blah');
+                            console.log('Confirm Cancel: Update');
                           }
                         }, {
                           text: 'Update',
@@ -240,7 +245,17 @@ export class AppComponent implements OnInit {
                   loading.dismiss();
                 }, 3000);
                 this.storage.set(this.config.JSON_FILE, data);
+                window.location.reload();
               }
+            },
+            async (error) => {
+              console.log("Network Error!");
+              const toast = await this.toast.create({
+                message: 'Network error! Cannot check for updates...',
+                cssClass: 'toast-alert',
+                duration: 5000
+              });
+              toast.present();
             });
     });
   }

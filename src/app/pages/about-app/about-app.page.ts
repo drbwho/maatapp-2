@@ -8,7 +8,7 @@ import { PopoverPage } from '../about-popover/about-popover';
   styleUrls: ['./about-app.page.scss'],
 })
 export class AboutAppPage implements OnInit{
-  backimage: string;
+  backimage: string = "";
 
   constructor(public popoverCtrl: PopoverController) { }
 

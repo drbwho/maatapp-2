@@ -25,8 +25,7 @@ export class HomePage implements OnInit {
     public inAppBrowser: InAppBrowser
     ) { }
 
-  ngOnInit() {
-
+  async ngOnInit() {
     if (this.plt.width() > 500) {
       this.backimage = '/assets/img/Start_BG_screen_without_logo_flat.jpg';
     } else {

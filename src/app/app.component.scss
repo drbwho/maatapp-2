@@ -50,4 +50,10 @@ ion-card {
   display: none;
 }
 
-
+ion-toast.toast-alert {
+  opacity: 0.9;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  --background: red;
+}

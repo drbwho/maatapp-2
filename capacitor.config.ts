@@ -4,18 +4,28 @@ const config: CapacitorConfig = {
   appId: 'com.bkk.cca2023',
   appName: 'CCA TS 2023',
   webDir: 'www',
-  bundledWebRuntime: false,
   cordova: {
     preferences: {
       ScrollEnabled: 'false',
       'android-minSdkVersion': '19',
-      BackupWebStorage: 'none',
-      SplashMaintainAspectRatio: 'true',
-      FadeSplashScreenDuration: '300',
-      SplashShowOnlyFirstTime: 'false',
-      SplashScreen: 'screen',
-      SplashScreenDelay: '5000',
-      showSpinner: 'true'
+      BackupWebStorage: 'none'
+    }
+  },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 5000,
+      launchFadeOutDuration: 5000,
+      backgroundColor: "#ffffffff",
+      androidSplashResourceName: "splash",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: true,
+      androidSpinnerStyle: "large",
+      iosSpinnerStyle: "small",
+      spinnerColor: "#999999",
+      splashFullScreen: true,
+      splashImmersive: true,
+      layoutName: "launch_screen",
+      useDialog: true
     }
   }
 };

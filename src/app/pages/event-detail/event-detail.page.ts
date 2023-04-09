@@ -18,8 +18,8 @@ export class EventDetailPage implements AfterViewInit {
   };
 
   constructor(private route: ActivatedRoute, public dataProvider: ConferenceData) { }
-  @ViewChild('mapCanvas', { static: true }) mapElement: ElementRef;
-  maptitle: string;
+  @ViewChild('mapCanvas', { static: true }) mapElement: ElementRef = <any>ElementRef;
+  maptitle: string = "";
 
 
   ionViewWillEnter() {

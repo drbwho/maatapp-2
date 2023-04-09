@@ -5,7 +5,7 @@ import { MenuController } from '@ionic/angular';
 
 import { TutorialPage } from './tutorial';
 
-import { IonicStorageModule } from '@ionic/storage';
+import { Storage } from '@ionic/storage';
 describe('TutorialPage', () => {
   let fixture, app;
   beforeEach(async(() => {
@@ -18,7 +18,7 @@ describe('TutorialPage', () => {
     TestBed.configureTestingModule({
       declarations: [TutorialPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [IonicStorageModule.forRoot()],
+    //  imports: [IonicStorageModule.forRoot()],
       providers: [
         { provide: MenuController, useValue: menuSpy },
         { provide: Router, useValue: routerSpy }

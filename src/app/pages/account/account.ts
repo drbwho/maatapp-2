@@ -19,7 +19,8 @@ export class AccountPage implements AfterViewInit {
       img: '',
       fname: '',
       lname: '',
-      org: ''
+      org: '',
+      email: ''
     };
 
   constructor(
