@@ -104,10 +104,10 @@ export class SessionDetailPage {
               'Copy link clicked on https://twitter.com/' + speaker.twitter
             );
             if (
-              (window as any)['cordova'] &&
-              (window as any)['cordova'].plugins.clipboard
+              (window as any).cordova &&
+              (window as any).cordova.plugins.clipboard
             ) {
-              (window as any)['cordova'].plugins.clipboard.copy(
+              (window as any).cordova.plugins.clipboard.copy(
                 'https://twitter.com/' + speaker.twitter
               );
             }
@@ -172,14 +172,16 @@ export class SessionDetailPage {
           text: `Email ( ${speaker.mail} )`,
           icon: mode !== 'ios' ? 'mail' : null,
           handler: () => {
-            window.open('mailto:' + speaker.mail, '_system');
+            //window.open('mailto:' + speaker.mail, '_system');
+            this.inAppBrowser.create('mailto:' + speaker.mail, '_system');
           }
         },
         {
           text: `Call ( ${speaker.phone} )`,
           icon: mode !== 'ios' ? 'call' : null,
           handler: () => {
-            window.open('tel:' + speaker.phone);
+            //window.open('tel:' + speaker.phone);
+            this.inAppBrowser.create('tel:' + speaker.phone);
           }
         }
       ]
