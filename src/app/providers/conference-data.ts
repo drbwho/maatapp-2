@@ -62,7 +62,10 @@ export class ConferenceData {
     // just some good 'ol JS fun with objects and arrays
     // build up the data by linking speakers to sessions
     this.data = data;
-
+    if(!data){
+        return [];
+    }
+    
     // loop throug each person
     this.data.people.forEach( (person: any) => {
       // speaker capacities

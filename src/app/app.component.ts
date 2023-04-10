@@ -219,15 +219,16 @@ export class AppComponent implements OnInit {
                           text: 'Update',
                           handler: async () => {
                             const loading = await this.loadingcontroller.create({
-                              message: 'Please wait...'
+                              message: 'Updating<br/>Please wait...'
                             });
                             loading.present();
                             setTimeout(() => {
                               loading.dismiss();
                             }, 3000);
-                            this.storage.set(this.config.JSON_FILE, data);
-                            this.confdata.processData(res);
-                            window.location.reload();
+                            this.storage.set(this.config.JSON_FILE, data).then(()=>{
+                              this.confdata.processData(data);
+                              window.location.reload();
+                            });
                           }
                         }
                       ]
@@ -238,14 +239,16 @@ export class AppComponent implements OnInit {
                 }
               } else {
                 const loading = await this.loadingcontroller.create({
-                  message: 'Please wait...'
+                  message: 'Updating<br/>Please wait...'
                 });
                 loading.present();
                 setTimeout(() => {
                   loading.dismiss();
                 }, 3000);
-                this.storage.set(this.config.JSON_FILE, data);
-                window.location.reload();
+                this.storage.set(this.config.JSON_FILE, data).then(()=>{
+                  this.confdata.processData(data);
+                  window.location.reload();
+                });
               }
             },
             async (error) => {

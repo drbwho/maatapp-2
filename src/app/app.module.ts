@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule, Storage } from '@ionic/storage-angular';
+import { Drivers } from '@ionic/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,11 +29,12 @@ enableProdMode();
         AppRoutingModule,
         HttpClientModule,
         IonicModule.forRoot(),
-        IonicStorageModule.forRoot(),
+        IonicStorageModule.forRoot({
+            name: '_cca2023Db'
+        }),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production
         }),
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ],
     declarations: [AppComponent, ImageViewerComponent],
     providers: [InAppBrowser, PhotoViewer, Network, Calendar, SocialSharing, HTTP, File, Storage],
