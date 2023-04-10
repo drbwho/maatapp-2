@@ -6,8 +6,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { IonicModule } from '@ionic/angular';
-import { IonicStorageModule, Storage } from '@ionic/storage-angular';
-import { Drivers } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
+import { Storage, Drivers } from '@ionic/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,7 +30,8 @@ enableProdMode();
         HttpClientModule,
         IonicModule.forRoot(),
         IonicStorageModule.forRoot({
-            name: '_cca2023Db'
+            name: '_cca2023Db',
+            driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production

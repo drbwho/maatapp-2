@@ -72,10 +72,9 @@ export class AppComponent implements OnInit {
     this.initializeApp();
   }
 
-  async ngOnInit() {
-
+  ngOnInit() {
     this.storage.create();
-
+    
     this.checkLoginStatus();
     this.listenForLoginEvents();
     this.check_new_jsonfile();
