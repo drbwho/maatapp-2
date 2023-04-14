@@ -1,8 +1,10 @@
 import { from, Observable } from 'rxjs';
 import { Platform } from '@ionic/angular';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
+import { CapacitorHttp } from '@capacitor/core';
+import { Buffer } from 'buffer';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +15,9 @@ export class TwitterService {
   urlLink_token = 'https://api.twitter.com/oauth2/token';
   urlLink_timeline_proxy = 'https://bkk-apps.com/twitter/1.1/statuses/user_timeline.json?count=20&screen_name=';
   urlLink_token_proxy = 'https://bkk-apps.com/twitter/oauth2/token';
-  oauth_consumer_key = 'TyIOYJ7He8PbhP5iaOaSoNgRl';
-  consumerSecret = 'qFJ265oOVpU3PQrz6ogpM5iMVws0QCQ89ePC1bR6xqheklrLCC';
-/*
-  const oauth_token = '1168161377346867200-IsbPqVbtdcouSNWGTriHZ9XlSceSI0';
-  const tokenSecret = 'YNgiiXMjkPhDH777A137tvoCkEp4glwxRsnjFBZ1bwss9';
-*/
+  api_key = 'Fh7Udfd1WyTpCL3FLQP6eskt0';
+  api_secret = 'i8DcFJMMpkyspanHO5M4WNazXXImNupPKmZYdD7NgyyhZ4uwV6';
+
   auth_token: string;
 
   constructor(public nativeHttp: HTTP, public http: HttpClient, public plt: Platform) { }
@@ -34,15 +33,25 @@ export class TwitterService {
 
  // device
  async getToken_native() {
-    const b64 = btoa(this.oauth_consumer_key + ':' + this.consumerSecret);
-    const body = 'grant_type=client_credentials';
+    //const b64 = btoa(this.oauth_consumer_key + ':' + this.consumerSecret);
+    //const body = 'grant_type=client_credentials';
 
-    this.nativeHttp.setDataSerializer( 'utf8' );
-    this.nativeHttp.setHeader('*', 'Accept', 'application/json');
-    this.nativeHttp.setHeader('*', 'Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-    this.nativeHttp.setHeader('*', 'Authorization', 'Basic ' + b64);
+    //this.nativeHttp.setDataSerializer( 'utf8' );
+    //this.nativeHttp.setHeader('*', 'Accept', 'application/json');
+    //this.nativeHttp.setHeader('*', 'Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    //this.nativeHttp.setHeader('*', 'Authorization', 'Basic ' + b64);
+    //const res = await this.nativeHttp.post(this.urlLink_token, body, {headers: headers});
 
-    const res = await this.nativeHttp.post(this.urlLink_token, body, {});
+    const b64 = Buffer.from(this.api_key + ':' + this.api_secret).toString('base64');
+
+    const res = await CapacitorHttp.post({ url: this.urlLink_token, 
+      headers:
+       {'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'Authorization': 'Basic ' + b64},
+      params:
+       {'grant_type':'client_credentials'}});
+    console.log(res);
     const data = JSON.parse(res.data);
     console.log('Token' + data.access_token);
     return data.access_token;
@@ -51,7 +60,7 @@ export class TwitterService {
   // browser
   // get timeline of specific user (twitter name)
   getUserTimeline_web(user): Promise<any> {
-    const b64 = btoa(this.oauth_consumer_key + ':' + this.consumerSecret);
+    const b64 = Buffer.from(this.api_key + ':' + this.api_secret).toString('base64');
     const body = 'grant_type=client_credentials';
 
     if (this.auth_token) {
@@ -69,7 +78,7 @@ export class TwitterService {
         'Authorization': 'Basic ' + b64
       });
       return (this.http.post(this.urlLink_token_proxy, body, {headers: headers})).toPromise().then ( (res: any) => {
-      console.log('Token' + res.access_token);
+        console.log('Token' + res.access_token);
         this.auth_token = res.access_token;
          headers = new HttpHeaders({
           'Content-Type': 'application/json',
@@ -106,7 +115,6 @@ export class TwitterService {
         });
       }
     }
-
 
   postTweet(text) {
     return this.nativeHttp.post('', '', {});

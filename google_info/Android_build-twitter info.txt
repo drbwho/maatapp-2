@@ -3,17 +3,17 @@ manifest.xml
 
 
 twitter
-bkkapps / info@bkk-apps.com
+bkkapps / info@bkk-apps.com -> drbwho@hotmail.com
 !@34%^qwe
 
-Consumer API keys
-TyIOYJ7He8PbhP5iaOaSoNgRl (API key)
-qFJ265oOVpU3PQrz6ogpM5iMVws0QCQ89ePC1bR6xqheklrLCC (API secret key)
+API Key
+Fh7Udfd1WyTpCL3FLQP6eskt0
 
-Access token & access token secret
-1168161377346867200-IsbPqVbtdcouSNWGTriHZ9XlSceSI0 (Access token)
-YNgiiXMjkPhDH777A137tvoCkEp4glwxRsnjFBZ1bwss9 (Access token secret)
+API Key secret
+i8DcFJMMpkyspanHO5M4WNazXXImNupPKmZYdD7NgyyhZ4uwV6
 
+Bearer token
+AAAAAAAAAAAAAAAAAAAAAIHmmgEAAAAA0d4Sap8m%2FkMMyG%2BIzA9hNdBAFyA%3DGQysKiNd8qkuM2RseqDIuhESKXE8aIVt6gc0iuKKz5hPxlMGr6
 
 fabric
 info@bkk-apps.com / !@34%^qwe

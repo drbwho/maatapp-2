@@ -28,11 +28,6 @@ const routes: Routes = [
     path: 'app',
     loadChildren: () => import('./pages/tabs-page/tabs-page.module').then(m => m.TabsModule)
   },
-  {
-    path: 'tutorial',
-    loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialModule),
-    canLoad: [CheckTutorial]
-  },
   { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule) },
   { path: 'news', loadChildren: () => import('./pages/news/news.module').then(m => m.NewsPageModule) },
   { path: 'tweets', loadChildren: () => import('./pages/tweets/tweets.module').then(m => m.TweetsPageModule) },
