@@ -10,7 +10,8 @@
 
 ion-col {
   margin:10px;
-  background-color: var(--ion-color-primary-shade);
+  /*background-color: var(--ion-color-primary-shade);*/
+  background-color: #3A3F8D;
   border-radius: 5px;
 }
 
@@ -48,8 +49,7 @@ ion-content {
 }
 
 .conf-div img {
-  width: 70px;
-  height: 70px;
+  max-width: 270px;
 }
 
 .home-links ion-col:active {
@@ -58,7 +58,8 @@ ion-content {
 }
 
 .home-links-last ion-col {
-  background-color: var(--ion-color-tertiary-shade);
+  /*background-color: var(--ion-color-tertiary-shade);*/
+  background-color: #77BB4B;
 }
 
 /* if ios flickering

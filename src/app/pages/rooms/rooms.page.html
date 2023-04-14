@@ -20,7 +20,7 @@
       {{room.name}}
       </ion-label>
       <div *ngIf="room.image" (click)="photoView(room.image, room.name)" >
-        <img src="{{room.image}}" width="200px" />
+        <img src="{{room.image}}" width="200px" [alt]="Venue"/>
       </div>
       <ion-note *ngIf="room.image" slot="start">(click to zoom)</ion-note>
     </ion-list>

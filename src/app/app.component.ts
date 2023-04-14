@@ -10,6 +10,7 @@ import { MenuController, Platform, ToastController, AlertController, LoadingCont
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Network } from '@awesome-cordova-plugins/network/ngx';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 // import { FCM } from '@ionic-native/fcm/ngx';
 
 import { Events } from './providers/events';
@@ -66,7 +67,8 @@ export class AppComponent implements OnInit {
     private newsdata: NewsData,
     private config: ConfigData,
     private network: Network,
-    private toast: ToastController
+    private toast: ToastController,
+    private inAppBrowser: InAppBrowser
     // private fcm: FCM
   ) {
     this.initializeApp();
@@ -180,11 +182,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  openTutorial() {
-    this.menu.enable(false);
-    this.storage.set('ion_did_tutorial', false);
-    this.router.navigateByUrl('/tutorial');
-  }
 
   // check if new version of conference data exists
   async check_new_jsonfile() {
@@ -226,7 +223,7 @@ export class AppComponent implements OnInit {
                             }, 3000);
                             this.storage.set(this.config.JSON_FILE, data).then(()=>{
                               this.confdata.processData(data);
-                              window.location.reload();
+                              //window.location.reload();
                             });
                           }
                         }
@@ -246,7 +243,7 @@ export class AppComponent implements OnInit {
                 }, 3000);
                 this.storage.set(this.config.JSON_FILE, data).then(()=>{
                   this.confdata.processData(data);
-                  window.location.reload();
+                  //window.location.reload();
                 });
               }
             },
@@ -262,10 +259,21 @@ export class AppComponent implements OnInit {
     });
   }
 
-
   loadInfoPage (page: any) {
-    this.events.publish('info:updated', page);
-    this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
+    // restrict access
+    if(page == 'bookofabstracts'){
+      this.userData.isLoggedIn().then((value)=>{
+        if(!value){
+          this.user_not_loggedin();
+        }else{
+          this.events.publish('info:updated', page);
+          this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
+        }
+      });
+    }else{
+      this.events.publish('info:updated', page);
+      this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
+    }
   }
 
   loadTaxonomyPage (page: any) {
@@ -328,5 +336,35 @@ export class AppComponent implements OnInit {
 
     // stop connect watch
     // connectSubscription.unsubscribe();
+  }
+
+  openExternalUrl(url: string) {
+    this.inAppBrowser.create(
+      url,
+      '_blank'
+    );
+  }
+
+  async user_not_loggedin(){
+    const alert = await this.alertController.create({
+      header: 'Info',
+      message: 'You must login to gain access',
+      buttons: [
+        {
+        text: 'Login',
+        handler: () => {
+          console.log('Not logged in');
+          this.router.navigate(['/login']);
+          }
+        },
+        {
+        text: 'Cancel',
+        handler: () => {
+          alert.dismiss();
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

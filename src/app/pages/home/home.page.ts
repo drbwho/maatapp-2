@@ -56,4 +56,11 @@ export class HomePage implements OnInit {
     );
   }
 
+  openExternalUrl(url: string) {
+    this.inAppBrowser.create(
+      url,
+      '_blank'
+    );
+  }
+
 }

@@ -58,7 +58,7 @@
         <ion-menu-toggle autoHide="false">
           <ion-item routerLink="" (click)="loadInfoPage('bookofabstracts')" routerDirection="root">
             <ion-icon slot="start" name="book"></ion-icon>
-            <ion-label>Book of Abstracts/Posters</ion-label>
+            <ion-label>Book of Abstracts/Slides</ion-label>
           </ion-item>
         </ion-menu-toggle>
 
@@ -90,21 +90,7 @@
         <ion-menu-toggle autoHide="false">
           <ion-item routerDirection="root" routerLink="" (click)="loadInfoPage('organiser')" >
             <ion-icon slot="start" name="school"></ion-icon>
-            <ion-label>Local Organiser/Commitee</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
-
-        <ion-menu-toggle autoHide="false">
-          <ion-item routerLink="" (click)="loadInfoPage('actionpositions')" routerDirection="root">
-            <ion-icon slot="start" name="ribbon"></ion-icon>
-            <ion-label>Action Leaders</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
-
-        <ion-menu-toggle autoHide="false">
-          <ion-item routerLink="" (click)="loadInfoPage('mcmembers')" routerDirection="root">
-            <ion-icon slot="start" name="person-outline"></ion-icon>
-            <ion-label>MC Members</ion-label>
+            <ion-label>Organising Commitee</ion-label>
           </ion-item>
         </ion-menu-toggle>
 
@@ -116,16 +102,30 @@
         </ion-menu-toggle>
 
         <ion-menu-toggle autoHide="false">
-          <ion-item routerLink="" (click)="loadTaxonomyPage('wg')" routerDirection="root">
-            <ion-icon slot="start" name="git-network"></ion-icon>
-            <ion-label>Working Groups</ion-label>
+          <ion-item routerLink="/app/tabs/sponsors" routerDirection="root">
+            <ion-icon slot="start" name="shirt"></ion-icon>
+            <ion-label>Sponsors</ion-label>
           </ion-item>
         </ion-menu-toggle>
 
         <ion-menu-toggle autoHide="false">
-          <ion-item routerLink="/app/tabs/sponsors" routerDirection="root">
-            <ion-icon slot="start" name="shirt"></ion-icon>
-            <ion-label>Sponsors</ion-label>
+          <ion-item routerLink="" (click)="openExternalUrl('https://eurocholangionet.eu/about-us/')" routerDirection="root">
+            <ion-icon slot="start" name="ribbon"></ion-icon>
+            <ion-label>Action Leaders</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="" (click)="openExternalUrl('https://www.cost.eu/actions/CA18122/#tabs+Name:Management%20Committee')" routerDirection="root">
+            <ion-icon slot="start" name="person-outline"></ion-icon>
+            <ion-label>MC Members</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="" (click)="openExternalUrl('https://www.cost.eu/actions/CA18122/#tabs+Name:Working%20Groups%20and%20Membership')" routerDirection="root">
+            <ion-icon slot="start" name="git-network"></ion-icon>
+            <ion-label>Working Groups</ion-label>
           </ion-item>
         </ion-menu-toggle>
 
@@ -157,7 +157,7 @@
       <ion-menu-toggle autoHide="false">
         <ion-item routerLink="/app/tabs/tourpages" routerDirection="root">
           <ion-icon slot="start" name="bus"></ion-icon>
-          <ion-label>Local Tours</ion-label>
+          <ion-label>Excursions</ion-label>
         </ion-item>
       </ion-menu-toggle>
 
@@ -171,7 +171,7 @@
       <ion-menu-toggle autoHide="false">
         <ion-item routerLink="" (click)="loadInfoPage('eventphotos')" routerDirection="root">
           <ion-icon slot="start" name="images"></ion-icon>
-          <ion-label>Action Photos/Videos</ion-label>
+          <ion-label>Training School Photos</ion-label>
         </ion-item>
       </ion-menu-toggle>
 

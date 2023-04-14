@@ -24,11 +24,11 @@
                   <img *ngIf="!speaker.prof_img" src="/assets/img/avatar.png" alt="">
                 </ion-avatar>
                 {{speaker.fname}} {{speaker.lname}}
-
               </ion-item>
-              <ion-col class="ion-padding-start">
-              {{speaker.org}}
-              </ion-col>
+              <ion-list class="ion-padding-start">
+                <div>{{speaker.desgn}}</div>
+                <div>{{speaker.org}}</div>
+              </ion-list>
               <ion-list class="speaker-capacity ion-padding-start">
                 <div *ngFor="let capacity of speaker.capacity">
                   {{capacity.title}}
@@ -41,13 +41,11 @@
               </ion-list>
             </ion-card-header>
 
-
-              <ion-label>
-                <ion-item *ngFor="let session of speaker.sessions" routerLink="/app/tabs/people/session/{{session.id}}">
-                  <h3><ion-icon name="mic" slot="start"></ion-icon>&nbsp;{{session.title}}</h3>
-                </ion-item>
-              </ion-label>
-
+            <ion-label>
+              <ion-item *ngFor="let session of speaker.sessions" routerLink="/app/tabs/people/session/{{session.id}}">
+                <h3><ion-icon name="mic" slot="start"></ion-icon>&nbsp;{{session.title}}</h3>
+              </ion-item>
+            </ion-label>
 
             <ion-row class="ion-no-padding ion-justify-content-center social" >
               <ion-col size="4" class="ion-text-left">

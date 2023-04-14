@@ -4,6 +4,7 @@ import { ActionSheetController, AlertController, Platform } from '@ionic/angular
 import { Component } from '@angular/core';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
+import { Router } from '@angular/router';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
@@ -31,7 +32,8 @@ export class SessionDetailPage {
     public alertController: AlertController,
     public socialsharing: SocialSharing,
     public plt: Platform,
-    public file: File
+    public file: File,
+    private router: Router
 
   ) {}
   sessionClick(item: string) {
@@ -219,9 +221,39 @@ export class SessionDetailPage {
         });
         await alert.present();
       } else {
-        window.open(file[0].fileUrl, '_system', 'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
+        // restrict access
+        this.userProvider.isLoggedIn().then((value)=>{
+          if(!value){
+            this.user_not_loggedin();
+          }else{
+            window.open(file[0].fileUrl, '_system', 'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
+          }
+        });
       }
     });
+  }
+
+  async user_not_loggedin(){
+    const alert = await this.alertController.create({
+      header: 'Info',
+      message: 'You must login to gain access',
+      buttons: [
+        {
+        text: 'Login',
+        handler: () => {
+          console.log('Not logged in');
+          this.router.navigate(['/login']);
+          }
+        },
+        {
+        text: 'Cancel',
+        handler: () => {
+          alert.dismiss();
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   createCalendar(session) {
