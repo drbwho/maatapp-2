@@ -345,6 +345,10 @@ export class AppComponent implements OnInit {
     );
   }
 
+  openConfLink(){
+    this.openExternalUrl('https://twitter.com/' + this.confdata.data.info[0].twitter);
+  }
+
   async user_not_loggedin(){
     const alert = await this.alertController.create({
       header: 'Info',
