@@ -6,3 +6,25 @@ replace:
 source="$(readlink "${source}")"
 with:
 source="$(readlink -f "${source}")"
+
+
+
+Add to info.plist
+
+<key>NSCalendarsUsageDescription</key>
+<string>Conference App would like to create a calendar event</string>
+<key>CFBundleLocalizations</key>
+<array>
+  <string>en</string>
+  <string>de</string>
+  <string>nl</string>
+  <string>fr</string>
+  <string>it</string>
+  <string>pt-BR</string>
+</array>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Conference App need to access device photo library</string>
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>Conference App needs to add photos to device library</string>
+<key>NSContactsUsageDescription</key>
+<string>Conference App need to access contacts if you like to communicate with participants</string>

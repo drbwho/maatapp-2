@@ -139,14 +139,14 @@ export class PeoplePage {
           text: `Email ( ${speaker.mail} )`,
           icon: mode !== 'ios' ? 'mail' : null,
           handler: () => {
-            window.open('mailto:' + speaker.mail, '_system');
+            this.inAppBrowser.create('mailto:' + speaker.mail, '_system');
           }
         },
         {
           text: `Call ( ${speaker.phone} )`,
           icon: mode !== 'ios' ? 'call' : null,
           handler: () => {
-            window.open('tel:' + speaker.phone);
+            this.inAppBrowser.create('tel:' + speaker.phone);
           }
         }
       ]
