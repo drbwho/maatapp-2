@@ -65,7 +65,7 @@ export class PeoplePage {
       header: 'Share ' + speaker.fname + speaker.lname,
       buttons: [
         {
-          text: 'Copy Link',
+          text: 'Copy Twitter Link',
           handler: () => {
             console.log(
               'Copy link clicked on https://twitter.com/' + speaker.twitter
@@ -133,7 +133,7 @@ export class PeoplePage {
     const mode = 'ios'; // this.config.get('mode');
 
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Contact ' + speaker.name,
+      header: 'Contact ' + speaker.fname + ' ' + speaker.lname,
       buttons: [
         {
           text: `Email ( ${speaker.mail} )`,
@@ -146,7 +146,9 @@ export class PeoplePage {
           text: `Call ( ${speaker.phone} )`,
           icon: mode !== 'ios' ? 'call' : null,
           handler: () => {
-            this.inAppBrowser.create('tel:' + speaker.phone);
+            if(speaker.phone){
+              this.inAppBrowser.create('tel:' + speaker.phone);
+            }
           }
         }
       ]

@@ -100,7 +100,7 @@ export class SessionDetailPage {
       header: 'Share ' + speaker.fname + speaker.lname,
       buttons: [
         {
-          text: 'Copy Link',
+          text: 'Copy Twitter Link',
           handler: () => {
             console.log(
               'Copy link clicked on https://twitter.com/' + speaker.twitter
@@ -168,7 +168,7 @@ export class SessionDetailPage {
     const mode = 'ios'; // this.config.get('mode');
 
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Contact ' + speaker.fname + speaker.lname,
+      header: 'Contact ' + speaker.fname + ' ' + speaker.lname,
       buttons: [
         {
           text: `Email ( ${speaker.mail} )`,
@@ -181,7 +181,9 @@ export class SessionDetailPage {
           text: `Call ( ${speaker.phone} )`,
           icon: mode !== 'ios' ? 'call' : null,
           handler: () => {
-            this.inAppBrowser.create('tel:' + speaker.phone);
+            if(speaker.phone){
+              this.inAppBrowser.create('tel:' + speaker.phone);
+            }
           }
         }
       ]
