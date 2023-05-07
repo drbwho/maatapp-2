@@ -54,7 +54,7 @@ export class InfoPage implements OnInit {
                 this.infotitle = 'Event Photos / Videos';
                 break;
             case 'bookofabstracts':
-                this.infotitle = 'Book of Abstracts / Posters';
+                this.infotitle = 'Book of Abstracts / Slides';
                 this.infoimage = 'assets/img/abstracts.png';
                 break;
             default :

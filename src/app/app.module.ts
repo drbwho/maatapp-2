@@ -1,4 +1,3 @@
-import { File } from '@awesome-cordova-plugins/file/ngx';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { PhotoViewer } from '@awesome-cordova-plugins/photo-viewer/ngx';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,7 +12,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { Network } from '@awesome-cordova-plugins/network/ngx';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
 // import { FCM } from '@ionic-native/fcm/ngx';
@@ -37,7 +35,7 @@ enableProdMode();
         }),
     ],
     declarations: [AppComponent, ImageViewerComponent],
-    providers: [InAppBrowser, PhotoViewer, Network, Calendar, SocialSharing, File, Storage],
+    providers: [InAppBrowser, PhotoViewer, Calendar, SocialSharing, Storage],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

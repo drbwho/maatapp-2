@@ -3,7 +3,6 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { ActionSheetController, AlertController, Platform } from '@ionic/angular';
 import { Component } from '@angular/core';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
-import { File } from '@awesome-cordova-plugins/file/ngx';
 import { Router } from '@angular/router';
 
 import { ConferenceData } from '../../providers/conference-data';
@@ -32,7 +31,6 @@ export class SessionDetailPage {
     public alertController: AlertController,
     public socialsharing: SocialSharing,
     public plt: Platform,
-    public file: File,
     private router: Router
 
   ) {}

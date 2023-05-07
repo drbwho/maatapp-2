@@ -9,7 +9,7 @@ import { MenuController, Platform, ToastController, AlertController, LoadingCont
 
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
-import { Network } from '@awesome-cordova-plugins/network/ngx';
+import { Network } from '@capacitor/network';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 // import { FCM } from '@ionic-native/fcm/ngx';
 
@@ -66,7 +66,6 @@ export class AppComponent implements OnInit {
     private confdata: ConferenceData,
     private newsdata: NewsData,
     private config: ConfigData,
-    private network: Network,
     private toast: ToastController,
     private inAppBrowser: InAppBrowser
     // private fcm: FCM
@@ -301,8 +300,26 @@ export class AppComponent implements OnInit {
 
   listenNetworkConnectionEvents() {
     // watch network for a disconnection
+
+    Network.addListener('networkStatusChange', async status => {
+      console.log('Network status changed', status);
+      if(status.connected){
+        const toast = await this.toast.create({
+          message: 'Network Connected!',
+          duration: 2000
+        });
+        toast.present();
+      }else{
+        const toast = await this.toast.create({
+          message: 'Network disconnected...',
+          duration: 2000
+        });
+        toast.present();
+      }
+    });
+
     // let disconnectSubscription =
-    this.network.onDisconnect().subscribe(async () => {
+   /* Network.onDisconnect().subscribe(async () => {
       console.log('network was disconnected :-(');
       const toast = await this.toast.create({
         message: 'Network disconnected...',
@@ -332,7 +349,7 @@ export class AppComponent implements OnInit {
           toast.present();
         }
       }, 3000);
-    });
+    });*/
 
     // stop connect watch
     // connectSubscription.unsubscribe();
