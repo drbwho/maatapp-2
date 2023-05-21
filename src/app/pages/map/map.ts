@@ -46,11 +46,20 @@ export class MapPage implements AfterViewInit {
         marker.addListener('click', () => {
           infoWindow.open(map, marker);
         });
+
+        // Create the nav to app button
+        const navControlDiv = document.createElement('div');
+        const navControl = createNavControl(map, markerData.lat, markerData.lng);
+        navControlDiv.appendChild(navControl);
+        map.controls[googleMaps.ControlPosition.BOTTOM_CENTER].push(navControlDiv);
       });
 
       googleMaps.event.addListenerOnce(map, 'idle', () => {
         mapEle.classList.add('show-map');
       });
+
+     
+
     });
   }
 }
@@ -78,4 +87,34 @@ function getGoogleMaps(apiKey: string): Promise<any> {
     };
   });
 }
+
+function createNavControl(map, lat: Number, lng: Number) {
+  const navButton = document.createElement('button');
+
+  // Set CSS for the control.
+  navButton.style.backgroundColor = '#fff';
+  navButton.style.border = '2px solid #fff';
+  navButton.style.borderRadius = '3px';
+  navButton.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+  navButton.style.color = 'rgb(25,25,25)';
+  navButton.style.cursor = 'pointer';
+  navButton.style.fontFamily = 'Roboto,Arial,sans-serif';
+  navButton.style.fontSize = '12px';
+  navButton.style.lineHeight = '32px';
+  navButton.style.margin = '8px 0 22px';
+  navButton.style.padding = '0 3px';
+  navButton.style.textAlign = 'center';
+
+  navButton.textContent = 'Open in Google Maps';
+  navButton.title = 'Click to open in Maps App';
+  navButton.type = 'button';
+
+  // Setup the click event listeners: simply set the map to Chicago.
+  navButton.addEventListener('click', () => {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`);
+  });
+
+  return navButton;
+}
+
 

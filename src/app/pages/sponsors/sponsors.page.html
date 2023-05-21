@@ -13,10 +13,10 @@
     <ion-card-header>
       <img src="{{sponsor.logo}}">
     </ion-card-header>
-    <ion-title class="sponsor-title">
+    <ion-title *ngIf="sponsor.title" class="sponsor-title">
       {{sponsor.title}}
     </ion-title>
-    <ion-card-content [innerHTML]="sponsor.description">
+    <ion-card-content *ngIf="sponsor.description" [innerHTML]="sponsor.description">
     </ion-card-content>
     <ion-card-content>
     <a href="{{sponsor.url}}">{{sponsor.url}}</a>
