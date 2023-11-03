@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ConfigData {
 
-  ENABLE_PUSH_NOTIFICATIONS = false;
+  ENABLE_PUSH_NOTIFICATIONS = true;
 
   API_URL = 'https://bkk-apps.com:8445';
 

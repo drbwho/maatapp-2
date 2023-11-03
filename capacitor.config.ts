@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.bkk.cca22125',
-  appName: 'CCA 22125',
+  appId: 'com.bkk.ca22125',
+  appName: 'CA 22125',
   webDir: 'www',
   cordova: {
     preferences: {

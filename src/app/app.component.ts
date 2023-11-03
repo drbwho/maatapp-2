@@ -12,6 +12,7 @@ import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular
 import { Network } from '@capacitor/network';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { register } from 'swiper/element/bundle';
+import {PushNotifications, Token} from '@capacitor/push-notifications';
 // import { FCM } from '@ionic-native/fcm/ngx';
 
 import { Events } from './providers/events';
@@ -124,6 +125,10 @@ export class AppComponent implements OnInit {
       //this.statusBar.styleDefault();
       SplashScreen.hide();
     });
+
+    if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
+      this.register_push_notifications();
+    }
 
     // firebase push notifications
     /*if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
@@ -390,5 +395,74 @@ export class AppComponent implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  // Register for Push Notifications Events
+  register_push_notifications(){
+    //Request Permissions
+    PushNotifications.requestPermissions().then((permission) => {
+      if (permission.receive === 'granted') {
+        // Register with Apple / Google to receive push via APNS/FCM
+        PushNotifications.register().then();
+      }   else {
+        // No permission for push granted
+      }
+    });
+
+    //Registration in firebase
+    PushNotifications.addListener(
+      'registration',
+      async (token: Token) => {
+        //TODO:THE TOKEN IS RECEIVED AFTER A SUCCESSFUL AUTHENTICATION IS ACHIEVED
+        console.log('My token: ' + JSON.stringify(token));
+      }
+    );
+
+    //Subscribed notifications
+    PushNotifications.addListener(
+      'pushNotificationReceived',
+      async (notification) => {
+        //TODO: THIS IS WHERE THE NOTIFICATION IS CAPTURED (BACKGROUND)
+        console.log('Push received: ' + JSON.stringify(notification));
+      }
+    );
+    /*
+    const addListeners = async () => {
+      await PushNotifications.addListener('registration', token => {
+        console.info('Registration token: ', token.value);
+      });
+
+      await PushNotifications.addListener('registrationError', err => {
+        console.error('Registration error: ', err.error);
+      });
+
+      await PushNotifications.addListener('pushNotificationReceived', notification => {
+        console.log('Push notification received: ', notification);
+      });
+
+      await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
+        console.log('Push notification action performed', notification.actionId, notification.inputValue);
+      });
+    }
+
+    const registerNotifications = async () => {
+      let permStatus = await PushNotifications.checkPermissions();
+
+      if (permStatus.receive === 'prompt') {
+        permStatus = await PushNotifications.requestPermissions();
+      }
+
+      if (permStatus.receive !== 'granted') {
+        throw new Error('User denied permissions!');
+      }
+
+      await PushNotifications.register();
+    }
+
+    const getDeliveredNotifications = async () => {
+      const notificationList = await PushNotifications.getDeliveredNotifications();
+      console.log('delivered notifications', notificationList);
+    }*/
+
   }
 }
