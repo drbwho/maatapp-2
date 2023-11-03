@@ -26,7 +26,7 @@ enableProdMode();
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        IonicModule.forRoot(),
+        IonicModule.forRoot({innerHTMLTemplatesEnabled: true}),
         IonicStorageModule.forRoot({
             name: '_cca22125Db',
             driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
