@@ -11,10 +11,6 @@ export class ImageViewerComponent implements OnInit {
   @Input() imgTitle = '';
   @Input() imgDescription = '';
 
-  slideOpts = {
-    centeredSlides: 'true'
-  };
-
   constructor(private modalController: ModalController) {}
 
   ngOnInit() {}

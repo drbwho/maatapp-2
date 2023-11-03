@@ -14,6 +14,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 // import { FCM } from '@ionic-native/fcm/ngx';
 
 import {enableProdMode} from '@angular/core';
@@ -27,13 +28,14 @@ enableProdMode();
         HttpClientModule,
         IonicModule.forRoot(),
         IonicStorageModule.forRoot({
-            name: '_cca2023Db',
+            name: '_cca22125Db',
             driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production
         }),
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [AppComponent, ImageViewerComponent],
     providers: [InAppBrowser, PhotoViewer, Calendar, SocialSharing, Storage],
     bootstrap: [AppComponent]

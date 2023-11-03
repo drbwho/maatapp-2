@@ -8,11 +8,11 @@
 </ion-header>
 
 <ion-content [forceOverscroll]="false" color="dark" fullscreen="true">
-  <ion-slides [options]="slideOpts">
-    <ion-slide>
+  <swiper-container [centeredSlides="true">
+    <swiper-slide>
       <div class="swiper-zoom-container"><img [src]="imgSource" height="100vh" /></div>
-    </ion-slide>
-  </ion-slides>
+    </swiper-slide>
+  </swiper-container>
 </ion-content>
 
 <ion-footer *ngIf="imgDescription.length">

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">CCA TS 2023</string>
-    <string name="title_activity_main">CCA TS 2023</string>
-    <string name="package_name">com.bkk.cca2023</string>
-    <string name="custom_url_scheme">com.bkk.cca2023</string>
+    <string name="app_name">CCA 22125</string>
+    <string name="title_activity_main">CCA 22125</string>
+    <string name="package_name">com.bkk.cca22125</string>
+    <string name="custom_url_scheme">com.bkk.cca22125</string>
 </resources>

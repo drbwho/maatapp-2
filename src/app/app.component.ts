@@ -11,11 +11,14 @@ import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Network } from '@capacitor/network';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { register } from 'swiper/element/bundle';
 // import { FCM } from '@ionic-native/fcm/ngx';
 
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
+
+register();
 
 @Component({
   selector: 'app-root',
