@@ -15,11 +15,6 @@ export class NotificationsPage {
 
   async getParams() {
     this.message = JSON.parse(this.route.snapshot.paramMap.get('data'));
-   /*this.route.queryParams.subscribe(params => {
-    if (params && params.special) {
-      this.message = JSON.parse(params.special);
-    }
-   });*/
   }
 
 }

@@ -13,7 +13,16 @@ import { Network } from '@capacitor/network';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { register } from 'swiper/element/bundle';
 import {PushNotifications, Token} from '@capacitor/push-notifications';
-// import { FCM } from '@ionic-native/fcm/ngx';
+
+// For Web push notifications
+import { Capacitor } from "@capacitor/core";
+import { environment } from "../environments/environment";
+import { initializeApp } from "firebase/app";
+import {
+  FirebaseMessaging,
+  GetTokenOptions,
+} from "@capacitor-firebase/messaging";
+
 
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
@@ -72,7 +81,6 @@ export class AppComponent implements OnInit {
     private config: ConfigData,
     private toast: ToastController,
     private inAppBrowser: InAppBrowser
-    // private fcm: FCM
   ) {
     this.initializeApp();
   }
@@ -127,7 +135,13 @@ export class AppComponent implements OnInit {
     });
 
     if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
-      this.register_push_notifications();
+      if (Capacitor.isNativePlatform()) {
+        console.log('Native platform');
+        this.register_native_push_notifications();
+      }else{
+        console.log('Web platform');
+        this.register_web_push_notifications();
+      }
     }
 
     // firebase push notifications
@@ -230,7 +244,6 @@ export class AppComponent implements OnInit {
                             }, 3000);
                             this.storage.set(this.config.JSON_FILE, data).then(()=>{
                               this.confdata.processData(data);
-                              //window.location.reload();
                             });
                           }
                         }
@@ -250,7 +263,6 @@ export class AppComponent implements OnInit {
                 }, 3000);
                 this.storage.set(this.config.JSON_FILE, data).then(()=>{
                   this.confdata.processData(data);
-                  //window.location.reload();
                 });
               }
             },
@@ -397,72 +409,86 @@ export class AppComponent implements OnInit {
     await alert.present();
   }
 
-  // Register for Push Notifications Events
-  register_push_notifications(){
-    //Request Permissions
-    PushNotifications.requestPermissions().then((permission) => {
-      if (permission.receive === 'granted') {
-        // Register with Apple / Google to receive push via APNS/FCM
-        PushNotifications.register().then();
-      }   else {
-        // No permission for push granted
+  receive_notification(notification){
+    this.router.navigate(['/app/tabs/notifications', JSON.stringify({title: notification.title, body: notification.body})]);
+  }
+
+  // Register Firebase Push Notifications for Web 
+  public async register_web_push_notifications(): Promise<void> {
+    initializeApp(environment.firebase);
+
+    this.getToken().then((token)=>{
+      console.log('Token: '+ token);
+    })
+
+    FirebaseMessaging.addListener("notificationReceived", (event) => {
+      console.log("notificationReceived: ", { event });
+    });
+    FirebaseMessaging.addListener("notificationActionPerformed", (event) => {
+      console.log("notificationActionPerformed: ", { event });
+    });
+    navigator.serviceWorker.addEventListener("message", (event: any) => {
+      console.log("serviceWorker message: ", { event });
+      const notification = new Notification(event.data.notification.title, {
+        body: event.data.notification.body,
+      });
+      notification.onclick = (event) => {
+        console.log("notification clicked: ", { event });
+        this.receive_notification(notification);
+      };
+    });
+  }
+
+  public async requestPermissions(): Promise<void> {
+    await FirebaseMessaging.requestPermissions();
+  }
+
+  public async getToken(): Promise<string> {
+    const options: GetTokenOptions = {
+      vapidKey: environment.firebase.vapidKey,
+    };
+    options.serviceWorkerRegistration =
+      await navigator.serviceWorker.register("firebase-messaging-sw.js");
+    
+    const { token } = await FirebaseMessaging.getToken(options);
+    return token;
+  }
+
+  // Register Native Push Notifications 
+  public async register_native_push_notifications(){ 
+
+    PushNotifications.addListener('registration', token => {
+      console.info('Registration token: ', token.value);
+    });
+
+    PushNotifications.addListener('registrationError', err => {
+      console.error('Registration error: ', err.error);
+    });
+
+    PushNotifications.addListener('pushNotificationReceived', notification => {
+      console.log('Push notification received: ', notification);
+      this.receive_notification(notification);
+    });
+
+    PushNotifications.addListener('pushNotificationActionPerformed', notification => {
+      console.log('Push notification action performed: ', notification.actionId, notification);
+      
+    });
+
+    // Check permissions
+    //let permStatus = await PushNotifications.checkPermissions();
+    PushNotifications.requestPermissions().then(permStatus => {
+      if (permStatus.receive === 'granted') {
+        PushNotifications.register();
+      }else{
+        throw new Error('User denied permissions!');
       }
     });
 
-    //Registration in firebase
-    PushNotifications.addListener(
-      'registration',
-      async (token: Token) => {
-        //TODO:THE TOKEN IS RECEIVED AFTER A SUCCESSFUL AUTHENTICATION IS ACHIEVED
-        console.log('My token: ' + JSON.stringify(token));
-      }
-    );
-
-    //Subscribed notifications
-    PushNotifications.addListener(
-      'pushNotificationReceived',
-      async (notification) => {
-        //TODO: THIS IS WHERE THE NOTIFICATION IS CAPTURED (BACKGROUND)
-        console.log('Push received: ' + JSON.stringify(notification));
-      }
-    );
-    /*
-    const addListeners = async () => {
-      await PushNotifications.addListener('registration', token => {
-        console.info('Registration token: ', token.value);
-      });
-
-      await PushNotifications.addListener('registrationError', err => {
-        console.error('Registration error: ', err.error);
-      });
-
-      await PushNotifications.addListener('pushNotificationReceived', notification => {
-        console.log('Push notification received: ', notification);
-      });
-
-      await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
-        console.log('Push notification action performed', notification.actionId, notification.inputValue);
-      });
-    }
-
-    const registerNotifications = async () => {
-      let permStatus = await PushNotifications.checkPermissions();
-
-      if (permStatus.receive === 'prompt') {
-        permStatus = await PushNotifications.requestPermissions();
-      }
-
-      if (permStatus.receive !== 'granted') {
-        throw new Error('User denied permissions!');
-      }
-
-      await PushNotifications.register();
-    }
-
-    const getDeliveredNotifications = async () => {
-      const notificationList = await PushNotifications.getDeliveredNotifications();
-      console.log('delivered notifications', notificationList);
-    }*/
-
+    PushNotifications.getDeliveredNotifications().then(notificationList => {
+        console.log('delivered notifications', notificationList);
+    });
+      
   }
+
 }

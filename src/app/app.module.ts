@@ -33,7 +33,7 @@ enableProdMode();
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production
-        }),
+        })
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [AppComponent, ImageViewerComponent],
