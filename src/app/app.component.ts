@@ -12,7 +12,7 @@ import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular
 import { Network } from '@capacitor/network';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { register } from 'swiper/element/bundle';
-import {PushNotifications, Token} from '@capacitor/push-notifications';
+import {ActionPerformed, PushNotifications, PushNotificationSchema, Token} from '@capacitor/push-notifications';
 
 // For Web push notifications
 import { Capacitor } from "@capacitor/core";
@@ -457,38 +457,35 @@ export class AppComponent implements OnInit {
   // Register Native Push Notifications 
   public async register_native_push_notifications(){ 
 
-    PushNotifications.addListener('registration', token => {
+    await PushNotifications.addListener('registration', (token: Token) => {
       console.info('Registration token: ', token.value);
     });
 
-    PushNotifications.addListener('registrationError', err => {
+    await PushNotifications.addListener('registrationError', err => {
       console.error('Registration error: ', err.error);
     });
 
-    PushNotifications.addListener('pushNotificationReceived', notification => {
+    await PushNotifications.addListener('pushNotificationReceived', (notification: PushNotificationSchema) => {
       console.log('Push notification received: ', notification);
       this.receive_notification(notification);
     });
 
-    PushNotifications.addListener('pushNotificationActionPerformed', notification => {
-      console.log('Push notification action performed: ', notification.actionId, notification);
-      
+    await PushNotifications.addListener('pushNotificationActionPerformed', (action: ActionPerformed) => {
+      console.log('Push notification action performed: ', action.actionId, action.notification);
+      // IMPORTANT: Message body and title must by passed as extra payload (key-value).
+      // Notification title and body are not accessible by capacitor app in background
+      this.receive_notification(action.notification.data);
     });
 
     // Check permissions
     //let permStatus = await PushNotifications.checkPermissions();
-    PushNotifications.requestPermissions().then(permStatus => {
+    await PushNotifications.requestPermissions().then(permStatus => {
       if (permStatus.receive === 'granted') {
         PushNotifications.register();
       }else{
         throw new Error('User denied permissions!');
       }
     });
-
-    PushNotifications.getDeliveredNotifications().then(notificationList => {
-        console.log('delivered notifications', notificationList);
-    });
-      
   }
 
 }

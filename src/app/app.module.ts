@@ -15,7 +15,6 @@ import { environment } from '../environments/environment';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-// import { FCM } from '@ionic-native/fcm/ngx';
 
 import {enableProdMode} from '@angular/core';
 
