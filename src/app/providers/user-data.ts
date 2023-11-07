@@ -10,7 +10,6 @@ export class UserData {
   FAVOURITES_FILE = 'FAVOURITES_FILE';
   USER_FILE = 'USER_FILE';
   HAS_LOGGED_IN = 'hasLoggedIn';
-  HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
   user: any;
 
   constructor(
@@ -84,9 +83,4 @@ export class UserData {
     });
   }
 
-  checkHasSeenTutorial(): Promise<string> {
-    return this.storage.get(this.HAS_SEEN_TUTORIAL).then((value) => {
-      return value;
-    });
-  }
 }
