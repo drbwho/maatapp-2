@@ -14,6 +14,8 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { register } from 'swiper/element/bundle';
 import {ActionPerformed, PushNotifications, PushNotificationSchema, Token} from '@capacitor/push-notifications';
 
+const { client, xml, jid } = require("@xmpp/client");
+
 // For Web push notifications
 import { Capacitor } from "@capacitor/core";
 import { environment } from "../environments/environment";
@@ -143,6 +145,46 @@ export class AppComponent implements OnInit {
         this.register_web_push_notifications();
       }
     }
+
+const xmpp = client({
+  service: "ws://bkk-apps.com:8880/chat/sergio/pass",
+  domain: "bkk-apps.com",
+  resource: "example",
+  username: "admin",
+  password: "admin",
+});
+
+console.log(xmpp);
+
+xmpp.on("offline", () => {
+  console.log("offline");
+});
+
+xmpp.on("offline", () => {
+  console.log("offline");
+});
+
+xmpp.on("stanza", async (stanza) => {
+  if (stanza.is("message")) {
+    await xmpp.send(xml("presence", { type: "unavailable" }));
+    await xmpp.stop();
+  }
+});
+
+xmpp.on("online", async (address) => {
+  // Makes itself available
+  await xmpp.send(xml("presence"));
+
+  // Sends a chat message to itself
+  const message = xml(
+    "message",
+    { type: "chat", to: address },
+    xml("body", {}, "hello world"),
+  );
+  await xmpp.send(message);
+});
+
+xmpp.start().catch(console.error);
 
     // firebase push notifications
     /*if (this.config.ENABLE_PUSH_NOTIFICATIONS) {

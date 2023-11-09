@@ -13,6 +13,6 @@ importScripts(
     messagingSenderId: "572032181108",
     appId: "1:572032181108:web:91bd1de0b2faae45a08221",
     measurementId: "G-NY3F251GST",
-    vapidKey: "BH05POf03nAmW3rgBsDny6u8_vs_AmZD3dY9n_BLqRjs9KEYmeoEihs7FaircgRjaTYkL1guXkFBqQ-TV1uwjJU"
+    vapidKey: "BDkUEUZot6FaMtQkObl7CnXG4LRv4Bm7EaqyTvVfDW4vC1PYU40PGAxrLnmlQexhyew3WIlXpEAf5D-dsLZ88U4"
   });
   const messaging = firebase.messaging();
