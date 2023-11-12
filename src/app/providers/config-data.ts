@@ -8,6 +8,7 @@ export class ConfigData {
   ENABLE_PUSH_NOTIFICATIONS = true;
 
   API_URL = 'https://bkk-apps.com:8445';
+  CHAT_HOST = 'chat.bkk-apps.com';
 
   JSON_FILE = 'JSON_FILE';
   API_JSONFILE_VERSION = this.API_URL + '/cod-mobile/json-version';

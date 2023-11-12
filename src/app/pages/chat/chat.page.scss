@@ -1,0 +1,36 @@
+.message {
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+    white-space: pre-wrap;
+  }
+   
+  .my-message {
+    background: #D8EBFF;
+    color: #333232;
+  }
+   
+  .other-message {
+    background: #EFEFEF;
+    color: #333232;
+  }
+   
+  .createdAt {
+    color: #BFA7A7;
+    float: right;
+    font-size: small;
+  }
+   
+  .inputBox {
+    margin-top: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    background: #fff;
+    --padding-top: 13px !important;
+    --padding-start: 5px;
+  }
+   
+  .sendBtn {
+    --padding-start: 0.5em;
+    --padding-end: 0.5em;
+  }

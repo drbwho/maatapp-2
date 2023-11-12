@@ -145,6 +145,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'chat',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../chat/chat.module').then(m => m.ChatPageModule)
+          }
+        ]
+      },
+      {
         path: 'tweets',
         children: [
           {

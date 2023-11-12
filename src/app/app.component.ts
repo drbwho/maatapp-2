@@ -14,8 +14,6 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { register } from 'swiper/element/bundle';
 import {ActionPerformed, PushNotifications, PushNotificationSchema, Token} from '@capacitor/push-notifications';
 
-const { client, xml, jid } = require("@xmpp/client");
-
 // For Web push notifications
 import { Capacitor } from "@capacitor/core";
 import { environment } from "../environments/environment";
@@ -25,10 +23,10 @@ import {
   GetTokenOptions,
 } from "@capacitor-firebase/messaging";
 
-
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
+import { ChatService } from './providers/chat-service';
 
 register();
 
@@ -65,6 +63,7 @@ export class AppComponent implements OnInit {
   ];
   loggedIn = false;
   hasUnreadNews = false;
+  hasUnreadChat = false;
 
   constructor(
     private events: Events,
@@ -82,7 +81,8 @@ export class AppComponent implements OnInit {
     private newsdata: NewsData,
     private config: ConfigData,
     private toast: ToastController,
-    private inAppBrowser: InAppBrowser
+    private inAppBrowser: InAppBrowser,
+    private chatService: ChatService
   ) {
     this.initializeApp();
   }
@@ -146,45 +146,8 @@ export class AppComponent implements OnInit {
       }
     }
 
-const xmpp = client({
-  service: "ws://bkk-apps.com:8880/chat/sergio/pass",
-  domain: "bkk-apps.com",
-  resource: "example",
-  username: "admin",
-  password: "admin",
-});
-
-console.log(xmpp);
-
-xmpp.on("offline", () => {
-  console.log("offline");
-});
-
-xmpp.on("offline", () => {
-  console.log("offline");
-});
-
-xmpp.on("stanza", async (stanza) => {
-  if (stanza.is("message")) {
-    await xmpp.send(xml("presence", { type: "unavailable" }));
-    await xmpp.stop();
-  }
-});
-
-xmpp.on("online", async (address) => {
-  // Makes itself available
-  await xmpp.send(xml("presence"));
-
-  // Sends a chat message to itself
-  const message = xml(
-    "message",
-    { type: "chat", to: address },
-    xml("body", {}, "hello world"),
-  );
-  await xmpp.send(message);
-});
-
-xmpp.start().catch(console.error);
+    // Connect to Chat Service
+    this.chatService.connectChat();
 
     // firebase push notifications
     /*if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
@@ -455,12 +418,14 @@ xmpp.start().catch(console.error);
     this.router.navigate(['/app/tabs/notifications', JSON.stringify({title: notification.title, body: notification.body})]);
   }
 
+
   // Register Firebase Push Notifications for Web 
   public async register_web_push_notifications(): Promise<void> {
     initializeApp(environment.firebase);
 
     this.getToken().then((token)=>{
       console.log('Token: '+ token);
+      this.chatService.chatPushToken = token;
     })
 
     FirebaseMessaging.addListener("notificationReceived", (event) => {
@@ -501,6 +466,7 @@ xmpp.start().catch(console.error);
 
     await PushNotifications.addListener('registration', (token: Token) => {
       console.info('Registration token: ', token.value);
+      this.chatService.chatPushToken = token.value;
     });
 
     await PushNotifications.addListener('registrationError', err => {
