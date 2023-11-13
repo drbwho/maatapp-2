@@ -4,15 +4,18 @@ import { ConfigData } from './config-data';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Events } from './events';
 
-interface ChatMessage {
-  content?: any,
-  roomdata?: any
-}
-
-interface MessageType {
+export interface ChatMessage {
   user?: string
   msg?: string
   createdAt?: string
+  room?: ChatRoom
+}
+
+export interface ChatRoom {
+  rid?: string,
+  name?: string
+  type?: string,
+  users?: string[]
 }
 
 @Injectable({
@@ -26,6 +29,8 @@ export class ChatService {
   chatUserId='';
   chatUserToken='';
   chatUser='';
+  chatRooms: ChatRoom[] = [];
+  currentChatRoom: ChatRoom = null;
 
   user = 'bill';
   pass = '24172417';
@@ -55,20 +60,30 @@ export class ChatService {
             this.setUserStatus('online');
             this.subscribeToMessages();
             if(this.chatPushToken) this.updatePushToken();
+            this.getMyRooms();
           }
         }},
       (err) => console.log('Login Error:', err));
   }
   
+  // Subscribe to message updates
   subscribeToMessages(){
     this.chatService.subscribe(
       (message: any) => {
         console.log('Message: ', message);
         if(message.msg = "changed" && message.collection == "stream-room-messages"){
           const msg: ChatMessage = {};
-          msg.content = message.fields.args[0];
-          msg.roomdata = message.fields.args[1];
-          this.events.publish('chat:newmessage', msg);
+          //msg.roomdata = message.fields.args[1];
+          msg.msg = message.fields.args[0].msg;
+          msg.user = message.fields.args[0].u.username;
+          msg.createdAt = message.fields.args[0]._updatedAt.$date;
+          msg.room = {};
+          msg.room.rid = message.fields.args[0].rid;
+          msg.room.type = message.fields.args[1].roomType;
+          msg.room.name = message.fields.args[1].roomName;
+          if(msg.room.rid ==  this.currentChatRoom.rid){
+            this.events.publish('chat:newmessage', msg);
+          }
         }
       },
       (err) => console.log('Error:', err),
@@ -103,17 +118,45 @@ export class ChatService {
     });
   }
 
-  // Send message
-  sendMessage(message: string){
+  // Send chat message
+  sendMessage(message: string, roomId: string){
     this.chatService.callMethod("sendMessage",{
         _id: this.makeid(18),
-        rid: "GENERAL",
+        rid: roomId,
         msg: message
     }).subscribe(
       (data) => {
         console.log('Sendmsg: ', data)},
       (err) => console.log('Error:' +err),
       () => console.log('completed'));
+  }
+
+  // Get rooms user belongs to
+  getMyRooms(){
+    this.chatService.callMethod("rooms/get",{
+      "id": this.makeid(18),
+      "params": [0]
+    }).subscribe(
+    (data) => {
+      this.chatRooms = [];
+      data.result.forEach((rm: any)=>{
+        var room: ChatRoom = {};
+        room.rid = rm._id;
+        room.name = (rm.name ? rm.name : rm.fname);
+        room.type = rm.t;
+        if(rm.t == 'd'){
+          room.users = rm.usernames
+          room.name = room.users.join('-');
+        }
+        this.chatRooms.push(room);
+        // set default room
+        if(!this.currentChatRoom){
+          this.currentChatRoom = { rid:"GENERAL", name: "general"}
+        }
+      });
+    },
+    (err) => console.log('Error:' +err),
+    () => console.log('completed'));
   }
 
   updatePushToken(){
@@ -147,19 +190,19 @@ export class ChatService {
     return new Promise((resolve, reject) => {
       this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/method.call/loadHistory',
           {message: `{"msg": "method","method": "loadHistory","id":"` + this.makeid(3, true) +`",
-          "params": ["GENERAL",null,50,null, false]}`},
+          "params": ["` + this.currentChatRoom.rid + `",null,50,null, false]}`},
           {headers: headers})
         .subscribe({
           next: (data: any)=>{ 
-            var map: MessageType[]=[]; 
+            var map: ChatMessage[]=[]; 
             JSON.parse(data.message).result.messages.forEach((msg: any) => {
-              var mes: MessageType={};
-              mes.msg = msg.msg;
-              mes.user = msg.u.username;
-              mes.createdAt = msg.ts.$date;
-              map.push(mes);
+              map.push({
+                msg: msg.msg,
+                user: msg.u.username,
+                createdAt: msg.ts.$date
+              });
             });
-            resolve(map);
+            resolve(map.sort((objA, objB) => Number(objA.createdAt) - Number(objB.createdAt))); //descending
           },
           error: (error)=>console.log(error)});
     });

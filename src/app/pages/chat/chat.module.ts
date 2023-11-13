@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ChatPageRoutingModule } from './chat-routing.module';
-
+import { ChatroomFilterPage } from '../chatroom-filter/chatroom-filter';
 import { ChatPage } from './chat.page';
 
 @NgModule({
@@ -15,6 +15,6 @@ import { ChatPage } from './chat.page';
     IonicModule,
     ChatPageRoutingModule
   ],
-  declarations: [ChatPage]
+  declarations: [ChatPage, ChatroomFilterPage]
 })
 export class ChatPageModule {}

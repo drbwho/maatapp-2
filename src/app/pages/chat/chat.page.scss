@@ -13,6 +13,8 @@
   .other-message {
     background: #EFEFEF;
     color: #333232;
+    float: left;
+    margin-left: 5px;
   }
    
   .createdAt {
@@ -33,4 +35,14 @@
   .sendBtn {
     --padding-start: 0.5em;
     --padding-end: 0.5em;
+  }
+
+  .message-avatar {
+    float: left;
+    width: 40px;
+  }
+
+  .message-avatar img {
+    width: 40px;
+    height: auto;
   }

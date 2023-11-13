@@ -1,22 +1,50 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>
-      Chat Room
+      Chat Rooms
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="presentFilter()">
+        <ion-icon slot="icon-only" name="options"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
-  <ion-list-header color="success">
-    <strong>Congress Chat Service</strong>
-  </ion-list-header>
+ 
+  <ion-list>
+    <ion-item>
+      <div slot="start">
+      Current Room: &nbsp;
+      </div>
+      <div slot="end">
+       <strong>
+        <ion-select interface="popover" [(ngModel)]="currentRoom" (ionChange)="roomChange($event)" placeholder="Select Room">
+          <ion-select-option *ngFor="let room of chatRooms"
+                    [value]="room.rid">{{room.name}}</ion-select-option>
+        </ion-select>
+       </strong>
+      </div>
+    </ion-item>
+  </ion-list>
 </ion-header>
  
 <ion-content [fullscreen]="true" #scrollElement>
   <ion-grid>
     <ion-row *ngFor="let message of messages">
  
-      <ion-col size="9" *ngIf="message.user !== currentUser" class="message other-message">
+      <ion-col size="9" *ngIf="message.user !== currentUser" >
+        <div class="message-avatar">
+        <ion-avatar style="float:left">
+          <img src="/assets/img/avatar.png" alt="">
+        </ion-avatar>
+        </div>
+        <div class="message other-message">
         <b>{{ message.user }}</b><br>
         <span>{{ message.msg }}</span>
         <div class="createdAt" text-right><br>{{ message.createdAt | date:'short' }}</div>
+      </div>
       </ion-col>
  
       <ion-col offset="3" size="9" *ngIf="message.user === currentUser" class="message my-message">
