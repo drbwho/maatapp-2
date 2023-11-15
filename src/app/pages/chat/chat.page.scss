@@ -10,11 +10,18 @@
     color: #333232;
   }
    
+  .other-message-row {
+    --ion-grid-padding: 0px;
+    --padding-start: 0px;
+    --ion-grid-column-padding: 0px;
+  }
   .other-message {
     background: #EFEFEF;
     color: #333232;
-    float: left;
-    margin-left: 5px;
+  }
+  .chat-user {
+    color:#8089E3;
+    font-weight: bold;
   }
    
   .createdAt {
@@ -37,8 +44,7 @@
     --padding-end: 0.5em;
   }
 
-  .message-avatar {
-    float: left;
+  .message-avatar ion-avatar {
     width: 40px;
   }
 

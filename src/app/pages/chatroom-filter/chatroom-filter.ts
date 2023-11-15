@@ -1,4 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { ChatService } from '../../providers/chat-service';
 
 @Component({
   selector: 'app-chatroom-filter',
@@ -7,11 +9,35 @@ import { AfterViewInit, Component } from '@angular/core';
 })
 export class ChatroomFilterPage implements AfterViewInit {
 
-  constructor() { }
+  queryText = '';
+  type = 'users';
+  results: any[] = [];
 
-   // TODO use the ionViewDidEnter event
-   ngAfterViewInit() {
-   
-   }
+  constructor(
+    private modalCtrl: ModalController,
+    private chatServide: ChatService
+  ) { }
+
+  // TODO use the ionViewDidEnter event
+  ngAfterViewInit() {
+  }
+
+  ionViewWillEnter(){
+    this.updateResults();
+  }
+
+  updateResults(){
+    this.chatServide.searchDirectory(this.queryText, this.type ).then((data: any)=>{
+      this.results = data;
+    })
+  }
+
+  selectResult(result?: any){
+    if(result){
+      this.modalCtrl.dismiss(result);
+    }else{
+      this.modalCtrl.dismiss();
+    }
+  }
 
 }

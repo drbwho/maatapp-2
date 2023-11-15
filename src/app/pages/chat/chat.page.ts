@@ -6,6 +6,7 @@ import { ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { ChatroomFilterPage } from '../chatroom-filter/chatroom-filter';
+import { InfiniteScrollCustomEvent } from '@ionic/angular';
 
 @Component({
   selector: 'app-chat',
@@ -15,11 +16,15 @@ import { ChatroomFilterPage } from '../chatroom-filter/chatroom-filter';
 
 export class ChatPage implements OnInit {
   @ViewChild('scrollElement') chatlist: IonContent;
+  @ViewChild('infiniteScroll') infinitescroll: HTMLIonInfiniteScrollElement;
+
   message = '';
   messages: ChatMessage[] = [];
   currentUser = '';
   currentRoom = '';
   chatRooms: ChatRoom[] = [];
+  oldestMessageFetched: ChatMessage = {};
+  viewInit = true;
 
   constructor(
     private config: ConfigData,
@@ -30,20 +35,21 @@ export class ChatPage implements OnInit {
 
   ngOnInit() {
     this.loadCurrents();
-
     this.events.subscribe('chat:newmessage', (msg: ChatMessage) => {
       this.messages.push(msg);
       this.currentUser = this.chatService.chatUser;
       setTimeout(()=>this.chatlist.scrollToBottom(800),100)
     });
+    
   }
 
-  async ionViewWillEnter(){
+  ionViewWillEnter(){
     this.loadCurrents();    
     this.chatService.loadHistory().then((data: any)=>{
       this.messages = data;
-      setTimeout(()=>this.chatlist.scrollToBottom(1200),10)
-    }).then(()=>{});
+      this.oldestMessageFetched = data.at(0);
+      setTimeout(()=>this.chatlist.scrollToBottom(1200),10);
+    });
   }
 
   sendMessage(){
@@ -60,16 +66,47 @@ export class ChatPage implements OnInit {
   }
   
   roomChange(e) {
-    console.log('ionChange fired with value: ' + e.detail.value);
     this.currentRoom = e.detail.value;
     this.chatService.currentChatRoom = this.chatRooms.find(w => w.rid === this.currentRoom);
-    this.chatService.loadHistory().then((data: any)=>{
-      this.messages = data;
-      setTimeout(()=>this.chatlist.scrollToBottom(1200),10)
-    }).then(()=>{});
+    this.loadRoomMessages();
   }
 
-  async presentFilter() {
+  loadRoomMessages(){
+    this.chatService.loadHistory().then((data: any)=>{
+      this.messages = data;
+      this.oldestMessageFetched = data.at(0);
+      // in case is disabled
+      this.infinitescroll.disabled = false;
+      setTimeout(()=>this.chatlist.scrollToBottom(1200),10)
+    });
+  }
+
+  onScrollTop(ev){ 
+    if(this.viewInit){
+      this.viewInit = false;
+      (ev as InfiniteScrollCustomEvent).target.complete();
+      return;
+    }
+    console.log("top");
+    if(!this.oldestMessageFetched){
+      (ev as InfiniteScrollCustomEvent).target.complete();
+      return;
+    }
+    this.chatService.loadHistory(this.oldestMessageFetched.createdAt).then((data: any)=>{
+      // prepend old messages
+      if(data.length){
+        this.messages = data.concat(this.messages);
+        this.oldestMessageFetched = data.at(0);
+      }else{
+        this.infinitescroll.disabled = true;
+      }
+      setTimeout(() => {
+        (ev as InfiniteScrollCustomEvent).target.complete();
+      }, 500);
+    });
+  }
+
+  async presentSearcher() {
     const modal = await this.modalCtrl.create({
       component: ChatroomFilterPage,
       componentProps: { /*excludedTracks: this.excludeTracks*/ }
@@ -78,8 +115,16 @@ export class ChatPage implements OnInit {
 
     const { data } = await modal.onWillDismiss();
     if (data) {
-      //this.excludeTracks = data;
-      //this.updateSchedule();
+      let username = data.username;
+      this.chatService.createDirectMessage(username)
+        .then((data: ChatRoom)=>{
+          // set new room as current
+          this.chatService.currentChatRoom = data;
+          this.currentRoom = data.rid;
+          this.chatRooms = this.chatService.chatRooms;
+          this.loadRoomMessages();
+          }
+        );
     }
   }
 

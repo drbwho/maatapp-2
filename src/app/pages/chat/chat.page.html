@@ -7,8 +7,8 @@
       Chat Rooms
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="presentFilter()">
-        <ion-icon slot="icon-only" name="options"></ion-icon>
+      <ion-button (click)="presentSearcher()">
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -16,13 +16,14 @@
   <ion-list>
     <ion-item>
       <div slot="start">
-      Current Room: &nbsp;
+      Current Channel: &nbsp;
       </div>
       <div slot="end">
        <strong>
         <ion-select interface="popover" [(ngModel)]="currentRoom" (ionChange)="roomChange($event)" placeholder="Select Room">
-          <ion-select-option *ngFor="let room of chatRooms"
-                    [value]="room.rid">{{room.name}}</ion-select-option>
+          <ion-select-option *ngFor="let room of chatRooms" [value]="room.rid">
+            {{room.name}}
+          </ion-select-option>
         </ion-select>
        </strong>
       </div>
@@ -30,32 +31,34 @@
   </ion-list>
 </ion-header>
  
-<ion-content [fullscreen]="true" #scrollElement>
+<ion-content [fullscreen]="true" #scrollElement >
+    <ion-infinite-scroll (ionInfinite)="onScrollTop($event)" #infiniteScroll position="top" >
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   <ion-grid>
-    <ion-row *ngFor="let message of messages">
- 
-      <ion-col size="9" *ngIf="message.user !== currentUser" >
-        <div class="message-avatar">
-        <ion-avatar style="float:left">
-          <img src="/assets/img/avatar.png" alt="">
-        </ion-avatar>
-        </div>
-        <div class="message other-message">
-        <b>{{ message.user }}</b><br>
-        <span>{{ message.msg }}</span>
-        <div class="createdAt" text-right><br>{{ message.createdAt | date:'short' }}</div>
-      </div>
+    <ion-row *ngFor="let message of messages" >
+      <ion-col size="9" *ngIf="message.user !== currentUser" class="ion-no-margin ion-no-padding other-message-row">
+        <ion-grid class="other-message-row">
+          <ion-row>
+            <ion-col size="auto" class="message-avatar">
+              <ion-avatar>
+                <img src="/assets/img/avatar.png" alt="">
+              </ion-avatar>
+            </ion-col>
+            <ion-col class="message other-message">
+              <span class="chat-user">{{ message.user }}</span><br>
+              <span>{{ message.msg }}</span>
+              <div class="createdAt" text-right><br>{{ message.createdAt | date:'short' }}</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-col>
- 
       <ion-col offset="3" size="9" *ngIf="message.user === currentUser" class="message my-message">
-        <b>{{ message.user }}</b><br>
         <span>{{ message.msg }}</span>
         <div class="createdAt" text-right><br>{{ message.createdAt | date:'short' }}</div>
       </ion-col>
- 
     </ion-row>
   </ion-grid>
- 
 </ion-content>
  
 <ion-footer>
@@ -64,7 +67,7 @@
       <ion-col size="10">
         <ion-textarea placeholder="Write your message here.." auto-grow class="inputBox" rows="1" [(ngModel)]="message"></ion-textarea>
       </ion-col>
-      <ion-col size="2">
+      <ion-col size="2" class="ion-padding-vertical">
         <ion-button expand="block" fill="clear" color="primary" [disabled]="message === ''" class="sendBtn"
           (click)="sendMessage()">
           <ion-icon name="send" slot="icon-only"></ion-icon>
