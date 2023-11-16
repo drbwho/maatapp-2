@@ -145,11 +145,20 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'chat',
+        path: 'chat/:channel',
         children: [
           {
             path: '',
             loadChildren: () => import('../chat/chat.module').then(m => m.ChatPageModule)
+          }
+        ]
+      },
+      {
+        path: 'chat-rooms',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../chat-rooms/chat-rooms.module').then(m => m.ChatRoomsPageModule)
           }
         ]
       },

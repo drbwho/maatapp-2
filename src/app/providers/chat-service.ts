@@ -16,7 +16,8 @@ export interface ChatRoom {
   rid?: string,
   name?: string
   type?: string,
-  users?: string[]
+  users?: string[],
+  unread?:number;
 }
 
 export interface ChatUser {
@@ -38,7 +39,7 @@ export class ChatService {
   chatUserToken='';
   chatUser='';
   chatRooms: ChatRoom[] = [];
-  currentChatRoom: ChatRoom = {rid:"GENERAL", name: "general"};
+  defaultChatRoom: ChatRoom = {rid:"GENERAL", name: "general"};
   numMessagesToFetch = 20;
 
   user = 'bill';
@@ -90,9 +91,7 @@ export class ChatService {
           msg.room.rid = message.fields.args[0].rid;
           msg.room.type = message.fields.args[1].roomType;
           msg.room.name = message.fields.args[1].roomName;
-          if(msg.room.rid ==  this.currentChatRoom.rid){
-            this.events.publish('chat:newmessage', msg);
-          }
+          this.events.publish('chat:newmessage', msg);
         }
       },
       (err) => console.log('Error:', err),
@@ -147,7 +146,7 @@ export class ChatService {
       this.chatService.callMethod("createDirectMessage", username).subscribe({
         next: (data) => {
           // update my rooms
-          this.getMyRooms().then(()=>{ console.log(this.chatRooms)
+          this.getMyRooms().then(()=>{
             resolve({
               rid: data.result.rid,
               type: data.result.t,
@@ -177,11 +176,8 @@ export class ChatService {
             room.users = rm.usernames
             room.name = room.users.join('-');
           }
+          room.unread = 0;
           this.chatRooms.push(room);
-          // set default room
-          if(!this.currentChatRoom){
-            this.currentChatRoom = { rid:"GENERAL", name: "general"}
-          }
         });
         resolve(this.chatRooms);
       },
@@ -213,7 +209,7 @@ export class ChatService {
   }
 
   // Load Room history
-  loadHistory(lastMessageDate?:string) {
+  loadHistory(roomid: string, lastMessageDate?:string) {
     // use REST API
     const headers = new HttpHeaders({
       'X-Auth-Token': this.chatUserToken,
@@ -222,11 +218,15 @@ export class ChatService {
     return new Promise((resolve, reject) => {
       this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/method.call/loadHistory',
           {message: `{"msg": "method","method": "loadHistory","id":"` + this.makeid(3, true) +`",
-          "params": ["` + this.currentChatRoom.rid + `",` + (lastMessageDate?`{"$date":`+lastMessageDate+`}`:null) + `,` + this.numMessagesToFetch + `,null, false]}`},
+          "params": ["` + roomid + `",` + (lastMessageDate?`{"$date":`+lastMessageDate+`}`:null) + `,` + this.numMessagesToFetch + `,null, false]}`},
           {headers: headers})
         .subscribe({
           next: (data: any)=>{ 
-            var map: ChatMessage[]=[]; 
+            var map: ChatMessage[]=[];
+            if(JSON.parse(data.message).result.messages === undefined){
+              resolve(map);
+              return;
+            } 
             JSON.parse(data.message).result.messages.forEach((msg: any) => {
               map.push({
                 id: msg._id,

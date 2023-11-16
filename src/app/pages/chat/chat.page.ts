@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigData } from '../../providers/config-data';
-import { ChatService, ChatMessage, ChatRoom } from '../../providers/chat-service';
+import { ChatService, ChatMessage, ChatRoom, ChatUser } from '../../providers/chat-service';
 import { Events } from '../../providers/events';
 import { ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { ChatroomFilterPage } from '../chatroom-filter/chatroom-filter';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -21,31 +22,52 @@ export class ChatPage implements OnInit {
   message = '';
   messages: ChatMessage[] = [];
   currentUser = '';
-  currentRoom = '';
+  currentRoom: ChatRoom = {};
   chatRooms: ChatRoom[] = [];
   oldestMessageFetched: ChatMessage = {};
   viewInit = true;
+  defaultHref = '/app/tabs/chat-rooms';
 
   constructor(
     private config: ConfigData,
     private chatService: ChatService,
     private events: Events,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.loadCurrents();
+    let user: ChatUser = JSON.parse(this.route.snapshot.paramMap.get('channel')) as ChatUser;
+    if(user){
+      let username = user.username;
+      this.chatService.createDirectMessage(username)
+        .then((data: ChatRoom)=>{
+          // set new room as current
+          this.currentRoom = data;
+          this.loadCurrents();
+          this.loadRoomMessages();      
+        });
+    }else{
+        this.currentRoom = this.chatService.defaultChatRoom;
+        this.loadCurrents();
+        this.loadRoomMessages();
+    }
+
+    // subscribe to new message arrival
     this.events.subscribe('chat:newmessage', (msg: ChatMessage) => {
-      this.messages.push(msg);
-      this.currentUser = this.chatService.chatUser;
-      setTimeout(()=>this.chatlist.scrollToBottom(800),100)
+      if(this.currentRoom.rid == msg.room.rid){
+        this.messages.push(msg);
+        this.currentUser = this.chatService.chatUser;
+        setTimeout(()=>this.chatlist.scrollToBottom(800),100);
+      }else{
+        this.chatRooms.find((w)=>w.rid === msg.room.rid).unread++;
+      }
     });
-    
   }
 
   ionViewWillEnter(){
     this.loadCurrents();    
-    this.chatService.loadHistory().then((data: any)=>{
+    this.chatService.loadHistory(this.currentRoom.rid).then((data: any)=>{
       this.messages = data;
       this.oldestMessageFetched = data.at(0);
       setTimeout(()=>this.chatlist.scrollToBottom(1200),10);
@@ -53,26 +75,22 @@ export class ChatPage implements OnInit {
   }
 
   sendMessage(){
-    this.chatService.sendMessage(this.message, this.chatService.currentChatRoom.rid);
+    this.chatService.sendMessage(this.message, this.currentRoom.rid);
     this.message = '';
   }
 
   loadCurrents(){
     this.currentUser = this.chatService.chatUser;
-    if(this.chatService.currentChatRoom){
-      this.currentRoom = this.chatService.currentChatRoom.rid;
-    }
     this.chatRooms = this.chatService.chatRooms;
   }
   
   roomChange(e) {
     this.currentRoom = e.detail.value;
-    this.chatService.currentChatRoom = this.chatRooms.find(w => w.rid === this.currentRoom);
     this.loadRoomMessages();
   }
 
   loadRoomMessages(){
-    this.chatService.loadHistory().then((data: any)=>{
+    this.chatService.loadHistory(this.currentRoom.rid).then((data: any)=>{
       this.messages = data;
       this.oldestMessageFetched = data.at(0);
       // in case is disabled
@@ -112,15 +130,13 @@ export class ChatPage implements OnInit {
       componentProps: { /*excludedTracks: this.excludeTracks*/ }
     });
     await modal.present();
-
     const { data } = await modal.onWillDismiss();
     if (data) {
       let username = data.username;
       this.chatService.createDirectMessage(username)
         .then((data: ChatRoom)=>{
           // set new room as current
-          this.chatService.currentChatRoom = data;
-          this.currentRoom = data.rid;
+          this.currentRoom = data;
           this.chatRooms = this.chatService.chatRooms;
           this.loadRoomMessages();
           }

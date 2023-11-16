@@ -15,7 +15,7 @@ export class ChatroomFilterPage implements AfterViewInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private chatServide: ChatService
+    private chatService: ChatService
   ) { }
 
   // TODO use the ionViewDidEnter event
@@ -27,7 +27,7 @@ export class ChatroomFilterPage implements AfterViewInit {
   }
 
   updateResults(){
-    this.chatServide.searchDirectory(this.queryText, this.type ).then((data: any)=>{
+    this.chatService.searchDirectory(this.queryText, this.type ).then((data: any)=>{
       this.results = data;
     })
   }

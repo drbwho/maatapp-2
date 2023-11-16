@@ -36,6 +36,7 @@ const routes: Routes = [
   { path: 'info-pages', loadChildren: () => import('./pages/info-pages/info-pages.module').then(m => m.InfoPagesPageModule) },
   { path: 'about-app', loadChildren: () => import('./pages/about-app/about-app.module').then(m => m.AboutAppPageModule) },
   { path: 'chat', loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule) },
+  { path: 'chat-rooms', loadChildren: () => import('./pages/chat-rooms/chat-rooms.module').then( m => m.ChatRoomsPageModule)},
 
 ];
 
