@@ -27,6 +27,7 @@ export interface ChatUser {
   status?: string
 }
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -76,12 +77,12 @@ export class ChatService {
         }},
       (err) => console.log('Login Error:', err));
   }
-  
+
   // Subscribe to message updates
   subscribeToMessages(){
     this.chatService.subscribe(
       (message: any) => {
-        console.log('Message: ', message);
+        //console.log('Message: ', message);
         if(message.msg = "changed" && message.collection == "stream-room-messages"){
           const msg: ChatMessage = {};
           msg.msg = message.fields.args[0].msg;
@@ -96,7 +97,7 @@ export class ChatService {
       },
       (err) => console.log('Error:', err),
       () => console.log('subscription completed'));
-  
+
     this.chatService.sendMessage({
       "msg": "sub",
       "id": '' + new Date().getTime(),
@@ -123,7 +124,7 @@ export class ChatService {
       "msg": "method",
       "method": "UserPresence:setDefaultStatus",
       "id": '' + new Date().getTime(),
-      "params": [ status ]  
+      "params": [ status ]
     });
   }
 
@@ -221,12 +222,12 @@ export class ChatService {
           "params": ["` + roomid + `",` + (lastMessageDate?`{"$date":`+lastMessageDate+`}`:null) + `,` + this.numMessagesToFetch + `,null, false]}`},
           {headers: headers})
         .subscribe({
-          next: (data: any)=>{ 
+          next: (data: any)=>{
             var map: ChatMessage[]=[];
             if(JSON.parse(data.message).result.messages === undefined){
               resolve(map);
               return;
-            } 
+            }
             JSON.parse(data.message).result.messages.forEach((msg: any) => {
               map.push({
                 id: msg._id,
@@ -237,13 +238,13 @@ export class ChatService {
             });
             //sort descending
             map = map.sort((objA, objB) => Number(objA.createdAt) - Number(objB.createdAt));
-            resolve(map); 
+            resolve(map);
           },
           error: (error)=>console.log(error)});
     });
   }
 
-  // Search all directory 
+  // Search all directory
   searchDirectory(queryText: string, type: string){
     // use REST API
     const headers = new HttpHeaders({
@@ -251,12 +252,40 @@ export class ChatService {
       'X-User-Id': this.chatUserId,
       'Content-Type': 'application/json'});
     return new Promise((resolve, reject) => {
-      //this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/directory' + '?query=' + JSON.stringify({"text": queryText, "type": type, "workspace": "local"}),
-      this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/method.call/spotlight',
-        {message:	`{"msg":"method","id":"` + this.makeid(3, true) + `","method":"spotlight","params":["` + queryText + `",[],{"users":true,"rooms":true,"includeFederatedRooms":true}]}`},
+      this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/directory' + '?query=' + JSON.stringify({"text": queryText, "type": type, "workspace": "local"}),
         {headers: headers})
         .subscribe({
-          next: (data: any)=>{ 
+          next: (data: any)=>{
+            var map: ChatUser[]=[];
+            data.result.forEach((usr: any) => {
+              map.push({
+                id: usr._id,
+                name: usr.name,
+                username: usr.username,
+                status: usr.status
+              });
+            });
+            //sort alphabetically
+            map.sort((a, b) => a.name.localeCompare(b.name));
+            resolve(map);
+          },
+          error: (error)=>console.log(error)});
+    });
+  }
+
+  spotlight(queryText: string, type: string){
+    // use REST API
+    const headers = new HttpHeaders({
+      'X-Auth-Token': this.chatUserToken,
+      'X-User-Id': this.chatUserId,
+      'Content-Type': 'application/json'});
+    return new Promise((resolve, reject) => {
+      this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/directory' + '?query=' + JSON.stringify({"text": queryText, "type": "users", "workspace": "local"}),
+    //  this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/method.call/spotlight',
+    //    {message:	`{"msg":"method","id":"` + this.makeid(3, true) + `","method":"spotlight","params":["` + queryText + `",[],{"users":true,"rooms":true,"includeFederatedRooms":true}]}`},
+        {headers: headers})
+        .subscribe({
+          next: (data: any)=>{
             var map: ChatUser[]=[];
             if(!JSON.parse(data.message).hasOwnProperty('result')){
               resolve(map);
@@ -272,7 +301,7 @@ export class ChatService {
             });
             //sort alphabetically
             map.sort((a, b) => a.name.localeCompare(b.name));
-            resolve(map); 
+            resolve(map);
           },
           error: (error)=>console.log(error)});
     });
