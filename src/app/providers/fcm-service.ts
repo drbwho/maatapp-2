@@ -38,7 +38,13 @@ export class FcmService {
   }
 
   receive_notification(notification){
-    this.router.navigate(['/app/tabs/notifications', JSON.stringify({title: notification.title, body: notification.body})]);
+    //its a chat notification
+    if(notification.message){
+      this.router.navigate(['/app/tabs/chat-rooms']);
+    //its a general notification
+    }else{
+      this.router.navigate(['/app/tabs/notifications', JSON.stringify({title: notification.title, body: notification.body})]);
+    }
   }
 
   // Register Firebase Push Notifications for Web 
@@ -118,7 +124,7 @@ export class FcmService {
     });
   }
 
-    // firebase push notifications - OLD
+    // firebase push notifications
     /*if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
       this.fcm.getToken().then(token => {
         console.log(token);

@@ -266,7 +266,7 @@ export class ChatService {
             }
             JSON.parse(data.message).result.messages.forEach((msg: any) => {
               //filter joining messages
-              if(msg.t != "uj"){
+              if(!msg.t){
                 map.push({
                   id: msg._id,
                   msg: msg.msg,
