@@ -1,7 +1,7 @@
 import { ConfigData } from './providers/config-data';
 import { ConferenceData } from './providers/conference-data';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { SplashScreen } from '@capacitor/splash-screen';
 
@@ -12,21 +12,12 @@ import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular
 import { Network } from '@capacitor/network';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { register } from 'swiper/element/bundle';
-import {ActionPerformed, PushNotifications, PushNotificationSchema, Token} from '@capacitor/push-notifications';
-
-// For Web push notifications
-import { Capacitor } from "@capacitor/core";
-import { environment } from "../environments/environment";
-import { initializeApp } from "firebase/app";
-import {
-  FirebaseMessaging,
-  GetTokenOptions,
-} from "@capacitor-firebase/messaging";
 
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
 import { ChatService } from './providers/chat-service';
+import { FcmService } from './providers/fcm-service';
 
 register();
 
@@ -63,7 +54,7 @@ export class AppComponent implements OnInit {
   ];
   loggedIn = false;
   hasUnreadNews = false;
-  hasUnreadChat = false;
+  hasUnreadChat = 0;
 
   constructor(
     private events: Events,
@@ -82,7 +73,8 @@ export class AppComponent implements OnInit {
     private config: ConfigData,
     private toast: ToastController,
     private inAppBrowser: InAppBrowser,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private fcmService: FcmService
   ) {
     this.initializeApp();
   }
@@ -120,9 +112,7 @@ export class AppComponent implements OnInit {
         buttons: ['Close', 'Reload'],
         position: 'bottom',
       });
-
       await toast.present();
-
       toast
         .onDidDismiss()
         .then(() => this.swUpdate.activateUpdate())
@@ -136,44 +126,14 @@ export class AppComponent implements OnInit {
       SplashScreen.hide();
     });
 
-    if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
-      if (Capacitor.isNativePlatform()) {
-        console.log('Native platform');
-        this.register_native_push_notifications();
-      }else{
-        console.log('Web platform');
-        this.register_web_push_notifications();
-      }
-    }
+    // Init FCM push notifications
+    this.fcmService.initService();
 
     // Connect to Chat Service
-    this.chatService.connectChat();
-
-    // firebase push notifications
-    /*if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
-      this.fcm.getToken().then(token => {
-        console.log(token);
-      });
-      this.fcm.onTokenRefresh().subscribe(token => {
-        console.log(token);
-      });
-      this.fcm.onNotification().subscribe(notification => {
-        console.log(notification);
-        const navigationExtras: NavigationExtras = {
-          queryParams: {
-            special: JSON.stringify(notification)
-          }
-        };
-        if (notification.wasTapped) {
-          console.log('Received in background');
-        } else {
-          console.log('Received in foreground');
-        }
-        // this.router.navigate(['/app/tabs/notifications'], navigationExtras);
-        this.router.navigate(['/app/tabs/notifications', JSON.stringify(notification)]);
-      });
-      // this.fcm.subscribeToTopic('people'); /topics/all
-    }*/
+    this.chatService.connectChat().then(()=>{
+      this.listenForChatEvents();
+      this.load_hasUnreadChatMessages();
+    });
   }
 
   checkLoginStatus() {
@@ -323,9 +283,22 @@ export class AppComponent implements OnInit {
     });
   }
 
+  listenForChatEvents(){
+    this.events.subscribe('chat:newmessage', () => {
+      this.load_hasUnreadChatMessages();
+    });
+    this.events.subscribe('chat:markroomread', () => {
+      this.load_hasUnreadChatMessages();
+    });
+  }
+  async load_hasUnreadChatMessages(){
+    let info: any = await this.chatService.getUserInfo(this.chatService.chatUser, true);
+    this.hasUnreadChat = 0;
+    info.rooms.forEach((w=>this.hasUnreadChat += w.unread));
+  }
+
   listenNetworkConnectionEvents() {
     // watch network for a disconnection
-
     Network.addListener('networkStatusChange', async status => {
       console.log('Network status changed', status);
       if(status.connected){
@@ -413,87 +386,4 @@ export class AppComponent implements OnInit {
     });
     await alert.present();
   }
-
-  receive_notification(notification){
-    this.router.navigate(['/app/tabs/notifications', JSON.stringify({title: notification.title, body: notification.body})]);
-  }
-
-
-  // Register Firebase Push Notifications for Web 
-  public async register_web_push_notifications(): Promise<void> {
-    initializeApp(environment.firebase);
-
-    this.getToken().then((token)=>{
-      console.log('Token: '+ token);
-      this.chatService.chatPushToken = token;
-    })
-
-    FirebaseMessaging.addListener("notificationReceived", (event) => {
-      console.log("notificationReceived: ", { event });
-    });
-    FirebaseMessaging.addListener("notificationActionPerformed", (event) => {
-      console.log("notificationActionPerformed: ", { event });
-    });
-    navigator.serviceWorker.addEventListener("message", (event: any) => {
-      console.log("serviceWorker message: ", { event });
-      const notification = new Notification(event.data.notification.title, {
-        body: event.data.notification.body,
-      });
-      notification.onclick = (event) => {
-        console.log("notification clicked: ", { event });
-        this.receive_notification(notification);
-      };
-    });
-  }
-
-  public async requestPermissions(): Promise<void> {
-    await FirebaseMessaging.requestPermissions();
-  }
-
-  public async getToken(): Promise<string> {
-    const options: GetTokenOptions = {
-      vapidKey: environment.firebase.vapidKey,
-    };
-    options.serviceWorkerRegistration =
-      await navigator.serviceWorker.register("firebase-messaging-sw.js");
-    
-    const { token } = await FirebaseMessaging.getToken(options);
-    return token;
-  }
-
-  // Register Native Push Notifications 
-  public async register_native_push_notifications(){ 
-
-    await PushNotifications.addListener('registration', (token: Token) => {
-      console.info('Registration token: ', token.value);
-      this.chatService.chatPushToken = token.value;
-    });
-
-    await PushNotifications.addListener('registrationError', err => {
-      console.error('Registration error: ', err.error);
-    });
-
-    await PushNotifications.addListener('pushNotificationReceived', (notification: PushNotificationSchema) => {
-      console.log('Push notification received: ', notification);
-      this.receive_notification(notification);
-    });
-
-    await PushNotifications.addListener('pushNotificationActionPerformed', (action: ActionPerformed) => {
-      console.log('Push notification action performed: ', action.actionId, action.notification);
-      // IMPORTANT: Message body and title must by passed as extra payload (key-value).
-      // Notification title and body are not accessible by capacitor app in background
-      this.receive_notification(action.notification.data);
-    });
-
-    // Check permissions
-    //let permStatus = await PushNotifications.checkPermissions();
-    await PushNotifications.requestPermissions().then(permStatus => {
-      if (permStatus.receive === 'granted') {
-        PushNotifications.register();
-      }else{
-        throw new Error('User denied permissions!');
-      }
-    });
-  }
-
 }

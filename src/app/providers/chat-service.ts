@@ -9,6 +9,7 @@ export interface ChatMessage {
   user?: string
   msg?: string
   createdAt?: string
+  updatedAt?: string
   room?: ChatRoom
 }
 
@@ -17,7 +18,8 @@ export interface ChatRoom {
   name?: string
   type?: string,
   users?: string[],
-  unread?:number;
+  unread?:number,
+  updated?: Date
 }
 
 export interface ChatUser {
@@ -43,6 +45,9 @@ export class ChatService {
   defaultChatRoom: ChatRoom = {rid:"GENERAL", name: "general"};
   numMessagesToFetch = 20;
 
+  headers: HttpHeaders;
+ 
+
   user = 'bill';
   pass = '24172417';
 
@@ -59,40 +64,56 @@ export class ChatService {
     this.chatService.keepAlive().subscribe();
 
     const auth = this.chatService.login(this.user, this.pass);
-    auth.subscribe(
-      (data) => {
-        if(data.msg == "result"){
-          if(data.error){
-            console.log('Login failed');
-          }else{
-            console.log('Chat user: ',data.result.id,' token: ',data.result.token);
-            this.chatUserId = data.result.id;
-            this.chatUserToken = data.result.token;
-            this.chatUser = this.user;
-            this.setUserStatus('online');
-            this.subscribeToMessages();
-            if(this.chatPushToken) this.updatePushToken();
-            this.getMyRooms();
+    return new Promise((resolve, reject)=>{
+      auth.subscribe(
+        (data) => {
+          if(data.msg == "result"){
+            if(data.error){
+              console.log('Login failed');
+            }else{
+              console.log('Chat user: ',data.result.id,' token: ',data.result.token);
+              this.chatUserId = data.result.id;
+              this.chatUserToken = data.result.token;
+              this.chatUser = this.user;
+              this.headers = new HttpHeaders({
+                'X-Auth-Token': this.chatUserToken,
+                'X-User-Id': this.chatUserId,
+                'Content-Type': 'application/json'});
+
+              this.setUserStatus('online');
+              this.subscribeToMessages();
+              if(this.chatPushToken) this.updatePushToken();
+            }
           }
-        }},
-      (err) => console.log('Login Error:', err));
+          resolve(true);  
+        },
+        (err) => { console.log('Login Error:', err); reject(false) });
+    });
   }
 
   // Subscribe to message updates
   subscribeToMessages(){
     this.chatService.subscribe(
       (message: any) => {
-        //console.log('Message: ', message);
+        console.log('Message: ', message);
         if(message.msg = "changed" && message.collection == "stream-room-messages"){
           const msg: ChatMessage = {};
+          msg.id = message.fields.args[0]._id;
           msg.msg = message.fields.args[0].msg;
           msg.user = message.fields.args[0].u.username;
-          msg.createdAt = message.fields.args[0]._updatedAt.$date;
+          msg.createdAt = message.fields.args[0].ts.$date;
+          msg.updatedAt = message.fields.args[0]._updatedAt.$date;
           msg.room = {};
           msg.room.rid = message.fields.args[0].rid;
           msg.room.type = message.fields.args[1].roomType;
           msg.room.name = message.fields.args[1].roomName;
-          this.events.publish('chat:newmessage', msg);
+          //its update!
+          if(message.fields.args[0].editedAt){
+            this.events.publish('chat:updatedmessage', msg);
+          //its new!
+          }else{
+            this.events.publish('chat:newmessage', msg);
+          }
         }
       },
       (err) => console.log('Error:', err),
@@ -112,11 +133,7 @@ export class ChatService {
   // Update user presence
   setUserStatus(status: string){
     // use REST API
-    const headers = new HttpHeaders({
-      'X-Auth-Token': this.chatUserToken,
-      'X-User-Id': this.chatUserId,
-      'Content-Type': 'application/json'});
-    this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/users.setStatus', {"message":"User status update","status": status} ,{headers: headers})
+    this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/users.setStatus', {"message":"User status update","status": status} ,{headers: this.headers})
       .subscribe({error: (error)=>console.log(error)});
 
     // Real time API working?
@@ -137,6 +154,32 @@ export class ChatService {
     }).subscribe(
       (data) => {
         console.log('Sendmsg: ', data)},
+      (err) => console.log('Error:' +err),
+      () => console.log('completed'));
+  }
+
+  // Update chat message
+  updateMessage(message: string, msgId: string, roomId: string){
+    this.chatService.callMethod("updateMessage",{
+              _id: msgId,
+              rid: roomId,
+              msg: message
+    }).subscribe(
+      (data) => {
+        console.log('Updatemsg: ', data)},
+      (err) => console.log('Error:' +err),
+      () => console.log('completed'));
+  }
+
+  // Delete chat message
+  deleteMessage(msgId: string){
+    this.chatService.callMethod("deleteMessage",{
+              _id: msgId
+    }).subscribe(
+      (data) => {
+        console.log('Deletemsg: ', data);
+          this.events.publish('chat:deletedmessage', msgId);
+      },
       (err) => console.log('Error:' +err),
       () => console.log('completed'));
   }
@@ -173,9 +216,10 @@ export class ChatService {
           room.rid = rm._id;
           room.name = (rm.name ? rm.name : rm.fname);
           room.type = rm.t;
+          room.updated = rm._updatedAt.$date;
           if(rm.t == 'd'){
-            room.users = rm.usernames
-            room.name = room.users.join('-');
+            room.users = rm.usernames.filter((w)=> w != this.chatUser);
+            room.name = room.users.at(0);
           }
           room.unread = 0;
           this.chatRooms.push(room);
@@ -189,13 +233,9 @@ export class ChatService {
   // Update Device FCM Token
   updatePushToken(){
     // use REST API
-    const headers = new HttpHeaders({
-      'X-Auth-Token': this.chatUserToken,
-      'X-User-Id': this.chatUserId,
-      'Content-Type': 'application/json'});
     this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/push.token',
       {"type": "gcm", "value": this.chatPushToken, "appName": "ca-22125"},
-      {headers: headers})
+      {headers: this.headers})
         .subscribe({error: (error)=>console.log(error)});
   }
 
@@ -212,15 +252,11 @@ export class ChatService {
   // Load Room history
   loadHistory(roomid: string, lastMessageDate?:string) {
     // use REST API
-    const headers = new HttpHeaders({
-      'X-Auth-Token': this.chatUserToken,
-      'X-User-Id': this.chatUserId,
-      'Content-Type': 'application/json'});
     return new Promise((resolve, reject) => {
       this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/method.call/loadHistory',
           {message: `{"msg": "method","method": "loadHistory","id":"` + this.makeid(3, true) +`",
           "params": ["` + roomid + `",` + (lastMessageDate?`{"$date":`+lastMessageDate+`}`:null) + `,` + this.numMessagesToFetch + `,null, false]}`},
-          {headers: headers})
+          {headers: this.headers})
         .subscribe({
           next: (data: any)=>{
             var map: ChatMessage[]=[];
@@ -229,12 +265,16 @@ export class ChatService {
               return;
             }
             JSON.parse(data.message).result.messages.forEach((msg: any) => {
-              map.push({
-                id: msg._id,
-                msg: msg.msg,
-                user: msg.u.username,
-                createdAt: msg.ts.$date
-              });
+              //filter joining messages
+              if(msg.t != "uj"){
+                map.push({
+                  id: msg._id,
+                  msg: msg.msg,
+                  user: msg.u.username,
+                  createdAt: msg.ts.$date,
+                  updatedAt: msg._updatedAt.$date
+                });
+              }
             });
             //sort descending
             map = map.sort((objA, objB) => Number(objA.createdAt) - Number(objB.createdAt));
@@ -247,13 +287,9 @@ export class ChatService {
   // Search all directory
   searchDirectory(queryText: string, type: string){
     // use REST API
-    const headers = new HttpHeaders({
-      'X-Auth-Token': this.chatUserToken,
-      'X-User-Id': this.chatUserId,
-      'Content-Type': 'application/json'});
-    return new Promise((resolve, reject) => {
+   return new Promise((resolve, reject) => {
       this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/directory' + '?query=' + JSON.stringify({"text": queryText, "type": type, "workspace": "local"}),
-        {headers: headers})
+        {headers: this.headers})
         .subscribe({
           next: (data: any)=>{
             var map: ChatUser[]=[];
@@ -275,15 +311,10 @@ export class ChatService {
 
   spotlight(queryText: string, type: string){
     // use REST API
-    const headers = new HttpHeaders({
-      'X-Auth-Token': this.chatUserToken,
-      'X-User-Id': this.chatUserId,
-      'Content-Type': 'application/json'});
     return new Promise((resolve, reject) => {
-      this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/directory' + '?query=' + JSON.stringify({"text": queryText, "type": "users", "workspace": "local"}),
-    //  this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/method.call/spotlight',
-    //    {message:	`{"msg":"method","id":"` + this.makeid(3, true) + `","method":"spotlight","params":["` + queryText + `",[],{"users":true,"rooms":true,"includeFederatedRooms":true}]}`},
-        {headers: headers})
+      this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/method.call/spotlight',
+        {message:	`{"msg":"method","id":"` + this.makeid(3, true) + `","method":"spotlight","params":["` + queryText + `",[],{"users":true,"rooms":true,"includeFederatedRooms":true}]}`},
+        {headers: this.headers})
         .subscribe({
           next: (data: any)=>{
             var map: ChatUser[]=[];
@@ -307,6 +338,30 @@ export class ChatService {
     });
   }
 
+  getUserInfo(username: string, loadRooms?: boolean) {
+    return new Promise((resolve, reject) => {
+      this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/users.info?username=' + username + (loadRooms?'&fields={"userRooms": 1}':''),
+        {headers: this.headers})
+        .subscribe({
+          next: (data: any)=>{
+            if(loadRooms){
+              resolve({name: data.user.name, username: data.user.username, status: data.user.status, rooms: data.user.rooms});
+            }else{
+              resolve({name: data.user.name, username: data.user.username, status: data.user.status});
+            }
+          },
+          error: (error)=>console.log(error)});
+    });
+  }
+
+  markRoomRead(rid: string){
+    this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/subscriptions.read',
+      {rid: rid},
+      {headers: this.headers}).subscribe(()=>{
+        this.events.publish('chat:markroomread');
+      });
+ 
+  }
 
   // Random Id Generator
   makeid(length: number, numeric = false) {

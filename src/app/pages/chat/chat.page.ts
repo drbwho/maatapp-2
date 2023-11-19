@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfigData } from '../../providers/config-data';
 import { ChatService, ChatMessage, ChatRoom, ChatUser } from '../../providers/chat-service';
 import { Events } from '../../providers/events';
 import { ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
-import { ModalController } from '@ionic/angular';
-import { ChatroomFilterPage } from '../chatroom-filter/chatroom-filter';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-chat',
@@ -27,29 +25,29 @@ export class ChatPage implements OnInit {
   oldestMessageFetched: ChatMessage = {};
   viewInit = true;
   defaultHref = '/app/tabs/chat-rooms';
+  editMessage: ChatMessage = null;
 
   constructor(
-    private config: ConfigData,
     private chatService: ChatService,
     private events: Events,
-    private modalCtrl: ModalController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private actionSheetCtrl: ActionSheetController
   ) { }
 
   ngOnInit() {
-    let user: ChatUser = JSON.parse(this.route.snapshot.paramMap.get('channel')) as ChatUser;
-    if(user){
-      let username = user.username;
-      this.chatService.createDirectMessage(username)
-        .then((data: ChatRoom)=>{
-          // set new room as current
-          this.currentRoom = data;
-          this.loadCurrents();
-          this.loadRoomMessages();      
-        });
+    let channel: any = JSON.parse(this.route.snapshot.paramMap.get('channel'));
+    if(!channel){
+      this.currentRoom = this.chatService.defaultChatRoom;
+      this.loadRoomMessages();
+    }
+    if(channel.type == "d"){
+      this.chatService.getUserInfo(channel.users.filter((w)=>w!=this.chatService.chatUser).at(0)).then((data: any)=>{
+        this.currentRoom = channel;
+        this.currentRoom.name = data.name;
+        this.loadRoomMessages();
+      });
     }else{
-        this.currentRoom = this.chatService.defaultChatRoom;
-        this.loadCurrents();
+        this.currentRoom = channel;
         this.loadRoomMessages();
     }
 
@@ -63,30 +61,44 @@ export class ChatPage implements OnInit {
         this.chatRooms.find((w)=>w.rid === msg.room.rid).unread++;
       }
     });
+    // subscribe to updated message arrival
+    this.events.subscribe('chat:updatedmessage', (msg: ChatMessage) => {
+      if(this.currentRoom.rid == msg.room.rid){
+        this.messages.find((w)=>w.id===msg.id).msg = msg.msg;
+        this.messages.find((w)=>w.id===msg.id).updatedAt = msg.updatedAt;
+      }
+    });
+    // subscribe to delete message event
+    this.events.subscribe('chat:deletedmessage', (msgid: string) => {
+        this.messages = this.messages.filter((w)=>w.id != msgid);      
+    });
+
+    this.currentUser = this.chatService.chatUser;
   }
 
-  ionViewWillEnter(){
-    this.loadCurrents();    
+  ionViewWillEnter(){  
     this.chatService.loadHistory(this.currentRoom.rid).then((data: any)=>{
       this.messages = data;
       this.oldestMessageFetched = data.at(0);
       setTimeout(()=>this.chatlist.scrollToBottom(1200),10);
+
+      //mark room as read
+      this.chatService.markRoomRead(this.currentRoom.rid);
     });
+    //clear edit buffer
+    this.editMessage = null;
   }
 
   sendMessage(){
-    this.chatService.sendMessage(this.message, this.currentRoom.rid);
-    this.message = '';
-  }
-
-  loadCurrents(){
-    this.currentUser = this.chatService.chatUser;
-    this.chatRooms = this.chatService.chatRooms;
-  }
-  
-  roomChange(e) {
-    this.currentRoom = e.detail.value;
-    this.loadRoomMessages();
+    //edit?
+    if(this.editMessage){
+      this.chatService.updateMessage(this.message, this.editMessage.id, this.currentRoom.rid);
+      this.editMessage = null;
+      this.message = '';
+    }else{
+      this.chatService.sendMessage(this.message, this.currentRoom.rid);
+      this.message = '';
+    }
   }
 
   loadRoomMessages(){
@@ -110,7 +122,7 @@ export class ChatPage implements OnInit {
       (ev as InfiniteScrollCustomEvent).target.complete();
       return;
     }
-    this.chatService.loadHistory(this.oldestMessageFetched.createdAt).then((data: any)=>{
+    this.chatService.loadHistory(this.currentRoom.rid, this.oldestMessageFetched.createdAt).then((data: any)=>{
       // prepend old messages
       if(data.length){
         this.messages = data.concat(this.messages);
@@ -124,24 +136,42 @@ export class ChatPage implements OnInit {
     });
   }
 
-  async presentSearcher() {
-    const modal = await this.modalCtrl.create({
-      component: ChatroomFilterPage,
-      componentProps: { /*excludedTracks: this.excludeTracks*/ }
-    });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    if (data) {
-      let username = data.username;
-      this.chatService.createDirectMessage(username)
-        .then((data: ChatRoom)=>{
-          // set new room as current
-          this.currentRoom = data;
-          this.chatRooms = this.chatService.chatRooms;
-          this.loadRoomMessages();
+  async openActionSheet(msg){
+    const actionSheet = await this.actionSheetCtrl.create({
+//      header: 'Message actions',
+      buttons: [
+        {
+          icon: 'create-outline',
+          text: 'edit',
+          htmlAttributes: {
+            'aria-label': 'edit',
+          },
+          handler: ()=>{
+            this.message = msg.msg;
+            this.editMessage = msg;
           }
-        );
-    }
+        },
+        {
+          icon: 'close',
+          text: 'delete',
+          htmlAttributes: {
+            'aria-label': 'delete',
+          },
+          handler: ()=>{
+            this.chatService.deleteMessage(msg.id);
+          }
+        },
+        {
+          icon: 'exit-outline',
+          text: 'cancel',
+          htmlAttributes: {
+            'aria-label': 'close',
+          },
+        },
+      ],
+    });
+    actionSheet.present();
   }
 
 }
+

@@ -27,7 +27,7 @@
   .createdAt {
     color: #BFA7A7;
     float: right;
-    font-size: small;
+    font-size: x-small;
   }
    
   .inputBox {
@@ -51,4 +51,9 @@
   .message-avatar img {
     width: 40px;
     height: auto;
+  }
+
+  .title-avatar {
+    width:40px;
+    height: 40px;
   }

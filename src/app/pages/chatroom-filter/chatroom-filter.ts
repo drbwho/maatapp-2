@@ -28,7 +28,7 @@ export class ChatroomFilterPage implements AfterViewInit {
 
   updateResults(){
     this.chatService.searchDirectory(this.queryText, this.type ).then((data: any)=>{
-      this.results = data;
+      this.results = data.filter((w)=>w.username != this.chatService.chatUser);
     })
   }
 

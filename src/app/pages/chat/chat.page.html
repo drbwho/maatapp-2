@@ -3,32 +3,19 @@
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
     </ion-buttons>
+    <ion-avatar slot="start" class="title-avatar">
+      <img src="/assets/img/avatar.png" alt="" *ngIf="currentRoom.type == 'd'">
+      <img src="/assets/img/group.png" alt="" *ngIf="currentRoom.type != 'd'" >
+    </ion-avatar>
     <ion-title>
-      Chat Rooms
+      {{currentRoom.name}}
     </ion-title>
-    <ion-buttons slot="end">
+<!--    <ion-buttons slot="end">
       <ion-button (click)="presentSearcher()">
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons>-->
   </ion-toolbar>
- 
-  <ion-list>
-    <ion-item>
-      <div slot="start">
-      Current Channel: &nbsp;
-      </div>
-      <div slot="end">
-       <strong>
-        <ion-select interface="popover" [(ngModel)]="currentRoom" (ionChange)="roomChange($event)" placeholder="Select Room">
-          <ion-select-option *ngFor="let room of chatRooms" [value]="room.rid">
-            {{room.name}}
-          </ion-select-option>
-        </ion-select>
-       </strong>
-      </div>
-    </ion-item>
-  </ion-list>
 </ion-header>
  
 <ion-content [fullscreen]="true" #scrollElement >
@@ -36,7 +23,7 @@
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
   <ion-grid>
-    <ion-row *ngFor="let message of messages" >
+    <ion-row *ngFor="let message of messages">
       <ion-col size="9" *ngIf="message.user !== currentUser" class="ion-no-margin ion-no-padding other-message-row">
         <ion-grid class="other-message-row">
           <ion-row>
@@ -48,14 +35,14 @@
             <ion-col class="message other-message">
               <span class="chat-user">{{ message.user }}</span><br>
               <span>{{ message.msg }}</span>
-              <div class="createdAt" text-right><br>{{ message.createdAt | date:'short' }}</div>
+              <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-col>
-      <ion-col offset="3" size="9" *ngIf="message.user === currentUser" class="message my-message">
+      <ion-col offset="3" size="9" *ngIf="message.user === currentUser" class="message my-message" (click)="openActionSheet(message)">
         <span>{{ message.msg }}</span>
-        <div class="createdAt" text-right><br>{{ message.createdAt | date:'short' }}</div>
+        <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
       </ion-col>
     </ion-row>
   </ion-grid>

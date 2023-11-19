@@ -20,12 +20,11 @@ export class ConfigData {
   API_GETRATINGS_URL = this.API_URL + '/cod-mobile/get-session-rating';
   API_SETRATING_URL = this.API_URL + '/cod-mobile/session-rating';
   API_SETREVIEWS_URL = this.API_URL + '/cod-mobile/session-reviews';
-
+  API_NEWS_URL =  this.API_URL + '/cod-mobile/get-news';
   API_LOGIN_URL = this.API_URL + '/cod-mobile/user-authorization';
 
   NEWS_FILE = 'NEWS_FILE';
   HAS_UNREAD_NEWS = 'has_unread_news';
-  API_NEWS_URL =  this.API_URL + '/cod-mobile/get-news';
 
   constructor() { }
 }
