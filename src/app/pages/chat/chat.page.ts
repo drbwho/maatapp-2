@@ -6,6 +6,7 @@ import { IonContent } from '@ionic/angular';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-chat',
@@ -27,38 +28,25 @@ export class ChatPage implements OnInit {
   defaultHref = '/app/tabs/chat-rooms';
   editMessage: ChatMessage = null;
 
+  isLoading = false;
+  scrollElement;
+
   constructor(
     private chatService: ChatService,
     private events: Events,
     private route: ActivatedRoute,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private loadintCtrl: LoadingController
   ) { }
 
   ngOnInit() {
-    let channel: any = JSON.parse(this.route.snapshot.paramMap.get('channel'));
-    if(!channel){
-      this.currentRoom = this.chatService.defaultChatRoom;
-      this.loadRoomMessages();
-    }
-    if(channel.type == "d"){
-      this.chatService.getUserInfo(channel.users.filter((w)=>w!=this.chatService.chatUser).at(0)).then((data: any)=>{
-        this.currentRoom = channel;
-        this.currentRoom.name = data.name;
-        this.loadRoomMessages();
-      });
-    }else{
-        this.currentRoom = channel;
-        this.loadRoomMessages();
-    }
-
     // subscribe to new message arrival
     this.events.subscribe('chat:newmessage', (msg: ChatMessage) => {
       if(this.currentRoom.rid == msg.room.rid){
         this.messages.push(msg);
         this.currentUser = this.chatService.chatUser;
+        this.chatService.markRoomRead(this.currentRoom.rid);
         setTimeout(()=>this.chatlist.scrollToBottom(800),100);
-      }else{
-        this.chatRooms.find((w)=>w.rid === msg.room.rid).unread++;
       }
     });
     // subscribe to updated message arrival
@@ -76,17 +64,24 @@ export class ChatPage implements OnInit {
     this.currentUser = this.chatService.chatUser;
   }
 
-  ionViewWillEnter(){  
-    this.chatService.loadHistory(this.currentRoom.rid).then((data: any)=>{
-      this.messages = data;
-      this.oldestMessageFetched = data.at(0);
-      setTimeout(()=>this.chatlist.scrollToBottom(1200),10);
-
-      //mark room as read
-      this.chatService.markRoomRead(this.currentRoom.rid);
-    });
+  async ionViewWillEnter(){
+    this.viewInit = true;
     //clear edit buffer
     this.editMessage = null;
+
+    let channel: any = JSON.parse(this.route.snapshot.paramMap.get('channel'));
+    if(!channel){
+      this.currentRoom = this.chatService.defaultChatRoom;
+    }
+    if(channel.type == "d"){
+      let data: any = await this.chatService.getUserInfo(channel.users.filter((w)=>w!=this.chatService.chatUser).at(0)); 
+      this.currentRoom = channel;
+      this.currentRoom.name = data.name;
+    }else{
+        this.currentRoom = channel;
+    }
+    this.loadRoomMessages();
+
   }
 
   sendMessage(){
@@ -101,17 +96,29 @@ export class ChatPage implements OnInit {
     }
   }
 
-  loadRoomMessages(){
+  async loadRoomMessages(){
+    this.scrollElement = await this.chatlist.getScrollElement();
+    //disable scrolling
+    this.scrollElement.style.overflow = 'hidden';
     this.chatService.loadHistory(this.currentRoom.rid).then((data: any)=>{
       this.messages = data;
       this.oldestMessageFetched = data.at(0);
-      // in case is disabled
-      this.infinitescroll.disabled = false;
-      setTimeout(()=>this.chatlist.scrollToBottom(1200),10)
+      setTimeout(async ()=>{
+        await this.chatlist.scrollToBottom(1500);
+        this.viewInit = false;
+        //enable scrolling after scrolling to bottom
+        this.scrollElement.style.overflow = 'scroll';
+      },100);
+      
+      //mark room as read
+      this.chatService.markRoomRead(this.currentRoom.rid);
     });
   }
 
   onScrollTop(ev){ 
+    
+    return; 
+    
     if(this.viewInit){
       this.viewInit = false;
       (ev as InfiniteScrollCustomEvent).target.complete();
@@ -134,6 +141,41 @@ export class ChatPage implements OnInit {
         (ev as InfiniteScrollCustomEvent).target.complete();
       }, 500);
     });
+  }
+
+  async handleScroll(ev){
+    //console.log('Sroll', ev.detail.currentY);
+
+    if(ev.detail.currentY <= 50 && !this.isLoading && !this.viewInit){
+      console.log('Scroll top');
+      this.isLoading = true;
+      let loading = await this.loadintCtrl.create({
+        showBackdrop: false,
+        spinner: "circles"
+      });
+      loading.present();
+      
+      //stop scrolling
+      this.scrollElement.style.overflow = 'hidden';
+
+      this.chatService.loadHistory(this.currentRoom.rid, this.oldestMessageFetched.createdAt).then((data: any)=>{
+        //prepend old messages
+        if(data.length){
+          this.messages = data.concat(this.messages);
+          this.oldestMessageFetched = data.at(0);
+        }
+        setTimeout(() => {
+         //continue scrolling
+         this.scrollElement.style.overflow = 'scroll';
+         loading.dismiss();
+        }, 0);
+        //const scrollAmount = scrollElement.scrollHeight ;
+       //this.chatlist.scrollToPoint(0,currentY);
+      });
+    }
+    if(ev.detail.currentY > 50 && this.isLoading){
+      this.isLoading = false;
+    } 
   }
 
   async openActionSheet(msg){

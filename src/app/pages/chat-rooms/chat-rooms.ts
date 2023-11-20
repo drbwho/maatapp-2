@@ -36,20 +36,19 @@ export class ChatRoomsPage implements OnInit {
   }
 
   async updateRoomInfo(){
+    let myroomsinfo: any = await this.chatService.getUserInfo(this.chatService.chatUser, true);
     this.results = await this.chatService.getMyRooms() as any;
-    this.results.filter( (w)=> w.type === 'd').map( async (w)=>{
-      let info: any = await this.chatService.getUserInfo(w.users);
-      w.name = info.name;
-      w.username = info.username;
-      w.status = info.status;
-      return w;
+    this.results.forEach( async (w)=>{
+      //direct messaging channels
+      if(w.type === 'd'){
+        let info: any = await this.chatService.getUserInfo(w.users);
+        w.name = info.name;
+        w.username = info.username;
+        w.status = info.status;
+      }
+      //room counters
+      w.unread = myroomsinfo.rooms.find((x)=>x.rid === w.rid).unread
     });
-    // room counters
-    let info: any = await this.chatService.getUserInfo(this.chatService.chatUser, true);
-    this.results.map((w=>{
-      w.unread = info.rooms.find((x)=>x.rid === w.rid).unread
-      return w;
-    }))
     this.results.sort((objA, objB) => Number(objB.updated) - Number(objA.updated));
   }
 

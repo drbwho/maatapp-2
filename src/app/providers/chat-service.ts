@@ -95,7 +95,7 @@ export class ChatService {
   subscribeToMessages(){
     this.chatService.subscribe(
       (message: any) => {
-        console.log('Message: ', message);
+        //console.log('Message: ', message);
         if(message.msg = "changed" && message.collection == "stream-room-messages"){
           const msg: ChatMessage = {};
           msg.id = message.fields.args[0]._id;
@@ -110,9 +110,11 @@ export class ChatService {
           //its update!
           if(message.fields.args[0].editedAt){
             this.events.publish('chat:updatedmessage', msg);
+            console.log('UpdateMsg');
           //its new!
           }else{
             this.events.publish('chat:newmessage', msg);
+            console.log('NewMsg');
           }
         }
       },
@@ -142,6 +144,19 @@ export class ChatService {
       "method": "UserPresence:setDefaultStatus",
       "id": '' + new Date().getTime(),
       "params": [ status ]
+    });
+  }
+
+  // Get user presence
+  getUserStatus(uid: string){
+    // use REST API
+    return new Promise((resolve)=>{
+      this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/users.getPresence?userId=' + uid, {headers: this.headers})
+      .subscribe({
+        next: (data: any)=>{
+          resolve(data.presence);
+        },
+        error: (error)=>console.log(error)});
     });
   }
 

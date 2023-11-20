@@ -18,10 +18,9 @@
   </ion-toolbar>
 </ion-header>
  
-<ion-content [fullscreen]="true" #scrollElement >
-    <ion-infinite-scroll (ionInfinite)="onScrollTop($event)" #infiniteScroll position="top" >
-      <ion-infinite-scroll-content></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+<ion-content [fullscreen]="false" #scrollElement
+  [scrollEvents]="true"
+  (ionScroll)="handleScroll($any($event))">
   <ion-grid>
     <ion-row *ngFor="let message of messages">
       <ion-col size="9" *ngIf="message.user !== currentUser" class="ion-no-margin ion-no-padding other-message-row">
