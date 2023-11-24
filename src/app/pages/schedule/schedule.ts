@@ -84,7 +84,6 @@ export class SchedulePage implements OnInit {
         this.filter = '';
       }
     });
-
   }
 
   async presentFilter() {
@@ -124,7 +123,6 @@ export class SchedulePage implements OnInit {
       // now present the alert on top of all other content
       await alert.present();
     }
-
   }
 
   async removeFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any, title: string) {

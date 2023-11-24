@@ -25,7 +25,9 @@ export class ConfigData {
 
   NEWS_FILE = 'NEWS_FILE';
   HAS_UNREAD_NEWS = 'has_unread_news';
-  CUR_EVENT = "CUR_EVENT";
+  
+  MEETINGS_FILE = 'MEETINGS_FILE';
+  CUR_MEETING = "CUR_EVENT";
 
   constructor() { }
 }

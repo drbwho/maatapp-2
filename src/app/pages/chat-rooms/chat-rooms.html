@@ -26,7 +26,8 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <span [ngStyle]="{'font-weight': channel.type == 'd'? 'normal' : 'bold'}">{{channel.name}}</span>&nbsp;<span *ngIf="channel.type == 'd'">({{channel.username}})</span>
+            <!-- <span [ngStyle]="{'font-weight': channel.type == 'd'? 'normal' : 'bold'}">{{channel.name}}</span>&nbsp;<span *ngIf="channel.type == 'd'">({{channel.username}})</span>-->
+            <span [class]="channel.type == 'd'? '' : 'group'">{{channel.name}}</span>&nbsp;<span *ngIf="channel.type == 'd'">({{channel.username}})</span>
             <span class="chip" *ngIf="channel.unread">{{channel.unread}}</span>
             <div class="updatedAt" text-right>{{channel.updated | date:'short'}}</div>
           </ion-col>

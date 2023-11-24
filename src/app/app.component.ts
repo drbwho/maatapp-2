@@ -136,9 +136,6 @@ export class AppComponent implements OnInit {
       this.listenForChatEvents();
       this.load_hasUnreadChatMessages();
     });
-
-    //Load current event
-    //this.get_current_meeting();
   }
 
   checkLoginStatus() {
@@ -173,20 +170,20 @@ export class AppComponent implements OnInit {
     });
   }
 
-  async get_current_meeting() {
-    this.storage.get(this.config.CUR_EVENT).then(async (data)=>{
-      console.log(data)
-      if(!data){
-        const meetings = await this.confdata.load_meetings();
-        const modal = await this.modalCtrl.create({
-          component: SelectMeetingPage,
-          componentProps: { meetings: meetings }
-        });
-        await modal.present();
-        const { data } = await modal.onWillDismiss();
-        if (data) {
-        }
+  // select current meeting
+  async get_current_meeting(force?:boolean) {
+    this.storage.get(this.config.CUR_MEETING).then(async (data)=>{
+      if(data && !force){
+        return data;
       }
+      const modal = await this.modalCtrl.create({
+        component: SelectMeetingPage,
+        componentProps: { }
+      });
+      await modal.present();
+      await modal.onWillDismiss();
+      //reload conference data
+      this.check_new_jsonfile();
     });
   }
 
@@ -199,6 +196,12 @@ export class AppComponent implements OnInit {
     headers.append('Expires', '0');
     headers.append('Pragma', 'no-cache');
 
+    // first check if is current meeting selected?
+    let curmeet = await this.storage.get(this.config.CUR_MEETING);
+    if(!curmeet){
+      this.get_current_meeting(true);
+      return;
+    }
     this.storage.get(this.config.JSON_FILE).then( (res) => {
         // trick to disable response caching
         const salt = (new Date()).getTime();

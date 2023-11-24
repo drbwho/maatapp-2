@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>event-select</ion-title>
+    <ion-title>Meeting Selection</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" [disabled]="curmeeting?'false':'true'">Close</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -10,9 +13,12 @@
       <ion-title size="large">event-select</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-list>
-    <ion-item *ngFrom="meetings as meeting">
-      {{metting.title}}
+  <ion-list class="ion-padding">
+    <ion-list-header>
+      Please select the Current Meeting
+    </ion-list-header>
+    <ion-item *ngFor="let meeting of meetings" (click)="selectMeeting(meeting)" [color]="curmeeting?(meeting.id == curmeeting.id?'medium':''):''">
+      {{meeting.title}}
     </ion-item>
   </ion-list>
 </ion-content>

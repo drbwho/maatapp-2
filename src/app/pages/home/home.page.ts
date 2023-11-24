@@ -4,13 +4,13 @@ import { Component, OnInit } from '@angular/core';
 import { ConferenceData } from './../../providers/conference-data';
 import { Router } from '@angular/router';
 import { Events } from '../../providers/events';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-
 
 export class HomePage implements OnInit {
   conftitle: string;
@@ -22,7 +22,8 @@ export class HomePage implements OnInit {
     private router: Router,
     public dataProvider: ConferenceData,
     public plt: Platform,
-    public inAppBrowser: InAppBrowser
+    public inAppBrowser: InAppBrowser,
+    private appComponent: AppComponent
     ) { }
 
   async ngOnInit() {
@@ -31,12 +32,17 @@ export class HomePage implements OnInit {
     } else {
       this.backimage = '/assets/img/Start_BG_screen_without_logo.jpg';
     }
+
+    this.refreshTitle();
+  }
+
+  refreshTitle(){
     this.dataProvider.load().subscribe((data: any) => {
       if (data && data.eventdates) {
-          this.conftitle = data.info[0].title;
-          this.confpage = data.info[0].page;
-        }
-      });
+        this.conftitle = data.info[0].title;
+        this.confpage = data.info[0].page;
+      }
+    });
   }
 
   loadTaxonomyPage (page: any) {
@@ -61,6 +67,12 @@ export class HomePage implements OnInit {
       url,
       '_blank'
     );
+  }
+
+  selectMeeting(){
+    this.appComponent.get_current_meeting(true).then(()=>{
+      this.refreshTitle();
+    });
   }
 
 }

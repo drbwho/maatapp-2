@@ -2,7 +2,7 @@ import { ConfigData } from './config-data';
 import { AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
@@ -33,6 +33,7 @@ interface MyReviews {
 
 export class ConferenceData {
   data: any;
+  meetings: any;
   sessionratings: any;
   mysessionratings: MyRatings[];
 
@@ -46,37 +47,42 @@ export class ConferenceData {
     public config: ConfigData
   ) {}
 
+  // initial process of conference data
   load(): any {
     if (this.data) {
       return of(this.data);
     } else {
-        // always load data from local stored file
+        // load data from storage
         return from(this.storage
             .get(this.config.JSON_FILE))
             .pipe(map(this.processData, this));
     }
   }
 
+  // get all meetings
   async load_meetings(){
-    if(!this.data.meetings){
-      return new Promise((resolve)=>{
-        fetch("../../assets/data/events.json").then(res=>res.json()).then(json=>{
-          console.log("OUTPUT: ", json);
-          resolve(JSON.parse(json));
-        });
+    if(this.meetings){
+      return this.meetings;
+    }else{
+      //--- TO DO fetch from API
+      
+      // else load from local file
+      return fetch("../../assets/data/meetings.json").then(res=>res.json()).then(json=>{
+          this.meetings = json.meetings;
+          this.storage.set(this.config.MEETINGS_FILE, this.meetings);
+          return this.meetings;
       })
     }
   }
 
   processData(data: any) {
-    // just some good 'ol JS fun with objects and arrays
     // build up the data by linking speakers to sessions
     this.data = data;
     if(!data){
         return [];
     }
 
-    // loop throug each person
+    // loop through each person
     this.data.people.forEach( (person: any) => {
       // speaker capacities
       person.capacity = data.capUsers.reduce ( (filtered: any, item: any) => {
