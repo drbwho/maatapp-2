@@ -1,0 +1,16 @@
+{
+  "events":[
+  {
+    "id": "1",
+    "title": "CA22125 Winter Meeting 24",
+    "api_url": "https://bkk-apps.com:8445",
+    "icon": ""
+  },
+  {
+    "id": "2",
+    "title": "CA22125 Summer Meeting 24",
+    "api_url": "https://bkk-apps.com:8445",
+    "icon": ""
+  }
+]
+}

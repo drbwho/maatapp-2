@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService, ChatUser } from '../../providers/chat-service';
 import { ModalController, NavController } from '@ionic/angular';
-import { ChatroomFilterPage } from '../chatroom-filter/chatroom-filter';
+import { ChatroomFilterPage } from '../../component/chatroom-filter/chatroom-filter';
 import { ChatRoom, ChatMessage } from '../../providers/chat-service';
 import { Events } from '../../providers/events';
 

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ChatPageRoutingModule } from './chat-routing.module';
-import { ChatroomFilterPage } from '../chatroom-filter/chatroom-filter';
+import { ChatroomFilterPage } from '../../component/chatroom-filter/chatroom-filter';
 import { ChatPage } from './chat.page';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 

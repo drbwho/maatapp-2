@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { SplashScreen } from '@capacitor/splash-screen';
 
-import { MenuController, Platform, ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { MenuController, Platform, ToastController, AlertController, LoadingController, ModalController } from '@ionic/angular';
 
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
@@ -13,6 +13,7 @@ import { Network } from '@capacitor/network';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { register } from 'swiper/element/bundle';
 
+import { SelectMeetingPage } from './component/select-meeting/select-meeting';
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
@@ -74,14 +75,15 @@ export class AppComponent implements OnInit {
     private toast: ToastController,
     private inAppBrowser: InAppBrowser,
     private chatService: ChatService,
-    private fcmService: FcmService
+    private fcmService: FcmService,
+    private modalCtrl: ModalController
   ) {
     this.initializeApp();
   }
 
   ngOnInit() {
     this.storage.create();
-    
+
     this.checkLoginStatus();
     this.listenForLoginEvents();
     this.check_new_jsonfile();
@@ -134,6 +136,9 @@ export class AppComponent implements OnInit {
       this.listenForChatEvents();
       this.load_hasUnreadChatMessages();
     });
+
+    //Load current event
+    //this.get_current_meeting();
   }
 
   checkLoginStatus() {
@@ -168,6 +173,22 @@ export class AppComponent implements OnInit {
     });
   }
 
+  async get_current_meeting() {
+    this.storage.get(this.config.CUR_EVENT).then(async (data)=>{
+      console.log(data)
+      if(!data){
+        const meetings = await this.confdata.load_meetings();
+        const modal = await this.modalCtrl.create({
+          component: SelectMeetingPage,
+          componentProps: { meetings: meetings }
+        });
+        await modal.present();
+        const { data } = await modal.onWillDismiss();
+        if (data) {
+        }
+      }
+    });
+  }
 
   // check if new version of conference data exists
   async check_new_jsonfile() {
@@ -177,7 +198,7 @@ export class AppComponent implements OnInit {
     headers.append('Cache-control', 'max-age=0');
     headers.append('Expires', '0');
     headers.append('Pragma', 'no-cache');
-    
+
     this.storage.get(this.config.JSON_FILE).then( (res) => {
         // trick to disable response caching
         const salt = (new Date()).getTime();

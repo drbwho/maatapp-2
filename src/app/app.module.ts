@@ -16,6 +16,8 @@ import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+import { SelectMeetingPage } from './component/select-meeting/select-meeting';
+
 import {enableProdMode} from '@angular/core';
 
 enableProdMode();
@@ -35,7 +37,7 @@ enableProdMode();
         })
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [AppComponent, ImageViewerComponent],
+    declarations: [AppComponent, ImageViewerComponent, SelectMeetingPage],
     providers: [InAppBrowser, PhotoViewer, Calendar, SocialSharing, Storage],
     bootstrap: [AppComponent]
 })

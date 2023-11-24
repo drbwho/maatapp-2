@@ -54,6 +54,7 @@
     "es6-promise-plugin": "4.2.2",
     "firebase": "^10.5.2",
     "ionic-cordova-oauth": "0.0.9",
+    "node": "18.17",
     "node-gyp": "10.0.1",
     "photo": "3.0.0",
     "rocket.chat.realtime.api.rxjs": "^2.1.1",

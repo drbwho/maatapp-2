@@ -57,6 +57,16 @@ export class ConferenceData {
     }
   }
 
+  async load_meetings(){
+    if(!this.data.meetings){
+      return new Promise((resolve)=>{
+        fetch("../../assets/data/events.json").then(res=>res.json()).then(json=>{
+          console.log("OUTPUT: ", json);
+          resolve(JSON.parse(json));
+        });
+      })
+    }
+  }
 
   processData(data: any) {
     // just some good 'ol JS fun with objects and arrays
@@ -65,7 +75,7 @@ export class ConferenceData {
     if(!data){
         return [];
     }
-    
+
     // loop throug each person
     this.data.people.forEach( (person: any) => {
       // speaker capacities
