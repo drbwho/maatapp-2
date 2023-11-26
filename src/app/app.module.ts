@@ -33,7 +33,7 @@ enableProdMode();
             driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: true
+            enabled: environment.production
         })
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
