@@ -123,30 +123,4 @@ export class FcmService {
       }
     });
   }
-
-    // firebase push notifications
-    /*if (this.config.ENABLE_PUSH_NOTIFICATIONS) {
-      this.fcm.getToken().then(token => {
-        console.log(token);
-      });
-      this.fcm.onTokenRefresh().subscribe(token => {
-        console.log(token);
-      });
-      this.fcm.onNotification().subscribe(notification => {
-        console.log(notification);
-        const navigationExtras: NavigationExtras = {
-          queryParams: {
-            special: JSON.stringify(notification)
-          }
-        };
-        if (notification.wasTapped) {
-          console.log('Received in background');
-        } else {
-          console.log('Received in foreground');
-        }
-        // this.router.navigate(['/app/tabs/notifications'], navigationExtras);
-        this.router.navigate(['/app/tabs/notifications', JSON.stringify(notification)]);
-      });
-      // this.fcm.subscribeToTopic('people'); /topics/all
-    }*/
 }

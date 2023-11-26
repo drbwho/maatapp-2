@@ -23,5 +23,5 @@ key: f4d1752fd32a9661a5591b845231cc3cba391769
 
 ionic cordova plugin add https://github.com/chroa/twitter-connect-plugin --variable FABRIC_KEY=f4d1752fd32a9661a5591b845231cc3cba391769 --variable TWITTER_KEY=TyIOYJ7He8PbhP5iaOaSoNgRl --variable TWITTER_SECRET=qFJ265oOVpU3PQrz6ogpM5iMVws0QCQ89ePC1bR6xqheklrLCC
 
-IF Android build error duplicateclass -> 
-android.enableJetifier=true in gradle.properties
+IF Android build error duplicateclass -> in gradle.properties:
+android.enableJetifier=true 

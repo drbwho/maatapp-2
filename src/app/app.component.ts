@@ -108,7 +108,7 @@ export class AppComponent implements OnInit {
     // load status from storage
     this.load_hasUnreadNews();
 
-    this.swUpdate.available.subscribe(async res => {
+    this.swUpdate.checkForUpdate().then(async res => {
       const toast = await this.toastCtrl.create({
         message: 'Update available!',
         buttons: ['Close', 'Reload'],
