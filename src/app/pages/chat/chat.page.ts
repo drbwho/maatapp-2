@@ -57,7 +57,7 @@ export class ChatPage implements OnInit {
         this.messages.find((w)=>w.id===msg.id).updatedAt = msg.updatedAt;
       }
     });
-    // subscribe to delete message event
+    // subscribe to deleted message event
     this.events.subscribe('chat:deletedmessage', (msgid: string) => {
         this.messages = this.messages.filter((w)=>w.id != msgid);
     });
@@ -86,11 +86,12 @@ export class ChatPage implements OnInit {
   }
 
   sendMessage(){
-    //edit?
+    //edited?
     if(this.editMessage){
       this.chatService.updateMessage(this.message, this.editMessage.id, this.currentRoom.rid);
       this.editMessage = null;
       this.message = '';
+    //new?
     }else{
       this.chatService.sendMessage(this.message, this.currentRoom.rid);
       this.message = '';
@@ -116,7 +117,7 @@ export class ChatPage implements OnInit {
     });
   }
 
-  onScrollTop(ev){
+  /*onScrollTop(ev){
 
     return;
 
@@ -142,7 +143,7 @@ export class ChatPage implements OnInit {
         (ev as InfiniteScrollCustomEvent).target.complete();
       }, 500);
     });
-  }
+  }*/
 
   async handleScroll(ev){
     //console.log('Sroll', ev.detail.currentY);
@@ -218,10 +219,9 @@ export class ChatPage implements OnInit {
 
   addEmoji(event) {
     this.message = `${this.message}${event.emoji.native}`;
-    //this.isEmojiPickerVisible = false;
   }
 
-  setfocus(){
+  gotfocus(){
     this.isEmojiPickerVisible = false;
   }
 

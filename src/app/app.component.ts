@@ -108,18 +108,23 @@ export class AppComponent implements OnInit {
     // load status from storage
     this.load_hasUnreadNews();
 
-    this.swUpdate.checkForUpdate().then(async res => {
-      const toast = await this.toastCtrl.create({
-        message: 'Update available!',
-        buttons: ['Close', 'Reload'],
-        position: 'bottom',
+    // PWA updates
+    if(this.swUpdate.isEnabled){
+      this.swUpdate.checkForUpdate().then(async res => {
+        const toast = await this.toastCtrl.create({
+          message: 'Update available!',
+          buttons: ['Close', 'Reload'],
+          position: 'bottom',
+        });
+        await toast.present();
+        toast
+          .onDidDismiss()
+          .then(() => this.swUpdate.activateUpdate())
+          .then(() => window.location.reload());
       });
-      await toast.present();
-      toast
-        .onDidDismiss()
-        .then(() => this.swUpdate.activateUpdate())
-        .then(() => window.location.reload());
-    });
+    }else{
+      console.log('Service workers disabled')
+    }
   }
 
   initializeApp() {

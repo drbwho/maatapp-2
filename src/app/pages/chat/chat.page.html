@@ -36,6 +36,7 @@
               <span>{{ message.msg }}</span>
               <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
             </ion-col>
+            <div *ngIf="message.reactions" [innerHTML]="message.reactions" class="reaction-emoji"></div>
           </ion-row>
         </ion-grid>
       </ion-col>
@@ -51,10 +52,12 @@
   <ion-toolbar color="light">
     <ion-row align-items-center>
       <ion-col size="1">
-        <button class="emoji-selector" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">😀</button>
+        <button class="emoji-selector" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">
+          <ion-icon class="emoji-button" name="happy-outline"></ion-icon>
+        </button>
       </ion-col>
       <ion-col size="9">
-        <ion-textarea (ionFocus)="setfocus()" placeholder="Write your message here.." auto-grow class="inputBox" rows="1" [(ngModel)]="message"></ion-textarea>
+        <ion-textarea (ionFocus)="gotfocus()" placeholder="Write your message here.." auto-grow class="inputBox" rows="1" [(ngModel)]="message"></ion-textarea>
       </ion-col>
       <ion-col size="2" class="ion-padding-vertical">
         <ion-button expand="block" fill="clear" color="primary" [disabled]="message === ''" class="sendBtn"
@@ -63,7 +66,6 @@
         </ion-button>
       </ion-col>
       <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" (emojiSelect)="addEmoji($event)" title="Choose your emoji"></emoji-mart>
-
     </ion-row>
   </ion-toolbar>
 </ion-footer>

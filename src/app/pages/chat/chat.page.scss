@@ -61,21 +61,29 @@
   .emoji-selector {
       background: transparent;
       border: 0;
-      transform: translateY(20px);
+      transform: translate(2px, 23px);
       cursor: pointer;
       &:focus {
         outline: 0;
       }
     }
 
-  emoji-mart {
-    margin-left: 10px;
-  }
 
   ion-textarea {
     border: none !important;
   }
 
-  ion-textarea:focus {
-    border: none !important;
+  .has-focus ion-textarea {
+    --border-color: none !important;
+  }
+
+  .emoji-button {
+    font-size: 15pt;
+    color: gray;
+  }
+
+  .reaction-emoji {
+    //color: transparent;  
+    //text-shadow: 0 0 0 red;
+    filter: sepia(1) saturate(100);
   }

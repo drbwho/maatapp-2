@@ -11,6 +11,7 @@ export interface ChatMessage {
   createdAt?: string
   updatedAt?: string
   room?: ChatRoom
+  reactions?:any
 }
 
 export interface ChatRoom {
@@ -273,7 +274,7 @@ export class ChatService {
           "params": ["` + roomid + `",` + (lastMessageDate?`{"$date":`+lastMessageDate+`}`:null) + `,` + this.numMessagesToFetch + `,null, false]}`},
           {headers: this.headers})
         .subscribe({
-          next: (data: any)=>{
+          next: (data: any)=>{ 
             var map: ChatMessage[]=[];
             if(JSON.parse(data.message).result.messages === undefined){
               resolve(map);
@@ -287,7 +288,8 @@ export class ChatService {
                   msg: msg.msg,
                   user: msg.u.username,
                   createdAt: msg.ts.$date,
-                  updatedAt: msg._updatedAt.$date
+                  updatedAt: msg._updatedAt.$date,
+                  reactions: (msg.reactions?this.emojiIt(Object.keys(msg.reactions)[0]):null)
                 });
               }
             });
@@ -391,5 +393,19 @@ export class ChatService {
       counter += 1;
     }
     return result;
+  }
+
+  emojiIt(text) {
+  const emojiMap = {
+    grin: "&#x1f602",
+    smiley: "&#x1f60e",
+    happy: "&#x1f600"
+  }
+  const regExpression = /:([^:]*):/g
+    let result;
+    while (result = regExpression.exec(text)) {
+      text = text.replace(result[0], emojiMap[result[1]]);
+    }
+    return text;
   }
 }
