@@ -4,12 +4,12 @@
     margin-bottom: 4px;
     white-space: pre-wrap;
   }
-   
+
   .my-message {
     background: #D8EBFF;
     color: #333232;
   }
-   
+
   .other-message-row {
     --ion-grid-padding: 0px;
     --padding-start: 0px;
@@ -23,13 +23,13 @@
     color:#8089E3;
     font-weight: bold;
   }
-   
+
   .createdAt {
     color: #BFA7A7;
     float: right;
     font-size: x-small;
   }
-   
+
   .inputBox {
     margin-top: 10px;
     border: 1px solid gray;
@@ -38,7 +38,7 @@
     --padding-top: 13px !important;
     --padding-start: 5px;
   }
-   
+
   .sendBtn {
     --padding-start: 0.5em;
     --padding-end: 0.5em;
@@ -56,4 +56,26 @@
   .title-avatar {
     width:40px;
     height: 40px;
+  }
+
+  .emoji-selector {
+      background: transparent;
+      border: 0;
+      transform: translateY(20px);
+      cursor: pointer;
+      &:focus {
+        outline: 0;
+      }
+    }
+
+  emoji-mart {
+    margin-left: 10px;
+  }
+
+  ion-textarea {
+    border: none !important;
+  }
+
+  ion-textarea:focus {
+    border: none !important;
   }

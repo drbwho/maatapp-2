@@ -28,6 +28,7 @@ export class ChatPage implements OnInit {
   defaultHref = '/app/tabs/chat-rooms';
   editMessage: ChatMessage = null;
 
+  isEmojiPickerVisible: boolean;
   isLoading = false;
   scrollElement;
 
@@ -58,7 +59,7 @@ export class ChatPage implements OnInit {
     });
     // subscribe to delete message event
     this.events.subscribe('chat:deletedmessage', (msgid: string) => {
-        this.messages = this.messages.filter((w)=>w.id != msgid);      
+        this.messages = this.messages.filter((w)=>w.id != msgid);
     });
 
     this.currentUser = this.chatService.chatUser;
@@ -74,7 +75,7 @@ export class ChatPage implements OnInit {
       this.currentRoom = this.chatService.defaultChatRoom;
     }
     if(channel.type == "d"){
-      let data: any = await this.chatService.getUserInfo(channel.users.filter((w)=>w!=this.chatService.chatUser).at(0)); 
+      let data: any = await this.chatService.getUserInfo(channel.users.filter((w)=>w!=this.chatService.chatUser).at(0));
       this.currentRoom = channel;
       this.currentRoom.name = data.name;
     }else{
@@ -109,16 +110,16 @@ export class ChatPage implements OnInit {
         //enable scrolling after scrolling to bottom
         this.scrollElement.style.overflow = 'scroll';
       },100);
-      
+
       //mark room as read
       this.chatService.markRoomRead(this.currentRoom.rid);
     });
   }
 
-  onScrollTop(ev){ 
-    
-    return; 
-    
+  onScrollTop(ev){
+
+    return;
+
     if(this.viewInit){
       this.viewInit = false;
       (ev as InfiniteScrollCustomEvent).target.complete();
@@ -154,7 +155,7 @@ export class ChatPage implements OnInit {
         spinner: "circles"
       });
       loading.present();
-      
+
       //stop scrolling
       this.scrollElement.style.overflow = 'hidden';
 
@@ -175,7 +176,7 @@ export class ChatPage implements OnInit {
     }
     if(ev.detail.currentY > 50 && this.isLoading){
       this.isLoading = false;
-    } 
+    }
   }
 
   async openActionSheet(msg){
@@ -213,6 +214,15 @@ export class ChatPage implements OnInit {
       ],
     });
     actionSheet.present();
+  }
+
+  addEmoji(event) {
+    this.message = `${this.message}${event.emoji.native}`;
+    //this.isEmojiPickerVisible = false;
+  }
+
+  setfocus(){
+    this.isEmojiPickerVisible = false;
   }
 
 }

@@ -8,6 +8,7 @@ import { ChatPageRoutingModule } from './chat-routing.module';
 import { ChatroomFilterPage } from '../../component/chatroom-filter/chatroom-filter';
 import { ChatPage } from './chat.page';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     FormsModule,
     IonicModule,
     ChatPageRoutingModule,
-    ScrollingModule
+    ScrollingModule,
+    PickerModule
   ],
   declarations: [ChatPage, ChatroomFilterPage]
 })

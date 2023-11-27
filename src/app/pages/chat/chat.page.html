@@ -17,7 +17,7 @@
     </ion-buttons>-->
   </ion-toolbar>
 </ion-header>
- 
+
 <ion-content [fullscreen]="false" #scrollElement
   [scrollEvents]="true"
   (ionScroll)="handleScroll($any($event))">
@@ -46,12 +46,15 @@
     </ion-row>
   </ion-grid>
 </ion-content>
- 
+
 <ion-footer>
   <ion-toolbar color="light">
     <ion-row align-items-center>
-      <ion-col size="10">
-        <ion-textarea placeholder="Write your message here.." auto-grow class="inputBox" rows="1" [(ngModel)]="message"></ion-textarea>
+      <ion-col size="1">
+        <button class="emoji-selector" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">😀</button>
+      </ion-col>
+      <ion-col size="9">
+        <ion-textarea (ionFocus)="setfocus()" placeholder="Write your message here.." auto-grow class="inputBox" rows="1" [(ngModel)]="message"></ion-textarea>
       </ion-col>
       <ion-col size="2" class="ion-padding-vertical">
         <ion-button expand="block" fill="clear" color="primary" [disabled]="message === ''" class="sendBtn"
@@ -59,6 +62,8 @@
           <ion-icon name="send" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-col>
+      <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" (emojiSelect)="addEmoji($event)" title="Choose your emoji"></emoji-mart>
+
     </ion-row>
   </ion-toolbar>
 </ion-footer>

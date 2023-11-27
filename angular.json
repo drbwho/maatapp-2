@@ -36,6 +36,9 @@
               },
               {
                 "input": "src/global.scss"
+              },
+              {
+                "input": "node_modules/@ctrl/ngx-emoji-mart/picker.css"
               }
             ],
             "scripts": [],
