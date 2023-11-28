@@ -77,13 +77,32 @@
     --border-color: none !important;
   }
 
-  .emoji-button {
+  .react-button {
+    background: transparent;
+  }
+
+  .emoji-in-button {
     font-size: 15pt;
-    color: gray;
+    color: rgb(148, 148, 148);
   }
 
   .reaction-emoji {
+    --offset-top: 0px;
+    --offset-bottom: 0px;
+    //color: red;
     //color: transparent;  
     //text-shadow: 0 0 0 red;
-    filter: sepia(1) saturate(100);
+    //filter: sepia(1) saturate(100);
+  }
+
+  .react-popover {
+    --backdrop-opacity: 0;
+    --background: none;
+    font-size: 14pt;
+    --max-width: 150px;
+  }
+
+  .reaction-select-emoji {
+    margin: 5px;
+    display: inline-block;
   }

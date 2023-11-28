@@ -17,6 +17,7 @@ import { LoadingController } from '@ionic/angular';
 export class ChatPage implements OnInit {
   @ViewChild('scrollElement') chatlist: IonContent;
   @ViewChild('infiniteScroll') infinitescroll: HTMLIonInfiniteScrollElement;
+  @ViewChild('reactpop') reactpop: HTMLIonPopoverElement;
 
   message = '';
   messages: ChatMessage[] = [];
@@ -31,6 +32,7 @@ export class ChatPage implements OnInit {
   isEmojiPickerVisible: boolean;
   isLoading = false;
   scrollElement;
+  ReactIsOpen = false;
 
   constructor(
     private chatService: ChatService,
@@ -44,10 +46,17 @@ export class ChatPage implements OnInit {
     // subscribe to new message arrival
     this.events.subscribe('chat:newmessage', (msg: ChatMessage) => {
       if(this.currentRoom.rid == msg.room.rid){
-        this.messages.push(msg);
-        this.currentUser = this.chatService.chatUser;
-        this.chatService.markRoomRead(this.currentRoom.rid);
-        setTimeout(()=>this.chatlist.scrollToBottom(800),100);
+      //check if is an update first (ex. emoji reaction)
+        if(this.messages.find((w)=>w.id===msg.id)){
+          this.messages.find((w)=>w.id===msg.id).msg = msg.msg;
+          this.messages.find((w)=>w.id===msg.id).updatedAt = msg.updatedAt;
+          this.messages.find((w)=>w.id===msg.id).reactions = msg.reactions;
+        }else{
+          this.messages.push(msg);
+          this.currentUser = this.chatService.chatUser;
+          this.chatService.markRoomRead(this.currentRoom.rid);
+          setTimeout(()=>this.chatlist.scrollToBottom(800),100);
+        }
       }
     });
     // subscribe to updated message arrival
@@ -55,6 +64,7 @@ export class ChatPage implements OnInit {
       if(this.currentRoom.rid == msg.room.rid){
         this.messages.find((w)=>w.id===msg.id).msg = msg.msg;
         this.messages.find((w)=>w.id===msg.id).updatedAt = msg.updatedAt;
+        this.messages.find((w)=>w.id===msg.id).reactions = msg.reactions;
       }
     });
     // subscribe to deleted message event
@@ -223,6 +233,25 @@ export class ChatPage implements OnInit {
 
   gotfocus(){
     this.isEmojiPickerVisible = false;
+  }
+
+  // check if textarea is empty to clear editmessage flag if set
+  checkEmpty(){
+    if(this.message.length == 0 && this.editMessage){
+      this.editMessage = null;
+    }
+  }
+
+  showReactionPop(ev, message){
+    this.reactpop.event = ev;
+    this.editMessage = message;
+    this.ReactIsOpen = true;
+  }
+
+  selReactionEmoji(emojiname){
+    this.reactpop.dismiss();
+    this.chatService.setReaction(this.editMessage.id, emojiname, true);
+    this.editMessage = null;
   }
 
 }

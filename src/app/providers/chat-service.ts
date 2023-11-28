@@ -11,7 +11,7 @@ export interface ChatMessage {
   createdAt?: string
   updatedAt?: string
   room?: ChatRoom
-  reactions?:any
+  reactions?:any[]
 }
 
 export interface ChatRoom {
@@ -108,6 +108,16 @@ export class ChatService {
           msg.room.rid = message.fields.args[0].rid;
           msg.room.type = message.fields.args[1].roomType;
           msg.room.name = message.fields.args[1].roomName;
+          let reactions=[];
+          if(typeof(message.fields.args[0].reactions)!="undefined"){
+            Object.entries(message.fields.args[0].reactions).forEach(([key, value]: any)=>{ 
+              reactions.push({
+                emoji: this.emojiIt(key),
+                users: value.usernames.length
+              })
+            })
+          }
+          msg.reactions = (message.fields.args[0].reactions ? reactions : null)
           //its update!
           if(message.fields.args[0].editedAt){
             this.events.publish('chat:updatedmessage', msg);
@@ -281,15 +291,24 @@ export class ChatService {
               return;
             }
             JSON.parse(data.message).result.messages.forEach((msg: any) => {
-              //filter joining messages
+              //filter joining etc. messages
               if(!msg.t){
+                let reactions=[];
+                if(typeof(msg.reactions)!="undefined"){
+                  Object.entries(msg.reactions).forEach(([key, value]: any)=>{ 
+                    reactions.push({
+                      emoji: this.emojiIt(key),
+                      users: value.usernames.length
+                    })
+                  })
+                }
                 map.push({
                   id: msg._id,
                   msg: msg.msg,
                   user: msg.u.username,
                   createdAt: msg.ts.$date,
                   updatedAt: msg._updatedAt.$date,
-                  reactions: (msg.reactions?this.emojiIt(Object.keys(msg.reactions)[0]):null)
+                  reactions: (msg.reactions ? reactions : null)
                 });
               }
             });
@@ -303,7 +322,7 @@ export class ChatService {
 
   // Search all directory
   searchDirectory(queryText: string, type: string){
-    // use REST API
+   // use REST API
    return new Promise((resolve, reject) => {
       this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/directory' + '?query=' + JSON.stringify({"text": queryText, "type": type, "workspace": "local"}),
         {headers: this.headers})
@@ -377,7 +396,17 @@ export class ChatService {
       {headers: this.headers}).subscribe(()=>{
         this.events.publish('chat:markroomread');
       });
- 
+  }
+
+  // Message Reactions
+  setReaction(mid: string, emojiname: string, set: boolean){
+    this.chatService.callMethod("setReaction", emojiname, mid, set).subscribe({
+      next: (data) => {
+        if(data.error){
+          console.log('Error: ',data)
+        }
+      },
+      error: (error)=>console.log(error)});
   }
 
   // Random Id Generator
@@ -396,16 +425,18 @@ export class ChatService {
   }
 
   emojiIt(text) {
-  const emojiMap = {
-    grin: "&#x1f602",
-    smiley: "&#x1f60e",
-    happy: "&#x1f600"
-  }
-  const regExpression = /:([^:]*):/g
-    let result;
-    while (result = regExpression.exec(text)) {
-      text = text.replace(result[0], emojiMap[result[1]]);
+    const emojiMap = {
+      heart: "&#x2764&#xfe0f",
+      smiley: "&#x1f604",
+      thumbsup: "&#x1f44d",
+      slight_frown: "&#x1f641"
     }
-    return text;
+    const regExpression = /:([^:]*):/g
+      let result;
+      while (result = regExpression.exec(text)) {
+        text = text.replace(result[0], emojiMap[result[1]]);
+      }
+      return text;
   }
+
 }
