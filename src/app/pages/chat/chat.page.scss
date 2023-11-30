@@ -31,7 +31,6 @@
   }
 
   .inputBox {
-    margin-top: 10px;
     border: 1px solid gray;
     border-radius: 10px;
     background: #fff;
@@ -58,7 +57,7 @@
     height: 40px;
   }
 
-  .emoji-selector {
+  .emoji-selector, .audio-recorder {
       background: transparent;
       border: 0;
       transform: translate(2px, 23px);
@@ -68,7 +67,18 @@
       }
     }
 
-
+  .textarea-container {
+    display: flex;
+    align-items: center;
+    ion-label {
+      font-size: 10pt;
+      background: #242323;
+      padding: 10px;
+      width: 100%;
+      color: white;
+      border-radius: 10px;
+    }
+  }
   ion-textarea {
     border: none !important;
   }
@@ -105,4 +115,21 @@
   .reaction-select-emoji {
     margin: 5px;
     display: inline-block;
+  }
+
+  .player-container {
+    display: inline-block;
+    width: 100%;
+    padding: 5px;
+    background: aliceblue;
+    button {
+      background-color: #156FF5;
+      color: white;
+      font-size: 21pt;
+      padding-top: 1px;
+      border-radius: 5px;
+      width: 30px;
+      text-align: end;
+      height: 30px;
+    }
   }

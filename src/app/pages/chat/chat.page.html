@@ -49,8 +49,24 @@
       <ion-col size="3" *ngIf="message.user === currentUser" class="ion-text-end">
         <span *ngFor="let react of message.reactions" [innerHTML]="react.emoji" class="reaction-emoji"></span>
       </ion-col>
-      <ion-col size="9" *ngIf="message.user === currentUser" class="message my-message" (click)="openActionSheet(message)">
+      <!-- <ion-col size="9" *ngIf="message.user === currentUser" class="message my-message" (click)="openActionSheet(message)"> -->
+      <ion-col size="9" *ngIf="message.user === currentUser" class="message my-message">
         <span>{{ message.msg }}</span>
+
+        <!-- Audio Player -->
+        <span *ngFor="let file of message.attachments" class="audio-player">
+          <span class="player-container">
+            <button *ngIf="!playing" (click)="play_from_url(file.audio_url, message.id)">
+              <ion-icon name="caret-forward-outline"></ion-icon>
+            </button>
+            <button *ngIf="playing">
+              <ion-icon name="pause-outline"></ion-icon>
+            </button>
+            <span *ngIf="playingId === message.id">{{playingDisplay}}</span>
+            <span *ngIf="playingId != message.id">0:00</span>
+          </span>
+        </span>
+
         <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
       </ion-col>
     </ion-row>
@@ -71,13 +87,18 @@
 <ion-footer>
   <ion-toolbar color="light">
     <ion-row align-items-center>
-      <ion-col size="1">
+      <ion-col size="2">
         <button class="emoji-selector" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">
           <ion-icon class="emoji-in-button" name="happy-outline"></ion-icon>
+        </button>&nbsp;
+        <button #recordbtn class="audio-recorder" (click)="toggle_recording()">
+          <ion-icon *ngIf="!recording" class="emoji-in-button" name="mic-outline"></ion-icon>
+          <ion-icon *ngIf="recording" class="emoji-in-button" name="mic-off-outline" color="danger"></ion-icon>
         </button>
       </ion-col>
-      <ion-col size="9">
-        <ion-textarea (ionFocus)="gotfocus()" (ionInput)="checkEmpty()" placeholder="Write your message here.." auto-grow class="inputBox" rows="1" [(ngModel)]="message"></ion-textarea>
+      <ion-col class="textarea-container" size="8">
+        <ion-label *ngIf="recording"><ion-icon name="radio-button-on-outline" color="danger"></ion-icon> Recording: {{durationDisplay}}</ion-label>
+        <ion-textarea *ngIf="!recording" (ionFocus)="gotfocus()" (ionInput)="checkEmpty()" placeholder="Write your message here.." auto-grow class="inputBox" rows="1" [(ngModel)]="message"></ion-textarea>
       </ion-col>
       <ion-col size="2" class="ion-padding-vertical">
         <ion-button expand="block" fill="clear" color="primary" [disabled]="message === ''" class="sendBtn"

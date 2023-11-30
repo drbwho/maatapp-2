@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { ChatService, ChatMessage, ChatRoom, ChatUser } from '../../providers/chat-service';
 import { Events } from '../../providers/events';
 import { ViewChild } from '@angular/core';
-import { IonContent } from '@ionic/angular';
-import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { GestureController, GestureConfig, IonContent } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { VoiceRecorder, VoiceRecorderPlugin, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { ConfigData } from '../../providers/config-data';
 
 @Component({
   selector: 'app-chat',
@@ -14,10 +17,12 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./chat.page.scss'],
 })
 
-export class ChatPage implements OnInit {
+export class ChatPage implements OnInit, AfterViewInit {
   @ViewChild('scrollElement') chatlist: IonContent;
   @ViewChild('infiniteScroll') infinitescroll: HTMLIonInfiniteScrollElement;
   @ViewChild('reactpop') reactpop: HTMLIonPopoverElement;
+  @ViewChild('recordbtn', { read: ElementRef}) recordbtn: ElementRef;
+  @ViewChild('mediaplayer') mediaplayer: HTMLSourceElement;
 
   message = '';
   messages: ChatMessage[] = [];
@@ -34,12 +39,22 @@ export class ChatPage implements OnInit {
   scrollElement;
   ReactIsOpen = false;
 
+  recording = false;
+  storedFileNames = [];
+  duration = 0;
+  durationDisplay = '';
+  playingDisplay = '';
+  playing = false;
+  playingId = 0;
+
   constructor(
     private chatService: ChatService,
     private events: Events,
     private route: ActivatedRoute,
     private actionSheetCtrl: ActionSheetController,
-    private loadintCtrl: LoadingController
+    private loadintCtrl: LoadingController,
+    private gestureCtrl: GestureController,
+    private confData: ConfigData
   ) { }
 
   ngOnInit() {
@@ -73,6 +88,25 @@ export class ChatPage implements OnInit {
     });
 
     this.currentUser = this.chatService.chatUser;
+  }
+
+  ngAfterViewInit(): void {
+    // long press gesture on audio record button
+    let gestconfig: GestureConfig = {
+      el: this.recordbtn.nativeElement,
+      threshold: 0,
+      gestureName: 'long-press',
+      onStart: ev =>{
+        Haptics.impact({style: ImpactStyle.Light});
+        this.toggle_recording();
+      },
+      onEnd: ev =>{
+        Haptics.impact({style: ImpactStyle.Light});
+        this.toggle_recording();
+      }
+    }
+    const longpress = this.gestureCtrl.create(gestconfig, true);
+    //longpress.enable();
   }
 
   async ionViewWillEnter(){
@@ -252,6 +286,123 @@ export class ChatPage implements OnInit {
     this.reactpop.dismiss();
     this.chatService.setReaction(this.editMessage.id, emojiname, true);
     this.editMessage = null;
+  }
+
+  async loadFiles(){
+    Filesystem.readdir({
+      path: '',
+      directory: Directory.Data
+    }).then(result => {
+      this.storedFileNames = result.files;
+    })
+  }
+
+  async toggle_recording(){
+    if(!this.recording){
+      // request permission to record audio
+      /*VoiceRecorder.hasAudioRecordingPermission()
+      .then(res=>{
+        console.log(res);
+      })
+      .catch(error=>{
+        console.log(error);
+      });*/
+      //console.log(hasPerm)
+     // if(!hasPerm.value){
+        const reqPerm = (await VoiceRecorder.requestAudioRecordingPermission()).value;
+        if(reqPerm){
+          console.log('Error Perm:', reqPerm);
+          return;
+        }
+      //}
+      this.recording = true;
+      VoiceRecorder.startRecording();
+      this.calculateDuration();
+      return;
+    }
+    VoiceRecorder.stopRecording().then( async (result: RecordingData) => {
+      this.recording = false;
+      if(result.value && result.value.recordDataBase64) {
+        const recordData = result.value.recordDataBase64;
+        const fileName = new Date().getTime() + '.wav';
+        await Filesystem.writeFile({
+          path: fileName,
+          directory: Directory.Data,
+          data: recordData
+        });
+        
+        this.play_file(fileName);
+
+        //convert to blob before upload to chat server
+        var dataurl = "data:audio/aac;base64,"+recordData;
+        let filedata = await (await fetch(dataurl)).blob();
+        this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata);
+      }
+    });
+  }
+
+  async play_file(fileName){
+    const audioFile = await Filesystem.readFile({
+      path: fileName,
+      directory: Directory.Data
+    })
+    const base64Sound = audioFile.data;
+    const audioRef = new Audio(`data:audio/aac;base64,${base64Sound}`)
+    audioRef.oncanplaythrough = () => audioRef.play();
+    audioRef.load();
+  }
+
+  async play_from_url(chatfileurl, msgid){
+    const audiodata = await this.chatService.downloadFile(chatfileurl) as Blob;
+    let b64 = await this.blobToBase64(audiodata);
+    let audioRef = new Audio(`${b64}`);
+    audioRef.oncanplaythrough = () =>{
+       audioRef.play();
+    }
+    audioRef.load();
+    audioRef.onended = ()=> this.playing = false;
+    audioRef.onplay = ()=> {
+      this.duration = 0;
+      this.playing = true;
+      this.playingId = msgid;
+      this.updateDuration();
+    }
+  }
+
+  calculateDuration(){
+    if(!this.recording){
+      this.duration = 0;
+      this.durationDisplay = '';
+      return;
+    }
+    this.duration += 1;
+    const minutes = Math.floor(this.duration / 60);
+    const seconds = (this.duration % 60).toString().padStart(2, '0');
+    this.durationDisplay = `${minutes}:${seconds}`;
+    setTimeout(()=>{
+      this.calculateDuration();
+    }, 1000)
+  }
+
+  updateDuration(){
+    if(!this.playing){
+      return;
+    }
+    this.duration += 1;
+    const minutes = Math.floor(this.duration / 60);
+    const seconds = (this.duration % 60).toString().padStart(2, '0');
+    this.playingDisplay = `${minutes}:${seconds}`;
+    setTimeout(()=>{
+      this.updateDuration();
+    }, 1000)
+  }
+
+  blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result)
+      reader.readAsDataURL(blob)
+    })
   }
 
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RealTimeAPI } from 'rocket.chat.realtime.api.rxjs';
 import { ConfigData } from './config-data';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Events } from './events';
 
 export interface ChatMessage {
@@ -12,6 +12,7 @@ export interface ChatMessage {
   updatedAt?: string
   room?: ChatRoom
   reactions?:any[]
+  attachments?:any[]
 }
 
 export interface ChatRoom {
@@ -108,6 +109,8 @@ export class ChatService {
           msg.room.rid = message.fields.args[0].rid;
           msg.room.type = message.fields.args[1].roomType;
           msg.room.name = message.fields.args[1].roomName;
+
+          // parse reactions
           let reactions=[];
           if(typeof(message.fields.args[0].reactions)!="undefined"){
             Object.entries(message.fields.args[0].reactions).forEach(([key, value]: any)=>{ 
@@ -118,6 +121,12 @@ export class ChatService {
             })
           }
           msg.reactions = (message.fields.args[0].reactions ? reactions : null)
+
+          // parse attachments (ex. audio messages)
+          if(typeof(message.fields.args[0].attachments)!="undefined"){
+            msg.attachments = message.fields.args[0].attachments;
+          }
+
           //its update!
           if(message.fields.args[0].editedAt){
             this.events.publish('chat:updatedmessage', msg);
@@ -308,7 +317,8 @@ export class ChatService {
                   user: msg.u.username,
                   createdAt: msg.ts.$date,
                   updatedAt: msg._updatedAt.$date,
-                  reactions: (msg.reactions ? reactions : null)
+                  reactions: (msg.reactions ? reactions : null),
+                  attachments: (msg.attachments ? msg.attachments : null)
                 });
               }
             });
@@ -407,6 +417,43 @@ export class ChatService {
         }
       },
       error: (error)=>console.log(error)});
+  }
+
+  // Upload audio recording as new message
+  uploadFile(rid: string, filename: string, filecontent: Blob){
+    // use REST API
+    let headers = new HttpHeaders({
+      'X-Auth-Token': this.chatUserToken,
+      'X-User-Id': this.chatUserId});
+
+    const formData = new FormData();
+    formData.append('file', filecontent, filename);
+    formData.append('description', 'Audio message');
+    
+    this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/rooms.upload/' + rid, formData,
+      {headers: headers})
+      .subscribe({error: (error)=>console.log(error)});
+  }
+
+  downloadFile(fileurl){
+    let headers = new HttpHeaders({
+      'X-Auth-Token': this.chatUserToken,
+      'X-User-Id': this.chatUserId,
+      'Content-Type': 'audio/acc'});
+
+    return new Promise((resolve, reject) => {
+      this.http.get('https://' + this.config.CHAT_HOST + fileurl,
+        {headers: headers,
+          responseType: 'blob'
+        })
+        .subscribe({
+          next: (data: any)=>{
+            if(data){
+              resolve(data);
+            }
+          },
+          error: (error)=>console.log(error)});
+    });
   }
 
   // Random Id Generator
