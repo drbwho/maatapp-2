@@ -28,3 +28,5 @@ Add to info.plist
 <string>Conference App needs to add photos to device library</string>
 <key>NSContactsUsageDescription</key>
 <string>Conference App need to access contacts if you like to communicate with participants</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Conference App need to access your microphone if you like to send audio messages to participants</string>

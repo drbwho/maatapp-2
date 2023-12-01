@@ -39,6 +39,7 @@ export class ChatPage implements OnInit, AfterViewInit {
   scrollElement;
   ReactIsOpen = false;
 
+  audioRef: HTMLAudioElement;
   recording = false;
   storedFileNames = [];
   duration = 0;
@@ -46,6 +47,7 @@ export class ChatPage implements OnInit, AfterViewInit {
   playingDisplay = '';
   playing = false;
   playingId = 0;
+  play_progress = 0;
 
   constructor(
     private chatService: ChatService,
@@ -298,23 +300,13 @@ export class ChatPage implements OnInit, AfterViewInit {
   }
 
   async toggle_recording(){
+    //check recording permission
     if(!this.recording){
-      // request permission to record audio
-      /*VoiceRecorder.hasAudioRecordingPermission()
-      .then(res=>{
-        console.log(res);
-      })
-      .catch(error=>{
-        console.log(error);
-      });*/
-      //console.log(hasPerm)
-     // if(!hasPerm.value){
-        const reqPerm = (await VoiceRecorder.requestAudioRecordingPermission()).value;
-        if(reqPerm){
-          console.log('Error Perm:', reqPerm);
-          return;
-        }
-      //}
+      const reqPerm = (await VoiceRecorder.requestAudioRecordingPermission()).value;
+      if(!reqPerm){
+        console.log('Error Perm:', reqPerm);
+        return;
+      }
       this.recording = true;
       VoiceRecorder.startRecording();
       this.calculateDuration();
@@ -330,7 +322,7 @@ export class ChatPage implements OnInit, AfterViewInit {
           directory: Directory.Data,
           data: recordData
         });
-        
+
         this.play_file(fileName);
 
         //convert to blob before upload to chat server
@@ -354,19 +346,25 @@ export class ChatPage implements OnInit, AfterViewInit {
 
   async play_from_url(chatfileurl, msgid){
     const audiodata = await this.chatService.downloadFile(chatfileurl) as Blob;
+    const audioduration = (audiodata.size/18000).toFixed(2);
     let b64 = await this.blobToBase64(audiodata);
-    let audioRef = new Audio(`${b64}`);
-    audioRef.oncanplaythrough = () =>{
-       audioRef.play();
+    this.audioRef = new Audio(`${b64}`);
+    this.audioRef.oncanplaythrough = () =>{
+       this.audioRef.play();
     }
-    audioRef.load();
-    audioRef.onended = ()=> this.playing = false;
-    audioRef.onplay = ()=> {
-      this.duration = 0;
+    this.audioRef.load();
+    this.audioRef.onended = ()=> this.playing = false;
+    this.audioRef.onplay = ()=> {
+      this.duration = -0.1;
       this.playing = true;
       this.playingId = msgid;
-      this.updateDuration();
+      this.updateDuration(audioduration);
     }
+  }
+
+  stop_playing(){
+    this.playing = false;
+    this.audioRef.pause();
   }
 
   calculateDuration(){
@@ -384,17 +382,18 @@ export class ChatPage implements OnInit, AfterViewInit {
     }, 1000)
   }
 
-  updateDuration(){
+  updateDuration(audioduration){
     if(!this.playing){
       return;
     }
-    this.duration += 1;
+    this.duration += 0.1;
     const minutes = Math.floor(this.duration / 60);
     const seconds = (this.duration % 60).toString().padStart(2, '0');
     this.playingDisplay = `${minutes}:${seconds}`;
+    this.play_progress = this.duration / audioduration / 10;
     setTimeout(()=>{
-      this.updateDuration();
-    }, 1000)
+      this.updateDuration(audioduration);
+    }, 100)
   }
 
   blobToBase64(blob) {

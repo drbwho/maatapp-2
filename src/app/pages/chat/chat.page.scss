@@ -100,7 +100,7 @@
     --offset-top: 0px;
     --offset-bottom: 0px;
     //color: red;
-    //color: transparent;  
+    //color: transparent;
     //text-shadow: 0 0 0 red;
     //filter: sepia(1) saturate(100);
   }
@@ -118,10 +118,11 @@
   }
 
   .player-container {
-    display: inline-block;
+    display: flex;
     width: 100%;
     padding: 5px;
     background: aliceblue;
+    align-items: center;
     button {
       background-color: #156FF5;
       color: white;
@@ -131,5 +132,10 @@
       width: 30px;
       text-align: end;
       height: 30px;
+      margin-right: 5px;
+    }
+    .label-duration {
+      margin-right: 5px;
+      font-size: 11pt;
     }
   }

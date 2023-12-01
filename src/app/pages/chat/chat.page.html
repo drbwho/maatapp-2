@@ -54,18 +54,20 @@
         <span>{{ message.msg }}</span>
 
         <!-- Audio Player -->
-        <span *ngFor="let file of message.attachments" class="audio-player">
+        <div *ngFor="let file of message.attachments" class="audio-player">
           <span class="player-container">
-            <button *ngIf="!playing" (click)="play_from_url(file.audio_url, message.id)">
+            <button *ngIf="!playing || (playing && playingId != message.id)" (click)="play_from_url(file.audio_url, message.id)">
               <ion-icon name="caret-forward-outline"></ion-icon>
             </button>
-            <button *ngIf="playing">
+            <button *ngIf="playing && playingId === message.id" (click)="stop_playing()">
               <ion-icon name="pause-outline"></ion-icon>
             </button>
-            <span *ngIf="playingId === message.id">{{playingDisplay}}</span>
-            <span *ngIf="playingId != message.id">0:00</span>
+            <span class="label-duration" *ngIf="playingId === message.id">{{playingDisplay}}</span>
+            <span class="label-duration" *ngIf="playingId != message.id">0:00</span>
+            <ion-progress-bar  *ngIf="playingId === message.id" [value]="play_progress"></ion-progress-bar>
+            <ion-progress-bar *ngIf="playingId != message.id"></ion-progress-bar>
           </span>
-        </span>
+        </div>
 
         <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
       </ion-col>
