@@ -2,14 +2,13 @@ import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { ChatService, ChatMessage, ChatRoom, ChatUser } from '../../providers/chat-service';
 import { Events } from '../../providers/events';
 import { ViewChild } from '@angular/core';
-import { GestureController, GestureConfig, IonContent } from '@ionic/angular';
+import { GestureController, GestureConfig, IonContent, IonTextarea } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { VoiceRecorder, VoiceRecorderPlugin, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import { ConfigData } from '../../providers/config-data';
 
 @Component({
   selector: 'app-chat',
@@ -42,12 +41,14 @@ export class ChatPage implements OnInit, AfterViewInit {
   audioRef: HTMLAudioElement;
   recording = false;
   storedFileNames = [];
-  duration = 0;
-  durationDisplay = '';
+  durationPlaying = 0;
+  durationRecording = 0;
+  recordingDisplay = '';
   playingDisplay = '';
   playing = false;
   playingId = 0;
   play_progress = 0;
+  audioduration = 0;
 
   constructor(
     private chatService: ChatService,
@@ -55,15 +56,14 @@ export class ChatPage implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private actionSheetCtrl: ActionSheetController,
     private loadintCtrl: LoadingController,
-    private gestureCtrl: GestureController,
-    private confData: ConfigData
+    private gestureCtrl: GestureController
   ) { }
 
   ngOnInit() {
     // subscribe to new message arrival
     this.events.subscribe('chat:newmessage', (msg: ChatMessage) => {
       if(this.currentRoom.rid == msg.room.rid){
-      //check if is an update first (ex. emoji reaction)
+        //check if is an update first (ex. emoji reaction)
         if(this.messages.find((w)=>w.id===msg.id)){
           this.messages.find((w)=>w.id===msg.id).msg = msg.msg;
           this.messages.find((w)=>w.id===msg.id).updatedAt = msg.updatedAt;
@@ -132,6 +132,11 @@ export class ChatPage implements OnInit, AfterViewInit {
   }
 
   sendMessage(){
+    //send audio if in record mode
+    if(this.recording){
+      this.toggle_recording();
+      return;
+    }
     //edited?
     if(this.editMessage){
       this.chatService.updateMessage(this.message, this.editMessage.id, this.currentRoom.rid);
@@ -279,14 +284,24 @@ export class ChatPage implements OnInit, AfterViewInit {
   }
 
   showReactionPop(ev, message){
-    this.reactpop.event = ev;
-    this.editMessage = message;
-    this.ReactIsOpen = true;
+      this.reactpop.event = ev;
+      this.editMessage = message;
+      this.ReactIsOpen = true;
   }
 
   selReactionEmoji(emojiname){
     this.reactpop.dismiss();
-    this.chatService.setReaction(this.editMessage.id, emojiname, true);
+    if(this.editMessage.reactions){
+      this.editMessage.reactions.forEach((w)=>{
+        //unset previous emoji
+        if(w.ismine){
+          this.chatService.setReaction(this.editMessage.id, w.emojiname, false);
+        }
+      })
+    }
+    if(emojiname != "clear"){
+      this.chatService.setReaction(this.editMessage.id, emojiname, true);
+    }
     this.editMessage = null;
   }
 
@@ -304,16 +319,26 @@ export class ChatPage implements OnInit, AfterViewInit {
     if(!this.recording){
       const reqPerm = (await VoiceRecorder.requestAudioRecordingPermission()).value;
       if(!reqPerm){
-        console.log('Error Perm:', reqPerm);
+        console.log('Error Permission:', reqPerm);
         return;
       }
       this.recording = true;
+      //enable send button
+      if(!this.message){
+        this.message = '#';
+      }
       VoiceRecorder.startRecording();
-      this.calculateDuration();
+      this.calculateRecordingDuration();
       return;
     }
     VoiceRecorder.stopRecording().then( async (result: RecordingData) => {
       this.recording = false;
+      //disable send button
+      let description = '';
+      if(this.message!='#'){
+        description = this.message;
+      }
+      this.message = '';
       if(result.value && result.value.recordDataBase64) {
         const recordData = result.value.recordDataBase64;
         const fileName = new Date().getTime() + '.wav';
@@ -322,18 +347,17 @@ export class ChatPage implements OnInit, AfterViewInit {
           directory: Directory.Data,
           data: recordData
         });
-
-        this.play_file(fileName);
+        //this.play_audio_file(fileName);
 
         //convert to blob before upload to chat server
         var dataurl = "data:audio/aac;base64,"+recordData;
         let filedata = await (await fetch(dataurl)).blob();
-        this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata);
+        this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata, description);
       }
     });
   }
 
-  async play_file(fileName){
+  async play_audio_file(fileName){
     const audioFile = await Filesystem.readFile({
       path: fileName,
       directory: Directory.Data
@@ -344,55 +368,83 @@ export class ChatPage implements OnInit, AfterViewInit {
     audioRef.load();
   }
 
-  async play_from_url(chatfileurl, msgid){
+  async play_audio_from_url(chatfileurl, msgid, ev: Event){
+    //stop click event from propagated to parent element
+    ev.stopPropagation();
+    this.playingDisplay = '0:00';
+
     const audiodata = await this.chatService.downloadFile(chatfileurl) as Blob;
-    const audioduration = (audiodata.size/18000).toFixed(2);
     let b64 = await this.blobToBase64(audiodata);
     this.audioRef = new Audio(`${b64}`);
     this.audioRef.oncanplaythrough = () =>{
-       this.audioRef.play();
+       this.wait_audio_load_and_play();
     }
     this.audioRef.load();
-    this.audioRef.onended = ()=> this.playing = false;
+    this.audioRef.onended = ()=> {
+      this.playing = false;
+    }
+    this.audioRef.onloadedmetadata = () => {
+      //get audio duration
+      this.audioduration = Math.round(this.audioRef.duration*100)/100;
+    };
     this.audioRef.onplay = ()=> {
-      this.duration = -0.1;
+      this.durationPlaying = 0;
       this.playing = true;
       this.playingId = msgid;
-      this.updateDuration(audioduration);
+      this.play_progress = 0;
+      this.updatePlayingDuration();
     }
   }
 
-  stop_playing(){
+  wait_audio_load_and_play(){
+    setTimeout(()=>{
+      if(!this.audioduration){
+        this.wait_audio_load_and_play();
+      }
+      this.audioRef.play();
+      return;
+    }, 10)
+  }
+   
+  stop_playing(ev: Event){
+    //stop click event from propagated to parent element
+    ev.stopPropagation();
     this.playing = false;
     this.audioRef.pause();
+    this.playingDisplay = '0:00';
+    this.play_progress = 0;
   }
 
-  calculateDuration(){
+  calculateRecordingDuration(){
     if(!this.recording){
-      this.duration = 0;
-      this.durationDisplay = '';
+      this.durationRecording = 0;
+      this.recordingDisplay = '';
       return;
     }
-    this.duration += 1;
-    const minutes = Math.floor(this.duration / 60);
-    const seconds = (this.duration % 60).toString().padStart(2, '0');
-    this.durationDisplay = `${minutes}:${seconds}`;
+    this.durationRecording += 1;
+    const minutes = Math.floor(this.durationRecording / 60);
+    const seconds = (this.durationRecording % 60).toString().padStart(2, '0');
+    this.recordingDisplay = `${minutes}:${seconds}`;
     setTimeout(()=>{
-      this.calculateDuration();
+      this.calculateRecordingDuration();
     }, 1000)
   }
 
-  updateDuration(audioduration){
+  updatePlayingDuration(){
     if(!this.playing){
       return;
     }
-    this.duration += 0.1;
-    const minutes = Math.floor(this.duration / 60);
-    const seconds = (this.duration % 60).toString().padStart(2, '0');
-    this.playingDisplay = `${minutes}:${seconds}`;
-    this.play_progress = this.duration / audioduration / 10;
+    this.durationPlaying += 0.1;
+    //is integer (seconds)?
+    if(parseFloat(this.durationPlaying.toFixed(2)) === parseFloat(this.durationPlaying.toFixed(0))){
+      let dur = parseFloat(this.durationPlaying.toFixed(0));
+      const minutes = Math.floor(dur / 60);
+      const seconds = (dur % 60).toString().padStart(2, '0');
+      this.playingDisplay = `${minutes}:${seconds}`;
+    }
+    this.play_progress = ((this.durationPlaying*1.1) / this.audioduration);
     setTimeout(()=>{
-      this.updateDuration(audioduration);
+      this.updatePlayingDuration();
     }, 100)
   }
 

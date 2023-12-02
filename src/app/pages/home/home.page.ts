@@ -3,8 +3,10 @@ import { Platform } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { ConferenceData } from './../../providers/conference-data';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 import { Events } from '../../providers/events';
 import { AppComponent } from '../../app.component';
+import { ConfigData } from '../../providers/config-data';
 
 @Component({
   selector: 'home',
@@ -23,7 +25,9 @@ export class HomePage implements OnInit {
     public dataProvider: ConferenceData,
     public plt: Platform,
     public inAppBrowser: InAppBrowser,
-    private appComponent: AppComponent
+    private appComponent: AppComponent,
+    private config: ConfigData,
+    private storage: Storage,
     ) { }
 
   async ngOnInit() {
@@ -34,13 +38,21 @@ export class HomePage implements OnInit {
     }
 
     this.refreshTitle();
+    this.events.subscribe('meeting:updated', ()=>{
+      this.refreshTitle();
+    })
   }
 
   refreshTitle(){
     this.dataProvider.load().subscribe((data: any) => {
       if (data && data.eventdates) {
-        this.conftitle = data.info[0].title;
+        //this.conftitle = data.info[0].title;
         this.confpage = data.info[0].page;
+      }
+    });
+    this.storage.get(this.config.CUR_MEETING).then((data)=>{
+      if(data){
+        this.conftitle = data.title;
       }
     });
   }
@@ -70,9 +82,7 @@ export class HomePage implements OnInit {
   }
 
   selectMeeting(){
-    this.appComponent.get_current_meeting(true).then(()=>{
-      this.refreshTitle();
-    });
+    this.appComponent.get_current_meeting(true);
   }
 
 }

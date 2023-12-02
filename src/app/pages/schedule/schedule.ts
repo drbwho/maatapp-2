@@ -42,8 +42,8 @@ export class SchedulePage implements OnInit {
     this.confData.load().subscribe((data: any) => {
       if (data && data.eventdates) {
           this.confdates = data.eventdates;
-        }
-      });
+      }
+    });
   }
 
   ionViewDidEnter() {

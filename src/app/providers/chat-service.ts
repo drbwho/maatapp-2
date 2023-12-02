@@ -49,7 +49,6 @@ export class ChatService {
 
   headers: HttpHeaders;
  
-
   user = 'bill';
   pass = '24172417';
 
@@ -116,7 +115,9 @@ export class ChatService {
             Object.entries(message.fields.args[0].reactions).forEach(([key, value]: any)=>{ 
               reactions.push({
                 emoji: this.emojiIt(key),
-                users: value.usernames.length
+                emojiname: key,
+                users: value.usernames.length,
+                ismine: (value.usernames.indexOf(this.chatUser) >=0 ? true : false) 
               })
             })
           }
@@ -302,12 +303,15 @@ export class ChatService {
             JSON.parse(data.message).result.messages.forEach((msg: any) => {
               //filter joining etc. messages
               if(!msg.t){
+                //load reactions
                 let reactions=[];
                 if(typeof(msg.reactions)!="undefined"){
-                  Object.entries(msg.reactions).forEach(([key, value]: any)=>{ 
+                  Object.entries(msg.reactions).forEach(([key, value]: any)=>{
                     reactions.push({
                       emoji: this.emojiIt(key),
-                      users: value.usernames.length
+                      emojiname: key,
+                      users: value.usernames.length,
+                      ismine: (value.usernames.indexOf(this.chatUser) >=0 ? true : false) 
                     })
                   })
                 }
@@ -410,7 +414,7 @@ export class ChatService {
 
   // Message Reactions
   setReaction(mid: string, emojiname: string, set: boolean){
-    this.chatService.callMethod("setReaction", emojiname, mid, set).subscribe({
+    this.chatService.callMethod("setReaction", emojiname.replace('/:/g',''), mid, set).subscribe({
       next: (data) => {
         if(data.error){
           console.log('Error: ',data)
@@ -420,7 +424,7 @@ export class ChatService {
   }
 
   // Upload audio recording as new message
-  uploadFile(rid: string, filename: string, filecontent: Blob){
+  uploadFile(rid: string, filename: string, filecontent: Blob, description?: string){
     // use REST API
     let headers = new HttpHeaders({
       'X-Auth-Token': this.chatUserToken,
@@ -428,7 +432,7 @@ export class ChatService {
 
     const formData = new FormData();
     formData.append('file', filecontent, filename);
-    formData.append('description', 'Audio message');
+    formData.append('description', description ? description : "Audio message");
     
     this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/rooms.upload/' + rid, formData,
       {headers: headers})
@@ -478,12 +482,13 @@ export class ChatService {
       thumbsup: "&#x1f44d",
       slight_frown: "&#x1f641"
     }
-    const regExpression = /:([^:]*):/g
-      let result;
-      while (result = regExpression.exec(text)) {
-        text = text.replace(result[0], emojiMap[result[1]]);
-      }
-      return text;
+    const regExpCleanEmojiname = /:([^:]*):/g
+    let result;
+    while (result = regExpCleanEmojiname.exec(text)) {
+      text = text.replace(result[0], emojiMap[result[1]]);
+    }
+    if(text == "undefined") {text=""}
+    return text;
   }
 
 }

@@ -14,7 +14,6 @@
 
 <ion-content [ngStyle]="{'background': 'url(' + backimage + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
     <div class="row">
-
         <div class="conf-div ion-text-center" ng-if="conftitle != ''">
           <img src="assets/img/cca_appicon.png"/>
           <div class="conf-title">
@@ -25,7 +24,7 @@
 
           <ion-grid class="home-buttons-grid">
             <ion-row class="home-links home-links-last">
-              <ion-col  routerLink="/app/tabs/program/schedule"  class="ion-text-center">
+              <ion-col  routerLink="/app/tabs/program/schedule"  routerDirection="root" class="ion-text-center">
                 <div>
                 <ion-icon name="calendar"></ion-icon>
                 </div>

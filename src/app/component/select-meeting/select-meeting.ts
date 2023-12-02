@@ -3,6 +3,7 @@ import { Storage } from '@ionic/storage-angular';
 import { ModalController } from '@ionic/angular';
 import { ConferenceData } from '../../providers/conference-data';
 import { ConfigData } from '../../providers/config-data';
+import { Events } from '../../providers/events';
 
 @Component({
   selector: 'app-select-meeting',
@@ -18,7 +19,8 @@ export class SelectMeetingPage implements AfterViewInit {
     private storage: Storage,
     private modalCtrl: ModalController,
     private confData: ConferenceData,
-    private config: ConfigData
+    private config: ConfigData,
+    private events: Events
   ) { }
 
   ngAfterViewInit() {
@@ -31,8 +33,10 @@ export class SelectMeetingPage implements AfterViewInit {
   }
 
   selectMeeting(meeting: any){
-    this.storage.set(this.config.CUR_MEETING, meeting);
-    this.modalCtrl.dismiss();
+    this.storage.set(this.config.CUR_MEETING, meeting).then(()=>{
+      this.events.publish('meeting:updated');
+      this.modalCtrl.dismiss();
+    });
   }
 
   close(){

@@ -99,17 +99,13 @@
   .reaction-emoji {
     --offset-top: 0px;
     --offset-bottom: 0px;
-    //color: red;
-    //color: transparent;
-    //text-shadow: 0 0 0 red;
-    //filter: sepia(1) saturate(100);
   }
 
   .react-popover {
     --backdrop-opacity: 0;
     --background: none;
-    font-size: 14pt;
-    --max-width: 150px;
+    font-size: 16pt;
+    --max-width: 210px;
   }
 
   .reaction-select-emoji {
@@ -136,6 +132,14 @@
     }
     .label-duration {
       margin-right: 5px;
-      font-size: 11pt;
+      font-size: 8pt;
+      color: gray;
     }
   }
+  .audio-description {
+    font-size: 10pt;
+    color: gray;
+    padding-bottom: 3px;
+    display: inline-flex;
+  }
+  

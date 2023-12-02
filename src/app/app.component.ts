@@ -176,10 +176,10 @@ export class AppComponent implements OnInit {
   }
 
   // select current meeting
-  async get_current_meeting(force?:boolean) {
+  get_current_meeting(force?:boolean) {
     this.storage.get(this.config.CUR_MEETING).then(async (data)=>{
       if(data && !force){
-        return data;
+        return;
       }
       const modal = await this.modalCtrl.create({
         component: SelectMeetingPage,
@@ -189,7 +189,7 @@ export class AppComponent implements OnInit {
       await modal.onWillDismiss();
       //reload conference data
       this.check_new_jsonfile();
-    });
+    })
   }
 
   // check if new version of conference data exists
