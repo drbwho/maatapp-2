@@ -9,6 +9,7 @@ import { LoadingController } from '@ionic/angular';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { VoiceRecorder, VoiceRecorderPlugin, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Camera, CameraResultType } from '@capacitor/camera';
 
 @Component({
   selector: 'app-chat',
@@ -405,7 +406,7 @@ export class ChatPage implements OnInit, AfterViewInit {
       return;
     }, 10)
   }
-   
+
   stop_playing(ev: Event){
     //stop click event from propagated to parent element
     ev.stopPropagation();
@@ -446,6 +447,23 @@ export class ChatPage implements OnInit, AfterViewInit {
     setTimeout(()=>{
       this.updatePlayingDuration();
     }, 100)
+  }
+
+  take_photo(){
+    const takePicture = async () => {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.Uri
+      });
+
+      // image.webPath will contain a path that can be set as an image src.
+      // You can access the original file using image.path, which can be
+      // passed to the Filesystem API to read the raw data of the image,
+      // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+      var imageUrl = image.webPath;
+      console.log(imageUrl);
+    };
   }
 
   blobToBase64(blob) {

@@ -32,7 +32,6 @@ export interface ChatUser {
   status?: string
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -161,16 +160,17 @@ export class ChatService {
   // Update user presence
   setUserStatus(status: string){
     // use REST API
-    this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/users.setStatus', {"message":"User status update","status": status} ,{headers: this.headers})
+    this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/users.setStatus', {"message":"User status update","status": status}, {headers: this.headers})
       .subscribe({error: (error)=>console.log(error)});
 
     // Real time API working?
-    this.chatService.sendMessage({
+    /*this.chatService.callMethod("UserPresence:setDefaultStatus",
+    {
       "msg": "method",
       "method": "UserPresence:setDefaultStatus",
       "id": '' + new Date().getTime(),
       "params": [ status ]
-    });
+    });*/
   }
 
   // Get user presence

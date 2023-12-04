@@ -30,3 +30,8 @@ Add to info.plist
 <string>Conference App need to access contacts if you like to communicate with participants</string>
 <key>NSMicrophoneUsageDescription</key>
 <string>Conference App need to access your microphone if you like to send audio messages to participants</string>
+
+
+    NSCameraUsageDescription (Privacy - Camera Usage Description)
+    NSPhotoLibraryAddUsageDescription (Privacy - Photo Library Additions Usage Description)
+    NSPhotoLibraryUsageDescription (Privacy - Photo Library Usage Description)
