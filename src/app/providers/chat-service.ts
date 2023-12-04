@@ -3,6 +3,7 @@ import { RealTimeAPI } from 'rocket.chat.realtime.api.rxjs';
 import { ConfigData } from './config-data';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Events } from './events';
+import { AlertController } from '@ionic/angular';
 
 export interface ChatMessage {
   id?: string
@@ -48,14 +49,15 @@ export class ChatService {
   numMessagesToFetch = 20;
 
   headers: HttpHeaders;
- 
+
   user = 'bill';
   pass = '24172417';
 
   constructor(
     private config: ConfigData,
     private http: HttpClient,
-    private events: Events
+    private events: Events,
+    private alertCtrl: AlertController
   ) { }
 
   // Connect to CHAT Server
@@ -86,9 +88,12 @@ export class ChatService {
               if(this.chatPushToken) this.updatePushToken();
             }
           }
-          resolve(true);  
+          resolve(true);
         },
-        (err) => { console.log('Login Error:', err); reject(false) });
+        (err) => {
+          console.log('Login Error:', err);
+          this.showAlert('Cannot login to Chat Server. Please check your network status.');
+          reject(false) });
     });
   }
 
@@ -112,12 +117,12 @@ export class ChatService {
           // parse reactions
           let reactions=[];
           if(typeof(message.fields.args[0].reactions)!="undefined"){
-            Object.entries(message.fields.args[0].reactions).forEach(([key, value]: any)=>{ 
+            Object.entries(message.fields.args[0].reactions).forEach(([key, value]: any)=>{
               reactions.push({
                 emoji: this.emojiIt(key),
                 emojiname: key,
                 users: value.usernames.length,
-                ismine: (value.usernames.indexOf(this.chatUser) >=0 ? true : false) 
+                ismine: (value.usernames.indexOf(this.chatUser) >=0 ? true : false)
               })
             })
           }
@@ -177,7 +182,11 @@ export class ChatService {
         next: (data: any)=>{
           resolve(data.presence);
         },
-        error: (error)=>console.log(error)});
+        error: (error)=>{
+          console.log(error);
+          this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+        }
+      });
     });
   }
 
@@ -190,7 +199,10 @@ export class ChatService {
     }).subscribe(
       (data) => {
         console.log('Sendmsg: ', data)},
-      (err) => console.log('Error:' +err),
+      (err) =>{
+        console.log('Error:' +err);
+        this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+      },
       () => console.log('completed'));
   }
 
@@ -203,7 +215,10 @@ export class ChatService {
     }).subscribe(
       (data) => {
         console.log('Updatemsg: ', data)},
-      (err) => console.log('Error:' +err),
+      (err) => {
+        console.log('Error:' +err);
+        this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+      },
       () => console.log('completed'));
   }
 
@@ -216,7 +231,10 @@ export class ChatService {
         console.log('Deletemsg: ', data);
           this.events.publish('chat:deletedmessage', msgId);
       },
-      (err) => console.log('Error:' +err),
+      (err) => {
+        console.log('Error:' +err);
+        this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+      },
       () => console.log('completed'));
   }
 
@@ -234,7 +252,11 @@ export class ChatService {
             });
           })
         },
-        error: (error)=>console.log(error)});
+        error: (error)=>{
+          console.log(error);
+          this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+        }
+      });
     });
   }
 
@@ -245,24 +267,28 @@ export class ChatService {
         id: this.makeid(18),
         params: [0]
       }).subscribe({
-      next: (data) => {
-        this.chatRooms = [];
-        data.result.forEach((rm: any)=>{
-          var room: ChatRoom = {};
-          room.rid = rm._id;
-          room.name = (rm.name ? rm.name : rm.fname);
-          room.type = rm.t;
-          room.updated = rm._updatedAt.$date;
-          if(rm.t == 'd'){
-            room.users = rm.usernames.filter((w)=> w != this.chatUser);
-            room.name = room.users.at(0);
-          }
-          room.unread = 0;
-          this.chatRooms.push(room);
-        });
-        resolve(this.chatRooms);
-      },
-      error: (err) => console.log('Error:' +err)})
+        next: (data) => {
+          this.chatRooms = [];
+          data.result.forEach((rm: any)=>{
+            var room: ChatRoom = {};
+            room.rid = rm._id;
+            room.name = (rm.name ? rm.name : rm.fname);
+            room.type = rm.t;
+            room.updated = rm._updatedAt.$date;
+            if(rm.t == 'd'){
+              room.users = rm.usernames.filter((w)=> w != this.chatUser);
+              room.name = room.users.at(0);
+            }
+            room.unread = 0;
+            this.chatRooms.push(room);
+          });
+          resolve(this.chatRooms);
+        },
+        error: (err) =>{
+          console.log('Error:' +err);
+          this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+        }
+      })
     })
   }
 
@@ -272,7 +298,11 @@ export class ChatService {
     this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/push.token',
       {"type": "gcm", "value": this.chatPushToken, "appName": "ca-22125"},
       {headers: this.headers})
-        .subscribe({error: (error)=>console.log(error)});
+        .subscribe({error: (error)=>{
+          console.log(error);
+          this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+        }
+      });
   }
 
   loginRest(){
@@ -282,7 +312,11 @@ export class ChatService {
     this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/login',
     { "user": "bill", "password": "24172417" },
       {headers: headers})
-        .subscribe({error: (error)=>console.log(error)});
+        .subscribe({error: (error)=>{
+          console.log(error);
+          this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+        }
+      });
   }
 
   // Load Room history
@@ -294,7 +328,7 @@ export class ChatService {
           "params": ["` + roomid + `",` + (lastMessageDate?`{"$date":`+lastMessageDate+`}`:null) + `,` + this.numMessagesToFetch + `,null, false]}`},
           {headers: this.headers})
         .subscribe({
-          next: (data: any)=>{ 
+          next: (data: any)=>{
             var map: ChatMessage[]=[];
             if(JSON.parse(data.message).result.messages === undefined){
               resolve(map);
@@ -311,7 +345,7 @@ export class ChatService {
                       emoji: this.emojiIt(key),
                       emojiname: key,
                       users: value.usernames.length,
-                      ismine: (value.usernames.indexOf(this.chatUser) >=0 ? true : false) 
+                      ismine: (value.usernames.indexOf(this.chatUser) >=0 ? true : false)
                     })
                   })
                 }
@@ -330,7 +364,11 @@ export class ChatService {
             map = map.sort((objA, objB) => Number(objA.createdAt) - Number(objB.createdAt));
             resolve(map);
           },
-          error: (error)=>console.log(error)});
+          error: (error)=>{
+            console.log(error);
+            this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+          }
+        });
     });
   }
 
@@ -355,7 +393,11 @@ export class ChatService {
             map.sort((a, b) => a.name.localeCompare(b.name));
             resolve(map);
           },
-          error: (error)=>console.log(error)});
+          error: (error)=>{
+            console.log(error);
+            this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+          }
+        });
     });
   }
 
@@ -384,7 +426,11 @@ export class ChatService {
             map.sort((a, b) => a.name.localeCompare(b.name));
             resolve(map);
           },
-          error: (error)=>console.log(error)});
+          error: (error)=>{
+            console.log(error);
+            this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+          }
+        });
     });
   }
 
@@ -400,7 +446,11 @@ export class ChatService {
               resolve({name: data.user.name, username: data.user.username, status: data.user.status});
             }
           },
-          error: (error)=>console.log(error)});
+          error: (error)=>{
+            console.log(error);
+            this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+          }
+        });
     });
   }
 
@@ -433,10 +483,14 @@ export class ChatService {
     const formData = new FormData();
     formData.append('file', filecontent, filename);
     formData.append('description', description ? description : "Audio message");
-    
+
     this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/rooms.upload/' + rid, formData,
       {headers: headers})
-      .subscribe({error: (error)=>console.log(error)});
+      .subscribe({error: (error)=>{
+        console.log(error);
+        this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+      }
+    });
   }
 
   downloadFile(fileurl){
@@ -456,7 +510,11 @@ export class ChatService {
               resolve(data);
             }
           },
-          error: (error)=>console.log(error)});
+          error: (error)=>{
+            console.log(error);
+            this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+          }
+        });
     });
   }
 
@@ -489,6 +547,17 @@ export class ChatService {
     }
     if(text == "undefined") {text=""}
     return text;
+  }
+
+  async showAlert(message){
+    const alert = await this.alertCtrl.create({
+      header: 'Error',
+      message: message,
+      buttons: [
+        'Ok',
+      ]
+    });
+    await alert.present();
   }
 
 }
