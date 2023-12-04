@@ -369,13 +369,13 @@ export class ChatPage implements OnInit, AfterViewInit {
     audioRef.load();
   }
 
-  async play_audio_from_url(chatfileurl, msgid, ev: Event){
+  async play_audio_from_url(file: any, msgid, ev: Event){
     //stop click event from propagated to parent element
     ev.stopPropagation();
     this.playingDisplay = '0:00';
 
-    const audiodata = await this.chatService.downloadFile(chatfileurl) as Blob;
-    let b64 = await this.blobToBase64(audiodata);
+    const audiodata = await this.chatService.downloadFile(file.audio_url, file.audio_type) as Blob;
+    let b64 = await this.chatService.blobToBase64(audiodata);
     this.audioRef = new Audio(`${b64}`);
     this.audioRef.oncanplaythrough = () =>{
        this.wait_audio_load_and_play();
@@ -449,30 +449,43 @@ export class ChatPage implements OnInit, AfterViewInit {
     }, 100)
   }
 
-  take_photo(){
-    const takePicture = async () => {
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: true,
-        resultType: CameraResultType.Uri
-      });
+  async take_photo(){
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Base64
+    });
 
-      // image.webPath will contain a path that can be set as an image src.
-      // You can access the original file using image.path, which can be
-      // passed to the Filesystem API to read the raw data of the image,
-      // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-      var imageUrl = image.webPath;
-      console.log(imageUrl);
-    };
+    // image.webPath will contain a path that can be set as an image src.
+    // You can access the original file using image.path, which can be
+    // passed to the Filesystem API to read the raw data of the image,
+    // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+    
+    //convert to blob before upload to chat server
+    const fileName = new Date().getTime() + '.jpg';
+    var dataurl = "data:image/jpeg;base64," + image.base64String;
+    let filedata = await (await fetch(dataurl)).blob();
+    this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata, 'Media file');
+    //var imageUrl = image.webPath;
+    //console.log(imageUrl);
   }
 
-  blobToBase64(blob) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result)
-      reader.readAsDataURL(blob)
-    })
+  get_image(file: any) {
+    console.log('****');
+    return 'data:image/jpeg;base64,' + file.image_preview;
+    //this.chatService.downloadFile(file.image_url, file.image_type).then((data: Blob) =>{
+    //  return data;
+    //})
+    //return await this.blobToBase64(data);
   }
 
+  backgroundImageFn(set, sheet){
+    return "/assets/img/emoji-sheet-64.png";
+  };
+
+}
+
+function data(value: unknown): unknown {
+  throw new Error('Function not implemented.');
 }
 

@@ -39,8 +39,8 @@
   }
 
   .sendBtn {
-    --padding-start: 0.5em;
-    --padding-end: 0.5em;
+    --padding-start: 0;
+    --padding-end: 0;
   }
 
   .message-avatar ion-avatar {
@@ -60,7 +60,7 @@
   .emoji-selector, .audio-recorder {
       background: transparent;
       border: 0;
-      transform: translate(2px, 23px);
+      transform: translate(2px, 15px);
       cursor: pointer;
       &:focus {
         outline: 0;
@@ -94,6 +94,7 @@
   .emoji-in-button {
     font-size: 15pt;
     color: rgb(148, 148, 148);
+    margin: 4px;
   }
 
   .reaction-emoji {
@@ -105,7 +106,7 @@
     --backdrop-opacity: 0;
     --background: none;
     font-size: 16pt;
-
+    --max-width: 220px;
   }
 
   .reaction-select-emoji {

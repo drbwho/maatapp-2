@@ -38,7 +38,7 @@ export interface ChatUser {
 
 export class ChatService {
 
-  chatService: RealTimeAPI;
+  chatAPI: RealTimeAPI;
   chatPushToken='';
   chatUserId='';
   chatUserToken='';
@@ -61,11 +61,11 @@ export class ChatService {
 
   // Connect to CHAT Server
   connectChat(){
-    this.chatService =  new RealTimeAPI("wss://" + this.config.CHAT_HOST + "/websocket");
-    this.chatService.connectToServer();
-    this.chatService.keepAlive().subscribe();
+    this.chatAPI =  new RealTimeAPI("wss://" + this.config.CHAT_HOST + "/websocket");
+    this.chatAPI.connectToServer();
+    this.chatAPI.keepAlive().subscribe();
 
-    const auth = this.chatService.login(this.user, this.pass);
+    const auth = this.chatAPI.login(this.user, this.pass);
     return new Promise((resolve, reject)=>{
       auth.subscribe(
         (data) => {
@@ -98,9 +98,9 @@ export class ChatService {
 
   // Subscribe to message updates
   subscribeToMessages(){
-    this.chatService.subscribe(
+    this.chatAPI.subscribe(
       (message: any) => {
-        //console.log('Message: ', message);
+        console.log('Message: ', message);
         if(message.msg = "changed" && message.collection == "stream-room-messages"){
           const msg: ChatMessage = {};
           msg.id = message.fields.args[0]._id;
@@ -132,6 +132,9 @@ export class ChatService {
             msg.attachments = message.fields.args[0].attachments;
           }
 
+          // preload photos
+          this.loadPhotos(null, msg);
+
           //its update!
           if(message.fields.args[0].editedAt){
             this.events.publish('chat:updatedmessage', msg);
@@ -146,7 +149,7 @@ export class ChatService {
       (err) => console.log('Error:', err),
       () => console.log('subscription completed'));
 
-    this.chatService.sendMessage({
+    this.chatAPI.sendMessage({
       "msg": "sub",
       "id": '' + new Date().getTime(),
       "name": "stream-room-messages",
@@ -184,7 +187,7 @@ export class ChatService {
         },
         error: (error)=>{
           console.log(error);
-          this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+          this.showAlert('Cannot get info from Chat Server. Please check your network status.');
         }
       });
     });
@@ -192,7 +195,7 @@ export class ChatService {
 
   // Send chat message
   sendMessage(message: string, roomId: string){
-    this.chatService.callMethod("sendMessage",{
+    this.chatAPI.callMethod("sendMessage",{
         _id: this.makeid(18),
         rid: roomId,
         msg: message
@@ -201,14 +204,14 @@ export class ChatService {
         console.log('Sendmsg: ', data)},
       (err) =>{
         console.log('Error:' +err);
-        this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+        this.showAlert('Cannot send message to Chat Server. Please check your network status.');
       },
       () => console.log('completed'));
   }
 
   // Update chat message
   updateMessage(message: string, msgId: string, roomId: string){
-    this.chatService.callMethod("updateMessage",{
+    this.chatAPI.callMethod("updateMessage",{
               _id: msgId,
               rid: roomId,
               msg: message
@@ -217,14 +220,14 @@ export class ChatService {
         console.log('Updatemsg: ', data)},
       (err) => {
         console.log('Error:' +err);
-        this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+        this.showAlert('Cannot update message to Chat Server. Please check your network status.');
       },
       () => console.log('completed'));
   }
 
   // Delete chat message
   deleteMessage(msgId: string){
-    this.chatService.callMethod("deleteMessage",{
+    this.chatAPI.callMethod("deleteMessage",{
               _id: msgId
     }).subscribe(
       (data) => {
@@ -233,7 +236,7 @@ export class ChatService {
       },
       (err) => {
         console.log('Error:' +err);
-        this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+        this.showAlert('Cannot delete from  Chat Server. Please check your network status.');
       },
       () => console.log('completed'));
   }
@@ -241,7 +244,7 @@ export class ChatService {
   // Open a new room for direct message
   createDirectMessage(username: string){
     return new Promise((resolve)=>{
-      this.chatService.callMethod("createDirectMessage", username).subscribe({
+      this.chatAPI.callMethod("createDirectMessage", username).subscribe({
         next: (data) => {
           // update my rooms
           this.getMyRooms().then(()=>{
@@ -254,7 +257,7 @@ export class ChatService {
         },
         error: (error)=>{
           console.log(error);
-          this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+          this.showAlert('Cannot create channel to Chat Server. Please check your network status.');
         }
       });
     });
@@ -263,7 +266,7 @@ export class ChatService {
   // Get rooms user belongs to
   getMyRooms(){
     return new Promise((resolve)=>{
-      this.chatService.callMethod("rooms/get",{
+      this.chatAPI.callMethod("rooms/get",{
         id: this.makeid(18),
         params: [0]
       }).subscribe({
@@ -286,7 +289,7 @@ export class ChatService {
         },
         error: (err) =>{
           console.log('Error:' +err);
-          this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+          this.showAlert('Cannot get info from Chat Server. Please check your network status.');
         }
       })
     })
@@ -360,13 +363,16 @@ export class ChatService {
                 });
               }
             });
+            //preload photos
+            this.loadPhotos(map);
+
             //sort descending
             map = map.sort((objA, objB) => Number(objA.createdAt) - Number(objB.createdAt));
             resolve(map);
           },
           error: (error)=>{
             console.log(error);
-            this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+            this.showAlert('Cannot fetch data from Chat Server. Please check your network status.');
           }
         });
     });
@@ -395,7 +401,7 @@ export class ChatService {
           },
           error: (error)=>{
             console.log(error);
-            this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+            this.showAlert('Cannot search to Chat Server. Please check your network status.');
           }
         });
     });
@@ -428,7 +434,7 @@ export class ChatService {
           },
           error: (error)=>{
             console.log(error);
-            this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+            this.showAlert('Cannot search to Chat Server. Please check your network status.');
           }
         });
     });
@@ -464,7 +470,7 @@ export class ChatService {
 
   // Message Reactions
   setReaction(mid: string, emojiname: string, set: boolean){
-    this.chatService.callMethod("setReaction", emojiname.replace('/:/g',''), mid, set).subscribe({
+    this.chatAPI.callMethod("setReaction", emojiname.replace('/:/g',''), mid, set).subscribe({
       next: (data) => {
         if(data.error){
           console.log('Error: ',data)
@@ -488,16 +494,16 @@ export class ChatService {
       {headers: headers})
       .subscribe({error: (error)=>{
         console.log(error);
-        this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+        this.showAlert('Cannot upload to Chat Server. Please check your network status.');
       }
     });
   }
 
-  downloadFile(fileurl){
+  downloadFile(fileurl, mimetype){
     let headers = new HttpHeaders({
       'X-Auth-Token': this.chatUserToken,
       'X-User-Id': this.chatUserId,
-      'Content-Type': 'audio/acc'});
+      'Content-Type': mimetype});
 
     return new Promise((resolve, reject) => {
       this.http.get('https://' + this.config.CHAT_HOST + fileurl,
@@ -512,10 +518,33 @@ export class ChatService {
           },
           error: (error)=>{
             console.log(error);
-            this.showAlert('Cannot connect to Chat Server. Please check your network status.');
+            this.showAlert('Cannot download from Chat Server. Please check your network status.');
           }
         });
     });
+  }
+
+  //load photos to image_preview field
+  loadPhotos(messages, msg?){
+    if(messages){
+      messages.forEach((msg)=>{
+        if(msg.attachments){
+          msg.attachments.forEach(async (w)=>{ 
+            if(w.image_type){
+              w.image_preview = await this.blobToBase64(await this.downloadFile(w.image_url, w.image_type) as Blob);
+            }
+          });
+        }
+      });
+    }else{
+      if(msg.attachments){
+        msg.attachments.forEach(async (w)=>{ 
+          if(w.image_type){
+            w.image_preview = await this.blobToBase64(await this.downloadFile(w.image_url, w.image_type) as Blob);
+          }
+        });
+      }
+    }
   }
 
   // Random Id Generator
@@ -547,6 +576,14 @@ export class ChatService {
     }
     if(text == "undefined") {text=""}
     return text;
+  }
+
+  blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result)
+      reader.readAsDataURL(blob)
+    })
   }
 
   async showAlert(message){

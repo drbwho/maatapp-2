@@ -54,7 +54,13 @@
       </ion-col>
         <ion-col size="9" *ngIf="message.user === currentUser" class="message my-message" (click)="openActionSheet(message)">
         <span>{{ message.msg }}</span>
-        <!-- Audio Player template-->
+        <!-- Image Viewer -->
+        <div *ngFor="let file of message.attachments" class="image-viewer">
+          <span *ngIf="file.image_type" >
+            <img [src]="'data:image/jpeg;base64' + file.image_preview" >
+          </span>
+        </div>
+        <!-- Audio Player template -->
         <ng-template *ngTemplateOutlet="AudioPlayer;context: {chatmessage : message}"></ng-template>
         <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
       </ion-col>
@@ -76,35 +82,37 @@
 
 <ion-footer>
   <ion-toolbar color="light">
-    <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" (emojiSelect)="addEmoji($event)" title="Choose your emoji"></emoji-mart>
+    <!-- Emoji sheet -->
+    <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" 
+      (emojiSelect)="addEmoji($event)" [backgroundImageFn]="backgroundImageFn" [showPreview]="false"></emoji-mart>
     <ion-row align-items-center>
-      <ion-col size="2" class="ion-no-padding">
+      <ion-col size="3" class="ion-no-padding">
         <!-- Emoji Selector -->
         <button class="emoji-selector" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">
           <ion-icon class="emoji-in-button" name="happy-outline"></ion-icon>
         </button>
-
+        <!-- Photo -->
         <button class="audio-recorder" (click)="take_photo()">
           <ion-icon class="emoji-in-button" name="image-outline"></ion-icon>
         </button>
-
         <!-- Audio recorder -->
         <button #recordbtn class="audio-recorder" (click)="toggle_recording()">
           <ion-icon *ngIf="!recording" class="emoji-in-button" name="mic-outline"></ion-icon>
           <ion-icon *ngIf="recording" class="emoji-in-button" name="mic-off-outline" color="danger"></ion-icon>
         </button>
       </ion-col>
+      <!-- Text area -->
       <ion-col class="textarea-container ion-no-padding" size="8" >
         <ion-label *ngIf="recording"><ion-icon name="radio-button-on-outline" color="danger" (click)="toggle_recording()"></ion-icon> Recording: {{recordingDisplay}}</ion-label>
         <ion-textarea #messageinput *ngIf="!recording" (ionFocus)="gotfocus()" (ionInput)="checkEmpty()" placeholder="Write your message here.." auto-grow class="inputBox" rows="1" [(ngModel)]="message"></ion-textarea>
       </ion-col>
-      <ion-col size="2" class="ion-padding-vertical">
+      <!-- Send button -->
+      <ion-col size="1" >
         <ion-button expand="block" fill="clear" color="primary" [disabled]="message === ''" class="sendBtn"
           (click)="sendMessage()">
           <ion-icon name="send" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-col>
-
     </ion-row>
   </ion-toolbar>
 </ion-footer>
@@ -112,9 +120,9 @@
 <!-- Audio Player template-->
 <ng-template #AudioPlayer let-message="chatmessage">
   <div *ngFor="let file of message.attachments" class="audio-player">
-    <span class="audio-description">{{file.description}}</span>
-    <span class="player-container">
-      <button *ngIf="!playing || (playing && playingId != message.id)" (click)="play_audio_from_url(file.audio_url, message.id, $event)">
+    <span *ngIf="file.audio_type" class="audio-description">{{file.description}}</span>
+    <span *ngIf="file.audio_type" class="player-container">
+      <button *ngIf="!playing || (playing && playingId != message.id)" (click)="play_audio_from_url(file, message.id, $event)">
         <ion-icon name="caret-forward-outline"></ion-icon>
       </button>
       <button *ngIf="playing && playingId === message.id" (click)="stop_playing($event)">
