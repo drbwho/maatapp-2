@@ -144,3 +144,22 @@
     display: inline-flex;
   }
 
+  .file-container {
+    display: flex;
+    width: 100%;
+    padding: 2px;
+    background: aliceblue;
+    align-items: start;
+    font-size: 10pt;
+    .file-size {
+      font-size: 8pt;
+      color: gray;
+      width: 100%;
+      text-align: right;
+    }
+    .file-format {
+      border: 1px solid #ccc;
+      font-weight: bold;
+      font-size: 8pt;
+    }
+  }

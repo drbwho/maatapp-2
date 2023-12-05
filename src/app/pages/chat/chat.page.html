@@ -35,6 +35,12 @@
             <ion-col class="message other-message">
               <span class="chat-user">{{ message.user }}</span><br>
               <span>{{ message.msg }}</span>
+              <!-- Image Viewer -->
+              <div *ngFor="let file of message.attachments" class="image-viewer">
+                <span *ngIf="file.image_type" >
+                  <img [src]="'data:image/jpeg;base64' + file.image_preview" >
+                </span>
+              </div>
               <!-- Audio Player template-->
               <ng-template *ngTemplateOutlet="AudioPlayer;context: {chatmessage : message}"></ng-template>
               <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
@@ -60,6 +66,22 @@
             <img [src]="'data:image/jpeg;base64' + file.image_preview" >
           </span>
         </div>
+        <ion-grid>
+        <span *ngFor="let file of message.attachments" class="file-container">
+          <ion-row *ngIf="!file.image_type && !file.audio_type" (click)="open_file(file)">
+          <ion-col size="2" class="file-format">
+            <ion-icon name="document-outline"></ion-icon>
+            {{file.format}}
+          </ion-col>
+          <ion-col size="10">
+            {{ (file.title.length>25)? (file.title | slice:0:25)+'...':(file.title) }}
+            <div class="file-size ion-float-right">
+              {{file.size / 1024 | number:'1.0-1'}}kB
+            </div>
+          </ion-col>
+          </ion-row>
+        </span>
+        </ion-grid>
         <!-- Audio Player template -->
         <ng-template *ngTemplateOutlet="AudioPlayer;context: {chatmessage : message}"></ng-template>
         <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>

@@ -30,7 +30,7 @@ export class ChatroomFilterPage implements AfterViewInit {
     this.chatService.searchDirectory(this.queryText, this.type ).then((data: any)=>{
       this.results = data.filter((w)=>w.username != this.chatService.chatUser);
       this.results.forEach(async (w)=>{
-        w.status = await this.chatService.getUserStatus(w.id);console.log(w);
+        w.status = await this.chatService.getUserStatus(w.id);
       });
     })
   }

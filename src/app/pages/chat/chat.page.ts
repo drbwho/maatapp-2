@@ -129,6 +129,7 @@ export class ChatPage implements OnInit, AfterViewInit {
         this.currentRoom = channel;
     }
     this.loadRoomMessages();
+    //subscribe to deletions
     this.chatService.subscribeRoomDeletions(this.currentRoom.rid);
   }
 
@@ -479,13 +480,14 @@ export class ChatPage implements OnInit, AfterViewInit {
     //return await this.blobToBase64(data);
   }
 
+  open_file(file: any){
+
+  }
+
   backgroundImageFn(set, sheet){
     return "/assets/img/emoji-sheet-64.png";
   };
 
 }
 
-function data(value: unknown): unknown {
-  throw new Error('Function not implemented.');
-}
 

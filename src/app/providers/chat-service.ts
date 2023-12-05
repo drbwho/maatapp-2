@@ -44,7 +44,7 @@ export class ChatService {
   chatUserToken='';
   chatUser='';
   chatRooms: ChatRoom[] = [];
-  roomSubscriptions:string[] = [];
+  roomSubscriptions: any[] = [];
   defaultChatRoom: ChatRoom = {rid:"GENERAL", name: "general"};
   numMessagesToFetch = 20;
 
@@ -101,7 +101,7 @@ export class ChatService {
   subscribeToMessages(){
     this.chatAPI.subscribe(
       (message: any) => {
-        console.log('Message: ', message);
+        //console.log('Message: ', message);
         if(message.msg = "changed" && message.collection == "stream-room-messages"){
           const msg: ChatMessage = {};
           msg.id = message.fields.args[0]._id;
@@ -146,20 +146,14 @@ export class ChatService {
             console.log('NewMsg');
           }
         }
-        // delete message event
+
+        // deleted message event
         if(message.msg = "changed" && message.collection == "stream-notify-room"){
           if(typeof(message.fields.args[0]._id!="undefined" && message.fields.eventName.indexOf('deleteMessage') > -1)){
             const mid = message.fields.args[0]._id;
             this.events.publish('chat:deletedmessage', mid);
           }
         }
-
-        // keep room subscription to unsubscribe later
-        //if(message.msg = "ready"){
-        //  if(message.subs){
-        //    this.roomSubscriptions.push(message.subs);
-        //  }
-       // }
       },
       (err) => console.log('Error:', err),
       () => console.log('subscription completed'));
@@ -177,7 +171,8 @@ export class ChatService {
 
   //subscribe to room deletemessage events
   subscribeRoomDeletions(rid){
-    if(this.roomSubscriptions.length){
+    //unsubscribe all previous subs
+    /*if(this.roomSubscriptions.length){
       this.roomSubscriptions.forEach(w=>{
         this.chatAPI.sendMessage({
           "msg": "unsub",
@@ -185,7 +180,8 @@ export class ChatService {
         });
       })
       this.roomSubscriptions = [];
-    }
+    }*/
+
     const id = '' + new Date().getTime();
     this.chatAPI.sendMessage({
       "msg": "sub",
@@ -196,7 +192,13 @@ export class ChatService {
           false
       ]
     });
-    this.roomSubscriptions.push(id);
+  
+    /*this.chatAPI.callMethod("subscriptions/get",{
+      params:[]
+    }).subscribe(
+    (data) => {
+      console.log('Subs: ', data)},
+    );*/
   }
 
   // Update user presence
