@@ -44,6 +44,7 @@ export class ChatService {
   chatUserToken='';
   chatUser='';
   chatRooms: ChatRoom[] = [];
+  roomSubscriptions:string[] = [];
   defaultChatRoom: ChatRoom = {rid:"GENERAL", name: "general"};
   numMessagesToFetch = 20;
 
@@ -145,6 +146,20 @@ export class ChatService {
             console.log('NewMsg');
           }
         }
+        // delete message event
+        if(message.msg = "changed" && message.collection == "stream-notify-room"){
+          if(typeof(message.fields.args[0]._id!="undefined" && message.fields.eventName.indexOf('deleteMessage') > -1)){
+            const mid = message.fields.args[0]._id;
+            this.events.publish('chat:deletedmessage', mid);
+          }
+        }
+
+        // keep room subscription to unsubscribe later
+        //if(message.msg = "ready"){
+        //  if(message.subs){
+        //    this.roomSubscriptions.push(message.subs);
+        //  }
+       // }
       },
       (err) => console.log('Error:', err),
       () => console.log('subscription completed'));
@@ -158,6 +173,30 @@ export class ChatService {
           false
       ]
     });
+  }
+
+  //subscribe to room deletemessage events
+  subscribeRoomDeletions(rid){
+    if(this.roomSubscriptions.length){
+      this.roomSubscriptions.forEach(w=>{
+        this.chatAPI.sendMessage({
+          "msg": "unsub",
+          "id": w
+        });
+      })
+      this.roomSubscriptions = [];
+    }
+    const id = '' + new Date().getTime();
+    this.chatAPI.sendMessage({
+      "msg": "sub",
+      "id": id,
+      "name": "stream-notify-room",
+      "params":[
+          rid + "/deleteMessage",
+          false
+      ]
+    });
+    this.roomSubscriptions.push(id);
   }
 
   // Update user presence
@@ -529,7 +568,7 @@ export class ChatService {
     if(messages){
       messages.forEach((msg)=>{
         if(msg.attachments){
-          msg.attachments.forEach(async (w)=>{ 
+          msg.attachments.forEach(async (w)=>{
             if(w.image_type){
               w.image_preview = await this.blobToBase64(await this.downloadFile(w.image_url, w.image_type) as Blob);
             }
@@ -538,7 +577,7 @@ export class ChatService {
       });
     }else{
       if(msg.attachments){
-        msg.attachments.forEach(async (w)=>{ 
+        msg.attachments.forEach(async (w)=>{
           if(w.image_type){
             w.image_preview = await this.blobToBase64(await this.downloadFile(w.image_url, w.image_type) as Blob);
           }

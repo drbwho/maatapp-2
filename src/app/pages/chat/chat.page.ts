@@ -129,7 +129,7 @@ export class ChatPage implements OnInit, AfterViewInit {
         this.currentRoom = channel;
     }
     this.loadRoomMessages();
-
+    this.chatService.subscribeRoomDeletions(this.currentRoom.rid);
   }
 
   sendMessage(){
@@ -460,7 +460,7 @@ export class ChatPage implements OnInit, AfterViewInit {
     // You can access the original file using image.path, which can be
     // passed to the Filesystem API to read the raw data of the image,
     // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-    
+
     //convert to blob before upload to chat server
     const fileName = new Date().getTime() + '.jpg';
     var dataurl = "data:image/jpeg;base64," + image.base64String;
