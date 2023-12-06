@@ -172,7 +172,7 @@ export class ChatService {
   //subscribe to room deletemessage events
   subscribeRoomDeletions(rid){
     //unsubscribe all previous subs
-    /*if(this.roomSubscriptions.length){
+    if(this.roomSubscriptions.length){
       this.roomSubscriptions.forEach(w=>{
         this.chatAPI.sendMessage({
           "msg": "unsub",
@@ -180,7 +180,7 @@ export class ChatService {
         });
       })
       this.roomSubscriptions = [];
-    }*/
+    }
 
     const id = '' + new Date().getTime();
     this.chatAPI.sendMessage({
@@ -192,13 +192,7 @@ export class ChatService {
           false
       ]
     });
-  
-    /*this.chatAPI.callMethod("subscriptions/get",{
-      params:[]
-    }).subscribe(
-    (data) => {
-      console.log('Subs: ', data)},
-    );*/
+    this.roomSubscriptions.push(id);
   }
 
   // Update user presence
