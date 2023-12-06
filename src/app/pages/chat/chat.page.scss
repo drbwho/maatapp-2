@@ -158,8 +158,12 @@
       text-align: right;
     }
     .file-format {
-      border: 1px solid #ccc;
       font-weight: bold;
       font-size: 8pt;
+      background: #e4e4e4;
+      padding-left: 9px;
+      ion-icon {
+        font-size: 11pt;
+      }
     }
   }

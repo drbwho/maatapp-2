@@ -559,7 +559,7 @@ export class ChatService {
     });
   }
 
-  //load photos to image_preview field
+  //pre-load photos to image_preview field
   loadPhotos(messages, msg?){
     if(messages){
       messages.forEach((msg)=>{

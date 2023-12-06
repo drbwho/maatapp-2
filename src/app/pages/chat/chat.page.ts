@@ -6,10 +6,13 @@ import { GestureController, GestureConfig, IonContent, IonTextarea } from '@ioni
 import { ActivatedRoute } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Filesystem, Directory, WriteFileResult } from '@capacitor/filesystem';
 import { VoiceRecorder, VoiceRecorderPlugin, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener'
+import { Capacitor } from '@capacitor/core';
+import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'app-chat',
@@ -472,7 +475,6 @@ export class ChatPage implements OnInit, AfterViewInit {
   }
 
   get_image(file: any) {
-    console.log('****');
     return 'data:image/jpeg;base64,' + file.image_preview;
     //this.chatService.downloadFile(file.image_url, file.image_type).then((data: Blob) =>{
     //  return data;
@@ -480,8 +482,32 @@ export class ChatPage implements OnInit, AfterViewInit {
     //return await this.blobToBase64(data);
   }
 
-  open_file(file: any){
-
+  download_and_open_file(file: any, ev){
+    ev.stopPropagation();
+    const mimetype = 'application/' + file.format.toLowerCase();
+    this.chatService.downloadFile(file.title_link, mimetype).then(async (data: Blob) =>{
+      const fileData = await this.chatService.blobToBase64(data) as string;
+      const fileName = file.title;
+      Filesystem.writeFile({
+        path: fileName,
+        directory: Directory.Data,
+        data: fileData
+      })
+      .then((res:WriteFileResult)=>{ 
+        const fileOpenerOptions: FileOpenerOptions = {
+          filePath: res.uri,
+          contentType: mimetype,
+          openWithDefault: true
+        }
+        FileOpener.open(fileOpenerOptions)
+        .then(() => {
+          // 'File is opened'
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      });
+    });
   }
 
   backgroundImageFn(set, sheet){

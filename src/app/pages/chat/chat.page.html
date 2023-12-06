@@ -68,7 +68,7 @@
         </div>
         <ion-grid>
         <span *ngFor="let file of message.attachments" class="file-container">
-          <ion-row *ngIf="!file.image_type && !file.audio_type" (click)="open_file(file)">
+          <ion-row *ngIf="!file.image_type && !file.audio_type" (click)="download_and_open_file(file, $event)">
           <ion-col size="2" class="file-format">
             <ion-icon name="document-outline"></ion-icon>
             {{file.format}}
