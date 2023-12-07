@@ -41,6 +41,8 @@
                   <img [src]="'data:image/jpeg;base64' + file.image_preview" >
                 </span>
               </div>
+              <!-- File viewer template -->
+              <ng-template *ngTemplateOutlet="FileViewer;context: {chatmessage : message}"></ng-template>
               <!-- Audio Player template-->
               <ng-template *ngTemplateOutlet="AudioPlayer;context: {chatmessage : message}"></ng-template>
               <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
@@ -58,7 +60,7 @@
       <ion-col size="3" *ngIf="message.user === currentUser" class="ion-text-end">
         <span *ngFor="let react of message.reactions" [innerHTML]="react.emoji" class="reaction-emoji"></span>
       </ion-col>
-        <ion-col size="9" *ngIf="message.user === currentUser" class="message my-message" (click)="openActionSheet(message)">
+        <ion-col size="9" *ngIf="message.user === currentUser" class="message my-message" (click)="openEditActionSheet(message)">
         <span>{{ message.msg }}</span>
         <!-- Image Viewer -->
         <div *ngFor="let file of message.attachments" class="image-viewer">
@@ -66,22 +68,8 @@
             <img [src]="'data:image/jpeg;base64' + file.image_preview" >
           </span>
         </div>
-        <ion-grid>
-        <span *ngFor="let file of message.attachments" class="file-container">
-          <ion-row *ngIf="!file.image_type && !file.audio_type" (click)="download_and_open_file(file, $event)">
-          <ion-col size="2" class="file-format">
-            <ion-icon name="document-outline"></ion-icon>
-            {{file.format}}
-          </ion-col>
-          <ion-col size="10">
-            {{ (file.title.length>25)? (file.title | slice:0:25)+'...':(file.title) }}
-            <div class="file-size ion-float-right">
-              {{file.size / 1024 | number:'1.0-1'}}kB
-            </div>
-          </ion-col>
-          </ion-row>
-        </span>
-        </ion-grid>
+        <!-- File viewer template -->
+        <ng-template *ngTemplateOutlet="FileViewer;context: {chatmessage : message}"></ng-template>
         <!-- Audio Player template -->
         <ng-template *ngTemplateOutlet="AudioPlayer;context: {chatmessage : message}"></ng-template>
         <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
@@ -103,6 +91,7 @@
 </ion-content>
 
 <ion-footer>
+  <ion-progress-bar [value]="uploadProgress.value" *ngIf="uploadProgress.value" color="primary"></ion-progress-bar>
   <ion-toolbar color="light">
     <!-- Emoji sheet -->
     <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" 
@@ -110,15 +99,15 @@
     <ion-row align-items-center>
       <ion-col size="3" class="ion-no-padding">
         <!-- Emoji Selector -->
-        <button class="emoji-selector" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">
+        <button class="action-button" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">
           <ion-icon class="emoji-in-button" name="happy-outline"></ion-icon>
         </button>
-        <!-- Photo -->
-        <button class="audio-recorder" (click)="take_photo()">
-          <ion-icon class="emoji-in-button" name="image-outline"></ion-icon>
+        <!-- Attachments -->
+        <button class="action-button" (click)="openAttachActionSheet()">
+          <ion-icon class="emoji-in-button" name="add-outline"></ion-icon>
         </button>
         <!-- Audio recorder -->
-        <button #recordbtn class="audio-recorder" (click)="toggle_recording()">
+        <button #recordbtn class="action-button" (click)="toggle_recording()">
           <ion-icon *ngIf="!recording" class="emoji-in-button" name="mic-outline"></ion-icon>
           <ion-icon *ngIf="recording" class="emoji-in-button" name="mic-off-outline" color="danger"></ion-icon>
         </button>
@@ -155,5 +144,23 @@
       <ion-progress-bar  *ngIf="playingId === message.id" [value]="play_progress"></ion-progress-bar>
       <ion-progress-bar *ngIf="playingId != message.id"></ion-progress-bar>
     </span>
+  </div>
+</ng-template>
+
+<!-- File viewer template -->
+<ng-template #FileViewer let-message="chatmessage">
+  <div *ngFor="let file of message.attachments" class="file-container">
+    <ion-row *ngIf="!file.image_type && !file.audio_type" (click)="download_and_open_file(file, $event)">
+      <ion-col *ngIf="!file.image_type && !file.audio_type" size="2" class="file-format">
+        <ion-icon name="document-outline"></ion-icon>
+        {{file.format}}
+      </ion-col>
+      <ion-col *ngIf="!file.image_type && !file.audio_type" size="10">
+        {{ (file.title.length>25)? (file.title | slice:0:25)+'...':(file.title) }}
+        <div class="file-size ion-float-right">
+          {{file.size / 1024 | number:'1.0-1'}}kB
+        </div>
+      </ion-col>
+    </ion-row>
   </div>
 </ng-template>

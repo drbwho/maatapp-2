@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RealTimeAPI } from 'rocket.chat.realtime.api.rxjs';
 import { ConfigData } from './config-data';
-import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams, HttpEventType, HttpEvent } from '@angular/common/http';
 import { Events } from './events';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 
 export interface ChatMessage {
   id?: string
@@ -57,7 +57,8 @@ export class ChatService {
     private config: ConfigData,
     private http: HttpClient,
     private events: Events,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController
   ) { }
 
   // Connect to CHAT Server
@@ -515,7 +516,7 @@ export class ChatService {
   }
 
   // Upload audio recording as new message
-  uploadFile(rid: string, filename: string, filecontent: Blob, description?: string){
+  uploadFile(rid: string, filename: string, filecontent: Blob, description?: string, progressel?: any, filesize?: number){
     // use REST API
     let headers = new HttpHeaders({
       'X-Auth-Token': this.chatUserToken,
@@ -526,12 +527,32 @@ export class ChatService {
     formData.append('description', description ? description : "Audio message");
 
     this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/rooms.upload/' + rid, formData,
-      {headers: headers})
-      .subscribe({error: (error)=>{
-        console.log(error);
-        this.showAlert('Cannot upload to Chat Server. Please check your network status.');
-      }
-    });
+      {headers: headers, reportProgress: true, observe: "events"})
+      .subscribe({
+        next: (ev)=>{
+          switch (ev.type) {
+           /* case HttpEventType.Sent:
+              console.log('Request sent!');
+              break;
+            case HttpEventType.ResponseHeader:
+              console.log('Response header received!');
+              break;*/
+            case HttpEventType.UploadProgress:
+              progressel.value = ev.loaded/filesize;
+              break;
+            case HttpEventType.Response:
+              //console.log('Done!', ev.body);
+              if(!(ev.body as any).success){
+                this.showAlert('Cannot upload to Chat Server. Please check your network status.');
+              }
+              progressel.value = 0;
+          }
+        },
+        error: (error)=>{
+          console.log(error);
+          this.showAlert('Cannot upload to Chat Server. Please check your network status.');
+        }
+      });
   }
 
   downloadFile(fileurl, mimetype){
@@ -622,14 +643,33 @@ export class ChatService {
   }
 
   async showAlert(message){
-    const alert = await this.alertCtrl.create({
+    const toast = await this.toastCtrl.create({
+      message: message,
+      buttons: [
+        {
+          icon: 'close',
+          htmlAttributes: {
+            'aria-label': 'close',
+          },
+        },
+      ],
+      position: 'bottom',
+      color: "danger"
+    });
+    await toast.present();
+    //toast
+    //  .onDidDismiss()
+    //  .then(() => this.swUpdate.activateUpdate())
+    //  .then(() => window.location.reload());
+    
+    /*const alert = await this.alertCtrl.create({
       header: 'Error',
       message: message,
       buttons: [
         'Ok',
       ]
     });
-    await alert.present();
+    await alert.present();*/
   }
 
 }

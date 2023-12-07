@@ -2,14 +2,14 @@ import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { ChatService, ChatMessage, ChatRoom, ChatUser } from '../../providers/chat-service';
 import { Events } from '../../providers/events';
 import { ViewChild } from '@angular/core';
-import { GestureController, GestureConfig, IonContent, IonTextarea } from '@ionic/angular';
+import { GestureController, GestureConfig, IonContent, IonTextarea, NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { Filesystem, Directory, WriteFileResult } from '@capacitor/filesystem';
 import { VoiceRecorder, VoiceRecorderPlugin, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import { Camera, CameraResultType } from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener'
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
@@ -54,13 +54,16 @@ export class ChatPage implements OnInit, AfterViewInit {
   play_progress = 0;
   audioduration = 0;
 
+  uploadProgress = {value: 0};
+
   constructor(
     private chatService: ChatService,
     private events: Events,
     private route: ActivatedRoute,
     private actionSheetCtrl: ActionSheetController,
     private loadintCtrl: LoadingController,
-    private gestureCtrl: GestureController
+    private gestureCtrl: GestureController,
+    private nav: NavController
   ) { }
 
   ngOnInit() {
@@ -236,7 +239,7 @@ export class ChatPage implements OnInit, AfterViewInit {
     }
   }
 
-  async openActionSheet(msg){
+  async openEditActionSheet(msg){
     const actionSheet = await this.actionSheetCtrl.create({
 //      header: 'Message actions',
       buttons: [
@@ -259,6 +262,53 @@ export class ChatPage implements OnInit, AfterViewInit {
           },
           handler: ()=>{
             this.chatService.deleteMessage(msg.id);
+          }
+        },
+        {
+          icon: 'exit-outline',
+          text: 'cancel',
+          htmlAttributes: {
+            'aria-label': 'close',
+          },
+        },
+      ],
+    });
+    actionSheet.present();
+  }
+
+  async openAttachActionSheet(){
+    const actionSheet = await this.actionSheetCtrl.create({
+//      header: 'Attachments',
+      buttons: [
+        {
+          icon: 'camera-outline',
+          text: 'Take a photo',
+          htmlAttributes: {
+            'aria-label': 'camera',
+          },
+          handler: ()=>{
+            this.take_photo('camera');
+          }
+        },
+        {
+          icon: 'images-outline',
+          text: 'Upload photo from gallery',
+          htmlAttributes: {
+            'aria-label': 'gallery',
+          },
+          handler: ()=>{
+            this.take_photo('photos');
+          }
+        },
+        {
+          icon: 'attach-outline',
+          text: 'Upload a file',
+          htmlAttributes: {
+            'aria-label': 'file',
+          },
+          handler: ()=>{
+            //this.attach_file();
+            this.nav.navigateForward('/file-explorer/');
           }
         },
         {
@@ -453,25 +503,19 @@ export class ChatPage implements OnInit, AfterViewInit {
     }, 100)
   }
 
-  async take_photo(){
+  async take_photo(source){
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
-      resultType: CameraResultType.Base64
+      resultType: CameraResultType.Base64,
+      source: (source="photos"?CameraSource.Photos:CameraSource.Camera)
     });
-
-    // image.webPath will contain a path that can be set as an image src.
-    // You can access the original file using image.path, which can be
-    // passed to the Filesystem API to read the raw data of the image,
-    // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
 
     //convert to blob before upload to chat server
     const fileName = new Date().getTime() + '.jpg';
     var dataurl = "data:image/jpeg;base64," + image.base64String;
     let filedata = await (await fetch(dataurl)).blob();
-    this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata, 'Media file');
-    //var imageUrl = image.webPath;
-    //console.log(imageUrl);
+    this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata, 'Media file', this.uploadProgress, filedata.size);
   }
 
   get_image(file: any) {
@@ -480,6 +524,20 @@ export class ChatPage implements OnInit, AfterViewInit {
     //  return data;
     //})
     //return await this.blobToBase64(data);
+  }
+
+  attach_file(){
+    Filesystem.readdir({
+      path: '',
+      directory: Directory.Documents
+    }).then((data)=>{
+      console.log(data);
+    })
+    /*const file = await Filesystem.readFile({
+      path: fileName,
+      directory: Directory.Data
+    })
+    const base64Sound = audioFile.data;*/
   }
 
   download_and_open_file(file: any, ev){

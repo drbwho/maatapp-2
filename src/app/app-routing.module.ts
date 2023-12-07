@@ -37,6 +37,7 @@ const routes: Routes = [
   { path: 'about-app', loadChildren: () => import('./pages/about-app/about-app.module').then(m => m.AboutAppPageModule) },
   { path: 'chat', loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule) },
   { path: 'chat-rooms', loadChildren: () => import('./pages/chat-rooms/chat-rooms.module').then( m => m.ChatRoomsPageModule)},
+  { path: 'file-explorer/:folder', loadChildren: () => import('./pages/file-explorer/file-explorer.module').then( m => m.FileExplorerPageModule)},
 
 ];
 
