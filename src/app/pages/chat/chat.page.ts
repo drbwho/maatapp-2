@@ -11,6 +11,7 @@ import { VoiceRecorder, VoiceRecorderPlugin, RecordingData, GenericResponse, Cur
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener'
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
 
@@ -307,8 +308,8 @@ export class ChatPage implements OnInit, AfterViewInit {
             'aria-label': 'file',
           },
           handler: ()=>{
-            //this.attach_file();
-            this.nav.navigateForward('/file-explorer/');
+            this.attach_file();
+            //this.nav.navigateForward('/file-explorer/');
           }
         },
         {
@@ -526,8 +527,8 @@ export class ChatPage implements OnInit, AfterViewInit {
     //return await this.blobToBase64(data);
   }
 
-  attach_file(){
-    Filesystem.readdir({
+  async attach_file(){
+    /*Filesystem.readdir({
       path: '',
       directory: Directory.Documents
     }).then((data)=>{
@@ -538,6 +539,16 @@ export class ChatPage implements OnInit, AfterViewInit {
       directory: Directory.Data
     })
     const base64Sound = audioFile.data;*/
+
+    const result = await FilePicker.pickFiles({
+      types: ['image/png', 'application/pdf', 'application/txt'],
+      multiple: true,
+      readData: true
+    });
+    console.log(result)
+    //var dataurl = "data:audio/aac;base64,"+recordData;
+    let filedata = await (await fetch(result.files[0].data)).blob();
+    this.chatService.uploadFile(this.currentRoom.rid, result.files[0].name,filedata, "", this.uploadProgress, filedata.size);
   }
 
   download_and_open_file(file: any, ev){
@@ -551,7 +562,7 @@ export class ChatPage implements OnInit, AfterViewInit {
         directory: Directory.Data,
         data: fileData
       })
-      .then((res:WriteFileResult)=>{ 
+      .then((res:WriteFileResult)=>{
         const fileOpenerOptions: FileOpenerOptions = {
           filePath: res.uri,
           contentType: mimetype,

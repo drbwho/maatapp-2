@@ -22,6 +22,7 @@ dependencies {
     implementation project(':capacitor-push-notifications')
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-status-bar')
+    implementation project(':capawesome-capacitor-file-picker')
     implementation project(':capacitor-voice-recorder')
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
 }

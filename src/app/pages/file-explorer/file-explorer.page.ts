@@ -5,6 +5,7 @@ import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { Directory } from '@capacitor/filesystem';
 import { Filesystem } from '@capacitor/filesystem';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 @Component({
   selector: 'app-file-explorer',
@@ -24,20 +25,28 @@ export class FileExplorerPage implements OnInit {
 		private toastCtrl: ToastController
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.currentFolder = this.route.snapshot.paramMap.get('folder') || '';
-    Filesystem.requestPermissions().then(res=>{
+    /*Filesystem.requestPermissions().then(res=>{
       console.log(res);
       if(res.publicStorage === "granted"){
         this.loadDocuments();
       }
-    });
+    });*/
+    //const pickFiles = async () => {
+      const result = await FilePicker.pickFiles({
+        types: ['image/png', 'application/pdf', 'application/txt'],
+        multiple: true,
+        readData: true
+      });
+      console.log(result);
+   // };
   }
 
   async loadDocuments() {
 		const folderContent = await Filesystem.readdir({
-			directory: Directory.Data,
-			path: this.currentFolder
+			directory: Directory.Documents,
+			path: 'Download'+this.currentFolder
 		});
 
 		this.folderContent = folderContent.files.map((file: any) => {
