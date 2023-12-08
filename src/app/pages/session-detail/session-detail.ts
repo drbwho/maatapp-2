@@ -1,5 +1,4 @@
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
-//import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { ActionSheetController, AlertController, Platform } from '@ionic/angular';
 import { Component } from '@angular/core';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
@@ -27,7 +26,6 @@ export class SessionDetailPage {
     private userProvider: UserData,
     private route: ActivatedRoute,
     public actionSheetCtrl: ActionSheetController,
-    //public inAppBrowser: InAppBrowser,
     public calendar: Calendar,
     public alertController: AlertController,
     public socialsharing: SocialSharing,
@@ -88,10 +86,6 @@ export class SessionDetailPage {
   }
 
   goToSpeakerTwitter(speaker: any) {
-    //this.inAppBrowser.create(
-    //  `https://twitter.com/${speaker.twitter}`,
-    //  '_blank'
-    //);
     Browser.open({url: `https://twitter.com/${speaker.twitter}`});
   }
 
@@ -174,7 +168,6 @@ export class SessionDetailPage {
           text: `Email ( ${speaker.mail} )`,
           icon: mode !== 'ios' ? 'mail' : null,
           handler: () => {
-            //this.inAppBrowser.create('mailto:' + speaker.mail, '_system');
             Browser.open({url: 'mailto:' + speaker.mail});
           }
         },
@@ -183,7 +176,6 @@ export class SessionDetailPage {
           icon: mode !== 'ios' ? 'call' : null,
           handler: () => {
             if(speaker.phone){
-              //this.inAppBrowser.create('tel:' + speaker.phone);
               Browser.open({url: 'tel:' + speaker.phone});
             }
           }
@@ -260,53 +252,6 @@ export class SessionDetailPage {
   }
 
   createCalendar(session) {
-   // const plat = this.plt.platforms();
-   /*if (this.plt.is('mobileweb')) {
-
-      let d = new Date(session.date + ' ' + session.startTime + ':00');
-      const startDate = d.getFullYear() +
-      ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) + 'T' + ('0' +
-      d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + '00Z';
-
-      d = new Date(session.date + ' ' + session.endTime + ':00');
-      const endDate = d.getFullYear() +
-      ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) + 'T' + ('0' +
-      d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + '00Z';
-
-      /*if (this.plt.is('android')) {
-       window.open(
-        `https://www.google.com/calendar/render?action=TEMPLATE&text=${session.title}&location=Venue&` +
-         'dates=' + startDate + '%2F' + endDate,
-        '_system', 'location=no,toolbar=yes,closebuttoncaption=Close,enableViewportScale=yes');
-      } else {
-      const body = `
-      BEGIN:VCALENDAR
-      PRODID:-//AT Content Types//AT Event//EN
-      VERSION:2.0
-      METHOD:PUBLISH
-      BEGIN:VEVENT
-      DTSTAMP:` + startDate + `
-      CREATED:` + startDate + `
-      LAST-MODIFIED:` + startDate + `
-      SUMMARY:` + session.title + `
-      DTSTART:` + startDate + `
-      DTEND:` + endDate + `
-      LOCATION:Venue
-      URL:http://bkk-apps.com/
-      CLASS:PUBLIC
-      END:VEVENT
-      END:VCALENDAR`;
-       const blob = new Blob([body], { type: 'text/x-vCalendar' });  // text/plain
-       const url = window.URL.createObjectURL(blob);
-       window.open(url);
-      /*this.file.writeFile(this.file.dataDirectory, 'calendar.vcs', blob, {replace: true, append: false}).then( () => {
-        this.inAppBrowser.create(this.file.dataDirectory + 'calendar.vcs', '_system',
-                   'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
-        // this.fileopener.open(this.file.dataDirectory + 'calendar.vcs', 'application/vCalendar');
-      });*/
-    /*}
-
-   } else {*/
     const title  = 'Attend session: ' + session.title;
     let startDate;
     let endDate;

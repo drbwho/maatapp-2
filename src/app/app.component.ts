@@ -8,9 +8,8 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { MenuController, Platform, ToastController, AlertController, LoadingController, ModalController } from '@ionic/angular';
 
 import { Storage } from '@ionic/storage';
-import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Network } from '@capacitor/network';
-//import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { register } from 'swiper/element/bundle';
 
 import { SelectMeetingPage } from './component/select-meeting/select-meeting';
@@ -74,7 +73,6 @@ export class AppComponent implements OnInit {
     private newsdata: NewsData,
     private config: ConfigData,
     private toast: ToastController,
-   //private inAppBrowser: InAppBrowser,
     private chatService: ChatService,
     private fcmService: FcmService,
     private modalCtrl: ModalController
@@ -384,10 +382,6 @@ export class AppComponent implements OnInit {
   }
 
   openExternalUrl(url: string) {
-    //this.inAppBrowser.create(
-    //  url,
-    //  '_blank'
-    //);
     Browser.open(
       {url: url}
     );

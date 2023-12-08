@@ -1,4 +1,3 @@
-//import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { Platform } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { ConferenceData } from './../../providers/conference-data';
@@ -25,7 +24,6 @@ export class HomePage implements OnInit {
     private router: Router,
     public dataProvider: ConferenceData,
     public plt: Platform,
-   // public inAppBrowser: InAppBrowser,
     private appComponent: AppComponent,
     private config: ConfigData,
     private storage: Storage,
@@ -69,20 +67,12 @@ export class HomePage implements OnInit {
   }
 
   loadCongressPage () {
-    //this.inAppBrowser.create(
-    //  this.confpage,
-    //  '_blank'
-    //);
     Browser.open(
       {url: this.confpage}
     )
   }
 
   openExternalUrl(url: string) {
-   // this.inAppBrowser.create(
-   //   url,
-   //   '_blank'
-   // );
     Browser.open(
       {url: url}
     )

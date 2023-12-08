@@ -3,7 +3,6 @@ import { PhotoViewer } from '@awesome-cordova-plugins/photo-viewer/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Storage, Drivers } from '@ionic/storage';
@@ -38,7 +37,8 @@ enableProdMode();
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [AppComponent, ImageViewerComponent, SelectMeetingPage],
-    providers: [InAppBrowser, PhotoViewer, Calendar, SocialSharing, Storage],
+    providers: [PhotoViewer, Calendar, SocialSharing, Storage],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
+ 

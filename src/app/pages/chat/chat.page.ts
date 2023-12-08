@@ -7,13 +7,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { Filesystem, Directory, WriteFileResult } from '@capacitor/filesystem';
-import { VoiceRecorder, VoiceRecorderPlugin, RecordingData, GenericResponse, CurrentRecordingStatus } from 'capacitor-voice-recorder';
+import { VoiceRecorder, RecordingData } from 'capacitor-voice-recorder';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener'
 import { FilePicker } from '@capawesome/capacitor-file-picker';
-import { Capacitor } from '@capacitor/core';
-import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'app-chat',

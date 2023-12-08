@@ -1,6 +1,5 @@
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
-import { Component, ViewEncapsulation } from '@angular/core';
-//import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser';
+import { Component } from '@angular/core';
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Browser } from '@capacitor/browser';
@@ -22,7 +21,6 @@ export class PeoplePage {
   constructor(
     public actionSheetCtrl: ActionSheetController,
     public confData: ConferenceData,
-    //public inAppBrowser: InAppBrowser,
     public route: ActivatedRoute,
     public socialsharing: SocialSharing,
     public alertController: AlertController
@@ -55,10 +53,6 @@ export class PeoplePage {
   }
 
   goToSpeakerTwitter(speaker: any) {
-    //this.inAppBrowser.create(
-    //  `https://twitter.com/${speaker.twitter}`,
-    //  '_blank'
-    //);
     Browser.open({
       url: `https://twitter.com/${speaker.twitter}`
     });
@@ -143,7 +137,6 @@ export class PeoplePage {
           text: `Email ( ${speaker.mail} )`,
           icon: mode !== 'ios' ? 'mail' : null,
           handler: () => {
-            //this.inAppBrowser.create('mailto:' + speaker.mail, '_system');
             Browser.open({url: 'mailto:' + speaker.mail});
           }
         },
@@ -152,7 +145,6 @@ export class PeoplePage {
           icon: mode !== 'ios' ? 'call' : null,
           handler: () => {
             if(speaker.phone){
-              //this.inAppBrowser.create('tel:' + speaker.phone);
               Browser.open({url: 'tel:' + speaker.phone});
             }
           }
