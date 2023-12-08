@@ -308,7 +308,7 @@ export class ChatPage implements OnInit, AfterViewInit {
             'aria-label': 'file',
           },
           handler: ()=>{
-            this.attach_file();
+            this.upload_file();
             //this.nav.navigateForward('/file-explorer/');
           }
         },
@@ -521,13 +521,9 @@ export class ChatPage implements OnInit, AfterViewInit {
 
   get_image(file: any) {
     return 'data:image/jpeg;base64,' + file.image_preview;
-    //this.chatService.downloadFile(file.image_url, file.image_type).then((data: Blob) =>{
-    //  return data;
-    //})
-    //return await this.blobToBase64(data);
   }
 
-  async attach_file(){
+  async upload_file(){
     /*Filesystem.readdir({
       path: '',
       directory: Directory.Documents
@@ -545,10 +541,10 @@ export class ChatPage implements OnInit, AfterViewInit {
       multiple: true,
       readData: true
     });
-    console.log(result)
-    //var dataurl = "data:audio/aac;base64,"+recordData;
-    let filedata = await (await fetch(result.files[0].data)).blob();
-    this.chatService.uploadFile(this.currentRoom.rid, result.files[0].name,filedata, "", this.uploadProgress, filedata.size);
+    //console.log(result)
+    var datab64 = "data:" + result.files[0].mimeType + ";base64," + result.files[0].data;
+    let filedata = await (await fetch(datab64)).blob();
+    this.chatService.uploadFile(this.currentRoom.rid, result.files[0].name, filedata, "", this.uploadProgress, filedata.size);
   }
 
   download_and_open_file(file: any, ev){

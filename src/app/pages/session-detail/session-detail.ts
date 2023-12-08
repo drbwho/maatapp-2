@@ -1,5 +1,5 @@
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+//import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { ActionSheetController, AlertController, Platform } from '@ionic/angular';
 import { Component } from '@angular/core';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
+import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'page-session-detail',
@@ -26,7 +27,7 @@ export class SessionDetailPage {
     private userProvider: UserData,
     private route: ActivatedRoute,
     public actionSheetCtrl: ActionSheetController,
-    public inAppBrowser: InAppBrowser,
+    //public inAppBrowser: InAppBrowser,
     public calendar: Calendar,
     public alertController: AlertController,
     public socialsharing: SocialSharing,
@@ -87,10 +88,11 @@ export class SessionDetailPage {
   }
 
   goToSpeakerTwitter(speaker: any) {
-    this.inAppBrowser.create(
-      `https://twitter.com/${speaker.twitter}`,
-      '_blank'
-    );
+    //this.inAppBrowser.create(
+    //  `https://twitter.com/${speaker.twitter}`,
+    //  '_blank'
+    //);
+    Browser.open({url: `https://twitter.com/${speaker.twitter}`});
   }
 
   async openSpeakerShare(speaker: any) {
@@ -172,7 +174,8 @@ export class SessionDetailPage {
           text: `Email ( ${speaker.mail} )`,
           icon: mode !== 'ios' ? 'mail' : null,
           handler: () => {
-            this.inAppBrowser.create('mailto:' + speaker.mail, '_system');
+            //this.inAppBrowser.create('mailto:' + speaker.mail, '_system');
+            Browser.open({url: 'mailto:' + speaker.mail});
           }
         },
         {
@@ -180,7 +183,8 @@ export class SessionDetailPage {
           icon: mode !== 'ios' ? 'call' : null,
           handler: () => {
             if(speaker.phone){
-              this.inAppBrowser.create('tel:' + speaker.phone);
+              //this.inAppBrowser.create('tel:' + speaker.phone);
+              Browser.open({url: 'tel:' + speaker.phone});
             }
           }
         }
@@ -224,7 +228,8 @@ export class SessionDetailPage {
           if(!value){
             this.user_not_loggedin();
           }else{
-            this.inAppBrowser.create(file[0].fileUrl, '_system', 'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
+            //this.inAppBrowser.create(file[0].fileUrl, '_system', 'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
+            Browser.open({url: file[0].fileUrl});
           }
         });
       }

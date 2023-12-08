@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser';
+//import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser';
+import { Browser } from '@capacitor/browser';
 import { ConferenceData } from '../../providers/conference-data';
 
 @Component({
@@ -15,7 +16,7 @@ export class SpeakerDetailPage {
     private dataProvider: ConferenceData,
     private router: Router,
     private route: ActivatedRoute,
-    private inAppBrowser: InAppBrowser
+    //private inAppBrowser: InAppBrowser
   ) {}
 
   ionViewWillEnter() {
@@ -33,9 +34,10 @@ export class SpeakerDetailPage {
   }
 
   openExternalUrl(url: string) {
-    this.inAppBrowser.create(
-      url,
-      '_blank'
-    );
+    //this.inAppBrowser.create(
+    //  url,
+    //  '_blank'
+    //);
+    Browser.open({url: url});
   }
 }

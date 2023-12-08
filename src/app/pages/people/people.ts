@@ -1,8 +1,9 @@
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { Component, ViewEncapsulation } from '@angular/core';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser';
+//import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser';
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { Browser } from '@capacitor/browser';
 
 import { ConferenceData } from '../../providers/conference-data';
 
@@ -21,7 +22,7 @@ export class PeoplePage {
   constructor(
     public actionSheetCtrl: ActionSheetController,
     public confData: ConferenceData,
-    public inAppBrowser: InAppBrowser,
+    //public inAppBrowser: InAppBrowser,
     public route: ActivatedRoute,
     public socialsharing: SocialSharing,
     public alertController: AlertController
@@ -54,10 +55,13 @@ export class PeoplePage {
   }
 
   goToSpeakerTwitter(speaker: any) {
-    this.inAppBrowser.create(
-      `https://twitter.com/${speaker.twitter}`,
-      '_blank'
-    );
+    //this.inAppBrowser.create(
+    //  `https://twitter.com/${speaker.twitter}`,
+    //  '_blank'
+    //);
+    Browser.open({
+      url: `https://twitter.com/${speaker.twitter}`
+    });
   }
 
   async openSpeakerShare(speaker: any) {
@@ -139,7 +143,8 @@ export class PeoplePage {
           text: `Email ( ${speaker.mail} )`,
           icon: mode !== 'ios' ? 'mail' : null,
           handler: () => {
-            this.inAppBrowser.create('mailto:' + speaker.mail, '_system');
+            //this.inAppBrowser.create('mailto:' + speaker.mail, '_system');
+            Browser.open({url: 'mailto:' + speaker.mail});
           }
         },
         {
@@ -147,7 +152,8 @@ export class PeoplePage {
           icon: mode !== 'ios' ? 'call' : null,
           handler: () => {
             if(speaker.phone){
-              this.inAppBrowser.create('tel:' + speaker.phone);
+              //this.inAppBrowser.create('tel:' + speaker.phone);
+              Browser.open({url: 'tel:' + speaker.phone});
             }
           }
         }

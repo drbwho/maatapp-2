@@ -10,7 +10,7 @@ import { MenuController, Platform, ToastController, AlertController, LoadingCont
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Network } from '@capacitor/network';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+//import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { register } from 'swiper/element/bundle';
 
 import { SelectMeetingPage } from './component/select-meeting/select-meeting';
@@ -19,6 +19,7 @@ import { UserData } from './providers/user-data';
 import { NewsData } from './providers/news-data';
 import { ChatService } from './providers/chat-service';
 import { FcmService } from './providers/fcm-service';
+import { Browser } from '@capacitor/browser';
 
 register();
 
@@ -73,7 +74,7 @@ export class AppComponent implements OnInit {
     private newsdata: NewsData,
     private config: ConfigData,
     private toast: ToastController,
-    private inAppBrowser: InAppBrowser,
+   //private inAppBrowser: InAppBrowser,
     private chatService: ChatService,
     private fcmService: FcmService,
     private modalCtrl: ModalController
@@ -383,9 +384,12 @@ export class AppComponent implements OnInit {
   }
 
   openExternalUrl(url: string) {
-    this.inAppBrowser.create(
-      url,
-      '_blank'
+    //this.inAppBrowser.create(
+    //  url,
+    //  '_blank'
+    //);
+    Browser.open(
+      {url: url}
     );
   }
 
