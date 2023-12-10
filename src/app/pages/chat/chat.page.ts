@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
-import { ChatService, ChatMessage, ChatRoom, ChatUser } from '../../providers/chat-service';
+import { ChatService, ChatMessage, ChatRoom } from '../../providers/chat-service';
 import { Events } from '../../providers/events';
 import { ViewChild } from '@angular/core';
-import { GestureController, GestureConfig, IonContent, IonTextarea, NavController } from '@ionic/angular';
+import { GestureController, GestureConfig, IonContent } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
@@ -12,6 +12,7 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener'
 import { FilePicker } from '@capawesome/capacitor-file-picker';
+import { HttpRequest } from '@angular/common/http';
 
 @Component({
   selector: 'app-chat',
@@ -54,6 +55,7 @@ export class ChatPage implements OnInit, AfterViewInit {
   audioduration = 0;
 
   uploadProgress = {value: 0};
+  requestHTTP: any;
 
   constructor(
     private chatService: ChatService,
@@ -61,8 +63,7 @@ export class ChatPage implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private actionSheetCtrl: ActionSheetController,
     private loadintCtrl: LoadingController,
-    private gestureCtrl: GestureController,
-    private nav: NavController
+    private gestureCtrl: GestureController
   ) { }
 
   ngOnInit() {
@@ -126,13 +127,13 @@ export class ChatPage implements OnInit, AfterViewInit {
     if(!channel){
       this.currentRoom = this.chatService.defaultChatRoom;
     }
-    if(channel.type == "d"){
-      let data: any = await this.chatService.getUserInfo(channel.users.filter((w)=>w!=this.chatService.chatUser).at(0));
-      this.currentRoom = channel;
-      this.currentRoom.name = data.name;
-    }else{
+    //if(channel.type == "d"){
+      //let data: any = await this.chatService.getUserInfo(channel.users.filter((w)=>w!=this.chatService.chatUser).at(0));
+      //this.currentRoom = channel;
+      //this.currentRoom.name = data.name;
+    //}else{
         this.currentRoom = channel;
-    }
+    //}
     this.loadRoomMessages();
     //subscribe to deletions
     this.chatService.subscribeRoomDeletions(this.currentRoom.rid);
@@ -368,7 +369,7 @@ export class ChatPage implements OnInit, AfterViewInit {
     })
   }
 
-  async toggle_recording(){
+  async toggle_recording(action?){
     //check recording permission
     if(!this.recording){
       const reqPerm = (await VoiceRecorder.requestAudioRecordingPermission()).value;
@@ -393,20 +394,22 @@ export class ChatPage implements OnInit, AfterViewInit {
         description = this.message;
       }
       this.message = '';
-      if(result.value && result.value.recordDataBase64) {
-        const recordData = result.value.recordDataBase64;
-        const fileName = new Date().getTime() + '.wav';
-        await Filesystem.writeFile({
-          path: fileName,
-          directory: Directory.Data,
-          data: recordData
-        });
-        //this.play_audio_file(fileName);
+      if(!action || action !='stop'){
+        if(result.value && result.value.recordDataBase64) {
+          const recordData = result.value.recordDataBase64;
+          const fileName = new Date().getTime() + '.wav';
+          await Filesystem.writeFile({
+            path: fileName,
+            directory: Directory.Data,
+            data: recordData
+          });
+          //this.play_audio_file(fileName);
 
-        //convert to blob before upload to chat server
-        var dataurl = "data:audio/aac;base64,"+recordData;
-        let filedata = await (await fetch(dataurl)).blob();
-        this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata, description);
+          //convert to blob before upload to chat server
+          var dataurl = "data:audio/aac;base64,"+recordData;
+          let filedata = await (await fetch(dataurl)).blob();
+          this.requestHTTP = this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata, description);
+        }
       }
     });
   }
@@ -514,7 +517,7 @@ export class ChatPage implements OnInit, AfterViewInit {
     const fileName = new Date().getTime() + '.jpg';
     var dataurl = "data:image/jpeg;base64," + image.base64String;
     let filedata = await (await fetch(dataurl)).blob();
-    this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata, 'Media file', this.uploadProgress, filedata.size);
+    this.requestHTTP = this.chatService.uploadFile(this.currentRoom.rid, fileName, filedata, 'Media file', filedata.size, this.uploadProgress);
   }
 
   get_image(file: any) {
@@ -531,23 +534,26 @@ export class ChatPage implements OnInit, AfterViewInit {
     /*const file = await Filesystem.readFile({
       path: fileName,
       directory: Directory.Data
-    })
-    const base64Sound = audioFile.data;*/
+    })*/
 
     const result = await FilePicker.pickFiles({
       types: ['image/png', 'application/pdf', 'application/txt'],
       multiple: true,
       readData: true
     });
-    //console.log(result)
     var datab64 = "data:" + result.files[0].mimeType + ";base64," + result.files[0].data;
     let filedata = await (await fetch(datab64)).blob();
-    this.chatService.uploadFile(this.currentRoom.rid, result.files[0].name, filedata, "", this.uploadProgress, filedata.size);
+    this.requestHTTP = this.chatService.uploadFile(this.currentRoom.rid, result.files[0].name, filedata, "", filedata.size, this.uploadProgress);
+  }
+
+  cancelHttpRequest(){
+    this.requestHTTP.unsubscribe();
+    this.uploadProgress.value = 0;
   }
 
   download_and_open_file(file: any, ev){
     ev.stopPropagation();
-    const mimetype = 'application/' + file.format.toLowerCase();
+    const mimetype = (file.format ? 'application/' + file.format.toLowerCase() : file.video_type);
     this.chatService.downloadFile(file.title_link, mimetype).then(async (data: Blob) =>{
       const fileData = await this.chatService.blobToBase64(data) as string;
       const fileName = file.title;

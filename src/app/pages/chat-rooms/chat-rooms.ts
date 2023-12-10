@@ -36,18 +36,15 @@ export class ChatRoomsPage implements OnInit {
   }
 
   async updateRoomInfo(){
-    let myroomsinfo: any = await this.chatService.getUserInfo(this.chatService.chatUser, true);
     this.results = await this.chatService.getMyRooms() as any;
     this.results.forEach( async (w)=>{
       //direct messaging channels
       if(w.type === 'd'){
-        let info: any = await this.chatService.getUserInfo(w.users);
+        let info: any = await this.chatService.getUserInfo(w.name);
         w.name = info.name;
         w.username = info.username;
         w.status = info.status;
       }
-      //room counters
-      w.unread = myroomsinfo.rooms.find((x)=>x.rid === w.rid).unread
     });
     this.results.sort((objA, objB) => Number(objB.updated) - Number(objA.updated));
   }

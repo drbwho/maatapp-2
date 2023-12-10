@@ -8,7 +8,7 @@
       <img src="/assets/img/group.png" alt="" *ngIf="currentRoom.type != 'd'" >
     </ion-avatar>
     <ion-title>
-      {{currentRoom.name}}
+      {{currentRoom.fname}}
     </ion-title>
 <!--    <ion-buttons slot="end">
       <ion-button (click)="presentSearcher()">
@@ -24,15 +24,15 @@
   <ion-grid>
     <ion-row *ngFor="let message of messages">
       <!-- Others' Messages -->
-      <ion-col size="10" *ngIf="message.user !== currentUser" class="ion-no-margin ion-no-padding other-message-row">
+      <ion-col size="12" *ngIf="message.user !== currentUser" class="ion-no-margin ion-no-padding other-message-row">
         <ion-grid class="other-message-row">
           <ion-row>
-            <ion-col size="auto" class="message-avatar">
+            <ion-col size="2" class="message-avatar">
               <ion-avatar>
                 <img src="/assets/img/avatar.png" alt="">
               </ion-avatar>
             </ion-col>
-            <ion-col class="message other-message">
+            <ion-col class="message other-message" >
               <span class="chat-user">{{ message.user }}</span><br>
               <span>{{ message.msg }}</span>
               <!-- Image Viewer -->
@@ -47,12 +47,14 @@
               <ng-template *ngTemplateOutlet="AudioPlayer;context: {chatmessage : message}"></ng-template>
               <div class="createdAt" text-right><br>{{ message.updatedAt | date:'short' }}</div>
             </ion-col>
-            <!-- Reaction emojis -->
-            <span *ngFor="let react of message.reactions" [innerHTML]="react.emoji" class="reaction-emoji" (click)="showReactionPop($event, message)"></span>
-            <!-- Reaction Button -->
-            <button *ngIf="!message.reactions" class="react-button" (click)="showReactionPop($event, message)">
-              <ion-icon  class="emoji-in-button" name="heart-outline"></ion-icon>
-            </button>
+            <ion-col size="2">
+              <!-- Reaction emojis -->
+              <span *ngFor="let react of message.reactions" [innerHTML]="react.emoji" class="reaction-emoji" (click)="showReactionPop($event, message)"></span>
+              <!-- Reaction Button -->
+              <button *ngIf="!message.reactions" class="react-button" (click)="showReactionPop($event, message)">
+                <ion-icon  class="emoji-in-button" name="heart-outline"></ion-icon>
+              </button>
+            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-col>
@@ -91,7 +93,16 @@
 </ion-content>
 
 <ion-footer>
-  <ion-progress-bar [value]="uploadProgress.value" *ngIf="uploadProgress.value" color="primary"></ion-progress-bar>
+  <!-- Uploading progress popover -->
+  <ion-popover #progresspop  [isOpen]="uploadProgress.value" class="progress-popover" [backdropDismiss]="false" reference="trigger">
+    <ng-template>
+      <ion-content class="ion-text-center">
+        Uploading to Chat... 
+        <ion-icon name="close-circle-outline" color="danger" (click)="cancelHttpRequest()"></ion-icon>
+        <ion-progress-bar [value]="uploadProgress.value" color="primary" ></ion-progress-bar>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
   <ion-toolbar color="light">
     <!-- Emoji sheet -->
     <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" 
@@ -107,14 +118,14 @@
           <ion-icon class="emoji-in-button" name="add-outline"></ion-icon>
         </button>
         <!-- Audio recorder -->
-        <button #recordbtn class="action-button" (click)="toggle_recording()">
+        <button #recordbtn class="action-button" (click)="toggle_recording('stop')">
           <ion-icon *ngIf="!recording" class="emoji-in-button" name="mic-outline"></ion-icon>
           <ion-icon *ngIf="recording" class="emoji-in-button" name="mic-off-outline" color="danger"></ion-icon>
         </button>
       </ion-col>
       <!-- Text area -->
       <ion-col class="textarea-container ion-no-padding" size="8" >
-        <ion-label *ngIf="recording"><ion-icon name="radio-button-on-outline" color="danger" (click)="toggle_recording()"></ion-icon> Recording: {{recordingDisplay}}</ion-label>
+        <ion-label *ngIf="recording" (click)="toggle_recording()"><ion-icon name="radio-button-on-outline" color="danger" ></ion-icon> Recording: {{recordingDisplay}}</ion-label>
         <ion-textarea #messageinput *ngIf="!recording" (ionFocus)="gotfocus()" (ionInput)="checkEmpty()" placeholder="Write your message here.." auto-grow class="inputBox" rows="1" [(ngModel)]="message"></ion-textarea>
       </ion-col>
       <!-- Send button -->
@@ -149,16 +160,16 @@
 
 <!-- File viewer template -->
 <ng-template #FileViewer let-message="chatmessage">
-  <div *ngFor="let file of message.attachments" class="file-container">
-    <ion-row *ngIf="!file.image_type && !file.audio_type" (click)="download_and_open_file(file, $event)">
+  <div *ngFor="let file of message.attachments" >
+    <ion-row *ngIf="!file.image_type && !file.audio_type" (click)="download_and_open_file(file, $event)" class="file-container">
       <ion-col *ngIf="!file.image_type && !file.audio_type" size="2" class="file-format">
         <ion-icon name="document-outline"></ion-icon>
-        {{file.format}}
+        {{file.format || 'mp4'}}
       </ion-col>
       <ion-col *ngIf="!file.image_type && !file.audio_type" size="10">
         {{ (file.title.length>25)? (file.title | slice:0:25)+'...':(file.title) }}
         <div class="file-size ion-float-right">
-          {{file.size / 1024 | number:'1.0-1'}}kB
+          {{(file.size || file.video_size) / 1024 | number:'1.0-1'}}kB
         </div>
       </ion-col>
     </ion-row>

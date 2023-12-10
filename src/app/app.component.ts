@@ -319,10 +319,11 @@ export class AppComponent implements OnInit {
       this.load_hasUnreadChatMessages();
     });
   }
+  
   async load_hasUnreadChatMessages(){
-    let info: any = await this.chatService.getUserInfo(this.chatService.chatUser, true);
+    let info: any = await this.chatService.getMyRooms();
     this.hasUnreadChat = 0;
-    info.rooms.forEach((w=>this.hasUnreadChat += w.unread));
+    info.forEach((w=>this.hasUnreadChat += w.unread));
   }
 
   listenNetworkConnectionEvents() {

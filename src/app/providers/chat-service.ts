@@ -18,7 +18,8 @@ export interface ChatMessage {
 
 export interface ChatRoom {
   rid?: string,
-  name?: string
+  name?: string,
+  fname?: string,
   type?: string,
   users?: string[],
   unread?:number,
@@ -203,13 +204,9 @@ export class ChatService {
       .subscribe({error: (error)=>console.log(error)});
 
     // Real time API working?
-    /*this.chatService.callMethod("UserPresence:setDefaultStatus",
-    {
-      "msg": "method",
-      "method": "UserPresence:setDefaultStatus",
-      "id": '' + new Date().getTime(),
-      "params": [ status ]
-    });*/
+    //this.chatAPI.callMethod("UserPresence:setDefaultStatus",
+    //  [ status ]
+    //);
   }
 
   // Get user presence
@@ -283,12 +280,13 @@ export class ChatService {
       this.chatAPI.callMethod("createDirectMessage", username).subscribe({
         next: (data) => {
           // update my rooms
-          this.getMyRooms().then(()=>{
-            resolve({
+          this.getMyRooms().then((rooms: ChatRoom[])=>{
+            resolve(rooms.find((w)=>w.rid === data.result.rid));
+            /*  {
               rid: data.result.rid,
               type: data.result.t,
               users: data.result.usernames
-            });
+            });*/
           })
         },
         error: (error)=>{
@@ -302,25 +300,22 @@ export class ChatService {
   // Get rooms user belongs to
   getMyRooms(){
     return new Promise((resolve)=>{
-      this.chatAPI.callMethod("rooms/get",{
-        id: this.makeid(18),
-        params: [0]
-      }).subscribe({
+      this.chatAPI.callMethod("subscriptions/get")
+      .subscribe({
         next: (data) => {
           this.chatRooms = [];
-          data.result.forEach((rm: any)=>{
-            var room: ChatRoom = {};
-            room.rid = rm._id;
-            room.name = (rm.name ? rm.name : rm.fname);
-            room.type = rm.t;
-            room.updated = rm._updatedAt.$date;
-            if(rm.t == 'd'){
-              room.users = rm.usernames.filter((w)=> w != this.chatUser);
-              room.name = room.users.at(0);
-            }
-            room.unread = 0;
-            this.chatRooms.push(room);
-          });
+          if(typeof(data.result)!="undefined"){
+            data.result.forEach((rm: any)=>{
+              var room: ChatRoom = {};
+              room.rid = rm.rid;
+              room.name = rm.name;
+              room.fname = rm.fname;
+              room.type = rm.t;
+              room.updated = rm._updatedAt.$date;
+              room.unread = rm.unread;
+              this.chatRooms.push(room);
+            });
+          }
           resolve(this.chatRooms);
         },
         error: (err) =>{
@@ -476,17 +471,13 @@ export class ChatService {
     });
   }
 
-  getUserInfo(username: string, loadRooms?: boolean) {
+  getUserInfo(username: string) {
     return new Promise((resolve, reject) => {
-      this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/users.info?username=' + username + (loadRooms?'&fields={"userRooms": 1}':''),
+      this.http.get('https://' + this.config.CHAT_HOST + '/api/v1/users.info?username=' + username,
         {headers: this.headers})
         .subscribe({
           next: (data: any)=>{
-            if(loadRooms){
-              resolve({name: data.user.name, username: data.user.username, status: data.user.status, rooms: data.user.rooms});
-            }else{
-              resolve({name: data.user.name, username: data.user.username, status: data.user.status});
-            }
+            resolve({name: data.user.name, username: data.user.username, status: data.user.status});    
           },
           error: (error)=>{
             console.log(error);
@@ -516,7 +507,7 @@ export class ChatService {
   }
 
   // Upload audio recording as new message
-  uploadFile(rid: string, filename: string, filecontent: Blob, description?: string, progressel?: any, filesize?: number){
+  uploadFile(rid: string, filename: string, filecontent: Blob, description?: string,  filesize?: number, progressel?: any){
     // use REST API
     let headers = new HttpHeaders({
       'X-Auth-Token': this.chatUserToken,
@@ -526,7 +517,7 @@ export class ChatService {
     formData.append('file', filecontent, filename);
     formData.append('description', description ? description : "Audio message");
 
-    this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/rooms.upload/' + rid, formData,
+    const request = this.http.post('https://' + this.config.CHAT_HOST + '/api/v1/rooms.upload/' + rid, formData,
       {headers: headers, reportProgress: true, observe: "events"})
       .subscribe({
         next: (ev)=>{
@@ -538,21 +529,30 @@ export class ChatService {
               console.log('Response header received!');
               break;*/
             case HttpEventType.UploadProgress:
-              progressel.value = ev.loaded/filesize;
+              if(progressel){
+                progressel.value = ev.loaded/filesize;
+              }
               break;
             case HttpEventType.Response:
               //console.log('Done!', ev.body);
               if(!(ev.body as any).success){
                 this.showAlert('Cannot upload to Chat Server. Please check your network status.');
               }
-              progressel.value = 0;
+              if(progressel){
+                progressel.value = 0;
+              }
           }
         },
         error: (error)=>{
           console.log(error);
+          if(progressel){
+            progressel.value = 0;
+          }
           this.showAlert('Cannot upload to Chat Server. Please check your network status.');
         }
       });
+
+      return request;
   }
 
   downloadFile(fileurl, mimetype){

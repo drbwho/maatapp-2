@@ -165,5 +165,26 @@
       ion-icon {
         font-size: 11pt;
       }
+    }  
+  }
+
+  .progress-popover {
+    font-size: 8pt;
+    --color: grey;
+    --ion-text-color: grey;
+    ion-progress-bar {
+      margin-top: 10px;
     }
+    ion-icon {
+      float: right;
+      font-size: 14pt;
+      margin-top: -3px;
+    }
+  }  
+  ion-popover.progress-popover ion-content::part(scroll) {
+    background:  aliceblue;
+    padding: 10px;
+  }
+  ion-popover.progress-popover ion-progress-bar::part(track) {
+    background: #D8EBFF;
   }
