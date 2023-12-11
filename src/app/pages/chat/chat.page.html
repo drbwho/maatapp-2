@@ -105,7 +105,7 @@
   </ion-popover>
   <ion-toolbar color="light">
     <!-- Emoji sheet -->
-    <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" 
+    <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" isNative="true"
       (emojiSelect)="addEmoji($event)" [backgroundImageFn]="backgroundImageFn" [showPreview]="false"></emoji-mart>
     <ion-row align-items-center>
       <ion-col size="3" class="ion-no-padding">

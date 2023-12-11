@@ -24,6 +24,7 @@
     "@angular/platform-browser": "17.0.6",
     "@angular/platform-browser-dynamic": "17.0.6",
     "@angular/router": "17.0.6",
+    "@angular/service-worker": "^17.0.6",
     "@awesome-cordova-plugins/calendar": "6.4.0",
     "@awesome-cordova-plugins/core": "6.4.0",
     "@awesome-cordova-plugins/photo-viewer": "6.4.0",

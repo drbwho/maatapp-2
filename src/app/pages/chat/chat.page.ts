@@ -155,6 +155,8 @@ export class ChatPage implements OnInit, AfterViewInit {
       this.chatService.sendMessage(this.message, this.currentRoom.rid);
       this.message = '';
     }
+    //close emoji picker if opened
+    this.isEmojiPickerVisible = false;
   }
 
   async loadRoomMessages(){
