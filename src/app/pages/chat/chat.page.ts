@@ -12,7 +12,6 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener'
 import { FilePicker } from '@capawesome/capacitor-file-picker';
-import { HttpRequest } from '@angular/common/http';
 
 @Component({
   selector: 'app-chat',

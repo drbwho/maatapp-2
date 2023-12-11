@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RealTimeAPI } from 'rocket.chat.realtime.api.rxjs';
 import { ConfigData } from './config-data';
-import { HttpHeaders, HttpClient, HttpParams, HttpEventType, HttpEvent } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpEventType } from '@angular/common/http';
 import { Events } from './events';
-import { AlertController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 export interface ChatMessage {
   id?: string
@@ -58,12 +58,11 @@ export class ChatService {
     private config: ConfigData,
     private http: HttpClient,
     private events: Events,
-    private alertCtrl: AlertController,
     private toastCtrl: ToastController
   ) { }
 
   // Connect to CHAT Server
-  connectChat(){
+  async connectChat(){
     this.chatAPI =  new RealTimeAPI("wss://" + this.config.CHAT_HOST + "/websocket");
     this.chatAPI.connectToServer();
     this.chatAPI.keepAlive().subscribe();
