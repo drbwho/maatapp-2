@@ -2,7 +2,11 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "fs": ["./node_modules/fs-web"],
+      "crypto": ["node_modules/crypto-browserify"],
+    }
 },
 //  "angularCompilerOptions": {
 //    "enableIvy": true

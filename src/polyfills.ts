@@ -63,3 +63,5 @@ import 'zone.js'; // Included with Angular CLI.
  */
 // import 'intl/locale-data/jsonp/en';
 
+// Matrix.org test..
+(window as any).global = window;

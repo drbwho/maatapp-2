@@ -5,6 +5,12 @@ import { HttpHeaders, HttpClient, HttpEventType } from '@angular/common/http';
 import { Events } from './events';
 import { ToastController } from '@ionic/angular';
 
+//Matrix.org tests..
+import * as sdk from "matrix-js-sdk";
+import { EmittedEvents } from 'matrix-js-sdk';
+//import * as Olm from '@matrix-org/olm';
+global.Olm = require('@matrix-org/olm');
+
 export interface ChatMessage {
   id?: string
   user?: string
@@ -63,6 +69,46 @@ export class ChatService {
 
   // Connect to CHAT Server
   async connectChat(){
+
+    // Matrix tests...
+    const client = sdk.createClient({ baseUrl: "https://matrix.org" });
+    //client.publicRooms().then(data=> {
+    //    console.log("Public Rooms: %s", JSON.stringify(data));
+    //});
+    client.loginWithPassword('drbwho', '71842417a!').then(async data=>{
+      console.log('Login:', data);
+      client.setAccessToken(data.access_token);
+      //client.setDeviceVerified(data.user_id, data.device_id);
+      client.deviceId = data.device_id;
+      await client.initCrypto();
+      //await client.startClient({ initialSyncLimit: 10 });
+
+      /*client.once("sync" as EmittedEvents, (state, prevState, res)=> {
+        if (state === "PREPARED") {
+            console.log("prepared");
+        } else {
+            console.log(state);
+            process.exit(1);
+        }
+      });*/
+
+      client.on("Room.timeline" as EmittedEvents, (event, room, toStartOfTimeline)=> {
+        if (event.getType() !== "m.room.message") {
+            return; // only use messages
+        }
+        console.log('Room msg', event.event.content.body);
+      });
+      const content:sdk.IContent = {
+        body: "message text",
+        msgtype: "m.text",
+      };
+      client.sendEvent("!xexSQAwQJntAxqfkYw:matrix.org", "m.room.message", content).then(data=>{
+        console.log(data);
+      });
+    });
+
+    
+
     this.chatAPI =  new RealTimeAPI("wss://" + this.config.CHAT_HOST + "/websocket");
     this.chatAPI.connectToServer();
     this.chatAPI.keepAlive().subscribe();
