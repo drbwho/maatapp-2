@@ -57,6 +57,7 @@
     "es6-promise-plugin": "4.2.2",
     "firebase": "10.6.0",
     "ionic-cordova-oauth": "0.0.9",
+    "ionic-emoji-keyboard": "^1.0.2",
     "node": "20.10.0",
     "node-gyp": "10.0.1",
     "photo": "3.0.0",

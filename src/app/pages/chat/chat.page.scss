@@ -188,3 +188,9 @@
   ion-popover.progress-popover ion-progress-bar::part(track) {
     background: #D8EBFF;
   }
+
+  ionic-emoji-keyboard {
+      height: 200px;
+      display: block;
+      margin-bottom: 60px;
+  }
