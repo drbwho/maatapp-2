@@ -94,7 +94,7 @@
 
 <ion-footer>
   <!-- Uploading progress popover -->
-  <ion-popover #progresspop  [isOpen]="uploadProgress.value" class="progress-popover" [backdropDismiss]="false" reference="trigger">
+  <ion-popover #progresspop  [isOpen]="!uploadProgress.value" class="progress-popover" [backdropDismiss]="false" reference="trigger">
     <ng-template>
       <ion-content class="ion-text-center">
         Uploading to Chat... 

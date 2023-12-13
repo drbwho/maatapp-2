@@ -16,8 +16,8 @@
     ],
     "useDefineForClassFields": false,
     //Matrix JS SDK
-    "allowSyntheticDefaultImports": true,
-    "allowJs": false,
-    "skipLibCheck": true
+    //"allowSyntheticDefaultImports": true,
+    //"allowJs": false,
+    //"skipLibCheck": true
   }
 }

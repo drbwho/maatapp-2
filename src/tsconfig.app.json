@@ -3,10 +3,11 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "paths": {
-      "fs": ["./node_modules/fs-web"],
-      "crypto": ["node_modules/crypto-browserify"],
-    }
+   // Matrix tests..
+   // "paths": {
+   //   "fs": ["./node_modules/fs-web"],
+   //   "crypto": ["node_modules/crypto-browserify"],
+  //  }
 },
 //  "angularCompilerOptions": {
 //    "enableIvy": true
