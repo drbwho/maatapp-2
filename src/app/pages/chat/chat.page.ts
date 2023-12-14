@@ -325,7 +325,8 @@ export class ChatPage implements OnInit, AfterViewInit {
   }
 
   addEmoji(event) {
-    this.message = `${this.message}${event.emoji.native}`;
+    //this.message = `${this.message}${event.emoji.native}`;
+    this.message = `${this.message}${event.emoji}`;
   }
 
   gotfocus(){

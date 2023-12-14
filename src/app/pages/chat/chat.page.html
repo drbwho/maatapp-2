@@ -97,17 +97,18 @@
   <ion-popover #progresspop  [isOpen]="uploadProgress.value" class="progress-popover" [backdropDismiss]="false" reference="trigger">
     <ng-template>
       <ion-content class="ion-text-center">
-        Uploading to Chat... 
+        Uploading to Chat...
         <ion-icon name="close-circle-outline" color="danger" (click)="cancelHttpRequest()"></ion-icon>
         <ion-progress-bar [value]="uploadProgress.value" color="primary" ></ion-progress-bar>
       </ion-content>
     </ng-template>
   </ion-popover>
+  <!--<ionic-emoji-keyboard (emojiSelected)="addEmoji($event)" [color]="'light'" [hide]="isEmojiPickerVisible" [ngStyle]="{'display':isEmojiPickerVisible?'':'none'}"
+      [height]="'183px'" ></ionic-emoji-keyboard>-->
   <ion-toolbar color="light">
     <!-- Emoji sheet -->
-    <ionic-emoji-keyboard (emojiSelected)="addEmoji($event)" [color]="'light'"
-    [height]="'183px'" ></ionic-emoji-keyboard>
-    <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" isNative="true"
+
+    <emoji-mart class="emoji-mart"  [ngStyle]="{'display':isEmojiPickerVisible?'':'table-column'}"
       (emojiSelect)="addEmoji($event)" [backgroundImageFn]="backgroundImageFn" [showPreview]="false"></emoji-mart>
     <ion-row align-items-center>
       <ion-col size="3" class="ion-no-padding">
