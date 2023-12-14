@@ -103,13 +103,14 @@
       </ion-content>
     </ng-template>
   </ion-popover>
-  <!--<ionic-emoji-keyboard (emojiSelected)="addEmoji($event)" [color]="'light'" [hide]="isEmojiPickerVisible" [ngStyle]="{'display':isEmojiPickerVisible?'':'none'}"
-      [height]="'183px'" ></ionic-emoji-keyboard>-->
+  <!-- Emoji Picker -->
+  <ionic-emoji-keyboard (emojiSelected)="addEmoji($event)" [color]="'light'"
+      [style]="{'display':isEmojiPickerVisible?'':'table-column'}" 
+      [height]="'183px'" ></ionic-emoji-keyboard>
   <ion-toolbar color="light">
-    <!-- Emoji sheet -->
-
-    <emoji-mart class="emoji-mart"  [ngStyle]="{'display':isEmojiPickerVisible?'':'table-column'}"
-      (emojiSelect)="addEmoji($event)" [backgroundImageFn]="backgroundImageFn" [showPreview]="false"></emoji-mart>
+    <!-- Emoji Picker -->
+    <!--<emoji-mart class="emoji-mart"  [ngStyle]="{'display':isEmojiPickerVisible?'':'table-column'}"
+      (emojiSelect)="addEmoji($event)" [backgroundImageFn]="backgroundImageFn" [showPreview]="false"></emoji-mart>-->
     <ion-row align-items-center>
       <ion-col size="3" class="ion-no-padding">
         <!-- Emoji Selector -->

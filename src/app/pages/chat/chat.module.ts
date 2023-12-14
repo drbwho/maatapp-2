@@ -8,7 +8,7 @@ import { ChatPageRoutingModule } from './chat-routing.module';
 import { ChatroomFilterPage } from '../../component/chatroom-filter/chatroom-filter';
 import { ChatPage } from './chat.page';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { PickerModule } from '@ctrl/ngx-emoji-mart';
+//import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import {IonicEmojiKeyboardModule} from 'ionic-emoji-keyboard';
 
 @NgModule({
@@ -18,7 +18,7 @@ import {IonicEmojiKeyboardModule} from 'ionic-emoji-keyboard';
     IonicModule,
     ChatPageRoutingModule,
     ScrollingModule,
-    PickerModule,
+    //PickerModule,
     IonicEmojiKeyboardModule
   ],
   declarations: [ChatPage, ChatroomFilterPage]
