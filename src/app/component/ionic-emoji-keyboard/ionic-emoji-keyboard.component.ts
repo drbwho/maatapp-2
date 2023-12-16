@@ -23,9 +23,9 @@ export class IonicEmojiKeyboardComponent implements OnChanges, AfterViewInit {
     recent: Emoji[] = [];
     recentChange: boolean = true;
     heightStyle: string = "height:" + this.height;
-    recentOld: Emoji[] = [];
     events: any = {};
     type: any;
+    seltype: any;
 
     constructor(public loadData: IonicEmojiKeyboardService) {
     }
@@ -33,7 +33,7 @@ export class IonicEmojiKeyboardComponent implements OnChanges, AfterViewInit {
     ngAfterViewInit(): void {
         const that = this;
         setTimeout(() => {
-            that.recentOld = that.loadData.recentOld;
+            that.recent = that.loadData.recentOld;
             that.smileys = that.loadData.smileys;
             that.animals = that.loadData.animals;
             that.foods = that.loadData.foods;
@@ -42,6 +42,13 @@ export class IonicEmojiKeyboardComponent implements OnChanges, AfterViewInit {
             that.objects = that.loadData.objects;
             that.symbols = that.loadData.symbols;
             that.flag = that.loadData.flag;
+            if(this.recent.length > 0){
+                this.seltype = 'recent';
+                this.type = 'recent';
+            }else{
+                this.seltype = 'smileys';
+                this.type = 'smileys';
+            }
         }, 1000);
         this.attachUIEvents();
     }
@@ -58,14 +65,13 @@ export class IonicEmojiKeyboardComponent implements OnChanges, AfterViewInit {
     private attachUIEvents(): void {
         const that = this;
         this.events = {
-            onSelectEmoji: (item: Emoji) => {
+            onSelectEmoji: async (item: Emoji) => {
                 let i = that.recent.length - 1;
                 while (i >= 0) {
                     if (that.recent[i].id === item.id && item.emoji === that.recent[i].emoji)
                         break;
                     i--;
                 }
-
                 if (i < 0) {
                     if (that.recent.length >= 35) {
                         that.recent.splice(that.recent.length - 1, 1);
@@ -76,26 +82,30 @@ export class IonicEmojiKeyboardComponent implements OnChanges, AfterViewInit {
                     that.recent.splice(0, 0, item);
                 }
                 that.recentChange = true;
-                that.loadData.setObject("recent_emoji", that.recent);
                 that.callbackEmoji.emit(item);
+                that.loadData.setObject("recent_emoji", that.recent);
             }
         }
     }
 
-    ngOnChanges(changes: SimpleChanges) {
+    async ngOnChanges(changes: SimpleChanges) { 
         const that = this;
         if (changes?.hide?.currentValue) {
             this.heightStyle = "height:" + this.height;
         } else {
             this.heightStyle = "height: 0px";
             if (this.recentChange) {
-                let recent = this.loadData.getObject("recent_emoji");
+                let recent = await this.loadData.getObject("recent_emoji");
                 this.recentChange = false;
                 if (recent != null) {
-                    setTimeout(() => that.recentOld = recent, 250);
+                    setTimeout(() => that.recent = recent, 250);
                 }
             }
         }
+    }
+
+    updateEmoji(){
+        this.type = this.seltype;
     }
 
 

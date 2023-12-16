@@ -310,7 +310,7 @@ export class ChatService {
               room.name = rm.name;
               room.fname = rm.fname;
               room.type = rm.t;
-              room.updated = rm._updatedAt.$date;
+              room.updated = (rm._updatedAt?rm._updatedAt.$date:null);
               room.unread = rm.unread;
               this.chatRooms.push(room);
             });

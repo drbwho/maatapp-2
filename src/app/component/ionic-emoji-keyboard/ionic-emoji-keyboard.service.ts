@@ -29,9 +29,9 @@ export class IonicEmojiKeyboardService {
     public async init() {
         return new Promise<boolean>(async (resolve) => {
             if (this.loaded) {
-                let recent = await this.getObject("recent_emoji");
+                const recent = await this.getObject("recent_emoji");
                 if (recent != null) {
-                    this.recentOld = recent as Emoji[];
+                    this.recentOld = recent as Emoji[]; 
                 }
                 this.smileys = [
                     {
@@ -7984,31 +7984,29 @@ export class IonicEmojiKeyboardService {
     }
 
 
-    setObject(key: string, object: Object): boolean { console.log(key)
-        try {
-            //localStorage.setItem(key, JSON.stringify(object));
-            this.storage.set(key, JSON.stringify(object)).then(()=>{
-              return true;
-            });
-        } catch (reason) {
+    setObject(key: string, object: Object) {
+        //localStorage.setItem(key, JSON.stringify(object));
+        return this.storage.set(key, JSON.stringify(object)).then(()=>{
+            return true;
+        },
+            reason=> {
             console.log(reason);
             return false;
-        }
+        });
     }
 
-// get a key/value object
-    getObject(key: string) {
-        try {
-            //const result = localStorage.getItem(key);
-            this.storage.get(key).then(result=>{
-              if (result != null) { console.log(result)
-                return JSON.parse(result) as Emoji[];
-              }
-              return null;
-          });
-        } catch (reason) {
-            console.log(reason);
-            return null;
-        }
+    // get a key/value object
+    getObject(key: string): Promise<Emoji[]> { 
+        //const result = localStorage.getItem(key);
+        return this.storage.get(key).then(
+            result=>{
+                if (result != null) {
+                    return JSON.parse(result) as Emoji[];
+                }
+                return null;
+            },reason=>{
+                console.log(reason);
+                return null;
+            });
     }
 }
