@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonList, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonList, IonSegment, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
@@ -26,7 +26,7 @@ export class SchedulePage implements OnInit {
   isfavoritepage = false;
   confdates: any;
   filter: string;
-
+ 
   constructor(
     public alertCtrl: AlertController,
     public confData: ConferenceData,
@@ -44,13 +44,14 @@ export class SchedulePage implements OnInit {
           this.confdates = data.eventdates;
       }
     });
+
   }
 
   ionViewDidEnter() {
-    this.updateSchedule();
+    this.updateSchedule(true)
   }
 
-  updateSchedule() {
+  updateSchedule(firstView?: boolean) {
     // Close any open sliding items when the schedule updates
     if (this.scheduleList) {
       this.scheduleList.closeSlidingItems();
@@ -82,6 +83,13 @@ export class SchedulePage implements OnInit {
         this.filter = 'filter by: room';
       } else {
         this.filter = '';
+      }
+
+      // if it is the fist call with filtering, go to first day with results
+      if(firstView && this.filter && this.shownSessions === 0 &&
+        (this.confdates.length > this.daysegment)){
+          this.daysegment++;
+          this.updateSchedule(true);
       }
     });
   }

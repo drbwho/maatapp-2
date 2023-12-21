@@ -26,7 +26,7 @@
   </ion-toolbar>
 
   <ion-segment (ionChange)="updateSchedule()" [(ngModel)]="daysegment" *ngIf="segment === 'all'" class="day-segment">
-    <ion-segment-button *ngFor="let day of confdates" value="{{day.id}}">
+    <ion-segment-button *ngFor="let day of confdates" [value]="day.id">
       <div>
       {{day.date.replace("00:00:00","").trim() | date:'EEE d'}}<br>
       {{day.date.replace("00:00:00","").trim() | date:'MMM'}}

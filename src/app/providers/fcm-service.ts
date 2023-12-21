@@ -40,7 +40,7 @@ export class FcmService {
   receive_notification(notification){
     //its a chat notification
     if(notification.message){
-      this.router.navigate(['/app/tabs/chat-rooms']);
+      this.router.navigate(['/app/tabs/chat-rooms/']);
     //its a general notification
     }else{
       this.router.navigate(['/app/tabs/notifications', JSON.stringify({title: notification.title, body: notification.body})]);
