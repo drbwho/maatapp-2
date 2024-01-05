@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.bkk.ca22125',
-  appName: 'CA 22125',
+  appName: 'Precision BTC',
   webDir: 'www',
   cordova: {
     preferences: {
