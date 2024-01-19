@@ -56,7 +56,7 @@ export class SessionDetailPage {
         const sessionId = this.route.snapshot.paramMap.get('sessionId');
         for (const day of data.eventdates) {
             for (const session of day.sessions) {
-              if (session && session.id === sessionId) {
+              if (session && session.id == sessionId) {
                 this.session = session;
                 this.session.datestr = new Date(this.session.date.replace(/-/g, '/')).toLocaleDateString('en-US',
                             { day: 'numeric', month: 'long', year: 'numeric' });

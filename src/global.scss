@@ -33,3 +33,7 @@
  */
 
 @import "./app/app.scss";
+
+[hidden] {
+    display: none !important;
+  }

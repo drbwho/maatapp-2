@@ -280,7 +280,7 @@ export class ChatService {
         next: (data) => {
           // update my rooms
           this.getMyRooms().then((rooms: ChatRoom[])=>{
-            resolve(rooms.find((w)=>w.rid === data.result.rid));
+            resolve(rooms.find((w)=>w.rid == data.result.rid));
             /*  {
               rid: data.result.rid,
               type: data.result.t,

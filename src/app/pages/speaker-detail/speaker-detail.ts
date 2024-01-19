@@ -21,7 +21,7 @@ export class SpeakerDetailPage {
       const speakerId = this.route.snapshot.paramMap.get('speakerId');
       if (data && data.people) {
         for (const speaker of data.people) {
-          if (speaker && speaker.id === speakerId) {
+          if (speaker && speaker.id == speakerId) {
             this.speaker = speaker;
             break;
           }

@@ -86,16 +86,16 @@ export class ConferenceData {
     this.data.people.forEach( (person: any) => {
       // speaker capacities
       person.capacity = data.capUsers.reduce ( (filtered: any, item: any) => {
-        if ( item.speakerId === person.id ) {
-          filtered.push(data.capacity.find( (s: any) => s.id === item.capacityId ));
+        if ( item.speakerId == person.id ) {
+          filtered.push(data.capacity.find( (s: any) => s.id == item.capacityId ));
         }
       return filtered;
       }, []);
 
       // speaker workgroups
       person.wg = data.wgUsers.reduce ( (filtered: any, item: any) => {
-        if ( item.speakerId === person.id ) {
-          filtered.push(data.wg.find( (s: any) => s.id === item.wgId ));
+        if ( item.speakerId == person.id ) {
+          filtered.push(data.wg.find( (s: any) => s.id == item.wgId ));
         }
         return filtered;
       }, []);
@@ -114,9 +114,9 @@ export class ConferenceData {
           session.speakers = [];
           // speaker sessions
           data.sessionSpeakers.forEach((sessionSpeaker: any) => {
-            if (sessionSpeaker.sessionId === session.id) {
+            if (sessionSpeaker.sessionId == session.id) {
               const speaker = this.data.people.find(
-                (s: any) => s.id === sessionSpeaker.speakerId
+                (s: any) => s.id == sessionSpeaker.speakerId
               );
               if (speaker) {
                 session.speakers.push(speaker);
@@ -129,7 +129,7 @@ export class ConferenceData {
           // get track
           if (session.track != null) {
               const track = this.data.tracks.find(
-                (s: any) => s.id === session.track
+                (s: any) => s.id == session.track
               );
               if (track) {
                 session.trackTitle = track.title;
@@ -139,7 +139,7 @@ export class ConferenceData {
           // get room
           if (session.room != null) {
             const room = this.data.rooms.find(
-              (s: any) => s.id === session.room
+              (s: any) => s.id == session.room
             );
             if (room) {
               session.roomName = room.name;
@@ -188,7 +188,6 @@ export class ConferenceData {
               result.shownSessions++;
             }
         });
-
         return result;
       })
     );
@@ -272,7 +271,7 @@ export class ConferenceData {
           case 'speakers':
             speakers = data.people.reduce ( (filtered: any, itempeople: any) => {
                 if ( data.sessionSpeakers.filter( (item: any) => {
-                      return item.speakerId === itempeople.id;
+                      return item.speakerId == itempeople.id;
                       }).length > 0
                     ) {
                   filtered.push( itempeople );
@@ -288,8 +287,8 @@ export class ConferenceData {
             case 'wg':
               table = data.wgUsers;
               speakers = table.reduce ( (filtered: any, option: any) => {
-                if (option.wgId === taxId) {
-                    filtered.push( speakers.find( (s: any) => s.id === option.speakerId ));
+                if (option.wgId == taxId) {
+                    filtered.push( speakers.find( (s: any) => s.id == option.speakerId ));
                 }
                 return filtered;
               }, []);
@@ -297,8 +296,8 @@ export class ConferenceData {
             case 'capacity':
               table = data.capUsers;
               speakers = table.reduce ( (filtered: any, option: any) => {
-                if (option.capacityId === taxId) {
-                    filtered.push( speakers.find( (s: any) => s.id === option.speakerId ));
+                if (option.capacityId == taxId) {
+                    filtered.push( speakers.find( (s: any) => s.id == option.speakerId ));
                 }
                 return filtered;
               }, []);
@@ -327,9 +326,9 @@ export class ConferenceData {
     return this.load().pipe(
       map((data: any) => {
         if (type === 'capacity') {
-          return data.capacity.filter( w => w.id === taxid);
+          return data.capacity.filter( w => w.id == taxid);
         } else if ( type === 'wg' ) {
-          return data.wg.filter( w => w.id === taxid);
+          return data.wg.filter( w => w.id == taxid);
         }
       })
     );
@@ -339,7 +338,7 @@ export class ConferenceData {
   getFiles(sessionid) {
     return this.load().pipe(
       map((data: any) => {
-          return data.files.filter( w => w.sessionId === sessionid);
+          return data.files.filter( w => w.sessionId == sessionid);
       })
     );
   }
@@ -410,7 +409,7 @@ export class ConferenceData {
 
   getSessionRatings(sessionid): Promise<number> {
     const res = this.sessionratings.filter( w => {
-      return w.session_id === sessionid; } );
+      return w.session_id == sessionid; } );
     return Promise.all([res]).then( tab => {
       if (tab[0].length === 0) {
         return 0;
@@ -426,7 +425,7 @@ export class ConferenceData {
     const user: any = this.user.getUser();
     return Promise.all ([loggedin, user]).then ( res => {
        if (res[0]) {
-        const tab = this.mysessionratings.filter( w => (w.uid === res[1].uid && w.sessionid === sessionid) );
+        const tab = this.mysessionratings.filter( w => (w.uid == res[1].uid && w.sessionid == sessionid) );
         if (tab.length === 0) {
           return 0;
         } else {
@@ -443,7 +442,7 @@ export class ConferenceData {
     if (await this.user.isLoggedIn()) {
       // manage session rating
       const user: any = await this.user.getUser();
-      const myrats = this.mysessionratings.filter( w => (w.uid === user.uid && w.sessionid === sessionid) );
+      const myrats = this.mysessionratings.filter( w => (w.uid == user.uid && w.sessionid == sessionid) );
       if (myrats.length === 0) {
         this.mysessionratings.push( {
             sessionid: sessionid,

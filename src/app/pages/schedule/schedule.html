@@ -46,7 +46,7 @@
   <ion-list #scheduleList *ngIf="shownSessions > 0">
     <ion-grid fixed class="ion-no-padding">
       <ion-row class="ion-align-items-stretch" class="ion-no-padding">
-        <ion-col class="ion-no-padding session-item" size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
+        <ion-col class="ion-no-padding session-item" size="12" size-md="6" *ngFor="let session of sessions" #slidingItem [attr.track]="session.track" [hidden]="session.hide">
 
           <ion-list-header *ngIf="session.showtrack" class="session-track">
             <ion-text class="ion-no-padding">
