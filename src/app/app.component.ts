@@ -210,7 +210,7 @@ export class AppComponent implements OnInit {
         // trick to disable response caching
         const salt = (new Date()).getTime();
         this.http
-           .get(this.config.API_JSONFILE_URL + '?' + salt, {headers})
+           .get(this.config.API_JSONFILE_URL + '/' + curmeet.id + '?' + salt, {headers})
            .subscribe( async (data: any) => {
               if (res) {
                 if (res.version < data.version) {

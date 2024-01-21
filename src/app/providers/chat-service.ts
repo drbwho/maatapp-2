@@ -644,7 +644,7 @@ export class ChatService {
   async showAlert(message){
     const toast = await this.toastCtrl.create({
       message: message,
-      buttons: [
+ /*     buttons: [
         {
           icon: 'close',
           htmlAttributes: {
@@ -654,21 +654,11 @@ export class ChatService {
       ],
       position: 'bottom',
       color: "danger"
+      message: 'Network error! Cannot check for updates...',*/
+      cssClass: 'toast-alert',
+      duration: 5000
     });
     await toast.present();
-    //toast
-    //  .onDidDismiss()
-    //  .then(() => this.swUpdate.activateUpdate())
-    //  .then(() => window.location.reload());
-    
-    /*const alert = await this.alertCtrl.create({
-      header: 'Error',
-      message: message,
-      buttons: [
-        'Ok',
-      ]
-    });
-    await alert.present();*/
   }
 
 }

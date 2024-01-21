@@ -24,7 +24,7 @@ export class SelectMeetingPage implements AfterViewInit {
   ) { }
 
   ngAfterViewInit() {
-    this.confData.load_meetings().then((data: any)=>{
+    this.confData.load_meetings(true).then((data: any)=>{
       this.meetings = data;
       this.storage.get(this.config.CUR_MEETING).then((data)=>{
         this.curmeeting = data;
@@ -34,6 +34,8 @@ export class SelectMeetingPage implements AfterViewInit {
 
   selectMeeting(meeting: any){
     this.storage.set(this.config.CUR_MEETING, meeting).then(()=>{
+      //remove meeting data
+      this.confData.clearMeeting();
       this.events.publish('meeting:updated');
       this.modalCtrl.dismiss();
     });

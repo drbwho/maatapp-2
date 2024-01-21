@@ -1,5 +1,5 @@
 import { ConfigData } from './config-data';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
@@ -44,7 +44,8 @@ export class ConferenceData {
     public alertController: AlertController,
     public router: Router,
     public events: Events,
-    public config: ConfigData
+    public config: ConfigData,
+    public toast: ToastController
   ) {}
 
   // initial process of conference data
@@ -59,19 +60,54 @@ export class ConferenceData {
     }
   }
 
+  // clear meeting data
+  clearMeeting(){
+    this.storage.remove(this.config.JSON_FILE);
+    this.data = [];
+  }
+
   // get all meetings
-  async load_meetings(){
-    if(this.meetings){
-      return this.meetings;
+  async load_meetings(force=false){
+    if(this.meetings && !force){
+      return new Promise((resolve)=>{
+        resolve(this.meetings);
+      });
     }else{
-      //--- TO DO fetch from API
-      
-      // else load from local file
-      return fetch("../../assets/data/meetings.json").then(res=>res.json()).then(json=>{
-          this.meetings = json.meetings;
-          this.storage.set(this.config.MEETINGS_FILE, this.meetings);
-          return this.meetings;
-      })
+      //fetch from API
+      const headers = new HttpHeaders();
+      headers.append('Cache-control', 'no-cache');
+      headers.append('Cache-control', 'no-store');
+      headers.append('Cache-control', 'max-age=0');
+      headers.append('Expires', '0');
+      headers.append('Pragma', 'no-cache');
+  
+      return new Promise((resolve)=>{
+        this.http
+        .get(this.config.API_EVENTS_URL, {headers})
+        .subscribe({ 
+          next: (data: any) => {
+            this.meetings = data;
+            this.storage.set(this.config.MEETINGS_FILE, this.meetings);
+            resolve(this.meetings);
+          },
+          error: async (error) => {
+            console.log("Network Error!");
+            const toast = await this.toast.create({
+              message: 'Network error! Cannot check for updates...',
+              cssClass: 'toast-alert',
+              duration: 5000
+            });
+            toast.present();
+            // else load from local file
+            resolve(fetch("../../assets/data/meetings.json").then(res=>res.json()).then(json=>{
+                this.meetings = json.meetings;
+                this.storage.set(this.config.MEETINGS_FILE, this.meetings);
+                return this.meetings;
+              })
+            );
+          }
+        });
+     });
     }
   }
 

@@ -7,13 +7,13 @@ export class ConfigData {
 
   ENABLE_PUSH_NOTIFICATIONS = true;
 
-  //API_URL = 'https://bkk-apps.com:8445';
   API_URL = 'https://precision-btc.eu/api/v1';
   CHAT_HOST = 'chat.bkk-apps.com';
 
   JSON_FILE = 'JSON_FILE';
+  API_EVENTS_URL =  this.API_URL + '/events';
   API_JSONFILE_VERSION = this.API_URL + '/json-version';
-  API_JSONFILE_URL = this.API_URL + '/event/1';
+  API_JSONFILE_URL = this.API_URL + '/event';
 
   SESSION_RATINGS = 'SESSION_RATINGS';
   MY_SESSION_RATINGS = 'MY_SESSION_RATINGS';
