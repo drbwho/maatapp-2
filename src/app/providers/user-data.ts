@@ -47,8 +47,9 @@ export class UserData {
 
   login(user: any): Promise<any> {
     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
-      this.setUsername(user);
-      return this.events.publish('user:login');
+      this.setUsername(user).then(()=>{
+        return this.events.publish('user:login');
+      });
     });
   }
 
@@ -71,7 +72,7 @@ export class UserData {
     return this.storage.set(this.USER_FILE, user);
   }
 
-  getUser(): Promise<string> {
+  getUser(): Promise<any> {
     return this.storage.get(this.USER_FILE).then((value) => {
       return value;
     });

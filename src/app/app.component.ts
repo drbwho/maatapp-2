@@ -134,8 +134,10 @@ export class AppComponent implements OnInit {
 
     // Init FCM push notifications
     this.fcmService.initService();
+  }
 
-    // Connect to Chat Service
+  // Connect to Chat Service
+  connectToChatService(){
     this.chatService.connectChat().then(()=>{
       this.listenForChatEvents();
       this.load_hasUnreadChatMessages();
@@ -144,6 +146,7 @@ export class AppComponent implements OnInit {
 
   checkLoginStatus() {
     return this.userData.isLoggedIn().then(loggedIn => {
+      this.connectToChatService();
       return this.updateLoggedInStatus(loggedIn);
     });
   }
@@ -157,6 +160,7 @@ export class AppComponent implements OnInit {
   listenForLoginEvents() {
     this.events.subscribe('user:login', () => {
       this.updateLoggedInStatus(true);
+      this.connectToChatService();
     });
 
     this.events.subscribe('user:signup', () => {
@@ -165,6 +169,7 @@ export class AppComponent implements OnInit {
 
     this.events.subscribe('user:logout', () => {
       this.updateLoggedInStatus(false);
+      this.chatService.disconnectChat();
     });
   }
 

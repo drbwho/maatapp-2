@@ -9,8 +9,9 @@
 
 <ion-content class="outer-content">
   <div *ngIf="user.username" class="ion-padding-top ion-text-center">
-    <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
-    <h2>{{user.fname}} {{user.lname}}</h2>
+    <img *ngIf="!user.photo" src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
+    <img *ngIf="user.photo" [src]="user.photo" alt="avatar">
+    <h2>{{user.name}}</h2>
     <p>{{user.username}} - {{user.email}}</p>
     {{user.org}}
     

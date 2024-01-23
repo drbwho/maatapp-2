@@ -4,6 +4,7 @@ import { ConfigData } from './config-data';
 import { HttpHeaders, HttpClient, HttpEventType } from '@angular/common/http';
 import { Events } from './events';
 import { ToastController } from '@ionic/angular';
+import { UserData } from './user-data';
 
 export interface ChatMessage {
   id?: string
@@ -51,23 +52,27 @@ export class ChatService {
 
   headers: HttpHeaders;
 
-  user = 'bill';
-  pass = '24172417';
-
   constructor(
     private config: ConfigData,
     private http: HttpClient,
     private events: Events,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private userData: UserData
   ) { }
 
   // Connect to CHAT Server
   async connectChat(){
+    const user = await this.userData.getUser() as any;
+    if(!user || !user.authtoken){
+      return;
+    }
+
     this.chatAPI =  new RealTimeAPI("wss://" + this.config.CHAT_HOST + "/websocket");
     this.chatAPI.connectToServer();
     this.chatAPI.keepAlive().subscribe();
 
-    const auth = this.chatAPI.login(this.user, this.pass);
+    //const auth = this.chatAPI.login(this.user, this.pass);
+    const auth = this.chatAPI.loginWithAuthToken(user.authtoken);
     return new Promise((resolve, reject)=>{
       auth.subscribe(
         (data) => {
@@ -78,7 +83,7 @@ export class ChatService {
               console.log('Chat user: ',data.result.id,' token: ',data.result.token);
               this.chatUserId = data.result.id;
               this.chatUserToken = data.result.token;
-              this.chatUser = this.user;
+              this.chatUser = user.username;
               this.headers = new HttpHeaders({
                 'X-Auth-Token': this.chatUserToken,
                 'X-User-Id': this.chatUserId,
@@ -96,6 +101,14 @@ export class ChatService {
           this.showAlert('Cannot login to Chat Server. Please check your network status.');
           reject(false) });
     });
+  }
+
+  // Disconnect from chat service
+  disconnectChat(){
+    this.chatAPI.disconnect();
+    this.chatUser = '';
+    this.chatUserId = '';
+    this.chatUserToken = '';
   }
 
   // Subscribe to message updates
@@ -298,6 +311,9 @@ export class ChatService {
 
   // Get rooms user belongs to
   getMyRooms(){
+    if(!this.chatUserId){
+      return new Promise((resolve)=>resolve([]));
+    }
     return new Promise((resolve)=>{
       this.chatAPI.callMethod("subscriptions/get")
       .subscribe({
