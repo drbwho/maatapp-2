@@ -27,7 +27,10 @@ export class ChatRoomsPage implements OnInit {
   ngOnInit() {
     // subscribe to new message arrival
     this.events.subscribe('chat:newmessage', (msg: ChatMessage) => {
-      this.updateRoomInfo();
+      //add a delay in case of messages raid!
+      setTimeout(()=>{
+        this.updateRoomInfo();
+      }, 1000);
     });
   }
 

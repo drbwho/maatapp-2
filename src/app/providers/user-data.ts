@@ -1,6 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Events } from './events';
 import { Storage } from '@ionic/storage';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ConfigData } from './config-data';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +16,34 @@ export class UserData {
 
   constructor(
     public events: Events,
-    public storage: Storage
+    public storage: Storage,
+    private http: HttpClient,
+    private config: ConfigData,
   ) { }
 
+  async checkAuth(){
+    const user = await this.getUser();
+    if(!user) {
+      return false;
+    }
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve, reject)=>{
+      this.http.get(this.config.API_GETAUTH_URL, {headers: headers})
+      .subscribe({
+        next: (data: any)=>{
+            resolve(true);
+        },
+        error: (error)=>{
+          console.log(error.error.message);
+          reject(false);
+        }
+      });
+    });
+  }
 
   loadFavorites () {
     this.storage.get(this.FAVOURITES_FILE).then( (res) => {

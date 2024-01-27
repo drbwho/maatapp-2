@@ -71,7 +71,6 @@ export class ChatService {
     this.chatAPI.connectToServer();
     this.chatAPI.keepAlive().subscribe();
 
-    //const auth = this.chatAPI.login(this.user, this.pass);
     const auth = this.chatAPI.loginWithAuthToken(user.authtoken);
     return new Promise((resolve, reject)=>{
       auth.subscribe(
@@ -80,7 +79,7 @@ export class ChatService {
             if(data.error){
               console.log('Login failed');
             }else{
-              console.log('Chat user: ',data.result.id,' token: ',data.result.token);
+              console.log('Chat logged in');//user: ',data.result.id,' token: ',data.result.token);
               this.chatUserId = data.result.id;
               this.chatUserToken = data.result.token;
               this.chatUser = user.username;

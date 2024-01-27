@@ -145,13 +145,27 @@ export class AppComponent implements OnInit {
   }
 
   checkLoginStatus() {
-    return this.userData.isLoggedIn().then(loggedIn => {
-      this.connectToChatService();
-      return this.updateLoggedInStatus(loggedIn);
+    return this.userData.isLoggedIn().then(async loggedIn => {
+      if(loggedIn){
+        try{
+          const res = await this.userData.checkAuth();
+          if(res){
+            this.connectToChatService();
+          }
+          this.updateLoggedInStatus(res as boolean);
+        }catch(e){
+          this.updateLoggedInStatus(false);
+          return false;
+        }
+      }else{
+        this.updateLoggedInStatus(false);
+        return false;
+      }
     });
   }
 
   updateLoggedInStatus(loggedIn: boolean) {
+    this.storage.set(this.userData.HAS_LOGGED_IN, loggedIn);
     setTimeout(() => {
       this.loggedIn = loggedIn;
     }, 300);

@@ -9,7 +9,6 @@ import { UserData } from '../../providers/user-data';
 import { UserOptions } from '../../interfaces/user-options';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
-import { LookupAllOptions } from 'dns';
 
 @Component({
   selector: 'page-login',
@@ -37,18 +36,34 @@ export class LoginPage {
     });
 
     if (form.valid) {
-      this.http.post(this.config.API_LOGIN_URL, {"email": this.login.username, "password": this.login.password}, {headers: headers})
-      .subscribe( async (data: any) => {
-        console.log('logged in:' + data.user.username);
-        if (data.status) {
-          this.userData.login(data.user);
-          this.router.navigateByUrl('/home');
-        } else {
+      this.http.post(this.config.API_LOGIN_URL, {"email": this.login.username, "password": this.login.password}, {headers: headers, withCredentials: true})
+        .subscribe( async (data: any) => {
+          console.log('logged in:' + data.user.username);
+          if (data.status) {
+            this.userData.login(data.user);
+            this.router.navigateByUrl('/home');
+          } else {
+            const alert = await this.alertController.create({
+              header: 'Error',
+              message: 'User or password dont match!',
+              buttons: [
+              {
+                text: 'Ok',
+                handler: () => {
+                  console.log('Confirm Okay');
+                }
+              }
+              ]
+            });
+            await alert.present();
+          }
+        }, async error => {
+          console.log(error);
           const alert = await this.alertController.create({
             header: 'Error',
-            message: 'User or password dont match!',
+            message: 'Authentication error!',
             buttons: [
-                {
+              {
                 text: 'Ok',
                 handler: () => {
                   console.log('Confirm Okay');
@@ -57,23 +72,7 @@ export class LoginPage {
             ]
           });
           await alert.present();
-        }
-       }, async error => {
-        console.log(error);
-        const alert = await this.alertController.create({
-          header: 'Error',
-          message: 'Authentication error!',
-          buttons: [
-              {
-              text: 'Ok',
-              handler: () => {
-                console.log('Confirm Okay');
-              }
-            }
-          ]
         });
-        await alert.present();
-      });
     }
   }
 

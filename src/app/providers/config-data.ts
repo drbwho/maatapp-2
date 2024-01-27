@@ -9,6 +9,10 @@ export class ConfigData {
 
   API_URL = 'https://precision-btc.eu/api';
   CHAT_HOST = 'chat.bkk-apps.com';
+  API_CSRF_URL = 'https://precision-btc.eu/sanctum/csrf-cookie';
+
+  API_LOGIN_URL = this.API_URL + '/login';
+  API_GETAUTH_URL = this.API_URL + '/get-auth';
 
   JSON_FILE = 'JSON_FILE';
   API_EVENTS_URL =  this.API_URL + '/v1/events';
@@ -22,7 +26,6 @@ export class ConfigData {
   API_SETRATING_URL = this.API_URL + '/cod-mobile/session-rating';
   API_SETREVIEWS_URL = this.API_URL + '/cod-mobile/session-reviews';
   API_NEWS_URL =  this.API_URL + '/v1/get-news';
-  API_LOGIN_URL = this.API_URL + '/login';
 
   NEWS_FILE = 'NEWS_FILE';
   HAS_UNREAD_NEWS = 'has_unread_news';
