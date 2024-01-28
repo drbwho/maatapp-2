@@ -19,7 +19,7 @@
           <ion-item *ngFor="let infopage of infopages" routerLink="/app/tabs/info/{{infopage.title}}">
             <ion-icon name="information-circle" slot="start"></ion-icon>
             <ion-text>
-            {{infopage.title.replace("info -","")}}
+            {{infopage.title}}
             </ion-text>
           </ion-item>
         </ion-list>

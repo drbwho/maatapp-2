@@ -34,15 +34,15 @@ export class PeoplePage {
     this.pagetitle = 'Speakers';
     switch (taxName) {
       case 'capacity':
-        this.pagetitle = 'People';
+        this.pagetitle = 'CA People';
         break;
       case 'wg':
-        this.pagetitle = 'People';
+        this.pagetitle = 'WG People';
         break;
     }
     if (taxName && taxId && Number(taxId) > 0 ) {
       this.confData.getTaxonomy(taxName, taxId).subscribe( res => {
-        this.taxonomy = res[0].title;
+        this.taxonomy = (taxName=='wg' ? res[0].code+' ':'') + res[0].title;
       });
       this.rootpage = 'taxonomy/';
     }

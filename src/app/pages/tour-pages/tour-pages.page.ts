@@ -17,7 +17,7 @@ export class TourPagesPage implements OnInit {
   ionViewWillEnter() {
     this.dataProvider.load().subscribe((data: any) => {
       if (data && data.infopages) {
-          this.tourpages = data.infopages.filter( d => d.title.indexOf('tour') > -1);
+          this.tourpages = data.infopages.filter( d => d.category == 'tour');
         }
       });
   }

@@ -17,7 +17,7 @@ export class InfoPagesPage implements OnInit {
   ionViewWillEnter() {
     this.dataProvider.load().subscribe((data: any) => {
       if (data && data.infopages) {
-          this.infopages = data.infopages.filter( d => d.title.indexOf('info') > -1);
+          this.infopages = data.infopages.filter( d => d.category == 'info');
         }
       });
   }

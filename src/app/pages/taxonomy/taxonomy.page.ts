@@ -40,18 +40,21 @@ export class TaxonomyPage implements OnInit {
         switch (taxonomyType) {
           case 'wg':
             this.taxonomytitle = 'Working Groups';
-            this.taxonomysubtitle = 'Congress Working Groups';
-            this.taxonomy = data.wg;
+            this.taxonomysubtitle = 'Action Working Groups';
+            this.taxonomy = JSON. parse(JSON.stringify(data.wg)); // Trick to pass object by value!
             this.taxonomy.forEach(element => {
+              element.title = element.code + ' ' + element.title;
               element.label1 = 'Leader';
               element.line1 = element.leader;
-              element.label2 = 'Vice-leader';
+              element.label2 = 'Co-leader';
               element.line2 = element.subleader;
+              element.label3 = 'Co-leader';
+              element.line3 = element.subleader;
             });
             break;
           case 'capacity':
             this.taxonomytitle = 'Participants / Roles';
-            this.taxonomysubtitle = 'Congress People';
+            this.taxonomysubtitle = "Action's People";
             this.taxonomy = data.capacity;
             break;
         }

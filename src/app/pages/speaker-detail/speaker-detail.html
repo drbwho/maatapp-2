@@ -26,9 +26,9 @@
       </div>
     </ion-list>
     <ion-list *ngIf="speaker.wg.length > 0" class="speaker-wg">
-      <div *ngFor="let wg of speaker.wg">
-        {{wg.title}}
-      </div>
+      <span *ngFor="let wg of speaker.wg">
+        {{wg.code}}
+      </span>
     </ion-list>
 
     <ion-button fill="clear" size="small" color="twitter" (click)="openExternalUrl('https://twitter.com/' + speaker.twitter)" [disabled]="!speaker.twitter">

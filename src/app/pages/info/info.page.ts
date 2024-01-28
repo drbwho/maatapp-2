@@ -12,6 +12,7 @@ export class InfoPage implements OnInit {
   info: any;
   infotitle: any;
   pagetitle: any;
+  infobody: any;
   defaultHref = '';
   infoimage = '';
 
@@ -36,6 +37,8 @@ export class InfoPage implements OnInit {
   updateData (infotype: any) {
     this.dataProvider.load().subscribe((data: any) => {
       if (data && data.infopages) {
+          this.info = data.infopages.find( d => d.title === infotype );
+          this.infobody = this.info.body;
           switch (infotype) {
             case 'actionpositions':
               this.infotitle = 'Action Leaders';
@@ -58,15 +61,14 @@ export class InfoPage implements OnInit {
                 this.infoimage = 'assets/img/abstracts.png';
                 break;
             default :
-              if ( infotype.indexOf('info - ') > -1) {
-                this.infotitle = infotype.replace('info - ', '');
+              if (this.info.category == 'info') {
+                this.infotitle = infotype;
                 this.defaultHref = '/app/tabs/infopages';
               } else {
-                this.infotitle = infotype.replace('tour - ', '');
+                this.infotitle = infotype;
                 this.defaultHref = '/app/tabs/tourpages';
               }
-          }
-          this.info = data.infopages.find( d => d.title === infotype ).body;
+          }         
         }
       });
   }

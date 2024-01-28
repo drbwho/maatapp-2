@@ -29,15 +29,15 @@
                 <div>{{speaker.desgn}}</div>
                 <div>{{speaker.org}}</div>
               </ion-list>
-              <ion-list class="speaker-capacity ion-padding-start">
+              <ion-list *ngIf="speaker.capacity.length > 0" class="speaker-capacity ion-padding-start">
                 <div *ngFor="let capacity of speaker.capacity">
                   {{capacity.title}}
                 </div>
               </ion-list>
               <ion-list class="speaker-wg ion-padding-start">
-                <div *ngFor="let wg of speaker.wg">
-                  {{wg.title}}
-                </div>
+                <span *ngFor="let wg of speaker.wg">
+                  {{wg.code}}
+                </span>
               </ion-list>
             </ion-card-header>
 

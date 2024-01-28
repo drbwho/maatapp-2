@@ -130,7 +130,7 @@ export class ConferenceData {
 
       // speaker workgroups
       person.wg = data.wgUsers.reduce ( (filtered: any, item: any) => {
-        if ( item.speakerId == person.id ) {
+        if ( item.peopleId == person.id ) {
           filtered.push(data.wg.find( (s: any) => s.id == item.wgId ));
         }
         return filtered;
@@ -324,7 +324,7 @@ export class ConferenceData {
               table = data.wgUsers;
               speakers = table.reduce ( (filtered: any, option: any) => {
                 if (option.wgId == taxId) {
-                    filtered.push( speakers.find( (s: any) => s.id == option.speakerId ));
+                    filtered.push( speakers.find( (s: any) => s.id == option.peopleId ));
                 }
                 return filtered;
               }, []);

@@ -13,7 +13,7 @@
           <ion-item *ngFor="let tourpage of tourpages" routerLink="/app/tabs/info/{{tourpage.title}}">
             <ion-icon name="bus" slot="start"></ion-icon>
             <ion-text>
-            {{tourpage.title.replace("tour -","")}}
+            {{tourpage.title}}
             </ion-text>
           </ion-item>
         </ion-list>
