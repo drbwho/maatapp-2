@@ -33,5 +33,7 @@ export class ConfigData {
   MEETINGS_FILE = 'MEETINGS_FILE';
   CUR_MEETING = "CUR_EVENT";
 
+  DEVICE_ID = 'DEVICE_ID';
+
   constructor() { }
 }

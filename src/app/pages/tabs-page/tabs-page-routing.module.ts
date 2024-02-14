@@ -115,6 +115,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'info/:infoType/:page',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../info/info.module').then(m => m.InfoPageModule)
+          }
+        ]
+      },
+      {
       path: 'taxonomy',
       children: [
         {

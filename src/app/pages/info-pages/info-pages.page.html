@@ -16,7 +16,7 @@
                 City Map
               </ion-text>
           </ion-item>
-          <ion-item *ngFor="let infopage of infopages" routerLink="/app/tabs/info/{{infopage.title}}">
+          <ion-item *ngFor="let infopage of infopages" routerLink="/app/tabs/info/{{infopage.category}}/{{infopage.title}}">
             <ion-icon name="information-circle" slot="start"></ion-icon>
             <ion-text>
             {{infopage.title}}

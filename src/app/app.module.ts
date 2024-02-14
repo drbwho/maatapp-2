@@ -28,8 +28,11 @@ enableProdMode();
         HttpClientModule,
         IonicModule.forRoot({innerHTMLTemplatesEnabled: true}),
         IonicStorageModule.forRoot({
-            name: '_ca22125Db',
-            driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
+            storeName: '_castorage',
+            name: '_ca22125db',
+            dbKey: '_cadbkey',
+            driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
+            description: 'CA Storage'
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production

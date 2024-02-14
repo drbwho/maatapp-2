@@ -27,7 +27,10 @@ ion-card {
   border-radius: 0px;
   padding-right: 5px;
   box-shadow: none;
-  border-left: 10px solid #dadaff;
+  /*border-left: 10px solid #dadaff;*/
+  border-left: 1px solid #cecbcb;
+  border-bottom: 1px solid #cecbcb;
+  border-radius: 0px 0px 0px 15px;
 }
 
 .header-img-ios {

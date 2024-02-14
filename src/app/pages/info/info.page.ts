@@ -25,21 +25,29 @@ export class InfoPage implements OnInit {
   ngOnInit() {
     this.events.subscribe('info:updated', (newPage) => {
       // do something when updated data
-      this.updateData(newPage);
+      this.updateData(newPage, null);
     });
   }
 
   ionViewWillEnter() {
     const infotype = this.route.snapshot.paramMap.get('infoType');
-    this.updateData(infotype);
+    const page = this.route.snapshot.paramMap.get('page');
+    this.updateData(infotype, page);
   }
 
-  updateData (infotype: any) {
+  updateData (infotype: any, page: any) {
     this.dataProvider.load().subscribe((data: any) => {
       if (data && data.infopages) {
-          this.info = data.infopages.find( d => d.title === infotype );
+          this.info = data.infopages.filter( d => d.category === infotype );        
+          //if specific page given
+          if(page){
+            this.info = this.info.find( d => d.title === page);
+          }else{
+            //in case of multiple results...should be avoided in special categories
+            this.info = this.info[0];
+          }
           this.infobody = this.info.body;
-          switch (infotype) {
+          switch (this.info.category) {
             case 'actionpositions':
               this.infotitle = 'Action Leaders';
               break;
@@ -51,7 +59,7 @@ export class InfoPage implements OnInit {
               this.infoimage = 'assets/img/organiser.png';
               break;
             case 'accomodation':
-              this.infotitle = 'Hotels';
+              this.infotitle = 'Hotel Info';
               break;
             case 'eventphotos':
                 this.infotitle = 'Event Photos / Videos';
@@ -60,17 +68,18 @@ export class InfoPage implements OnInit {
                 this.infotitle = 'Book of Abstracts / Slides';
                 this.infoimage = 'assets/img/abstracts.png';
                 break;
-            default :
-              if (this.info.category == 'info') {
-                this.infotitle = infotype;
+           case 'info': 
+                this.infotitle = this.info.title;
                 this.defaultHref = '/app/tabs/infopages';
-              } else {
-                this.infotitle = infotype;
+                break;
+           case 'tour':
+                this.infotitle = this.info.title;
                 this.defaultHref = '/app/tabs/tourpages';
-              }
+                break;
+           default:
+                this.infotitle = '';
           }         
         }
       });
   }
-
 }

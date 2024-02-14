@@ -221,7 +221,10 @@ export class SessionDetailPage {
             this.user_not_loggedin();
           }else{
             //this.inAppBrowser.create(file[0].fileUrl, '_system', 'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes');
-            Browser.open({url: file[0].fileUrl});
+            this.userProvider.getUser().then(user=>{
+              //Private area: use token in url (Using custom laravel middleware..)
+              Browser.open({url: file[0].fileUrl + '?_token=' + user.token});
+            });
           }
         });
       }

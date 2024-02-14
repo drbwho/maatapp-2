@@ -83,6 +83,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.storage.create();
 
+    // Create device id
+    this.createDeviceId();
+
     this.checkLoginStatus();
     this.listenForLoginEvents();
     this.check_new_jsonfile();
@@ -290,20 +293,20 @@ export class AppComponent implements OnInit {
     });
   }
 
-  loadInfoPage (page: any) {
+  loadInfoPage (infotype: any) {
     // restrict access
-    if(page == 'bookofabstracts'){
+    if(infotype == 'bookofabstracts'){
       this.userData.isLoggedIn().then((value)=>{
         if(!value){
           this.user_not_loggedin();
         }else{
-          this.events.publish('info:updated', page);
-          this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
+          this.events.publish('info:updated', infotype);
+          this.router.navigate(['/app/tabs/info/' + infotype], {state: {updateInfos: true}});
         }
       });
     }else{
-      this.events.publish('info:updated', page);
-      this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
+      this.events.publish('info:updated', infotype);
+      this.router.navigate(['/app/tabs/info/' + infotype], {state: {updateInfos: true}});
     }
   }
 
@@ -432,5 +435,15 @@ export class AppComponent implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  // Create a unique device id
+  createDeviceId(){
+    this.storage.get(this.config.DEVICE_ID).then(data => {
+      if(!data){
+        const id = (Math.random().toString(36)+'00000000000000000').slice(2, 15 + 2);
+        this.storage.set(this.config.DEVICE_ID, id);
+      }
+    });
   }
 }

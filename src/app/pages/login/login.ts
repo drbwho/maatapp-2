@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 import { UserData } from '../../providers/user-data';
 
@@ -24,10 +25,11 @@ export class LoginPage {
     public router: Router,
     public http: HttpClient,
     public alertController: AlertController,
-    public config: ConfigData
+    public config: ConfigData,
+    public storage: Storage
   ) { }
 
-  onLogin(form: NgForm) {
+  async onLogin(form: NgForm) {
     this.submitted = true;
 
     const headers = new HttpHeaders({
@@ -36,7 +38,8 @@ export class LoginPage {
     });
 
     if (form.valid) {
-      this.http.post(this.config.API_LOGIN_URL, {"email": this.login.username, "password": this.login.password}, {headers: headers, withCredentials: true})
+      const device_id = await this.storage.get(this.config.DEVICE_ID);
+      this.http.post(this.config.API_LOGIN_URL, {"email": this.login.username, "password": this.login.password, "device_name": device_id}, {headers: headers, withCredentials: true})
         .subscribe( async (data: any) => {
           console.log('logged in:' + data.user.username);
           if (data.status) {
