@@ -18,6 +18,7 @@ export class ConfigData {
   API_EVENTS_URL =  this.API_URL + '/v1/events';
   API_JSONFILE_VERSION = this.API_URL + '/json-version';
   API_JSONFILE_URL = this.API_URL + '/v1/event';
+  API_FCM_URL = this.API_URL + '/v1/register-fcm';
 
   SESSION_RATINGS = 'SESSION_RATINGS';
   MY_SESSION_RATINGS = 'MY_SESSION_RATINGS';

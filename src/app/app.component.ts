@@ -80,6 +80,13 @@ export class AppComponent implements OnInit {
     this.initializeApp();
   }
 
+  initializeApp() {
+    this.platform.ready().then(() => {
+      //this.statusBar.styleDefault();
+      SplashScreen.hide();
+    });
+  }
+
   ngOnInit() {
     this.storage.create();
 
@@ -94,6 +101,9 @@ export class AppComponent implements OnInit {
     this.newsdata.loadNews();
     this.confdata.loadSessionsRatings();
     this.confdata.loadMySessionsRatings();
+
+    // Init FCM push notifications
+    this.fcmService.initService();
 
     // this.listenNetworkConnectionEvents();
 
@@ -127,16 +137,6 @@ export class AppComponent implements OnInit {
     }else{
       console.log('Service workers disabled')
     }
-  }
-
-  initializeApp() {
-    this.platform.ready().then(() => {
-      //this.statusBar.styleDefault();
-      SplashScreen.hide();
-    });
-
-    // Init FCM push notifications
-    this.fcmService.initService();
   }
 
   // Connect to Chat Service

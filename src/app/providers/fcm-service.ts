@@ -13,6 +13,8 @@ import {
 
 import { ConfigData } from './config-data';
 import { ChatService } from './chat-service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,9 @@ export class FcmService {
   constructor(
     private config: ConfigData,
     private router: Router,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private http: HttpClient,
+    private storage: Storage
   ) { }
 
   initService() {
@@ -95,6 +99,7 @@ export class FcmService {
     await PushNotifications.addListener('registration', (token: Token) => {
       console.info('Registration token: ', token.value);
       this.chatService.chatPushToken = token.value;
+      this.register_device(token.value);
     });
 
     await PushNotifications.addListener('registrationError', err => {
@@ -122,5 +127,28 @@ export class FcmService {
         throw new Error('User denied permissions!');
       }
     });
+  }
+
+  //Register FCM token to System
+  async register_device(token){
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      });
+      const device_id = await this.storage.get(this.config.DEVICE_ID);
+      //register with API
+      return new Promise((resolve)=>{        
+        this.http.post(this.config.API_FCM_URL, {"device_id": device_id, "fcm_token": token}, {headers: headers})
+        .subscribe({ 
+          next: (data: any) => {
+            console.log(data);
+            resolve(null);
+          },
+          error: async (error) => {
+            console.log("Network Error in registering device fcm token!");
+            resolve(null);
+          }
+        });
+     });
   }
 }
