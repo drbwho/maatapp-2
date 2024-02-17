@@ -57,7 +57,7 @@
     "es6-promise-plugin": "4.2.2",
     "firebase": "10.8.0",
     "ionic-cordova-oauth": "0.0.9",
-    "node": "21.6.1",
+    "node": "21.6.2",
     "node-gyp": "10.0.1",
     "photo": "3.0.0",
     "rocket.chat.realtime.api.rxjs": "^2.1.1",
@@ -78,7 +78,7 @@
     "@capacitor/cli": "5.7.0",
     "@ionic/angular-toolkit": "11.0.1",
     "@ionic/lab": "3.2.15",
-    "@types/node": "20.11.18",
+    "@types/node": "20.11.19",
     "jasmine-core": "5.1.2",
     "jasmine-spec-reporter": "7.0.0",
     "karma": "6.4.2",
@@ -87,7 +87,7 @@
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.1.0",
     "ts-node": "10.9.2",
-    "typescript": "5.2.2"
+    "typescript": "5.3.3"
   },
   "browserslist": [
     "Chrome >=61",
