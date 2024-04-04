@@ -159,7 +159,6 @@ export class AppComponent implements OnInit {
   listenForLoginEvents() {
     this.events.subscribe('user:login', () => {
       this.updateLoggedInStatus(true);
-      this.connectToChatService();
     });
 
     this.events.subscribe('user:signup', () => {
@@ -168,7 +167,6 @@ export class AppComponent implements OnInit {
 
     this.events.subscribe('user:logout', () => {
       this.updateLoggedInStatus(false);
-      this.chatService.disconnectChat();
     });
   }
 
@@ -315,20 +313,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  listenForChatEvents(){
-    this.events.subscribe('chat:newmessage', () => {
-      this.load_hasUnreadChatMessages();
-    });
-    this.events.subscribe('chat:markroomread', () => {
-      this.load_hasUnreadChatMessages();
-    });
-  }
-  
-  async load_hasUnreadChatMessages(){
-    let info: any = await this.chatService.getMyRooms();
-    this.hasUnreadChat = 0;
-    info.forEach((w=>this.hasUnreadChat += w.unread));
-  }
 
   listenNetworkConnectionEvents() {
     // watch network for a disconnection

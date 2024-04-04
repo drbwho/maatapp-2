@@ -5,11 +5,8 @@ import {ActionPerformed, PushNotifications, PushNotificationSchema, Token} from 
 // For Web push notifications
 import { Capacitor } from "@capacitor/core";
 import { environment } from '../../environments/environment';
-import { initializeApp } from "firebase/app";
-/*import { FirebaseMessaging, GetTokenOptions } from "@capacitor-firebase/messaging";*/
 
 import { ConfigData } from './config-data';
-import { ChatService } from './chat-service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 
@@ -21,7 +18,6 @@ export class FcmService {
   constructor(
     private config: ConfigData,
     private router: Router,
-    private chatService: ChatService,
     private http: HttpClient,
     private storage: Storage
   ) { }
@@ -95,7 +91,6 @@ export class FcmService {
 
     await PushNotifications.addListener('registration', (token: Token) => {
       console.info('Registration token: ', token.value);
-      this.chatService.chatPushToken = token.value;
       this.register_device(token.value);
     });
 

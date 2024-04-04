@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-import { PopoverPage } from '../about-popover/about-popover';
 
 import { AboutAppPage } from './about-app.page';
 
@@ -22,7 +21,7 @@ const routes: Routes = [
         IonicModule,
         RouterModule.forChild(routes)
     ],
-    declarations: [AboutAppPage, PopoverPage],
+    declarations: [AboutAppPage],
     bootstrap: [AboutAppPage]
 })
 export class AboutAppPageModule {}

@@ -28,7 +28,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tabs-page/tabs-page.module').then(m => m.TabsModule)
   },
   { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule) },
-  { path: 'news', loadChildren: () => import('./pages/news/news.module').then(m => m.NewsPageModule) },
   { path: 'events', loadChildren: () => import('./pages/events/events.module').then(m => m.EventsPageModule) },
   { path: 'about-app', loadChildren: () => import('./pages/about-app/about-app.module').then(m => m.AboutAppPageModule) },
 ];
