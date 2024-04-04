@@ -15,9 +15,6 @@ import { register } from 'swiper/element/bundle';
 import { SelectMeetingPage } from './component/select-meeting/select-meeting';
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
-import { NewsData } from './providers/news-data';
-import { ChatService } from './providers/chat-service';
-import { FcmService } from './providers/fcm-service';
 import { Browser } from '@capacitor/browser';
 
 register();
@@ -70,11 +67,8 @@ export class AppComponent implements OnInit {
     private swUpdate: SwUpdate,
     private toastCtrl: ToastController,
     private confdata: ConferenceData,
-    private newsdata: NewsData,
     private config: ConfigData,
     private toast: ToastController,
-    private chatService: ChatService,
-    private fcmService: FcmService,
     private modalCtrl: ModalController
   ) {
     this.initializeApp();
@@ -98,19 +92,14 @@ export class AppComponent implements OnInit {
     this.check_new_jsonfile();
     this.userData.loadFavorites();
     this.listenForNewsEvents();
-    this.newsdata.loadNews();
     this.confdata.loadSessionsRatings();
     this.confdata.loadMySessionsRatings();
-
-    // Init FCM push notifications
-    this.fcmService.initService();
 
     // this.listenNetworkConnectionEvents();
 
     // check in background for news and session ratings
     setInterval(
       () => {
-        this.newsdata.check_news(this.http);
         this.confdata.getRemoteSessionsRatings(this.http);
         this.confdata.postSessionRatings(this.http);
       },
@@ -139,13 +128,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // Connect to Chat Service
-  connectToChatService(){
-    this.chatService.connectChat().then(()=>{
-      this.listenForChatEvents();
-      this.load_hasUnreadChatMessages();
-    });
-  }
 
   checkLoginStatus() {
     return this.userData.isLoggedIn().then(async loggedIn => {
@@ -153,7 +135,7 @@ export class AppComponent implements OnInit {
         try{
           const res = await this.userData.checkAuth();
           if(res){
-            this.connectToChatService();
+           // this.connectToChatService();
           }
           this.updateLoggedInStatus(res as boolean);
         }catch(e){

@@ -29,16 +29,8 @@ const routes: Routes = [
   },
   { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule) },
   { path: 'news', loadChildren: () => import('./pages/news/news.module').then(m => m.NewsPageModule) },
-  { path: 'tweets', loadChildren: () => import('./pages/tweets/tweets.module').then(m => m.TweetsPageModule) },
-  { path: 'sponsors', loadChildren: () => import('./pages/sponsors/sponsors.module').then(m => m.SponsorsPageModule) },
   { path: 'events', loadChildren: () => import('./pages/events/events.module').then(m => m.EventsPageModule) },
-  { path: 'event-detail', loadChildren: () => import('./pages/event-detail/event-detail.module').then(m => m.EventDetailPageModule) },
-  { path: 'info-pages', loadChildren: () => import('./pages/info-pages/info-pages.module').then(m => m.InfoPagesPageModule) },
   { path: 'about-app', loadChildren: () => import('./pages/about-app/about-app.module').then(m => m.AboutAppPageModule) },
-  { path: 'chat', loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule) },
-  { path: 'chat-rooms', loadChildren: () => import('./pages/chat-rooms/chat-rooms.module').then( m => m.ChatRoomsPageModule)},
-  { path: 'file-explorer/:folder', loadChildren: () => import('./pages/file-explorer/file-explorer.module').then( m => m.FileExplorerPageModule)},
-
 ];
 
 @NgModule({

@@ -6,10 +6,7 @@ import {ActionPerformed, PushNotifications, PushNotificationSchema, Token} from 
 import { Capacitor } from "@capacitor/core";
 import { environment } from '../../environments/environment';
 import { initializeApp } from "firebase/app";
-import {
-  FirebaseMessaging,
-  GetTokenOptions,
-} from "@capacitor-firebase/messaging";
+/*import { FirebaseMessaging, GetTokenOptions } from "@capacitor-firebase/messaging";*/
 
 import { ConfigData } from './config-data';
 import { ChatService } from './chat-service';
@@ -35,8 +32,8 @@ export class FcmService {
         console.log('Native platform');
         this.register_native_push_notifications();
       }else{
-        console.log('Web platform');
-        this.register_web_push_notifications();
+        console.log('Web platform - FCM disabled');
+       // this.register_web_push_notifications();
       }
     }
   }
@@ -52,7 +49,7 @@ export class FcmService {
   }
 
   // Register Firebase Push Notifications for Web 
-  public async register_web_push_notifications(): Promise<void> {
+/*  public async register_web_push_notifications(): Promise<void> {
     initializeApp(environment.firebase);
 
     this.getToken().then((token)=>{
@@ -91,7 +88,7 @@ export class FcmService {
     
     const { token } = await FirebaseMessaging.getToken(options);
     return token;
-  }
+  }*/
 
   // Register Native Push Notifications 
   public async register_native_push_notifications(){ 

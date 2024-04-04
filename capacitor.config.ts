@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.bkk.ca22125',
-  appName: 'Precision BTC',
+  appId: 'io.sidi.maat',
+  appName: 'MAAT Peasant',
   webDir: 'www',
   cordova: {
     preferences: {

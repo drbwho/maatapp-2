@@ -67,7 +67,7 @@ export class ConferenceData {
   }
 
   // get all meetings
-  async load_meetings(force=false){
+  async load_meetings(force=false){console.log(this.meetings)
     if(this.meetings && !force){
       return new Promise((resolve)=>{
         resolve(this.meetings);

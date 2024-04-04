@@ -17,6 +17,7 @@
       <ion-card class="news-card">
         <ion-card-title class="ion-padding-start ion-padding-top">{{newsitem.title}}</ion-card-title>
         <ion-card-content>
+          <img [src]="newsitem.image"/>
           <ion-text [innerHTML]="newsitem.text" color="medium"></ion-text>
           <ion-note color="primary">{{newsitem.date.trim() | date:' d MMMM yyyy HH:mm'}}</ion-note>
         </ion-card-content>
