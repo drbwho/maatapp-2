@@ -1,0 +1,31 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Opérations</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title color="primary">{{account.owner}}</ion-card-title>
+      <ion-card-subtitle color="tertiary">{{meetingplace}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-select aria-label="Sélectionnez l'opération" [(ngModel)]="operation" placeholder="Sélectionnez l'opération">
+            <ion-select-option *ngFor="let parameter of parameters" value="{{parameter.id}}">{{parameter.name}}</ion-select-option>
+            <ion-select-option *ngFor="let fsparameter of fsparameters" value="{{fsparameter.id}}"><ion-text class="fs">{{fsparameter.name}}</ion-text></ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-item>
+          <ion-input label="Montant" type="number" [(ngModel)]="amount" placeholder="0.00"></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-button color="tertiary" (click)="valider()" size="small">Valider</ion-button>
+      <ion-button color="danger" (click)="dismiss()" size="small">Annuler</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

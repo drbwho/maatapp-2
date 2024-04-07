@@ -19,18 +19,6 @@
                 <ion-label>Home</ion-label>
               </ion-item>
           </ion-menu-toggle>
-
-        <ion-list-header>
-          People
-        </ion-list-header>
-
-        <ion-menu-toggle autoHide="false">
-          <ion-item routerDirection="root" routerLink="" (click)="loadInfoPage('organiser')" >
-            <ion-icon slot="start" name="school"></ion-icon>
-            <ion-label>Organising Commitee</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
-
         </ion-list>
 
         <ion-list *ngIf="loggedIn">

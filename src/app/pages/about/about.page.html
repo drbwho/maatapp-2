@@ -3,18 +3,22 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>About Congress</ion-title>
+    <ion-title>About</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <ion-text class="ion-text-center" color="primary">
-  <h3>{{confdata.title}}</h3>
+  <h3>MAAT Peasant App</h3>
   </ion-text>
   <ion-text class="ion-text-center">
-  <h4>{{confdata.venue}}</h4>
-  <h5>{{confdata.datefrom.replace("00:00:00","").trim() | date:'d'}}-{{confdata.dateto.replace("00:00:00","").trim() | date:'d MMMM yyyy'}}</h5>
+  <h4></h4>
   </ion-text>
-  <ion-note [innerHTML]="confdata.body">
+  <ion-note>
+    Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt
+    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem
+     ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. 
+     Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+     Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  
   </ion-note>
 </ion-content>

@@ -1,0 +1,103 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DataProvider } from '../../providers/provider-data';
+
+@Component({
+  selector: 'app-group-details',
+  templateUrl: './group-details.page.html',
+  styleUrls: ['./group-details.page.scss'],
+})
+export class GroupDetailsPage implements OnInit {
+  segment = "reunions";
+  groupname: string;
+  countryname: string;
+  currency: string;
+  group: any;
+  meetings: any;
+  accounts: any;
+  allmeetings: any;
+  allaccounts: any;
+  queryText: string;
+
+  constructor(
+    private dataProvider: DataProvider,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    const groupId = this.route.snapshot.paramMap.get('groupId');
+
+    this.group = this.dataProvider.current.group;
+    this.groupname = this.dataProvider.current.group.name;
+    this.countryname = this.dataProvider.current.country.name;
+    this.currency = this.dataProvider.current.country.currency;
+  
+    this.dataProvider.fetch_from_api('meetings', groupId, true).then((data: any)=> {
+      this.meetings = data;
+      this.allmeetings = data;
+    });
+    this.dataProvider.fetch_from_api('accounts', groupId, true).then((data: any)=> {
+      this.accounts = data;
+      this.allaccounts = data;
+    });
+  }
+
+  navto(meeting: any){   
+    this.dataProvider.current.meeting = meeting;
+    this.router.navigate(['/app/tabs/meetings/'+ meeting.id], {state: {}});
+  }
+
+  searcher(){
+    if(this.segment == 'reunions'){
+      this.search_meetings();
+    }else{
+      this.search_accounts();
+    }
+  }
+
+  search_meetings(){
+    if(this.queryText == ''){
+        this.meetings = this.allmeetings;
+      return;
+    }
+
+    let queryText = this.queryText.toLowerCase().replace(/,|\.|-/g, ' ');
+    const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
+
+    this.meetings = [];
+    this.allmeetings.forEach((gr: any) => {
+      if (queryWords.length) {
+        queryWords.forEach((queryWord: string) => {
+          if (gr.place.toLowerCase().indexOf(queryWord) > -1) {
+            this.meetings.push(gr);
+          }
+        });
+      }
+    });
+  }
+
+  search_accounts(){
+    if(this.queryText == ''){
+        this.accounts = this.allaccounts;
+      return;
+    }
+
+    let queryText = this.queryText.toLowerCase().replace(/,|\.|-/g, ' ');
+    const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
+
+    this.accounts = [];
+    this.allaccounts.forEach((gr: any) => {
+      if (queryWords.length) {
+        queryWords.forEach((queryWord: string) => {
+          if (gr.owner.toLowerCase().indexOf(queryWord) > -1) {
+            this.accounts.push(gr);
+          }
+        });
+      }
+    });
+  }
+}

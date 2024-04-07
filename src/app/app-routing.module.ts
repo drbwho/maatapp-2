@@ -28,8 +28,24 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tabs-page/tabs-page.module').then(m => m.TabsModule)
   },
   { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule) },
-  { path: 'events', loadChildren: () => import('./pages/events/events.module').then(m => m.EventsPageModule) },
   { path: 'about-app', loadChildren: () => import('./pages/about-app/about-app.module').then(m => m.AboutAppPageModule) },
+  {
+    path: 'countries',
+    loadChildren: () => import('./pages/countries/countries.module').then( m => m.CountriesPageModule)
+  },
+  {
+    path: 'groups',
+    loadChildren: () => import('./pages/groups/groups.module').then( m => m.GroupsPageModule)
+  },
+  {
+    path: 'meeting-details',
+    loadChildren: () => import('./pages/meeting-details/meeting-details.module').then( m => m.MeetingDetailsPageModule)
+  },
+  {
+    path: 'group-details',
+    loadChildren: () => import('./pages/group-details/group-details.module').then( m => m.GroupDetailsPageModule)
+  },
+
 ];
 
 @NgModule({

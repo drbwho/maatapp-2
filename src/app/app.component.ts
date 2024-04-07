@@ -1,5 +1,5 @@
 import { ConfigData } from './providers/config-data';
-import { ConferenceData } from './providers/conference-data';
+import { DataProvider } from './providers/provider-data';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
@@ -12,7 +12,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Network } from '@capacitor/network';
 import { register } from 'swiper/element/bundle';
 
-import { SelectMeetingPage } from './component/select-meeting/select-meeting';
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { Browser } from '@capacitor/browser';
@@ -66,7 +65,7 @@ export class AppComponent implements OnInit {
     private userData: UserData,
     private swUpdate: SwUpdate,
     private toastCtrl: ToastController,
-    private confdata: ConferenceData,
+    private dataprovider: DataProvider,
     private config: ConfigData,
     private toast: ToastController,
     private modalCtrl: ModalController
@@ -89,25 +88,10 @@ export class AppComponent implements OnInit {
 
     this.checkLoginStatus();
     this.listenForLoginEvents();
-    this.check_new_jsonfile();
+    //this.check_new_jsonfile();
     this.userData.loadFavorites();
-    this.listenForNewsEvents();
-    this.confdata.loadSessionsRatings();
-    this.confdata.loadMySessionsRatings();
 
     // this.listenNetworkConnectionEvents();
-
-    // check in background for news and session ratings
-    setInterval(
-      () => {
-        this.confdata.getRemoteSessionsRatings(this.http);
-        this.confdata.postSessionRatings(this.http);
-      },
-      10000
-    );
-
-    // load status from storage
-    this.load_hasUnreadNews();
 
     // PWA updates
     if(this.swUpdate.isEnabled){
@@ -177,7 +161,7 @@ export class AppComponent implements OnInit {
   }
 
   // select current meeting
-  get_current_meeting(force?:boolean) {
+ /* get_current_meeting(force?:boolean) {
     this.storage.get(this.config.CUR_MEETING).then(async (data)=>{
       if(data && !force){
         return;
@@ -189,12 +173,12 @@ export class AppComponent implements OnInit {
       await modal.present();
       await modal.onWillDismiss();
       //reload conference data
-      this.check_new_jsonfile();
+      //this.check_new_jsonfile();
     })
-  }
+  }*/
 
   // check if new version of conference data exists
-  async check_new_jsonfile() {
+  /*async check_new_jsonfile() {
     const headers = new HttpHeaders();
     headers.append('Cache-control', 'no-cache');
     headers.append('Cache-control', 'no-store');
@@ -238,7 +222,7 @@ export class AppComponent implements OnInit {
                               loading.dismiss();
                             }, 3000);
                             this.storage.set(this.config.JSON_FILE, data).then(()=>{
-                              this.confdata.processData(data);
+                              this.dataprovider.processData(data);
                             });
                           }
                         }
@@ -246,7 +230,7 @@ export class AppComponent implements OnInit {
                     });
                     await alert.present();
                 } else {
-                  this.confdata.processData(res);
+                  this.dataprovider.processData(res);
                 }
               } else {
                 const loading = await this.loadingcontroller.create({
@@ -257,7 +241,7 @@ export class AppComponent implements OnInit {
                   loading.dismiss();
                 }, 3000);
                 this.storage.set(this.config.JSON_FILE, data).then(()=>{
-                  this.confdata.processData(data);
+                  this.dataprovider.processData(data);
                 });
               }
             },
@@ -271,7 +255,7 @@ export class AppComponent implements OnInit {
               toast.present();
             });
     });
-  }
+  }*/
 
   loadInfoPage (infotype: any) {
     // restrict access
@@ -295,25 +279,7 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/app/tabs/taxonomy/type/' + page], {state: {updateInfos: true}});
   }
 
-  listenForNewsEvents() {
-    this.events.subscribe('user:unreadnews', (status: boolean) => {
-      this.hasUnreadNews = status;
-      this.storage.set(this.config.HAS_UNREAD_NEWS, status);
-    });
-  }
-
-  load_hasUnreadNews() {
-    this.storage.get(this.config.HAS_UNREAD_NEWS).then( (res) => {
-      if (res === null) { this.hasUnreadNews = false;
-      } else {  this.hasUnreadNews = res; }
-    })
-    .catch ((errorGet: any) => {
-      console.error(errorGet);
-      this.hasUnreadNews = false;
-    });
-  }
-
-
+ 
   listenNetworkConnectionEvents() {
     // watch network for a disconnection
     Network.addListener('networkStatusChange', async status => {
@@ -377,7 +343,7 @@ export class AppComponent implements OnInit {
   }
 
   openConfLink(){
-    this.openExternalUrl('https://twitter.com/' + this.confdata.data.info[0].twitter);
+    this.openExternalUrl('https://twitter.com/' + this.dataprovider.data.info[0].twitter);
   }
 
   async user_not_loggedin(){

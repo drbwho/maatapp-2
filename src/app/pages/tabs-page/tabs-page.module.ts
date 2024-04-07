@@ -1,4 +1,3 @@
-import { DatesPageModule } from './../dates/dates.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -13,8 +12,7 @@ import { AboutPageModule } from '../about/about.module';
     AboutPageModule,
     CommonModule,
     IonicModule,
-    TabsPageRoutingModule,
-    DatesPageModule
+    TabsPageRoutingModule
   ],
   declarations: [
     TabsPage,

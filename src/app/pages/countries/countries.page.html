@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Les Pays</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Les Pays</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-list>
+    <ion-item *ngFor="let country of countries" routerLink="/app/tabs/country/{{country.id}}/groups">
+      <ion-label>
+        <ion-text color="tertiary" strong>
+          <h2>
+          {{country.name}}
+          </h2>
+        </ion-text>
+        <p>
+          Apport Initial: {{country.apportinitial}} {{country.currency}}
+        </p>
+        <p>
+          Duree Max. Remboursement: {{country.dureemaxremboursement}} 
+        </p>
+        <p>
+          Rendement CP: {{country.rendementcp}}
+        </p>
+        <p>
+          Taux Emprunt: {{country.tauxemprunt}}
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

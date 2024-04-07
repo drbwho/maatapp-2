@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{countryname}} / Groupes</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/app/tabs/countries"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <!--<ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search"></ion-searchbar>-->
+    <ion-searchbar placeholder="Search" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item *ngFor="let group of groups" (click)="navto(group)" [hidden]="group.hidden" >
+    {{group.name}}
+    </ion-item>
+  </ion-list>
+</ion-content>

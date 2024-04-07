@@ -1,4 +1,4 @@
-import { ConferenceData } from './../../providers/conference-data';
+import { DataProvider } from '../../providers/provider-data';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -17,21 +17,9 @@ export class AboutPage implements OnInit {
     'dateto': ''
     };
 
-  constructor(public dataProvider: ConferenceData) { }
+  constructor(public dataProvider: DataProvider) { }
 
   ngOnInit() {
-  }
-
-  ionViewWillEnter() {
-    this.dataProvider.load().subscribe((data: any) => {
-      if (data && data.socialevents) {
-          this.confdata.title = data.info[0].title;
-          this.confdata.venue = data.info[0].venue;
-          this.confdata.body = data.info[0].body;
-          this.confdata.datefrom = data.eventdates[0].date;
-          this.confdata.dateto = data.eventdates[data.eventdates.length - 1].date;
-        }
-      });
   }
 
 }

@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+     <ion-icon name="people-outline"></ion-icon>
+     {{groupname}}
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-item>
+    <ion-label>
+      <h3>{{meetingplace}}</h3>
+    </ion-label>
+    <ion-note slot="end">{{meetingdate}}</ion-note>
+  </ion-item>
+</ion-header>
+
+<ion-content [fullscreen]="false">
+  <ion-list>
+    <ion-item *ngFor="let account of accounts" >
+      <ion-label>
+        <h2>
+          {{account.owner}}
+        </h2>
+        <p>
+          Credit disp: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
+        </p>
+        <p>
+          Rembousements.: {{account.rembousements | number}} {{currency}}
+        </p>
+        <p>
+          Demande de prêt: {{account.besoinsliquidite | number}} {{currency}}
+        </p>
+      </ion-label>
+      <ion-note slot="end">
+        <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
+        <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
+        <p>&nbsp;</p>
+        <p class="actions">
+          <ion-button size="small" color="tertiary" (click)="presentModal($event, account)"><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
+        </p>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+</ion-content>

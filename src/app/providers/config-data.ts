@@ -5,34 +5,54 @@ import { Injectable } from '@angular/core';
 })
 export class ConfigData {
 
-  ENABLE_PUSH_NOTIFICATIONS = true;
+  ENABLE_PUSH_NOTIFICATIONS = false;
 
-  API_URL = 'https://precision-btc.eu/api';
-  CHAT_HOST = 'chat.bkk-apps.com';
-  API_CSRF_URL = 'https://precision-btc.eu/sanctum/csrf-cookie';
+  API_URL = 'http://bkk-apps.com:8001/api';
+  API_CSRF_URL = 'http://bkk-apps.com:8001/sanctum/csrf-cookie';
 
   API_LOGIN_URL = this.API_URL + '/login';
   API_GETAUTH_URL = this.API_URL + '/get-auth';
 
   JSON_FILE = 'JSON_FILE';
-  API_EVENTS_URL =  this.API_URL + '/v1/events';
-  API_JSONFILE_VERSION = this.API_URL + '/json-version';
-  API_JSONFILE_URL = this.API_URL + '/v1/event';
+
+  GET_API_URL = (type, id = '') => {
+    switch(type){
+      case 'countries':
+        return this.API_URL + '/v1/countries';
+        break;
+      case 'meetings':
+        return this.API_URL + `/v1/groups/${id}/meetings`;
+        break
+      case 'accounts':
+        return  this.API_URL + `/v1/groups/${id}/accounts`;
+        break;
+      case 'params':
+          return  this.API_URL + `/v1/countries/${id}/parameters`;
+          break;
+      case 'operations':
+          return  this.API_URL + `/v1/meetings/${id}/operations`;
+          break;
+    }
+  }
+
   API_FCM_URL = this.API_URL + '/v1/register-fcm';
 
-  SESSION_RATINGS = 'SESSION_RATINGS';
-  MY_SESSION_RATINGS = 'MY_SESSION_RATINGS';
-  MY_SESSION_REVIEWS = 'MY_SESSION_REVIEWS';
-  API_GETRATINGS_URL = this.API_URL + '/v1/get-session-rating';
-  API_SETRATING_URL = this.API_URL + '/cod-mobile/session-rating';
-  API_SETREVIEWS_URL = this.API_URL + '/cod-mobile/session-reviews';
-  API_NEWS_URL =  this.API_URL + '/v1/get-news';
-
-  NEWS_FILE = 'NEWS_FILE';
-  HAS_UNREAD_NEWS = 'has_unread_news';
-  
-  MEETINGS_FILE = 'MEETINGS_FILE';
-  CUR_MEETING = "CUR_EVENT";
+  GET_FILE = (type) => {
+    switch(type){
+      case 'countries':
+        return 'COUNTRIES_FILE';;
+        break;
+      case 'meetings':
+        return 'MEETINGS_FILE';
+        break
+      case 'accounts':
+        return 'ACCOUNTS_FILE';
+        break;
+      case 'parameters':
+          return 'PARAMETERS_FILE';
+          break;
+    }
+  }
 
   DEVICE_ID = 'DEVICE_ID';
 

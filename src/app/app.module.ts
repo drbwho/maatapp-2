@@ -12,10 +12,7 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
-import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
-import { SelectMeetingPage } from './component/select-meeting/select-meeting';
 
 import {enableProdMode} from '@angular/core';
 
@@ -29,17 +26,17 @@ enableProdMode();
         IonicModule.forRoot({innerHTMLTemplatesEnabled: true}),
         IonicStorageModule.forRoot({
             storeName: '_castorage',
-            name: '_ca22125db',
+            name: '_maatdb',
             dbKey: '_cadbkey',
             driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
-            description: 'CA Storage'
+            description: 'MAAT Storage'
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production
         })
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [AppComponent, ImageViewerComponent, SelectMeetingPage],
+    declarations: [AppComponent],
     providers: [PhotoViewer, Calendar, SocialSharing, Storage],
     bootstrap: [AppComponent]
 })

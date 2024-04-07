@@ -8,50 +8,40 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'program',
+        path: 'countries',
         children: [
           {
             path: '',
-            loadChildren: () => import('../dates/dates.module').then(m => m.DatesPageModule)
+            loadChildren: () => import('../countries/countries.module').then(m => m.CountriesPageModule)
           },
 
         ]
       },
-
       {
-        path: 'tracks',
+        path: 'country/:countryId/groups',
         children: [
           {
             path: '',
-            loadChildren: () => import('../tracks/tracks.module').then(m => m.TracksPageModule)
-          }
+            loadChildren: () => import('../groups/groups.module').then(m => m.GroupsPageModule)
+          },
         ]
       },
       {
-        path: 'info/:infoType',
+        path: 'groups/:groupId',
         children: [
           {
             path: '',
-            loadChildren: () => import('../info/info.module').then(m => m.InfoPageModule)
-          }
+            loadChildren: () => import('../group-details/group-details.module').then(m => m.GroupDetailsPageModule)
+          },
         ]
       },
       {
-        path: 'info/:infoType/:page',
+        path: 'meetings/:meetingId',
         children: [
           {
             path: '',
-            loadChildren: () => import('../info/info.module').then(m => m.InfoPageModule)
-          }
-        ]
-      },
-      {
-        path: 'events',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../events/events.module').then(m => m.EventsPageModule)
-          }
+            loadChildren: () => import('../meeting-details/meeting-details.module').then(m => m.MeetingDetailsPageModule)
+          },
         ]
       },
       {
@@ -60,15 +50,6 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('../notifications/notifications.module').then(m => m.NotificationsPageModule)
-          }
-        ]
-      },
-      {
-        path: 'tourpages',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../tour-pages/tour-pages.module').then(m => m.TourPagesPageModule)
           }
         ]
       },

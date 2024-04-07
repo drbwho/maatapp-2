@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{countryname}} / {{groupname}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/app/tabs/countries"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar placeholder="Search" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"></ion-searchbar>
+  </ion-toolbar>
+  <ion-segment [(ngModel)]="segment">
+    <ion-segment-button value="reunions" >
+      <ion-label>Réunions</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="comptes">
+      <ion-label>Comptes</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content [fullscreen]="false">
+
+  <ion-list *ngIf="segment == 'reunions'">
+    <ion-item *ngFor="let meeting of meetings">
+      <ion-label>
+      <h2>
+        {{meeting.place}}
+      </h2>
+      <p>
+        <ion-text color="tertiary">{{meeting.startedat}}</ion-text>
+        <ion-icon [color]="meeting.endedat? 'danger': 'success'" name="timer" class="info-icon"></ion-icon>
+        <ion-text color="danger">{{meeting.endedat}}</ion-text>
+      </p>
+      </ion-label>
+      <ion-note slot="end">
+        <p class="actions">
+          <ion-button [disabled]="meeting.endedat" size="small" color="tertiary" (click)="navto(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
+          <ion-button [disabled]="meeting.endedat" size="small" color="danger"><ion-icon name="archive-outline"></ion-icon></ion-button>
+        </p>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="segment == 'comptes'">
+    <ion-item *ngFor="let account of accounts" >
+      <ion-label>
+        <h2>
+          {{account.owner}}
+        </h2>
+        <p>
+          Credit disp.: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
+        </p>
+        <p>
+          Rembousements.: {{account.rembousements | number}} {{currency}}
+        </p>
+        <p>
+          Demande de prêt: {{account.besoinsliquidite | number}} {{currency}}
+        </p>
+      </ion-label>
+      <ion-note slot="end">
+        <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
+        <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
+        <p>&nbsp;</p>
+        <p class="actions">
+          <ion-button size="small" color="danger"><ion-icon name="walk-outline"></ion-icon></ion-button>
+        </p>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

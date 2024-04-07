@@ -4,26 +4,21 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Home</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="selectMeeting()">
-        <ion-icon slot="icon-only" name="compass-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [ngStyle]="{'background': 'url(' + backimage + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
     <div class="row">
         <div class="conf-div ion-text-center" ng-if="conftitle != ''">
-          <img src="assets/img/ca22125_appicon.png"/>
-          <div class="conf-title">
-            {{conftitle}}
-          </div>
+          <img src="assets/img/maat.png"/>
+          <!--<div class="conf-title">
+            MAAT Peasant
+          </div>-->
         </div>
     </div>
 
-          <ion-grid class="home-buttons-grid">
-            <ion-row class="home-links home-links-last">
+       <ion-grid class="home-buttons-grid">
+         <!-- <ion-row class="home-links home-links-last">
               <ion-col  routerLink="/app/tabs/program/schedule"  routerDirection="root" class="ion-text-center">
                 <div>
                 <ion-icon name="calendar"></ion-icon>
@@ -35,83 +30,23 @@
                   <ion-icon name="mic"></ion-icon>
                   </div>
                   <ion-label>SPEAKERS</ion-label>
-              </ion-col>
-              <ion-col  routerLink="" (click)="loadTaxonomyPage('capacity')" routerDirection="root"  class="ion-text-center">
-                <div>
-                <ion-icon name="people"></ion-icon>
-                </div>
-                <ion-label>PARTICIPANTS</ion-label>
-              </ion-col>
-          </ion-row>
+              </ion-col>             
+          </ion-row>-->
           <ion-row  class="home-links">
-              <ion-col  routerLink="/app/tabs/news"  class="ion-text-center">
+              <ion-col  routerLink="/app/tabs/countries"  class="ion-text-center">
                 <div>
-                <ion-icon name="megaphone"></ion-icon>
+                  <ion-icon name="earth"></ion-icon>
                 </div>
-                <ion-label>ANNOUNCES</ion-label>
+                <ion-label>LES PAYS</ion-label>
               </ion-col>
-              <ion-col  routerLink="/app/tabs/program/schedule/type/favorites"  class="ion-text-center">
+              <ion-col  routerLink="/account"  class="ion-text-center">
                 <div>
-                  <ion-icon name="checkmark-circle"></ion-icon>
+                  <ion-icon name="person-outline"></ion-icon>
                 </div>
-                <ion-label>FAVOURITES</ion-label>
+                <ion-label>MON PROFIL</ion-label>
               </ion-col>
-              <ion-col routerLink="/app/tabs/tracks" class="ion-text-center">
-                <div >
-                     <div>
-                        <ion-icon name="options"></ion-icon>
-                     </div>
-                      <ion-label>SESSION TOPICS</ion-label>
-                </div>
-              </ion-col>
+
           </ion-row>
-          <ion-row  class="home-links">
-              <ion-col  routerLink="/app/tabs/rooms" class="ion-text-center">
-                      <div>
-                      <ion-icon name="code-download"></ion-icon>
-                      </div>
-                      <ion-label>VENUE</ion-label>
-              </ion-col>
-              <ion-col routerLink="/app/tabs/infopages" class="ion-text-center">
-                <div >
-                     <div>
-                        <ion-icon name="key"></ion-icon>
-                     </div>
-                      <ion-label>ARRIVAL INFO</ion-label>
-                </div>
-              </ion-col>
-              <ion-col routerLink="" (click)="loadCongressPage()" routerDirection="root" class="ion-text-center">
-                <div >
-                     <div>
-                        <ion-icon name="link"></ion-icon>
-                     </div>
-                      <ion-label>CA PAGE</ion-label>
-                </div>
-              </ion-col>
-          </ion-row>
-          <ion-row  class="home-links">
-            <ion-col  routerLink="" (click)="openExternalUrl('https://www.cost.eu/actions/CA18122/#tabs+Name:Management%20Committee')" class="ion-text-center">
-                    <div>
-                    <ion-icon name="person-outline"></ion-icon>
-                    </div>
-                    <ion-label>MC MEMBERS</ion-label>
-            </ion-col>
-            <ion-col routerLink="" (click)="openExternalUrl('https://eurocholangionet.eu/about-us/')" routerDirection="root" class="ion-text-center">
-              <div >
-                   <div>
-                      <ion-icon name="ribbon"></ion-icon>
-                   </div>
-                    <ion-label>ACTION LEADERS</ion-label>
-              </div>
-            </ion-col>
-            <ion-col routerLink="" (click)="loadTaxonomyPage('wg')" routerDirection="root" class="ion-text-center">
-              <div >
-                   <div>
-                      <ion-icon name="git-network"></ion-icon>
-                   </div>
-                    <ion-label>WORK. GROUPS</ion-label>
-              </div>
-            </ion-col>
-        </ion-row>
+
        </ion-grid>
 </ion-content>

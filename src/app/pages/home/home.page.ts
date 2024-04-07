@@ -1,6 +1,6 @@
 import { Platform } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { ConferenceData } from './../../providers/conference-data';
+import { DataProvider } from '../../providers/provider-data';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { Events } from '../../providers/events';
@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
   constructor(
     private events: Events,
     private router: Router,
-    public dataProvider: ConferenceData,
+    public dataProvider: DataProvider,
     public plt: Platform,
     private appComponent: AppComponent,
     private config: ConfigData,
@@ -35,51 +35,13 @@ export class HomePage implements OnInit {
     } else {
       this.backimage = '/assets/img/Start_BG_screen_without_logo.jpg';
     }
-
-    this.refreshTitle();
-    this.events.subscribe('meeting:updated', ()=>{
-      this.refreshTitle();
-    })
   }
 
-  refreshTitle(){
-    this.dataProvider.load().subscribe((data: any) => {
-      if (data && data.eventdates) {
-        //this.conftitle = data.info[0].title;
-        this.confpage = data.info[0].page;
-      }
-    });
-    this.storage.get(this.config.CUR_MEETING).then((data)=>{
-      if(data){
-        this.conftitle = data.title;
-      }
-    });
-  }
-
-  loadTaxonomyPage (page: any) {
-    this.events.publish('taxonomy:updated', page);
-    this.router.navigate(['/app/tabs/taxonomy/type/' + page], {state: {updateInfos: true}});
-  }
-
-  loadInfoPage (page: any) {
-    this.events.publish('info:updated', page);
-    this.router.navigate(['/app/tabs/info/' + page], {state: {updateInfos: true}});
-  }
-
-  loadCongressPage () {
-    Browser.open(
-      {url: this.confpage}
-    )
-  }
 
   openExternalUrl(url: string) {
     Browser.open(
       {url: url}
     )
-  }
-
-  selectMeeting(){
-    this.appComponent.get_current_meeting(true);
   }
 
 }
