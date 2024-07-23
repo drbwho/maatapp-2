@@ -1,7 +1,7 @@
 import { ConfigData } from './config-data';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';

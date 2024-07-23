@@ -1,6 +1,6 @@
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { PhotoViewer } from '@awesome-cordova-plugins/photo-viewer/ngx';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
@@ -18,12 +18,11 @@ import {enableProdMode} from '@angular/core';
 
 enableProdMode();
 
-@NgModule({
-    imports: [
-        BrowserModule,
+@NgModule({ schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
-        HttpClientModule,
-        IonicModule.forRoot({innerHTMLTemplatesEnabled: true}),
+        IonicModule.forRoot({ innerHTMLTemplatesEnabled: true }),
         IonicStorageModule.forRoot({
             storeName: '_castorage',
             name: '_maatdb',
@@ -33,12 +32,6 @@ enableProdMode();
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production
-        })
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [AppComponent],
-    providers: [PhotoViewer, Calendar, SocialSharing, Storage],
-    bootstrap: [AppComponent]
-})
+        })], providers: [PhotoViewer, Calendar, SocialSharing, Storage, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
  
