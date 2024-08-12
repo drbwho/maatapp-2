@@ -10,10 +10,10 @@
   </ion-toolbar>
   <ion-segment [(ngModel)]="segment">
     <ion-segment-button value="reunions" >
-      <ion-label>Réunions</ion-label>
+      <ion-label>Meetings</ion-label>
     </ion-segment-button>
     <ion-segment-button value="comptes">
-      <ion-label>Comptes</ion-label>
+      <ion-label>Accounts</ion-label>
     </ion-segment-button>
   </ion-segment>
 </ion-header>
@@ -48,13 +48,13 @@
           {{account.owner}}
         </h2>
         <p>
-          Credit disp.: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
+          Credit avail.: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
         </p>
         <p>
-          Rembousements.: {{account.rembousements | number}} {{currency}}
+          Reimboursements.: {{account.rembousements | number}} {{currency}}
         </p>
         <p>
-          Demande de prêt: {{account.besoinsliquidite | number}} {{currency}}
+          Loan: {{account.besoinsliquidite | number}} {{currency}}
         </p>
       </ion-label>
       <ion-note slot="end">
