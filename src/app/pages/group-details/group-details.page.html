@@ -4,6 +4,9 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/app/tabs/countries"></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <app-status-icons></app-status-icons>
+    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar placeholder="Search" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"></ion-searchbar>
@@ -54,7 +57,13 @@
           Reimboursements.: {{account.rembousements | number}} {{currency}}
         </p>
         <p>
-          Loan: {{account.besoinsliquidite | number}} {{currency}}
+          Loans: {{account.emprunts | number}} {{currency}}
+        </p>
+        <p>
+          Loan req.: {{account.besoinsliquidite | number}} {{currency}}
+        </p>
+        <p>
+          Contribution due: {{account.regularcontribution | number}} {{currency}}
         </p>
       </ion-label>
       <ion-note slot="end">
@@ -62,7 +71,7 @@
         <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
         <p>&nbsp;</p>
         <p class="actions">
-          <ion-button size="small" color="danger"><ion-icon name="walk-outline"></ion-icon></ion-button>
+          <ion-button size="small" color="danger"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
     </ion-item>

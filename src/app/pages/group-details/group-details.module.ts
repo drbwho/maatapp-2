@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { GroupDetailsPageRoutingModule } from './group-details-routing.module';
 
 import { GroupDetailsPage } from './group-details.page';
+import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    GroupDetailsPageRoutingModule
+    GroupDetailsPageRoutingModule,
+    StatusIconsModule
   ],
   declarations: [GroupDetailsPage]
 })

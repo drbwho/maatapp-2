@@ -8,13 +8,15 @@ import { MeetingDetailsPageRoutingModule } from './meeting-details-routing.modul
 
 import { MeetingDetailsPage } from './meeting-details.page';
 import { TransactionsComponent } from '../../component/transactions/transactions.component';
+import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MeetingDetailsPageRoutingModule
+    MeetingDetailsPageRoutingModule,
+    StatusIconsModule
   ],
   declarations: [MeetingDetailsPage, TransactionsComponent]
 })
