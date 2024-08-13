@@ -29,8 +29,18 @@ const config: CapacitorConfig = {
     },
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"],
-    }
-  }
+    },
+    CapacitorHttp: {
+      enabled: true
+    },
+  },
+  android: {
+    allowMixedContent: true
+  },
+  server: {
+    androidScheme: 'http',
+    cleartext: true,
+  },
 };
 
 export default config;

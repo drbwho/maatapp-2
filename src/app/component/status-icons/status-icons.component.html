@@ -1,2 +1,3 @@
-<ion-icon class="status-icons" name="cloud-upload"></ion-icon>
-<ion-icon class="status-icons" name="flash"></ion-icon>
+<ion-icon class="status-icons" name="cloud-upload" [ngStyle]="{'color': 'grey'}"></ion-icon>
+<ion-icon *ngIf="!network_status" class="status-icons status-off" name="flash-off"></ion-icon>
+<ion-icon *ngIf="network_status" class="status-icons status-on" name="flash"></ion-icon>

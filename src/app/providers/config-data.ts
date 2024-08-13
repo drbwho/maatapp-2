@@ -13,7 +13,7 @@ export class ConfigData {
   API_LOGIN_URL = this.API_URL + '/login';
   API_GETAUTH_URL = this.API_URL + '/get-auth';
 
-  JSON_FILE = 'JSON_FILE';
+  STORAGE_FILE = (type) => { return type + '_FILE'; }
 
   GET_API_URL = (type, id = '') => {
     switch(type){

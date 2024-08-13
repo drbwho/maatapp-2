@@ -3,9 +3,7 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { AppComponent } from '../app.component';
 
 import { Router } from '@angular/router';
 import { UserData } from './user-data';
@@ -37,16 +35,20 @@ export class DataProvider {
     public router: Router,
     public events: Events,
     public config: ConfigData,
-    public toast: ToastController
+    public toast: ToastController,
+    public appComponent: AppComponent
   ) {}
 
-  
+
   // Get info from API
   async fetch_from_api(type, typeid = '', force=false){
     if(this[type] && !force){
       return new Promise((resolve)=>{
         resolve(this[type]);
       });
+    }else if(!this.appComponent.networkStatus){
+      this.storage.get(this.config.STORAGE_FILE(type)).then
+
     }else{
       let apiurl = this.config.GET_API_URL(type, typeid);
       let file = this.config.GET_FILE(type);
@@ -60,7 +62,7 @@ export class DataProvider {
       return new Promise((resolve)=>{
         this.http
         .get(apiurl, {headers})
-        .subscribe({ 
+        .subscribe({
           next: (data: any) => {
             this[type] = data[type];
             this.storage.set(file, this.countries);
@@ -107,7 +109,7 @@ export class DataProvider {
             type: ''
           },
           {headers})
-        .subscribe({ 
+        .subscribe({
           next: (data: any) => {
             console.log(data);
             resolve(data);

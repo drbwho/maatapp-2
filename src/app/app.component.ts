@@ -15,6 +15,7 @@ import { register } from 'swiper/element/bundle';
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { Browser } from '@capacitor/browser';
+import { NEVER } from 'rxjs';
 
 register();
 
@@ -52,6 +53,7 @@ export class AppComponent implements OnInit {
   loggedIn = false;
   hasUnreadNews = false;
   hasUnreadChat = 0;
+  networkStatus = false;
 
   constructor(
     private events: Events,
@@ -91,7 +93,7 @@ export class AppComponent implements OnInit {
     //this.check_new_jsonfile();
     this.userData.loadFavorites();
 
-    // this.listenNetworkConnectionEvents();
+    this.listenNetworkConnectionEvents();
 
     // PWA updates
     if(this.swUpdate.isEnabled){
@@ -279,18 +281,29 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/app/tabs/taxonomy/type/' + page], {state: {updateInfos: true}});
   }
 
- 
+
   listenNetworkConnectionEvents() {
-    // watch network for a disconnection
+    // Check on init
+    Network.getStatus().then((status)=>{
+      if(status.connected){
+        this.networkStatus = true;
+      };
+    })
+
+    // watch network status
     Network.addListener('networkStatusChange', async status => {
       console.log('Network status changed', status);
       if(status.connected){
+        this.events.publish('network:connect');
+        this.networkStatus = true;
         const toast = await this.toast.create({
           message: 'Network Connected!',
           duration: 2000
         });
         toast.present();
       }else{
+        this.events.publish('network:disconnect');
+        this.networkStatus = false;
         const toast = await this.toast.create({
           message: 'Network disconnected...',
           duration: 2000
@@ -298,42 +311,6 @@ export class AppComponent implements OnInit {
         toast.present();
       }
     });
-
-    // let disconnectSubscription =
-   /* Network.onDisconnect().subscribe(async () => {
-      console.log('network was disconnected :-(');
-      const toast = await this.toast.create({
-        message: 'Network disconnected...',
-        duration: 2000
-      });
-      toast.present();
-    });
-
-    // stop disconnect watch
-    // disconnectSubscription.unsubscribe();
-
-
-    // watch network for a connection
-    // let connectSubscription =
-    this.network.onConnect().subscribe(() => {
-      console.log('network connected!');
-      // We just got a connection but we need to wait briefly
-      // before we determine the connection type. Might need to wait.
-      // prior to doing any api requests as well.
-      setTimeout(async () => {
-        if (this.network.type === 'wifi') {
-          console.log('we got a wifi connection, woohoo!');
-          const toast = await this.toast.create({
-            message: 'Network Connected!',
-            duration: 2000
-          });
-          toast.present();
-        }
-      }, 3000);
-    });*/
-
-    // stop connect watch
-    // connectSubscription.unsubscribe();
   }
 
   openExternalUrl(url: string) {
