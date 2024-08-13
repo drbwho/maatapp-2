@@ -3,7 +3,7 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { AppComponent } from '../app.component';
+import { Network } from '@capacitor/network';
 
 import { Router } from '@angular/router';
 import { UserData } from './user-data';
@@ -36,20 +36,28 @@ export class DataProvider {
     public events: Events,
     public config: ConfigData,
     public toast: ToastController,
-    public appComponent: AppComponent
   ) {}
 
 
-  // Get info from API
-  async fetch_from_api(type, typeid = '', force=false){
+  // Get info from API/STORAGE
+  async fetch_data(type, typeid = '', force=false){
     if(this[type] && !force){
       return new Promise((resolve)=>{
         resolve(this[type]);
       });
-    }else if(!this.appComponent.networkStatus){
-      this.storage.get(this.config.STORAGE_FILE(type)).then
-
+    }
+    let status = await Network.getStatus();
+    if(!status.connected){
+      // fetch from storage
+      this.storage.get(this.config.GET_FILE(type)).then((res)=>{
+        if(res){
+          return (res);
+        }else{
+          return [];
+        }
+      });
     }else{
+      // fetch from api
       let apiurl = this.config.GET_API_URL(type, typeid);
       let file = this.config.GET_FILE(type);
 
@@ -65,7 +73,7 @@ export class DataProvider {
         .subscribe({
           next: (data: any) => {
             this[type] = data[type];
-            this.storage.set(file, this.countries);
+            this.storage.set(file, this[type]);
             resolve(this[type]);
           },
           error: async (error) => {
@@ -73,16 +81,23 @@ export class DataProvider {
             const toast = await this.toast.create({
               message: 'Network error! Cannot check for updates...',
               cssClass: 'toast-alert',
-              duration: 5000
+              duration: 3000
             });
             toast.present();
-            // else load from local file
-            resolve(fetch("../../assets/data/meetings.json").then(res=>res.json()).then(json=>{
-              this[type] = json.meetings;
-                this.storage.set(file,this[type]);
-                return this[type];
-              })
-            );
+            // else load from storage/local file
+            this.storage.get(this.config.GET_FILE(type)).then((res)=>{
+              if(res){
+                console.log('type: ' + type + ' fetching from storage...');
+                resolve(res);
+              }else{
+                resolve(fetch("../../assets/data/meetings.json").then(res=>res.json()).then(json=>{
+                  this[type] = json.meetings;
+                    this.storage.set(file,this[type]);
+                    return this[type];
+                  })
+                );
+              }
+            });
           }
         });
      });

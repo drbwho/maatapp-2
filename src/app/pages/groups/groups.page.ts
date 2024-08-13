@@ -25,7 +25,7 @@ export class GroupsPage implements OnInit {
   ionViewWillEnter() {
     const countryId = this.route.snapshot.paramMap.get('countryId');
 
-    this.dataProvider.fetch_from_api('countries').then((data: any) =>{
+    this.dataProvider.fetch_data('countries').then((data: any) =>{
       this.country = data.find((s) => s.id == countryId);
       this.groups = this.country.groups;
       this.countryname = this.country.name;

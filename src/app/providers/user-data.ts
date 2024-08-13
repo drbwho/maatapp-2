@@ -26,6 +26,14 @@ export class UserData {
     if(!user) {
       return false;
     }
+
+    // user is logged in, check session duration
+    var diff = Math.abs(user.lastlogin.getTime() - (new Date()).getTime());
+    var diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+    if(diffDays < 10){ // TODO set parametric?
+      return true;
+    }
+
     const headers =  new HttpHeaders({
       'Authorization': 'Bearer ' + user.token,
       'Accept': 'application/json'
@@ -96,6 +104,7 @@ export class UserData {
   }
 
   setUsername(user: any): Promise<any> {
+    user.lastlogin = new Date();
     return this.storage.set(this.USER_FILE, user);
   }
 

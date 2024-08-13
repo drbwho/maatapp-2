@@ -36,7 +36,7 @@ export class TransactionsComponent  implements OnInit {
     this.group = this.dataProvider.current.group;
     this.country = this.dataProvider.current.country;
 
-    this.dataProvider.fetch_from_api('params', this.country.id, true).then((data: any)=> {
+    this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.parameters = data.filter((s) => s.type == 1); //paysants operations
       this.fsparameters = data.filter((s) => s.type == 3); //solidarity operations
     });

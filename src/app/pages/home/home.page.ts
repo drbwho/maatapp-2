@@ -7,6 +7,8 @@ import { Events } from '../../providers/events';
 import { AppComponent } from '../../app.component';
 import { ConfigData } from '../../providers/config-data';
 import { Browser } from '@capacitor/browser';
+import { AlertController } from '@ionic/angular';
+import { UserData } from '../../providers/user-data';
 
 @Component({
   selector: 'home',
@@ -27,6 +29,8 @@ export class HomePage implements OnInit {
     private appComponent: AppComponent,
     private config: ConfigData,
     private storage: Storage,
+    private alertController: AlertController,
+    private userData: UserData
     ) { }
 
   async ngOnInit() {
@@ -37,6 +41,40 @@ export class HomePage implements OnInit {
     }
   }
 
+  loadPage (target: any) {
+    // restrict access
+    this.userData.isLoggedIn().then((value)=>{
+        if(!value){
+          this.user_not_loggedin();
+        }else{
+          this.router.navigate([target], {state: {updateInfos: true}});
+        }
+      });
+
+  }
+
+  async user_not_loggedin(){
+    const alert = await this.alertController.create({
+      header: 'Info',
+      message: 'You must login to gain access',
+      buttons: [
+        {
+        text: 'Login',
+        handler: () => {
+          console.log('Not logged in');
+          this.router.navigate(['/login']);
+          }
+        },
+        {
+        text: 'Cancel',
+        handler: () => {
+          alert.dismiss();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
 
   openExternalUrl(url: string) {
     Browser.open(

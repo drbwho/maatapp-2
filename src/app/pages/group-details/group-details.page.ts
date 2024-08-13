@@ -36,11 +36,11 @@ export class GroupDetailsPage implements OnInit {
     this.countryname = this.dataProvider.current.country.name;
     this.currency = this.dataProvider.current.country.currency;
   
-    this.dataProvider.fetch_from_api('meetings', groupId, true).then((data: any)=> {
+    this.dataProvider.fetch_data('meetings', groupId, true).then((data: any)=> {
       this.meetings = data;
       this.allmeetings = data;
     });
-    this.dataProvider.fetch_from_api('accounts', groupId, true).then((data: any)=> {
+    this.dataProvider.fetch_data('accounts', groupId, true).then((data: any)=> {
       this.accounts = data;
       this.allaccounts = data;
     });

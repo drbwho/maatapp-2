@@ -42,7 +42,7 @@ export class MeetingDetailsPage implements OnInit {
   }
 
   load_accounts(){
-    this.dataProvider.fetch_from_api('accounts', this.group.id, true).then((data: any)=> {
+    this.dataProvider.fetch_data('accounts', this.group.id, true).then((data: any)=> {
       this.accounts = data.filter((s)=> s.type == 1 && s.statut == 0); //paysant comptes
     });
   }

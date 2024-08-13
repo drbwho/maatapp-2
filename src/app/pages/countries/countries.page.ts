@@ -20,7 +20,7 @@ export class CountriesPage implements OnInit {
           this.countries = data.countries;
         }
       });*/
-      this.dataProvider.fetch_from_api('countries').then((data: any)=> {this.countries = data;});
+      this.dataProvider.fetch_data('countries').then((data: any)=> {this.countries = data;});
   }
 
 }
