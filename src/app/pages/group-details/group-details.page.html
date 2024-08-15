@@ -37,8 +37,9 @@
       </ion-label>
       <ion-note slot="end">
         <p class="actions">
+          <ion-button *ngIf="meeting.haspending" size="small" color="danger" ><ion-icon name="cloud-upload"></ion-icon></ion-button>
           <ion-button [disabled]="meeting.endedat" size="small" color="tertiary" (click)="navto(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
-          <ion-button [disabled]="meeting.endedat" size="small" color="danger"><ion-icon name="archive-outline"></ion-icon></ion-button>
+          <ion-button [disabled]="meeting.endedat" size="small" color="danger"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
     </ion-item>

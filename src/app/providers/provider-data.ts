@@ -8,6 +8,7 @@ import { Network } from '@capacitor/network';
 import { Router } from '@angular/router';
 import { UserData } from './user-data';
 import { Events } from './events';
+import { stat } from 'fs';
 
 interface Current {
   country?: any;
@@ -15,6 +16,13 @@ interface Current {
   meeting?: any;
 }
 
+interface Transaction {
+  meetingid: any,
+  accountid: any,
+  parameterid: any,
+  parametername: any,
+  amount: any
+}
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +47,7 @@ export class DataProvider {
   ) {}
 
 
-  // Get info from API/STORAGE
+  // Get data from API/STORAGE
   async fetch_data(type, typeid = '', force=false){
     if(this[type] && !force){
       return new Promise((resolve)=>{
@@ -47,9 +55,10 @@ export class DataProvider {
       });
     }
     let status = await Network.getStatus();
+    status.connected = false;
     if(!status.connected){
       // fetch from storage
-      this.storage.get(this.config.GET_FILE(type)).then((res)=>{
+      return this.storage.get(this.config.GET_FILE(type)).then((res)=>{
         if(res){
           return (res);
         }else{
@@ -104,8 +113,46 @@ export class DataProvider {
     }
   }
 
-  // Add new Meeting Operation
-  async newOperation(meetingid, accountid, parameterid, amount){
+  // Save locally new Meeting Operation
+  async newOperation(meetingid, accountid, parameterid, parametername, amount){
+    var trn: Transaction = {
+      meetingid: meetingid,
+      accountid: accountid,
+      parameterid: parameterid,
+      parametername: parametername,
+      amount: amount
+    };
+
+    return new Promise((resolve)=>{
+      this.storage.get(this.config.TRANSACTIONS_FILE).then((res)=>{
+        var trns: Transaction[] = [];
+        if(res){
+         trns = res;
+        }
+        trns.push(trn);
+        this.storage.set(this.config.TRANSACTIONS_FILE, trns).then((res)=>{
+          this.events.publish('upload:updated');
+          resolve({'status': 'success'});
+        })
+      })
+    });
+  }
+
+  delOperation(tr: any){
+    return new Promise(async (resolve)=>{
+      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      //find index
+      let index = transactions.findIndex(s => s.accountid == tr.accountid && s.meetingid == tr.meetingid && s.parameterid == tr.parameterid && s.amount == tr.amount); 
+      transactions.splice(index, 1);//remove element from array
+      this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
+        this.events.publish('upload:updated');
+        resolve(true);  
+      });
+    })
+  }
+
+  // Sync operations to Server
+  async syncOperation(meetingid, accountid, parameterid, amount){
       let apiurl = this.config.GET_API_URL('operations', meetingid);
 
       const user = await this.user.getUser();

@@ -29,7 +29,7 @@
     "@awesome-cordova-plugins/core": "6.8.0",
     "@awesome-cordova-plugins/photo-viewer": "6.8.0",
     "@awesome-cordova-plugins/social-sharing": "6.8.0",
-    "@capacitor/android": "6.1.1",
+    "@capacitor/android": "6.1.2",
     "@capacitor/app": "6.0.1",
     "@capacitor/browser": "6.0.2",
     "@capacitor/camera": "6.0.2",

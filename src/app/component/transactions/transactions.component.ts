@@ -50,13 +50,13 @@ export class TransactionsComponent  implements OnInit {
 
   async valider(){
       const alert = await this.alertCtrl.create({
-        header: 'Êtes-vous sûr?',
+        header: 'Are you sure?',
         buttons: [
           {
-            text: 'Non',
+            text: 'No',
           },
           {
-            text: 'Oui',
+            text: 'Yes',
             handler: () => {
               this.submit_operation();
             },
@@ -69,11 +69,11 @@ export class TransactionsComponent  implements OnInit {
   async submit_operation(){
     if(!this.amount){
       const alert = await this.alertCtrl.create({
-        header: 'Erreur',
-        message: 'Le montant doit être supérieur à zéro',
+        header: 'Error',
+        message: 'Amount cannot be zero',
         buttons: [
           {
-            text: 'Confirmer',
+            text: 'Confirm',
           }
         ],
       });
@@ -81,14 +81,15 @@ export class TransactionsComponent  implements OnInit {
       return;
     }
 
-    this.dataProvider.newOperation(this.meeting.id, this.account.id, this.operation, this.amount).then(async (res: any)=>{
+    let operation_name = (this.parameters.find((s)=> s.id == this.operation)).name;
+    this.dataProvider.newOperation(this.meeting.id, this.account.id, this.operation, operation_name, this.amount).then(async (res: any)=>{
       if(res.status != 'success'){
         const alert = await this.alertCtrl.create({
-          header: 'Erreur',
+          header: 'Error',
           message: res.message,
           buttons: [
             {
-              text: 'Confirmer',
+              text: 'Confirm',
             }
           ],
         });

@@ -7,8 +7,8 @@ export class ConfigData {
 
   ENABLE_PUSH_NOTIFICATIONS = false;
 
-  API_URL = 'http://bkk-apps.com:8001/api';
-  API_CSRF_URL = 'http://bkk-apps.com:8001/sanctum/csrf-cookie';
+  API_URL = 'https://maatpeasant.com/api';
+  API_CSRF_URL = 'https://maatpeasant.com/sanctum/csrf-cookie';
 
   API_LOGIN_URL = this.API_URL + '/login';
   API_GETAUTH_URL = this.API_URL + '/get-auth';
@@ -46,11 +46,13 @@ export class ConfigData {
       case 'accounts':
         return 'ACCOUNTS_FILE';
         break;
-      case 'parameters':
+      case 'params':
           return 'PARAMETERS_FILE';
           break;
     }
   }
+
+  TRANSACTIONS_FILE = 'TRANSACTIONS_FILE';
 
   DEVICE_ID = 'DEVICE_ID';
 

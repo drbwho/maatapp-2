@@ -13,9 +13,9 @@
   </ion-toolbar>
   <ion-item>
     <ion-label>
-      <h3>{{meetingplace}}</h3>
+      <h2>{{meetingplace}}</h2>
     </ion-label>
-    <ion-note slot="end">{{meetingdate}}</ion-note>
+    <ion-note slot="end"><strong>{{meetingdate}}</strong></ion-note>
   </ion-item>
 </ion-header>
 
@@ -30,11 +30,16 @@
           Credit disp: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
         </p>
         <p>
-          Rembousements.: {{account.rembousements | number}} {{currency}}
-        </p>
-        <p>
           Demande de prêt: {{account.besoinsliquidite | number}} {{currency}}
         </p>
+       
+        <ion-item class="transactions" color="light" *ngFor="let tr of account.transactions">
+          <p>
+            {{tr.parametername}}: <strong>{{tr.amount | number}}</strong>
+          </p>
+          <ion-button size="small" color="danger" slot="end" (click)="deleleTransaction(tr)"><ion-icon name="close"></ion-icon></ion-button>
+        </ion-item>
+
       </ion-label>
       <ion-note slot="end">
         <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}

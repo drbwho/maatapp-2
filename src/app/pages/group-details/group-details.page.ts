@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataProvider } from '../../providers/provider-data';
+import { Storage } from '@ionic/storage-angular';
+import { ConfigData } from '../../providers/config-data';
 
 @Component({
   selector: 'app-group-details',
@@ -22,7 +24,9 @@ export class GroupDetailsPage implements OnInit {
   constructor(
     private dataProvider: DataProvider,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private storage: Storage,
+    private config: ConfigData
   ) { }
 
   ngOnInit() {
@@ -39,6 +43,15 @@ export class GroupDetailsPage implements OnInit {
     this.dataProvider.fetch_data('meetings', groupId, true).then((data: any)=> {
       this.meetings = data;
       this.allmeetings = data;
+      //check if meeting has pending transactions to upload
+      this.meetings.forEach((m)=>{
+        m.haspending = false;
+        this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
+          if((trns.filter(s => s.meetingid == m.id)).length){
+            m.haspending = true;
+          }
+        });
+      })
     });
     this.dataProvider.fetch_data('accounts', groupId, true).then((data: any)=> {
       this.accounts = data;
