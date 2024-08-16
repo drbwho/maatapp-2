@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Account info</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-text color="secondary">
+    <h3>
+      <ion-icon *ngIf="account.type == 1" name="person-circle-outline" class="account-type"></ion-icon>
+      <ion-icon *ngIf="account.type != 1" name="people-circle-outline" class="account-type"></ion-icon>
+      {{account.owner}} ({{currency}})
+    </h3>
+  </ion-text>
+
+ <ion-card>
+  <ion-card-content>
+   <ion-grid>
+    <ion-row>
+      <ion-col size="9"><strong>Balance:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="tertiary"><strong>{{account.balance | number:'.2'}}</strong></ion-text></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="9"><strong>Credit available:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="success"><strong>{{account.creditdisponible | number:'.2'}}</strong></ion-text></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="9"><strong>Loans:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="danger">{{account.emprunts | number:'.2'}}</ion-text></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="9">Still to be paid:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.restearembourser | number:'.2'}}</strong></ion-text></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="9">Loan req:</ion-col><ion-col class="ion-text-end">{{account.besoinsliquidite | number:'.2'}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="9">SF Loans:</ion-col><ion-col class="ion-text-end">{{account.sfemprunts | number:'.2'}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="9">SF Still to be paid:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.sfrestearembourser | number:'.2'}}</strong></ion-text></ion-col>
+    </ion-row>
+   </ion-grid>
+  </ion-card-content>
+ </ion-card>
+ <ion-text color="secondary">
+  <ion-label>
+    <ion-icon name="swap-horizontal-outline" class="account-type"></ion-icon>
+    Transactions
+  </ion-label>
+</ion-text>
+ <ion-card>
+  <ion-card-content>
+    <ion-grid>
+      <ion-row *ngFor="let oper of account.operations | keyvalue">
+        <ion-col size="9">{{oper.key}}</ion-col><ion-col class="ion-text-end">{{oper.value | number:'.2'}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+ </ion-card>
+</ion-content>
+

@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataProvider } from '../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
+import { ModalController } from '@ionic/angular';
+import { AccountInfoComponent } from '../../component/account-info/account-info.component';
+import { GroupDetailsPageRoutingModule } from './group-details-routing.module';
 
 @Component({
   selector: 'app-group-details',
@@ -26,7 +29,8 @@ export class GroupDetailsPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private storage: Storage,
-    private config: ConfigData
+    private config: ConfigData,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -39,7 +43,7 @@ export class GroupDetailsPage implements OnInit {
     this.groupname = this.dataProvider.current.group.name;
     this.countryname = this.dataProvider.current.country.name;
     this.currency = this.dataProvider.current.country.currency;
-  
+
     this.dataProvider.fetch_data('meetings', groupId, true).then((data: any)=> {
       this.meetings = data;
       this.allmeetings = data;
@@ -47,7 +51,7 @@ export class GroupDetailsPage implements OnInit {
       this.meetings.forEach((m)=>{
         m.haspending = false;
         this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
-          if((trns.filter(s => s.meetingid == m.id)).length){
+          if(trns && (trns.filter(s => s.meetingid == m.id)).length){
             m.haspending = true;
           }
         });
@@ -59,7 +63,7 @@ export class GroupDetailsPage implements OnInit {
     });
   }
 
-  navto(meeting: any){   
+  navto(meeting: any){
     this.dataProvider.current.meeting = meeting;
     this.router.navigate(['/app/tabs/meetings/'+ meeting.id], {state: {}});
   }
@@ -112,5 +116,15 @@ export class GroupDetailsPage implements OnInit {
         });
       }
     });
+  }
+
+  async showAccountInfo(account){
+    const modal = await this.modalCtrl.create({
+      component: AccountInfoComponent,
+      componentProps: {'account': account, 'currency': this.currency}
+    });
+    modal.present();
+
+    await modal.onWillDismiss();
   }
 }

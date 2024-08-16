@@ -37,7 +37,7 @@ export class HomePage implements OnInit {
     if (this.plt.width() > 500) {
       this.backimage = '/assets/img/Start_BG_screen_without_logo_flat.jpg';
     } else {
-      this.backimage = '/assets/img/Start_BG_screen_without_logo.jpg';
+      this.backimage = '/assets/img/8-sm.png';//Start_BG_screen_without_logo.jpg';
     }
   }
 

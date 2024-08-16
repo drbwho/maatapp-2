@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { DataProvider } from '../../providers/provider-data';
-import { async } from 'rxjs';
 
 @Component({
   selector: 'app-transactions',
@@ -19,7 +18,7 @@ export class TransactionsComponent  implements OnInit {
   fsparameters: any;
   operation: string;
   amount: number;
-  
+
   constructor(
     private modalCtrl: ModalController,
     private dataProvider: DataProvider,

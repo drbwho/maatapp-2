@@ -15,7 +15,7 @@
         <ion-item>
           <ion-select aria-label="Select transaction" [(ngModel)]="operation" placeholder="Select transaction" interface="action-sheet">
             <ion-select-option *ngFor="let parameter of parameters" value="{{parameter.id}}">{{parameter.name}}</ion-select-option>
-            <ion-select-option *ngFor="let fsparameter of fsparameters" value="{{fsparameter.id}}"><ion-text class="fs">{{fsparameter.name}}</ion-text></ion-select-option>
+           <!-- <ion-select-option *ngFor="let fsparameter of fsparameters" value="{{fsparameter.id}}"><ion-text class="fs">{{fsparameter.name}}</ion-text></ion-select-option> -->
           </ion-select>
         </ion-item>
       </ion-list>

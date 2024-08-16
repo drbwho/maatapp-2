@@ -55,7 +55,7 @@ export class DataProvider {
       });
     }
     let status = await Network.getStatus();
-    status.connected = false;
+    //status.connected = false;
     if(!status.connected){
       // fetch from storage
       return this.storage.get(this.config.GET_FILE(type)).then((res)=>{
@@ -142,11 +142,11 @@ export class DataProvider {
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       //find index
-      let index = transactions.findIndex(s => s.accountid == tr.accountid && s.meetingid == tr.meetingid && s.parameterid == tr.parameterid && s.amount == tr.amount); 
+      let index = transactions.findIndex(s => s.accountid == tr.accountid && s.meetingid == tr.meetingid && s.parameterid == tr.parameterid && s.amount == tr.amount);
       transactions.splice(index, 1);//remove element from array
       this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
         this.events.publish('upload:updated');
-        resolve(true);  
+        resolve(true);
       });
     })
   }

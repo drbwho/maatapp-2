@@ -8,6 +8,7 @@ import { GroupDetailsPageRoutingModule } from './group-details-routing.module';
 
 import { GroupDetailsPage } from './group-details.page';
 import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
+import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { StatusIconsModule } from '../../component/status-icons/status-icons.mod
     GroupDetailsPageRoutingModule,
     StatusIconsModule
   ],
-  declarations: [GroupDetailsPage]
+  declarations: [GroupDetailsPage, AccountInfoComponent]
 })
 export class GroupDetailsPageModule {}

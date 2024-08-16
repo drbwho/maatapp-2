@@ -17,7 +17,13 @@
 <ion-content [fullscreen]="true">
   <ion-list>
     <ion-item *ngFor="let group of groups" (click)="navto(group)" [hidden]="group.hidden" >
-    {{group.name}}
+      <ion-icon slot="start" name="people"></ion-icon>
+      <ion-label>
+        <ion-text color="secondary">
+          <h2>{{group.name}}</h2>
+        </ion-text>
+        <p>{{group.ville}}</p>
+      </ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

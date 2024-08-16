@@ -10,8 +10,8 @@
 
 ion-col {
   margin:10px;
-  /*background-color: var(--ion-color-primary-shade);*/
-  background-color: #3A3F8D;
+  background-color: var(--ion-color-primary);
+ // background-color: #3A3F8D;
   border-radius: 5px;
 }
 
@@ -23,11 +23,11 @@ ion-col {
 
 ion-content {
     --background: none;
-    /*background: url('/assets/img/Start_BG_screen_without_logo.jpg');*/
     background-position: center top;
     background-repeat: no-repeat;
-    background-size: cover;
-
+    //background-size: cover;
+    background-size: auto 70%;
+    background-position: bottom;
 }
 
 .conf-title {

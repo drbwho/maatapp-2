@@ -43,6 +43,9 @@
         </p>
       </ion-note>
     </ion-item>
+    <ion-note *ngIf="!meetings || meetings.length == 0" class="ion-margin-left">
+      Group has no meetings
+    </ion-note>
   </ion-list>
 
   <ion-list *ngIf="segment == 'comptes'">
@@ -52,19 +55,19 @@
           {{account.owner}}
         </h2>
         <p>
-          Credit avail.: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
+          Credit avail.: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>
         </p>
         <p>
-          Reimboursements.: {{account.rembousements | number}} {{currency}}
+          Reimboursements.: {{account.rembousements | number:'.2'}} {{currency}}
         </p>
         <p>
-          Loans: {{account.emprunts | number}} {{currency}}
+          Loans: {{account.emprunts | number:'.2'}} {{currency}}
         </p>
         <p>
-          Loan req.: {{account.besoinsliquidite | number}} {{currency}}
+          Loan req.: {{account.besoinsliquidite | number:'.2'}} {{currency}}
         </p>
         <p>
-          Contribution due: {{account.regularcontribution | number}} {{currency}}
+          Contribution due: {{account.regularcontribution | number:'.2'}} {{currency}}
         </p>
       </ion-label>
       <ion-note slot="end">
@@ -72,10 +75,14 @@
         <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
         <p>&nbsp;</p>
         <p class="actions">
+          <ion-button size="small" color="success" (click)="showAccountInfo(account)"><ion-icon name="information-outline"></ion-icon></ion-button>
           <ion-button size="small" color="danger"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
     </ion-item>
+    <ion-note *ngIf="!meetings || meetings.length == 0" class="ion-margin-left">
+      Group has no accounts
+    </ion-note>
   </ion-list>
 
 </ion-content>
