@@ -296,11 +296,11 @@ export class AppComponent implements OnInit {
       if(status.connected){
         this.events.publish('network:connect');
         this.networkStatus = true;
-        const toast = await this.toast.create({
+        /*const toast = await this.toast.create({
           message: 'Network Connected!',
           duration: 2000
         });
-        toast.present();
+        toast.present();*/
       }else{
         this.events.publish('network:disconnect');
         this.networkStatus = false;

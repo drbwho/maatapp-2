@@ -1,11 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-     <ion-icon name="people-outline"></ion-icon>
      {{groupname}}
     </ion-title>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref="/app/tabs/groups/{{groupid}}"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <app-status-icons></app-status-icons>
@@ -13,7 +12,7 @@
   </ion-toolbar>
   <ion-item>
     <ion-label>
-      <h2>{{meetingplace}}</h2>
+      <h2>Meeting: <strong>{{meetingplace}}</strong></h2>
     </ion-label>
     <ion-note slot="end"><strong>{{meetingdate}}</strong></ion-note>
   </ion-item>
@@ -25,30 +24,33 @@
       <ion-label>
         <h2>
           {{account.owner}}
+          <ion-button class="ion-float-right" size="small" color="tertiary" (click)="presentModal($event, account)"><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
         </h2>
-        <p>
-          Credit disp: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
-        </p>
-        <p>
-          Demande de prêt: {{account.besoinsliquidite | number}} {{currency}}
-        </p>
-       
-        <ion-item class="transactions" color="light" *ngFor="let tr of account.transactions">
-          <p>
-            {{tr.parametername}}: <strong>{{tr.amount | number}}</strong>
-          </p>
-          <ion-button size="small" color="danger" slot="end" (click)="deleleTransaction(tr)"><ion-icon name="close"></ion-icon></ion-button>
-        </ion-item>
-
+        <ion-note class="sum-info">
+          <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
+          <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
+        </ion-note>
+        <ion-grid class="transactions ion-no-padding">
+          <ion-row>
+            <ion-col size="6">
+              <p>
+                Credit disp: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
+              </p>
+              <p>
+                Demande de prêt: {{account.besoinsliquidite | number}} {{currency}}
+              </p>
+            </ion-col>
+            <ion-col>
+              <ion-item color="light" *ngFor="let tr of account.transactions">
+                <p>
+                  {{tr.parametername}}: <strong>{{tr.amount | number:'.2'}}</strong>
+                </p>
+                <ion-button size="small" color="danger" slot="end" (click)="deleleTransaction(tr)"><ion-icon name="close"></ion-icon></ion-button>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-label>
-      <ion-note slot="end">
-        <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
-        <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
-        <p>&nbsp;</p>
-        <p class="actions">
-          <ion-button size="small" color="tertiary" (click)="presentModal($event, account)"><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
-        </p>
-      </ion-note>
     </ion-item>
   </ion-list>
 </ion-content>

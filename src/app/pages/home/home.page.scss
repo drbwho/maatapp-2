@@ -23,20 +23,18 @@ ion-col {
 
 ion-content {
     --background: none;
-    background-position: center top;
-    background-repeat: no-repeat;
     //background-size: cover;
-    background-size: auto 70%;
-    background-position: bottom;
+    background-size: auto 70% !important;
+    background-position: bottom !important;
+    background-color: #FEF8F0 !important;
 }
 
 .conf-title {
   font-size: 1.5em;
   font-weight: bold;
-  background: cornflowerblue;
   padding: 10px;
   padding-top: 3%;
-  color: white;
+  color: #6d6b6b;
 }
 
 .conf-div {

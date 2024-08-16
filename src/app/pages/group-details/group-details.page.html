@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>{{countryname}} / {{groupname}}</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/app/tabs/countries"></ion-back-button>
+      <ion-back-button defaultHref="/app/tabs/country/{{countryid}}/groups"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <app-status-icons></app-status-icons>
@@ -39,7 +39,7 @@
         <p class="actions">
           <ion-button *ngIf="meeting.haspending" size="small" color="danger" ><ion-icon name="cloud-upload"></ion-icon></ion-button>
           <ion-button [disabled]="meeting.endedat" size="small" color="tertiary" (click)="navto(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
-          <ion-button [disabled]="meeting.endedat" size="small" color="danger"><ion-icon name="ban-outline"></ion-icon></ion-button>
+          <ion-button [disabled]="meeting.endedat || meeting.haspending" size="small" color="danger" (click)="cancelMeeting(meeting.id)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
     </ion-item>
@@ -55,10 +55,7 @@
           {{account.owner}}
         </h2>
         <p>
-          Credit avail.: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>
-        </p>
-        <p>
-          Reimboursements.: {{account.rembousements | number:'.2'}} {{currency}}
+          Credit avail.: <ion-text [color]="account.creditdisponible <= 0 ? 'danger': 'success'">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>
         </p>
         <p>
           Loans: {{account.emprunts | number:'.2'}} {{currency}}
@@ -73,10 +70,9 @@
       <ion-note slot="end">
         <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
         <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
-        <p>&nbsp;</p>
         <p class="actions">
           <ion-button size="small" color="success" (click)="showAccountInfo(account)"><ion-icon name="information-outline"></ion-icon></ion-button>
-          <ion-button size="small" color="danger"><ion-icon name="ban-outline"></ion-icon></ion-button>
+          <ion-button size="small" color="danger" (click)="closeAccount(account)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
     </ion-item>

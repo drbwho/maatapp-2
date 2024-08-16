@@ -183,4 +183,60 @@ export class DataProvider {
      });
   }
 
+  async closeUserAccount(account: any){
+    let apiurl = this.config.GET_API_URL('groups') + '/closeuser';
+
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
+      .post(apiurl,
+        {
+          accountid: account.id
+        },
+        {headers})
+      .subscribe({
+        next: (data: any) => {
+          console.log(data);
+          resolve(data);
+        },
+        error: async (error) => {
+          resolve({status: 'error', message: 'Network error'});
+        }
+      });
+   });
+  }
+
+  async cancelMeeting(meetingid){
+    let apiurl = this.config.GET_API_URL('meetings', '0');
+
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
+      .post(apiurl,
+        {
+          id: meetingid,
+          cancel: true
+        },
+        {headers})
+      .subscribe({
+        next: (data: any) => {
+          console.log(data);
+          resolve(data);
+        },
+        error: async (error) => {
+          resolve({status: 'error', message: 'Network error'});
+        }
+      });
+   });
+  }
 }

@@ -3,9 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataProvider } from '../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
-import { GroupDetailsPageRoutingModule } from './group-details-routing.module';
 
 @Component({
   selector: 'app-group-details',
@@ -16,8 +15,10 @@ export class GroupDetailsPage implements OnInit {
   segment = "reunions";
   groupname: string;
   countryname: string;
+  countryid: string;
   currency: string;
   group: any;
+  groupId: any;
   meetings: any;
   accounts: any;
   allmeetings: any;
@@ -30,21 +31,32 @@ export class GroupDetailsPage implements OnInit {
     private router: Router,
     private storage: Storage,
     private config: ConfigData,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
-    const groupId = this.route.snapshot.paramMap.get('groupId');
+    this.groupId = this.route.snapshot.paramMap.get('groupId');
 
     this.group = this.dataProvider.current.group;
     this.groupname = this.dataProvider.current.group.name;
     this.countryname = this.dataProvider.current.country.name;
+    this.countryid = this.dataProvider.current.country.id;
     this.currency = this.dataProvider.current.country.currency;
 
-    this.dataProvider.fetch_data('meetings', groupId, true).then((data: any)=> {
+    this.update_meetings();
+
+    this.dataProvider.fetch_data('accounts', this.groupId, true).then((data: any)=> {
+      this.accounts = data;
+      this.allaccounts = data;
+    });
+  }
+
+  update_meetings(){
+    this.dataProvider.fetch_data('meetings', this.groupId, true).then((data: any)=> {
       this.meetings = data;
       this.allmeetings = data;
       //check if meeting has pending transactions to upload
@@ -56,10 +68,6 @@ export class GroupDetailsPage implements OnInit {
           }
         });
       })
-    });
-    this.dataProvider.fetch_data('accounts', groupId, true).then((data: any)=> {
-      this.accounts = data;
-      this.allaccounts = data;
     });
   }
 
@@ -127,4 +135,48 @@ export class GroupDetailsPage implements OnInit {
 
     await modal.onWillDismiss();
   }
+
+  async closeAccount(account){
+    const alert = await this.alertCtrl.create({
+      header: 'Are you sure to close user account?',
+      buttons: [
+        {
+          text: 'No',
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.dataProvider.closeUserAccount(account).then(()=>{
+              this.dataProvider.fetch_data('accounts', this.groupId, true).then((data: any)=> {
+                this.accounts = data;
+                this.allaccounts = data;
+              });
+            })
+          },
+        },
+      ],
+    });
+    await alert.present();  
+  }
+
+  async cancelMeeting(meetingid){
+    const alert = await this.alertCtrl.create({
+      header: 'Are you sure to cancel the meeting?',
+      buttons: [
+        {
+          text: 'No',
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.dataProvider.cancelMeeting(meetingid).then(()=>{
+              this.update_meetings();
+            })
+          },
+        },
+      ],
+    });
+    await alert.present();  
+  }
+
 }

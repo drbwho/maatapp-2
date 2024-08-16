@@ -10,6 +10,10 @@ ion-label p {
     }
 }
 
+.sum-info {
+    font-size: 11px;
+}
+
 .info-icon {
     font-size: large;
 }
@@ -19,5 +23,11 @@ ion-label p {
 }
 
 .transactions {
-  --inner-border-width: 0;
+    ion-item::part(native) {
+        padding-left: 5px;
+        min-height: 35px;
+        --inner-padding-end: 3px;
+        --inner-border-width: 0;
+    }
 }
+

@@ -48,3 +48,10 @@ ion-toast.toast-alert {
   --background: red;
 }
 
+.action-sheet-group-cancel {
+  border-top: 1px solid grey;
+  .action-sheet-button {
+    color: grey;
+  }
+}
+

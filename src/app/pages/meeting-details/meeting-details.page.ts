@@ -18,6 +18,7 @@ export class MeetingDetailsPage implements OnInit {
   groupname: string;
   currency: string;
   group: any;
+  groupid: string;
   meeting: any;
   accounts: any;
 
@@ -40,6 +41,7 @@ export class MeetingDetailsPage implements OnInit {
     this.meetingdate = this.meeting.startedat;
     this.group = this.dataProvider.current.group;
     this.groupname = this.group.name;
+    this.groupid = this.group.id;
     this.currency = this.dataProvider.current.country.currency;
 
     this.load_accounts();
