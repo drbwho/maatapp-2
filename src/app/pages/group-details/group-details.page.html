@@ -37,7 +37,7 @@
       </ion-label>
       <ion-note slot="end">
         <p class="actions">
-          <ion-button *ngIf="meeting.haspending" size="small" color="danger" ><ion-icon name="cloud-upload"></ion-icon></ion-button>
+          <ion-button *ngIf="meeting.haspending" size="small" color="danger" (click)="uploadMeeting(meeting)"><ion-icon name="cloud-upload"></ion-icon></ion-button>
           <ion-button [disabled]="meeting.endedat" size="small" color="tertiary" (click)="navto(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
           <ion-button [disabled]="meeting.endedat || meeting.haspending" size="small" color="danger" (click)="cancelMeeting(meeting.id)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
@@ -64,7 +64,7 @@
           Loan req.: {{account.besoinsliquidite | number:'.2'}} {{currency}}
         </p>
         <p>
-          Contribution due: {{account.regularcontribution | number:'.2'}} {{currency}}
+          Contribution due:  <ion-text [color]="account.regularcontribution > 0 ? 'danger': ''">{{account.regularcontribution | number:'.2'}} {{currency}}</ion-text>
         </p>
       </ion-label>
       <ion-note slot="end">

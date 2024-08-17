@@ -14,8 +14,14 @@ ion-label p {
     font-size: 11px;
 }
 
-.info-icon {
-    font-size: large;
+.info-header {
+    padding: 0 0 5px 0;
+    ion-icon {
+        color: red;
+    }
+    ion-item::part(native) {
+        min-height: 25px;
+    }
 }
 
 .actions {

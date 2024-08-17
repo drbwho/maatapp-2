@@ -4,6 +4,7 @@ import { DataProvider } from '../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { AlertController, ModalController } from '@ionic/angular';
+import { Network } from '@capacitor/network';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 
 @Component({
@@ -48,7 +49,10 @@ export class GroupDetailsPage implements OnInit {
     this.currency = this.dataProvider.current.country.currency;
 
     this.update_meetings();
+    this.update_accounts();
+  }
 
+  update_accounts(){
     this.dataProvider.fetch_data('accounts', this.groupId, true).then((data: any)=> {
       this.accounts = data;
       this.allaccounts = data;
@@ -147,10 +151,7 @@ export class GroupDetailsPage implements OnInit {
           text: 'Yes',
           handler: () => {
             this.dataProvider.closeUserAccount(account).then(()=>{
-              this.dataProvider.fetch_data('accounts', this.groupId, true).then((data: any)=> {
-                this.accounts = data;
-                this.allaccounts = data;
-              });
+              this.update_accounts();
             })
           },
         },
@@ -177,6 +178,47 @@ export class GroupDetailsPage implements OnInit {
       ],
     });
     await alert.present();  
+  }
+
+  async uploadMeeting(meeting: any){
+    let net = await Network.getStatus();
+    if(!net.connected){
+      const alert = await this.alertCtrl.create({
+        header: "Error",
+        message: 'There is no network connection!<br/>Please try again later',
+        buttons: [
+          {
+            text: 'Ok',
+          },
+        ],
+      });
+      await alert.present();
+      return;
+    }
+    //upload all pending meeting transactions
+    this.dataProvider.uloadOperations(meeting.id).then(async (res:any) => {
+      let header="";
+      let message="";
+      if(res.status.toLowerCase() == 'error'){
+        header = "Error";
+        message = res.message;
+      }else{
+        header = "Success";
+        message = "Operations uploaded";
+        this.update_meetings();
+        this.update_accounts();
+      }
+      const alert = await this.alertCtrl.create({
+        header: header,
+        message: message,
+        buttons: [
+          {
+            text: 'Ok',
+          },
+        ],
+      });
+      await alert.present();
+    })
   }
 
 }

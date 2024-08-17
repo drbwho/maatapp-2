@@ -10,12 +10,20 @@
       <app-status-icons></app-status-icons>
     </ion-buttons>
   </ion-toolbar>
-  <ion-item>
-    <ion-label>
-      <h2>Meeting: <strong>{{meetingplace}}</strong></h2>
-    </ion-label>
-    <ion-note slot="end"><strong>{{meetingdate}}</strong></ion-note>
-  </ion-item>
+  <ion-list lines="none" class="info-header">
+    <ion-item>
+      <ion-label>
+        <h2>Meeting: <strong>{{meetingplace}}</strong></h2>
+      </ion-label>
+      <ion-note slot="end"><strong>{{meetingdate}}</strong></ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon size="large" name="information-circle-outline"></ion-icon>
+      <div class="ion-padding-start">
+        <ion-note>New transactions will be locally stored until uploading from the Group's page</ion-note>
+      </div>
+    </ion-item>
+  </ion-list>
 </ion-header>
 
 <ion-content [fullscreen]="false">
@@ -24,7 +32,7 @@
       <ion-label>
         <h2>
           {{account.owner}}
-          <ion-button class="ion-float-right" size="small" color="tertiary" (click)="presentModal($event, account)"><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
+          <ion-button class="ion-float-right" size="small" color="tertiary" (click)="presentModal($event, account)"><ion-icon name="add"></ion-icon></ion-button>
         </h2>
         <ion-note class="sum-info">
           <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}

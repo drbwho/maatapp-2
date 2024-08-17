@@ -151,6 +151,25 @@ export class DataProvider {
     })
   }
 
+  async uloadOperations(meetingid){
+    var transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+    transactions = transactions.filter(s=>s.meetingid == meetingid);
+    return new Promise(async (resolve)=>{
+      var res: any = {status: 'success', message: ''};
+      for(let tr of transactions){
+        res = await this.syncOperation(tr.meetingid, tr.accountid, tr.parameterid, tr.amount);
+        //if error -> break and return
+        if(res.status.toLowerCase() == 'error'){
+          resolve(res);
+          break;
+        }
+        //success
+        this.delOperation(tr);
+      }
+      resolve(res);
+    })
+  }
+
   // Sync operations to Server
   async syncOperation(meetingid, accountid, parameterid, amount){
       let apiurl = this.config.GET_API_URL('operations', meetingid);
