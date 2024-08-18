@@ -34,12 +34,15 @@
         <ion-icon [color]="meeting.endedat? 'danger': 'success'" name="timer" class="info-icon"></ion-icon>
         <ion-text color="danger">{{meeting.endedat}}</ion-text>
       </p>
+      <p *ngIf="meeting.haspending">
+        Pending transactions: <ion-badge color="danger">{{meeting.haspending}}</ion-badge>
+      </p>
       </ion-label>
       <ion-note slot="end">
         <p class="actions">
-          <ion-button *ngIf="meeting.haspending" size="small" color="danger" (click)="uploadMeeting(meeting)"><ion-icon name="cloud-upload"></ion-icon></ion-button>
-          <ion-button [disabled]="meeting.endedat" size="small" color="tertiary" (click)="navto(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
-          <ion-button [disabled]="meeting.endedat || meeting.haspending" size="small" color="danger" (click)="cancelMeeting(meeting.id)"><ion-icon name="ban-outline"></ion-icon></ion-button>
+          <ion-button *ngIf="meeting.haspending && userRole > 1" size="small" color="danger" (click)="uploadMeeting(meeting)"><ion-icon name="cloud-upload"></ion-icon></ion-button>
+          <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat" size="small" color="tertiary" (click)="navto(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
+          <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting.id)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
     </ion-item>
@@ -51,9 +54,9 @@
   <ion-list *ngIf="segment == 'comptes'">
     <ion-item *ngFor="let account of accounts" >
       <ion-label>
-        <h2>
-          {{account.owner}}
-        </h2>
+        <ion-text [color]="account.type == 1 ? '' : 'primary'">
+          <h2><strong>{{account.owner}}</strong></h2>
+        </ion-text>
         <p>
           Credit avail.: <ion-text [color]="account.creditdisponible <= 0 ? 'danger': 'success'">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>
         </p>
@@ -72,7 +75,7 @@
         <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
         <p class="actions">
           <ion-button size="small" color="success" (click)="showAccountInfo(account)"><ion-icon name="information-outline"></ion-icon></ion-button>
-          <ion-button size="small" color="danger" (click)="closeAccount(account)"><ion-icon name="ban-outline"></ion-icon></ion-button>
+          <ion-button *ngIf="account.type == 1 && userRole > 1" size="small" color="danger" (click)="closeAccount(account)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
     </ion-item>

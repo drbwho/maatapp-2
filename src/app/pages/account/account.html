@@ -11,10 +11,10 @@
   <div *ngIf="user.username" class="ion-padding-top ion-text-center">
     <img *ngIf="!user.photo" src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
     <img *ngIf="user.photo" [src]="user.photo" alt="avatar">
-    <h2>{{user.name}}</h2>
+    <ion-text color="tertiary"><h2>{{user.lname}} {{user.fname}}</h2></ion-text>
     <p>{{user.username}} - {{user.email}}</p>
-    {{user.org}}
-    
+    {{user.city}}
+    <ion-text color="primary"><h4>{{role}}</h4></ion-text>
     <ion-list inset>
       <!-- <ion-item (click)="updatePicture()">Update Picture</ion-item> -->
       <!-- <ion-item (click)="changeUsername()">Change Username</ion-item> -->

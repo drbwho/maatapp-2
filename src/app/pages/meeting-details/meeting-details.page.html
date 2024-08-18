@@ -32,7 +32,7 @@
       <ion-label>
         <h2>
           {{account.owner}}
-          <ion-button class="ion-float-right" size="small" color="tertiary" (click)="presentModal($event, account)"><ion-icon name="add"></ion-icon></ion-button>
+          <ion-button class="ion-float-right" size="small" color="secondary" (click)="presentModal($event, account)"><ion-icon name="add"></ion-icon></ion-button>
         </h2>
         <ion-note class="sum-info">
           <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}

@@ -6,6 +6,7 @@ import { ConfigData } from '../../providers/config-data';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Network } from '@capacitor/network';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
+import { UserData } from '../../providers/user-data';
 
 @Component({
   selector: 'app-group-details',
@@ -25,6 +26,7 @@ export class GroupDetailsPage implements OnInit {
   allmeetings: any;
   allaccounts: any;
   queryText: string;
+  userRole: any;
 
   constructor(
     private dataProvider: DataProvider,
@@ -33,7 +35,8 @@ export class GroupDetailsPage implements OnInit {
     private storage: Storage,
     private config: ConfigData,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private user: UserData
   ) { }
 
   ngOnInit() {
@@ -48,6 +51,7 @@ export class GroupDetailsPage implements OnInit {
     this.countryid = this.dataProvider.current.country.id;
     this.currency = this.dataProvider.current.country.currency;
 
+    this.user.getUser().then(res => this.userRole = res.role);
     this.update_meetings();
     this.update_accounts();
   }
@@ -65,10 +69,10 @@ export class GroupDetailsPage implements OnInit {
       this.allmeetings = data;
       //check if meeting has pending transactions to upload
       this.meetings.forEach((m)=>{
-        m.haspending = false;
+        m.haspending = 0;
         this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
           if(trns && (trns.filter(s => s.meetingid == m.id)).length){
-            m.haspending = true;
+            m.haspending = (trns.filter(s => s.meetingid == m.id)).length;
           }
         });
       })

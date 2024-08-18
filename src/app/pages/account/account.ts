@@ -22,6 +22,7 @@ export class AccountPage implements AfterViewInit {
       org: '',
       email: ''
     };
+  role = "";
 
   constructor(
     public alertCtrl: AlertController,
@@ -68,6 +69,20 @@ export class AccountPage implements AfterViewInit {
   getUser() {
     this.userData.getUser().then((user: any) => {
       this.user = user;
+      switch(user.role){
+        case 1:
+          this.role = 'Farmer';
+          break;
+        case 2:
+          this.role = 'Leader';
+          break;
+        case 3:
+          this.role = 'Manager';
+          break;
+        case 4:
+          this.role = 'Administrator';
+          break;
+      }
     });
   }
 
