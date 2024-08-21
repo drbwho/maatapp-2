@@ -1,0 +1,42 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>{{group.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title color="primary">New Meeting</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label color="tertiary">Place:&nbsp;</ion-label>
+          <ion-input type="input" [(ngModel)]="place" placeholder=""></ion-input>
+        </ion-item>
+        <ion-item class="light ion-margin-top">
+          <ion-label color="tertiary">Start date:</ion-label>
+          <ion-text class="seldatelabel" (click)="showSelectDateFrom()">
+            {{startedat ? formatDate(startedat) : 'Select date'}}
+          </ion-text>
+          <ion-icon slot="end" class="clear-date" name="close-circle" (click)="clearDate()"></ion-icon>
+          <ion-modal [keepContentsMounted]="true" #dateFromModal class="ion-datetime-button-overlay">
+            <ng-template>
+              <ion-datetime [(ngModel)]="startedat" color="secondary"
+                cancelText="Cancel"
+                doneText="Done"
+                value="startedat"
+                min="2024"
+                presentation="date"
+                [showDefaultButtons]="true"
+              [max] = "pickerMaxDate"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+      </ion-list>
+      <ion-button color="tertiary" (click)="dismiss()" size="small">Save</ion-button>
+      <ion-button color="danger" (click)="dismiss()" size="small">Cancel</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

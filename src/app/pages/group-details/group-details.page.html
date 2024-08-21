@@ -23,6 +23,12 @@
 
 <ion-content [fullscreen]="false">
 
+  <ion-fab *ngIf="segment == 'reunions'" horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button (click)="showMeetingForm()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <ion-list *ngIf="segment == 'reunions'">
     <ion-item *ngFor="let meeting of meetings">
       <ion-label>

@@ -19,6 +19,22 @@
                 <ion-label>Home</ion-label>
               </ion-item>
           </ion-menu-toggle>
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/app/tabs/countries" routerDirection="root">
+              <ion-icon slot="start" name="earth"></ion-icon>
+              <ion-label>
+                Countries
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/app/tabs/about" routerDirection="root">
+              <ion-icon slot="start" name="help-circle"></ion-icon>
+              <ion-label>
+                What is MA'AT
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ion-list>
 
         <ion-list *ngIf="loggedIn">
@@ -78,15 +94,6 @@
             </ion-item>
           </ion-menu-toggle> -->
 
-          <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/about-app" routerDirection="root">
-              <ion-icon slot="start" name="phone-portrait"></ion-icon>
-              <ion-label>
-                About App
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-
          <!-- <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/signup" routerDirection="root">
               <ion-icon slot="start" name="person-add"></ion-icon>
@@ -95,7 +102,20 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle>-->
+        </ion-list>
 
+        <ion-list>
+          <ion-list-header>
+            Info
+          </ion-list-header>
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/about-app" routerDirection="root">
+              <ion-icon slot="start" name="phone-portrait"></ion-icon>
+              <ion-label>
+                About App
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ion-list>
 
       </ion-content>

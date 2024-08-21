@@ -7,6 +7,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Network } from '@capacitor/network';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { UserData } from '../../providers/user-data';
+import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
 
 @Component({
   selector: 'app-group-details',
@@ -223,6 +224,19 @@ export class GroupDetailsPage implements OnInit {
       });
       await alert.present();
     })
+  }
+
+  async showMeetingForm() {
+    const modal = await this.modalCtrl.create({
+      component: MeetingFormComponent,
+      componentProps: {group: this.group}
+    });
+    await modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      // refresh accounts totals
+    }
   }
 
 }

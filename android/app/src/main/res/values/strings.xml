@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">MAAT Peasant</string>
-    <string name="title_activity_main">MAAT Peasant</string>
-    <string name="package_name">io.sidi.maat</string>
-    <string name="custom_url_scheme">io.sidi.maat</string>
+    <string name="app_name">MAAT App</string>
+    <string name="title_activity_main">MAAT App</string>
+    <string name="package_name">com.maatpeasant.app</string>
+    <string name="custom_url_scheme">com.maatpeasant.app</string>
 </resources>

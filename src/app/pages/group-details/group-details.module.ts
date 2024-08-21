@@ -9,6 +9,7 @@ import { GroupDetailsPageRoutingModule } from './group-details-routing.module';
 import { GroupDetailsPage } from './group-details.page';
 import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
+import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { AccountInfoComponent } from '../../component/account-info/account-info.
     GroupDetailsPageRoutingModule,
     StatusIconsModule
   ],
-  declarations: [GroupDetailsPage, AccountInfoComponent]
+  declarations: [GroupDetailsPage, AccountInfoComponent, MeetingFormComponent]
 })
 export class GroupDetailsPageModule {}
