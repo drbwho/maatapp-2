@@ -50,12 +50,13 @@ export class ConfigData {
         return 'ACCOUNTS_FILE';
         break;
       case 'params':
-          return 'PARAMETERS_FILE';
-          break;
+        return 'PARAMETERS_FILE';
+        break;
     }
   }
 
   TRANSACTIONS_FILE = 'TRANSACTIONS_FILE';
+  NEWMEETINS_FILE = 'NEWMEETINGS_FILE';
 
   DEVICE_ID = 'DEVICE_ID';
 

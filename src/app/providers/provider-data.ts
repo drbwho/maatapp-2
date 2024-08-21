@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Network } from '@capacitor/network';
+import {v4 as uuidv4} from 'uuid';
 
 import { Router } from '@angular/router';
 import { UserData } from './user-data';
@@ -22,6 +23,16 @@ interface Transaction {
   parameterid: any,
   parametername: any,
   amount: any
+}
+
+interface Meeting {
+  id: any,
+  idgroup: any,
+  startedat: any,
+  endedat: any,
+  iduser: any,
+  has_transactions: any,
+  haspending: any
 }
 
 @Injectable({
@@ -258,4 +269,34 @@ export class DataProvider {
       });
    });
   }
+
+  // Save locally new Meeting
+  async newMeeting(groupid: any, place: any, startdate: any){
+    var meetingid = uuidv4(); // create new uuid
+    let user = await this.user.getUser();
+    var meet: Meeting = {
+      id: meetingid,
+      idgroup: groupid,
+      startedat: startdate,
+      endedat: null,
+      iduser: user.id,
+      has_transactions: 0,
+      haspending: 0
+    };
+
+    return new Promise((resolve)=>{
+      this.storage.get(this.config.NEWMEETINS_FILE).then((res)=>{
+        var meets: Meeting[] = [];
+        if(res){
+         meets = res;
+        }
+        meets.push(meet);
+        this.storage.set(this.config.NEWMEETINS_FILE, meets).then((res)=>{
+          this.events.publish('upload:updated');
+          resolve({'status': 'success'});
+        })
+      })
+    });
+  }
+
 }
