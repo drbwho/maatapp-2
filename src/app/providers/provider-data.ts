@@ -127,7 +127,38 @@ export class DataProvider {
     }
   }
 
-  // Save locally new Meeting Operation
+  // Save locally new Meeting
+  async newMeeting(groupid: any, place: any, startdate: any){
+    var meetingid = uuidv4(); // create new uuid
+    let user = await this.user.getUser();
+    var meet: Meeting = {
+      id: meetingid,
+      idgroup: groupid,
+      place: place,
+      startedat: startdate,
+      endedat: null,
+      iduser: user.id,
+      has_transactions: 0,
+      haspending: 0,
+      pending: true
+    };
+
+    return new Promise((resolve)=>{
+      this.storage.get(this.config.NEWMEETINS_FILE).then((res)=>{
+        var meets: Meeting[] = [];
+        if(res){
+         meets = res;
+        }
+        meets.push(meet);
+        this.storage.set(this.config.NEWMEETINS_FILE, meets).then((res)=>{
+          this.events.publish('upload:updated');
+          resolve({'status': 'success'});
+        })
+      })
+    });
+  }  
+
+  // Save locally new Operation
   async newOperation(meetingid, accountid, parameterid, parametername, amount){
     var trn: Transaction = {
       meetingid: meetingid,
@@ -256,7 +287,6 @@ export class DataProvider {
   }
 
 
-
   /*
   * Sync operations to Server
   *
@@ -361,35 +391,5 @@ export class DataProvider {
    });
   }
 
-  // Save locally new Meeting
-  async newMeeting(groupid: any, place: any, startdate: any){
-    var meetingid = uuidv4(); // create new uuid
-    let user = await this.user.getUser();
-    var meet: Meeting = {
-      id: meetingid,
-      idgroup: groupid,
-      place: place,
-      startedat: startdate,
-      endedat: null,
-      iduser: user.id,
-      has_transactions: 0,
-      haspending: 0,
-      pending: true
-    };
-
-    return new Promise((resolve)=>{
-      this.storage.get(this.config.NEWMEETINS_FILE).then((res)=>{
-        var meets: Meeting[] = [];
-        if(res){
-         meets = res;
-        }
-        meets.push(meet);
-        this.storage.set(this.config.NEWMEETINS_FILE, meets).then((res)=>{
-          this.events.publish('upload:updated');
-          resolve({'status': 'success'});
-        })
-      })
-    });
-  }
 
 }
