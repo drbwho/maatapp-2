@@ -35,12 +35,13 @@ export class StatusIconsComponent  implements OnInit {
     this.events.subscribe('upload:updated', async () => {
       this.upload_status = await this.check_upload_status();
     });
-    
+
   }
 
   async check_upload_status (){
     var res = await this.storage.get(this.config.TRANSACTIONS_FILE);
-    if(res && res.length){
+    var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+    if((res && res.length) || newmeetings && newmeetings.length){
       return true;
     }
     return false;

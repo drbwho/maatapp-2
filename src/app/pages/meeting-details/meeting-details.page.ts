@@ -51,7 +51,10 @@ export class MeetingDetailsPage implements OnInit {
     this.dataProvider.fetch_data('accounts', this.group.id, true).then(async (data: any)=> {
       this.accounts = data.filter((s)=> s.type == 1 && s.statut == 0); //user accounts
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      // load pending transactions for each account 
+      if(transactions == null){
+        return;
+      }
+      // load pending transactions for each account
       this.accounts.forEach((acc) => {
         acc.transactions = transactions.filter((s)=>s.accountid == acc.id && s.meetingid == this.meeting.id);
       });
@@ -70,7 +73,7 @@ export class MeetingDetailsPage implements OnInit {
           handler: async () => {
             /*let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
             //find index
-            let index = transactions.findIndex(s => s.accountid == tr.accountid && s.meetingid == tr.meetingid && s.parameterid == tr.parameterid && s.amount == tr.amount); 
+            let index = transactions.findIndex(s => s.accountid == tr.accountid && s.meetingid == tr.meetingid && s.parameterid == tr.parameterid && s.amount == tr.amount);
             transactions.splice(index, 1);//remove element from array
             this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
               this.load_accounts();

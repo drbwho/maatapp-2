@@ -65,9 +65,16 @@ export class GroupDetailsPage implements OnInit {
   }
 
   update_meetings(){
-    this.dataProvider.fetch_data('meetings', this.groupId, true).then((data: any)=> {
-      this.meetings = data;
-      this.allmeetings = data;
+    this.dataProvider.fetch_data('meetings', this.groupId, true).then(async (data: any)=> {
+      // merge with local stored new meetings
+      var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+      if(newmeetings != null && newmeetings.length){
+        newmeetings = newmeetings.filter(s => s.idgroup == this.groupId);
+        this.meetings = [...newmeetings, ...data];
+      }else{
+        this.meetings = data;
+      }
+      this.allmeetings = this.meetings;
       //check if meeting has pending transactions to upload
       this.meetings.forEach((m)=>{
         m.haspending = 0;
@@ -162,10 +169,10 @@ export class GroupDetailsPage implements OnInit {
         },
       ],
     });
-    await alert.present();  
+    await alert.present();
   }
 
-  async cancelMeeting(meetingid){
+  async cancelMeeting(meeting){
     const alert = await this.alertCtrl.create({
       header: 'Are you sure to cancel the meeting?',
       buttons: [
@@ -175,14 +182,14 @@ export class GroupDetailsPage implements OnInit {
         {
           text: 'Yes',
           handler: () => {
-            this.dataProvider.cancelMeeting(meetingid).then(()=>{
+            this.dataProvider.cancelMeeting(meeting).then((res)=>{
               this.update_meetings();
             })
           },
         },
       ],
     });
-    await alert.present();  
+    await alert.present();
   }
 
   async uploadMeeting(meeting: any){
@@ -201,15 +208,15 @@ export class GroupDetailsPage implements OnInit {
       return;
     }
     //upload all pending meeting transactions
-    this.dataProvider.uloadOperations(meeting.id).then(async (res:any) => {
+    this.dataProvider.uloadOperations(meeting).then(async (res:any) => {
       let header="";
       let message="";
       if(res.status.toLowerCase() == 'error'){
         header = "Error";
-        message = res.message;
+        message = '<strong>' + res.name + '</strong><br/>' + res.message;
       }else{
         header = "Success";
-        message = "Operations uploaded";
+        message = "Data uploaded";
         this.update_meetings();
         this.update_accounts();
       }
@@ -227,6 +234,28 @@ export class GroupDetailsPage implements OnInit {
   }
 
   async showMeetingForm() {
+    //check if open meetings exists
+    let open_exists = false;
+    this.meetings.forEach((mt)=>{
+      if((mt.endedat == null || !mt.endedat) && !mt.cancelled){
+        open_exists = true;
+        return;
+      }
+    })
+    if(open_exists){
+      const alert = await this.alertCtrl.create({
+        header: 'Error',
+        message: 'There is already an open meeting!',
+        buttons: [
+          {
+            text: 'Ok',
+          }
+        ],
+      });
+      await alert.present();
+      return;
+    }
+
     const modal = await this.modalCtrl.create({
       component: MeetingFormComponent,
       componentProps: {group: this.group}
@@ -235,7 +264,7 @@ export class GroupDetailsPage implements OnInit {
 
     const { data } = await modal.onWillDismiss();
     if (data) {
-      // refresh accounts totals
+      this.update_meetings();
     }
   }
 

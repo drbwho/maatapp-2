@@ -41,7 +41,7 @@ export class MeetingFormComponent  implements OnInit {
     this.startedat = "";
   }
 
-  formatDate(date: string){   
+  formatDate(date: string){
     const local: Locale = enUS;
     return format(parseISO(date), 'd MMM yyyy',{locale: local});
   }
@@ -65,8 +65,9 @@ export class MeetingFormComponent  implements OnInit {
   }
 
   submit_meeting(){
-    this.dataProvider.newMeeting(this.group.id, this.place, this.startedat).then(()=>{
-      this.modalCtrl.dismiss();
+    let date = format(parseISO(this.startedat), 'yyyy-MM-dd',{locale: enUS});
+    this.dataProvider.newMeeting(this.group.id, this.place, date).then(()=>{
+      this.modalCtrl.dismiss(true);
     });
   }
 }

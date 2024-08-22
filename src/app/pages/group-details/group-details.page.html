@@ -32,9 +32,11 @@
   <ion-list *ngIf="segment == 'reunions'">
     <ion-item *ngFor="let meeting of meetings">
       <ion-label>
-      <h2>
+      <ion-text [color]="meeting.pending?'danger':''">
+        <h2>
         {{meeting.place}}
-      </h2>
+        </h2>
+      </ion-text>
       <p>
         <ion-text color="tertiary">{{meeting.startedat}}</ion-text>
         <ion-icon [color]="meeting.endedat? 'danger': 'success'" name="timer" class="info-icon"></ion-icon>
@@ -46,9 +48,9 @@
       </ion-label>
       <ion-note slot="end">
         <p class="actions">
-          <ion-button *ngIf="meeting.haspending && userRole > 1" size="small" color="danger" (click)="uploadMeeting(meeting)"><ion-icon name="cloud-upload"></ion-icon></ion-button>
+          <ion-button *ngIf="(meeting.haspending || meeting.pending) && userRole > 1" size="small" color="danger" (click)="uploadMeeting(meeting)"><ion-icon name="cloud-upload"></ion-icon></ion-button>
           <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat" size="small" color="tertiary" (click)="navto(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
-          <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting.id)"><ion-icon name="ban-outline"></ion-icon></ion-button>
+          <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
     </ion-item>

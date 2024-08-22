@@ -2,7 +2,7 @@ import { ConfigData } from './config-data';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';
 import { Network } from '@capacitor/network';
 import {v4 as uuidv4} from 'uuid';
 
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { UserData } from './user-data';
 import { Events } from './events';
 import { stat } from 'fs';
+import { formatDate } from '@angular/common';
 
 interface Current {
   country?: any;
@@ -28,11 +29,13 @@ interface Transaction {
 interface Meeting {
   id: any,
   idgroup: any,
+  place: any,
   startedat: any,
   endedat: any,
   iduser: any,
   has_transactions: any,
-  haspending: any
+  haspending: any,
+  pending: any
 }
 
 @Injectable({
@@ -162,15 +165,48 @@ export class DataProvider {
     })
   }
 
-  async uloadOperations(meetingid){
+  /*
+  * Init Syncing
+  *
+  */
+  async uloadOperations(meeting){
+    // First sync new meeting
+    if(meeting.pending){
+      let newmeet: any = await this.syncMeeting(meeting);
+      if(newmeet.status != "success"){
+        return new Promise((resolve)=>{
+          resolve(newmeet);
+        })
+      }else{
+        // clear meeting from local storage
+        this.storage.get(this.config.NEWMEETINS_FILE).then((res)=>{
+          let newmeetings = res;
+          // find index
+          let index = newmeetings.findIndex(s => s.id == meeting.id);
+          newmeetings.splice(index, 1);//remove element from array
+          this.storage.set(this.config.NEWMEETINS_FILE, newmeetings);
+        })
+      }
+    }
+
+    // Start sync transactions
     var transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-    transactions = transactions.filter(s=>s.meetingid == meetingid);
+    if(transactions == null || !transactions.length){
+      return new Promise((resolve)=>{
+        resolve({'status': 'success'});
+      })
+    }
+    transactions = transactions.filter(s=>s.meetingid == meeting.id);
     return new Promise(async (resolve)=>{
       var res: any = {status: 'success', message: ''};
       for(let tr of transactions){
         res = await this.syncOperation(tr.meetingid, tr.accountid, tr.parameterid, tr.amount);
-        //if error -> break and return
+        //if error stop uploading and return
         if(res.status.toLowerCase() == 'error'){
+          // return name of account
+          let accounts = await this.storage.get(this.config.GET_FILE('accounts'));
+          let account = accounts.find(s => s.id == tr.accountid);
+          res.name = account.owner;
           resolve(res);
           break;
         }
@@ -181,7 +217,50 @@ export class DataProvider {
     })
   }
 
-  // Sync operations to Server
+  /*
+  * Sync meeting to Server
+  *
+  */
+  async syncMeeting(meeting){
+    let apiurl = this.config.GET_API_URL('meetings', meeting.idgroup);
+
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
+      .put(apiurl,
+        {
+          newid: meeting.id,
+          idgroup: meeting.idgroup,
+          startedat: meeting.startedat,
+          endedat: meeting.endedat,
+          place: meeting.place,
+          iduser: meeting.iduser,
+          cancelled: meeting.cancelled
+        },
+        {headers})
+      .subscribe({
+        next: (data: any) => {
+          console.log(data);
+          resolve({status: 'success', message: ''});
+        },
+        error: async (error) => {
+          resolve({status: 'error', message: 'Sync error'});
+        }
+      });
+    });
+  }
+
+
+
+  /*
+  * Sync operations to Server
+  *
+  */
   async syncOperation(meetingid, accountid, parameterid, amount){
       let apiurl = this.config.GET_API_URL('operations', meetingid);
 
@@ -241,7 +320,19 @@ export class DataProvider {
    });
   }
 
-  async cancelMeeting(meetingid){
+  async cancelMeeting(meeting){
+    // its a new meeting
+    if(meeting.pending){
+      let newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+      let meet = newmeetings.find(s => s.id == meeting.id);
+      meet.cancelled = 1;
+      meet.endedat = formatDate(new Date(), 'Y-MM-dd', ɵDEFAULT_LOCALE_ID);
+      return new Promise((resolve)=>{
+        this.storage.set(this.config.NEWMEETINS_FILE, newmeetings).then(()=>{
+          resolve(true);
+        })
+      })
+    }
     let apiurl = this.config.GET_API_URL('meetings', '0');
 
     const user = await this.user.getUser();
@@ -254,7 +345,7 @@ export class DataProvider {
       this.http
       .post(apiurl,
         {
-          id: meetingid,
+          id: meeting.id,
           cancel: true
         },
         {headers})
@@ -264,7 +355,7 @@ export class DataProvider {
           resolve(data);
         },
         error: async (error) => {
-          resolve({status: 'error', message: 'Network error'});
+          resolve({status: 'error', message: 'Sync error'});
         }
       });
    });
@@ -277,11 +368,13 @@ export class DataProvider {
     var meet: Meeting = {
       id: meetingid,
       idgroup: groupid,
+      place: place,
       startedat: startdate,
       endedat: null,
       iduser: user.id,
       has_transactions: 0,
-      haspending: 0
+      haspending: 0,
+      pending: true
     };
 
     return new Promise((resolve)=>{
