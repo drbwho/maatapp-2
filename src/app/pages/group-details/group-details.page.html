@@ -74,8 +74,8 @@
         <p>
           Loan req.: {{account.besoinsliquidite | number:'.2'}} {{currency}}
         </p>
-        <p>
-          Contribution due:  <ion-text [color]="account.regularcontribution > 0 ? 'danger': ''">{{account.regularcontribution | number:'.2'}} {{currency}}</ion-text>
+        <p *ngIf="account.type == 1">
+          Contribution due:  <ion-text [color]="account.due > 0 ? 'danger': ''">{{account.due | number:'.2'}} {{currency}}</ion-text>
         </p>
       </ion-label>
       <ion-note slot="end">

@@ -242,7 +242,7 @@ export class GroupDetailsPage implements OnInit {
         return;
       }
     })
-    if(open_exists){
+    if(!open_exists){
       const alert = await this.alertCtrl.create({
         header: 'Error',
         message: 'There is already an open meeting!',
