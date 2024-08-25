@@ -17,6 +17,7 @@ import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.
 export class GroupDetailsPage implements OnInit {
   segment = "reunions";
   groupname: string;
+  grouptype: any;
   countryname: string;
   countryid: string;
   currency: string;
@@ -48,6 +49,7 @@ export class GroupDetailsPage implements OnInit {
 
     this.group = this.dataProvider.current.group;
     this.groupname = this.dataProvider.current.group.name;
+    this.grouptype = this.dataProvider.current.group.type;
     this.countryname = this.dataProvider.current.country.name;
     this.countryid = this.dataProvider.current.country.id;
     this.currency = this.dataProvider.current.country.currency;
@@ -55,6 +57,11 @@ export class GroupDetailsPage implements OnInit {
     this.user.getUser().then(res => this.userRole = res.role);
     this.update_meetings();
     this.update_accounts();
+
+    //If its a direction group go to accounts tab
+    if(this.grouptype == 0){
+      this.segment = "comptes";
+    }
   }
 
   update_accounts(){
@@ -192,6 +199,39 @@ export class GroupDetailsPage implements OnInit {
     await alert.present();
   }
 
+  async closeMeeting(meeting){
+    const alert = await this.alertCtrl.create({
+      header: 'Are you sure to close the meeting?',
+      buttons: [
+        {
+          text: 'No',
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.dataProvider.closeMeeting(meeting).then(async (res: any)=>{
+              if(res.status != undefined && res.status == 'error'){
+                const alert = await this.alertCtrl.create({
+                  header: "Error",
+                  message: res.message,
+                  buttons: [
+                    {
+                      text: 'Ok',
+                    },
+                  ],
+                });
+                await alert.present();
+                return;
+              }
+              this.update_meetings();
+            })
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
   async uploadMeeting(meeting: any){
     let net = await Network.getStatus();
     if(!net.connected){
@@ -242,7 +282,7 @@ export class GroupDetailsPage implements OnInit {
         return;
       }
     })
-    if(!open_exists){
+    if(open_exists){
       const alert = await this.alertCtrl.create({
         header: 'Error',
         message: 'There is already an open meeting!',

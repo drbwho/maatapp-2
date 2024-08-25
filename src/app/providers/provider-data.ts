@@ -350,6 +350,54 @@ export class DataProvider {
    });
   }
 
+  async closeMeeting(meeting){
+    // its a new meeting
+    if(meeting.pending){
+      let newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+      let meet = newmeetings.find(s => s.id == meeting.id);
+      meet.endedat = formatDate(new Date(), 'Y-MM-dd', ɵDEFAULT_LOCALE_ID);
+      return new Promise((resolve)=>{
+        this.storage.set(this.config.NEWMEETINS_FILE, newmeetings).then(()=>{
+          resolve({status: 'success', message:''});
+        })
+      })
+    }
+
+    let status = await Network.getStatus();
+    if(!status.connected){
+      return new Promise((resolve)=>{
+        resolve({status: 'error', message: 'There is no network connection to perform this action!'});
+      })
+    }
+
+    let apiurl = this.config.GET_API_URL('meetings', '0');
+
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
+      .post(apiurl,
+        {
+          id: meeting.id,
+          close: true
+        },
+        {headers})
+      .subscribe({
+        next: (data: any) => {
+          console.log(data);
+          resolve(data);
+        },
+        error: async (error) => {
+          resolve({status: 'error', message: 'Sync error'});
+        }
+      });
+   });
+  }
+
   async cancelMeeting(meeting){
     // its a new meeting
     if(meeting.pending){

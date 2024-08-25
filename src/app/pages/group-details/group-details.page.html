@@ -12,7 +12,7 @@
     <ion-searchbar placeholder="Search" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"></ion-searchbar>
   </ion-toolbar>
   <ion-segment [(ngModel)]="segment">
-    <ion-segment-button value="reunions" >
+    <ion-segment-button value="reunions" [disabled]="grouptype == 0">
       <ion-label>Meetings</ion-label>
     </ion-segment-button>
     <ion-segment-button value="comptes">
@@ -23,13 +23,13 @@
 
 <ion-content [fullscreen]="false">
 
-  <ion-fab *ngIf="segment == 'reunions'" horizontal="end" vertical="bottom" slot="fixed">
+  <ion-fab *ngIf="segment == 'reunions' && grouptype > 0" horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button (click)="showMeetingForm()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <ion-list *ngIf="segment == 'reunions'">
+  <ion-list *ngIf="segment == 'reunions' && grouptype > 0">
     <ion-item *ngFor="let meeting of meetings">
       <ion-label>
       <ion-text [color]="meeting.pending?'danger':''">
@@ -50,6 +50,7 @@
         <p class="actions">
           <ion-button *ngIf="(meeting.haspending || meeting.pending) && userRole > 1" size="small" color="danger" (click)="uploadMeeting(meeting)"><ion-icon name="cloud-upload"></ion-icon></ion-button>
           <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat" size="small" color="tertiary" (click)="navto(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
+          <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat" size="small" color="secondary" (click)="closeMeeting(meeting)" ><ion-icon name="bag-check-outline"></ion-icon></ion-button>
           <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
@@ -87,7 +88,7 @@
         </p>
       </ion-note>
     </ion-item>
-    <ion-note *ngIf="!meetings || meetings.length == 0" class="ion-margin-left">
+    <ion-note *ngIf="!accounts || accounts.length == 0" class="ion-margin-left">
       Group has no accounts
     </ion-note>
   </ion-list>
