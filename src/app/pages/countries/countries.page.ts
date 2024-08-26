@@ -15,12 +15,7 @@ export class CountriesPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    /*this.dataProvider.load().subscribe((data: any) => {
-      if (data && data.countries) {
-          this.countries = data.countries;
-        }
-      });*/
-      this.dataProvider.fetch_data('countries').then((data: any)=> {this.countries = data;});
+    this.dataProvider.fetch_data('countries', null, false, true).then((data: any)=> {this.countries = data;});
   }
 
 }

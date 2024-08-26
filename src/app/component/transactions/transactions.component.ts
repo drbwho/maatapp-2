@@ -36,8 +36,8 @@ export class TransactionsComponent  implements OnInit {
     this.country = this.dataProvider.current.country;
 
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
-      this.parameters = data.filter((s) => s.type == 1); //paysants operations
-      this.fsparameters = data.filter((s) => s.type == 3); //solidarity operations
+      this.parameters = data.filter((s) => (this.account.type == 1 ? s.type == 1 : s.type == 2)); //paysants/group operations
+      //this.fsparameters = data.filter((s) => s.type == 3); //solidarity operations
     });
   }
 
@@ -49,7 +49,8 @@ export class TransactionsComponent  implements OnInit {
 
   async valider(){
       const alert = await this.alertCtrl.create({
-        header: 'Are you sure?',
+        header: 'Confirmation',
+        message: 'Are you sure?',
         buttons: [
           {
             text: 'No',
@@ -66,10 +67,10 @@ export class TransactionsComponent  implements OnInit {
   }
 
   async submit_operation(){
-    if(!this.amount){
+    if(!this.amount || !this.operation){
       const alert = await this.alertCtrl.create({
         header: 'Error',
-        message: 'Amount cannot be zero',
+        message: !this.amount ? 'Amount cannot be zero' : 'Please select a transaction!',
         buttons: [
           {
             text: 'Confirm',

@@ -30,10 +30,13 @@
   <ion-list>
     <ion-item *ngFor="let account of accounts" >
       <ion-label>
-        <h2>
-          {{account.owner}}
-          <ion-button class="ion-float-right" size="small" color="secondary" (click)="presentModal($event, account)"><ion-icon name="add"></ion-icon></ion-button>
-        </h2>
+        <ion-text [color]="account.type == 1 ? '' : 'primary'">
+          <h2>
+            <ion-icon *ngIf="account.type != 1" name="people"></ion-icon>
+            {{account.owner}}
+            <ion-button class="ion-float-right" size="small" color="secondary" (click)="presentModal($event, account)"><ion-icon name="add"></ion-icon></ion-button>
+          </h2>
+         </ion-text>
         <ion-note class="sum-info">
           <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
           <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}

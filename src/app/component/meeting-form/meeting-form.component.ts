@@ -16,7 +16,7 @@ export class MeetingFormComponent  implements OnInit {
 
   place: any;
   startedat: string;
-  pickerMaxDate: string;
+  pickerMinDate: string;
 
   constructor(
     private modalCtrl: ModalController,
@@ -25,8 +25,8 @@ export class MeetingFormComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
-     // max date = now for date pickers
-     this.pickerMaxDate = formatDate(new Date(), 'Y-MM-dd', ɵDEFAULT_LOCALE_ID);
+     // min date = now for date pickers
+     this.pickerMinDate = formatDate(new Date(), 'Y-MM-dd', ɵDEFAULT_LOCALE_ID);
   }
 
   dismiss(){
@@ -48,7 +48,8 @@ export class MeetingFormComponent  implements OnInit {
 
   async valider(){
     const alert = await this.alertCtrl.create({
-      header: 'Are you sure?',
+      header: 'Confirmation',
+      message: 'Are you sure?',
       buttons: [
         {
           text: 'No',

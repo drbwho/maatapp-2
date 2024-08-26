@@ -1,5 +1,5 @@
 import { ConfigData } from './config-data';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';
@@ -58,21 +58,30 @@ export class DataProvider {
     public events: Events,
     public config: ConfigData,
     public toast: ToastController,
+    public loadingcontroller: LoadingController
   ) {}
 
 
   // Get data from API/STORAGE
-  async fetch_data(type, typeid = '', force=false){
+  async fetch_data(type, typeid = '', force=false, showLoading = false){
     if(this[type] && !force){
       return new Promise((resolve)=>{
         resolve(this[type]);
       });
     }
+
+    let loading = null;
+    if(showLoading){
+      loading = await this.loadingcontroller.create({showBackdrop: false});
+      loading.present();
+    }
+
     let status = await Network.getStatus();
     //status.connected = false;
     if(!status.connected){
       // fetch from storage
       return this.storage.get(this.config.GET_FILE(type)).then((res)=>{
+        if(loading) {loading.dismiss();}
         if(res){
           return (res);
         }else{
@@ -97,9 +106,11 @@ export class DataProvider {
           next: (data: any) => {
             this[type] = data[type];
             this.storage.set(file, this[type]);
+            if(loading){loading.dismiss();}
             resolve(this[type]);
           },
           error: async (error) => {
+            if(loading){loading.dismiss();}
             console.log("Network Error!");
             const toast = await this.toast.create({
               message: 'Network error! Cannot check for updates...',
@@ -156,7 +167,7 @@ export class DataProvider {
         })
       })
     });
-  }  
+  }
 
   // Save locally new Operation
   async newOperation(meetingid, accountid, parameterid, parametername, amount){
@@ -276,7 +287,6 @@ export class DataProvider {
         {headers})
       .subscribe({
         next: (data: any) => {
-          console.log(data);
           resolve({status: 'success', message: ''});
         },
         error: async (error) => {
@@ -292,16 +302,19 @@ export class DataProvider {
   *
   */
   async syncOperation(meetingid, accountid, parameterid, amount){
-      let apiurl = this.config.GET_API_URL('operations', meetingid);
+    const loading = await this.loadingcontroller.create({showBackdrop: false});
+    loading.present();
 
-      const user = await this.user.getUser();
-      const headers =  new HttpHeaders({
-        'Authorization': 'Bearer ' + user.token,
-        'Accept': 'application/json'
-      });
+    let apiurl = this.config.GET_API_URL('operations', meetingid);
 
-      return new Promise((resolve)=>{
-        this.http
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
         .post(apiurl,
           {
             parameter: parameterid,
@@ -313,13 +326,15 @@ export class DataProvider {
         .subscribe({
           next: (data: any) => {
             console.log(data);
+            loading.dismiss();
             resolve(data);
           },
           error: async (error) => {
+            loading.dismiss();
             resolve({status: 'error', message: 'Network error'});
           }
         });
-     });
+    });
   }
 
   async closeUserAccount(account: any){

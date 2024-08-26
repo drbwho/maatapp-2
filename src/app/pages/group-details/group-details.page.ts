@@ -65,14 +65,14 @@ export class GroupDetailsPage implements OnInit {
   }
 
   update_accounts(){
-    this.dataProvider.fetch_data('accounts', this.groupId, true).then((data: any)=> {
+    this.dataProvider.fetch_data('accounts', this.groupId, true, true).then((data: any)=> {
       this.accounts = data;
       this.allaccounts = data;
     });
   }
 
   update_meetings(){
-    this.dataProvider.fetch_data('meetings', this.groupId, true).then(async (data: any)=> {
+    this.dataProvider.fetch_data('meetings', this.groupId, true, true).then(async (data: any)=> {
       // merge with local stored new meetings
       var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
       if(newmeetings != null && newmeetings.length){
@@ -161,7 +161,8 @@ export class GroupDetailsPage implements OnInit {
 
   async closeAccount(account){
     const alert = await this.alertCtrl.create({
-      header: 'Are you sure to close user account?',
+      header: 'Confirmation',
+      message: 'Are you sure to close user account?',
       buttons: [
         {
           text: 'No',
@@ -181,7 +182,8 @@ export class GroupDetailsPage implements OnInit {
 
   async cancelMeeting(meeting){
     const alert = await this.alertCtrl.create({
-      header: 'Are you sure to cancel the meeting?',
+      header: 'Confirmation',
+      message: 'Are you sure to cancel the meeting?',
       buttons: [
         {
           text: 'No',
@@ -201,7 +203,8 @@ export class GroupDetailsPage implements OnInit {
 
   async closeMeeting(meeting){
     const alert = await this.alertCtrl.create({
-      header: 'Are you sure to close the meeting?',
+      header: 'Confirmation',
+      message: 'Are you sure to close the meeting?',
       buttons: [
         {
           text: 'No',
@@ -232,6 +235,26 @@ export class GroupDetailsPage implements OnInit {
     await alert.present();
   }
 
+
+  async confirmUploadMeeting(meeting){
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmation',
+      message: 'Are you sure to upload pending transactions to the server?',
+      buttons: [
+        {
+          text: 'No'
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.uploadMeeting(meeting);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
   async uploadMeeting(meeting: any){
     let net = await Network.getStatus();
     if(!net.connected){
@@ -253,7 +276,7 @@ export class GroupDetailsPage implements OnInit {
       let message="";
       if(res.status.toLowerCase() == 'error'){
         header = "Error";
-        message = '<strong>' + res.name + '</strong><br/>' + res.message;
+        message = '<strong>' + res.name + '</strong>:<br/>' + res.message;
       }else{
         header = "Success";
         message = "Data uploaded";

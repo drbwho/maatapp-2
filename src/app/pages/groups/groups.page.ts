@@ -25,7 +25,7 @@ export class GroupsPage implements OnInit {
   ionViewWillEnter() {
     const countryId = this.route.snapshot.paramMap.get('countryId');
 
-    this.dataProvider.fetch_data('countries').then((data: any) =>{
+    this.dataProvider.fetch_data('countries', null, false, true).then((data: any) =>{
       this.country = data.find((s) => s.id == countryId);
       this.groups = this.country.groups;
       this.countryname = this.country.name;
@@ -37,7 +37,7 @@ export class GroupsPage implements OnInit {
     this.dataProvider.current.group = group;
     this.router.navigate(['/app/tabs/groups/'+ group.id], {state: {}});
   }
- 
+
   searcher(){
     if(this.queryText == ''){
       this.groups = this.country.groups;
@@ -59,5 +59,5 @@ export class GroupsPage implements OnInit {
       }
     });
   }
-  
+
 }
