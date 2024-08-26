@@ -8,6 +8,7 @@ import { Network } from '@capacitor/network';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { UserData } from '../../providers/user-data';
 import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
+import { HistoryComponent } from '../../component/history/history.component';
 
 @Component({
   selector: 'app-group-details',
@@ -329,6 +330,14 @@ export class GroupDetailsPage implements OnInit {
     if (data) {
       this.update_meetings();
     }
+  }
+
+  async openHistory(meeting: any){
+    const modal = await this.modalCtrl.create({
+      component: HistoryComponent,
+      componentProps: {meeting: meeting}
+    });
+    await modal.present();
   }
 
 }

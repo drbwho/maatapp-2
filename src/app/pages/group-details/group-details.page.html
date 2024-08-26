@@ -53,6 +53,9 @@
           <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || meeting.haspending > 0" size="small" color="secondary" (click)="closeMeeting(meeting)" ><ion-icon name="bag-check-outline"></ion-icon></ion-button>
           <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
+        <p class="actions">
+          <ion-button [disabled]="meeting.pending" size="small" color="success" (click)="openHistory(meeting)"><ion-icon name="document-text-outline"></ion-icon></ion-button>
+        </p>
       </ion-note>
     </ion-item>
     <ion-note *ngIf="!meetings || meetings.length == 0" class="ion-margin-left">

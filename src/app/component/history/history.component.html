@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>History of transactions</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-list lines="none" class="info-header">
+    <ion-item>
+      <ion-label>
+        <h2>Meeting: <strong>{{meetingplace}}</strong></h2>
+      </ion-label>
+      <ion-note slot="end"><strong>{{meetingdate}}</strong></ion-note>
+    </ion-item>
+  </ion-list>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let oper of operations">
+      <ion-note>
+      {{oper.operationdate}}
+      </ion-note>
+      <ion-label>
+        <p>{{oper.source}} {{oper.destination}}</p>
+      </ion-label>
+      <ion-label>
+        <h2>
+        {{oper.operation}}
+        </h2>
+      </ion-label>
+      <ion-note slot="end">
+        {{oper.credit}}{{oper.debit}}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+  
+</ion-content>

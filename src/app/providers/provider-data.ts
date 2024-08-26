@@ -208,6 +208,59 @@ export class DataProvider {
   }
 
   /*
+  * Get History of transactions
+  *
+  */
+  async getHistory(object: any, type=''){
+    let status = await Network.getStatus();
+    if(!status.connected){
+      return new Promise(async (resolve)=>{
+        const toast = await this.toast.create({
+          message: 'Network error! Cannot get history data...',
+          cssClass: 'toast-alert',
+          duration: 3000
+        });
+        toast.present();
+        resolve([]);
+      })
+    }
+
+    let loading = await this.loadingcontroller.create({showBackdrop: false});
+    loading.present();
+
+    let apiurl = this.config.GET_API_URL('operations', object.id);
+
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
+      .get(apiurl,{headers})
+      .subscribe({
+        next: (data: any) => {
+          loading.dismiss();
+          resolve(data);
+        },
+        error: async (error) => {
+          const toast = await this.toast.create({
+            message: 'Network error! Cannot get history data...',
+            cssClass: 'toast-alert',
+            duration: 3000
+          });
+          loading.dismiss().then(()=>{
+            toast.present();
+          });
+          resolve([]);
+        }
+      });
+    });
+  }
+
+
+  /*
   * Init Syncing
   *
   */
@@ -326,12 +379,14 @@ export class DataProvider {
         .subscribe({
           next: (data: any) => {
             console.log(data);
-            loading.dismiss();
-            resolve(data);
+            loading.dismiss().then(()=>{
+              resolve(data);
+            });
           },
           error: async (error) => {
-            loading.dismiss();
-            resolve({status: 'error', message: 'Network error'});
+            loading.dismiss().then(()=>{
+              resolve({status: 'error', message: 'Network error'});
+            });
           }
         });
     });
