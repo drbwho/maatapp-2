@@ -40,6 +40,12 @@
     <ion-row>
       <ion-col size="9">SF Still to be paid:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.sfrestearembourser | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
+    <ion-row *ngIf="account.type == 1">
+      <ion-col size="9">Open Loans:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.openloans}}</strong></ion-text></ion-col>
+    </ion-row>
+    <ion-row *ngIf="account.type == 1">
+      <ion-col size="9">Open SF Loans:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.sfopenloans}}</strong></ion-text></ion-col>
+    </ion-row>
    </ion-grid>
   </ion-card-content>
  </ion-card>

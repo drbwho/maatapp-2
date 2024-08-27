@@ -207,6 +207,19 @@ export class DataProvider {
     })
   }
 
+  clearPendingOperations(meeting: any){
+    return new Promise(async (resolve)=>{
+      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      //find index
+      let index = transactions.findIndex(s => s.meetingid == meeting.id);
+      transactions.splice(index, 1);//remove element from array
+      this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
+        this.events.publish('upload:updated');
+        resolve(true);
+      });
+    })
+  }
+
   /*
   * Get History of transactions
   *

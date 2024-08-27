@@ -12,11 +12,11 @@
     <ion-card-content>
       <ion-list>
         <ion-item>
-          <ion-label color="tertiary"><ion-icon name="location-outline"></ion-icon> Place:&nbsp;</ion-label>
+          <ion-label color="tertiary">Place:&nbsp;</ion-label>
           <ion-input type="input" [(ngModel)]="place" placeholder="" style="width: auto;"></ion-input>
         </ion-item>
         <ion-item class="light ion-margin-top">
-          <ion-label color="tertiary"><ion-icon name="calendar-number-outline"></ion-icon> Start date:</ion-label>
+          <ion-label color="tertiary">Start date:</ion-label>
           <ion-text class="seldatelabel" (click)="showSelectDateFrom()">
             {{startedat ? formatDate(startedat) : 'Select date'}}
           </ion-text>

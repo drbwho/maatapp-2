@@ -6,6 +6,7 @@ import { TransactionsComponent } from '../../component/transactions/transactions
 import { Events } from '../../providers/events';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
+import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 
 @Component({
   selector: 'app-meeting-details',
@@ -127,6 +128,16 @@ export class MeetingDetailsPage implements OnInit {
       // refresh accounts totals
       this.load_accounts();
     }
+  }
+
+  async showAccountInfo(account){
+    const modal = await this.modalCtrl.create({
+      component: AccountInfoComponent,
+      componentProps: {'account': account, 'currency': this.currency}
+    });
+    modal.present();
+
+    await modal.onWillDismiss();
   }
 
 }

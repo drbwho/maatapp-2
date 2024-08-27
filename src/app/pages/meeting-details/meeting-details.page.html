@@ -42,6 +42,7 @@
           <h2>
             <ion-icon *ngIf="account.type != 1" name="people"></ion-icon>
             {{account.owner}}
+            <ion-button class="ion-float-right" size="small" color="success" (click)="showAccountInfo(account)"><ion-icon name="information-outline"></ion-icon></ion-button>
             <ion-button class="ion-float-right" size="small" color="secondary" (click)="presentModal($event, account)"><ion-icon name="add"></ion-icon></ion-button>
           </h2>
          </ion-text>

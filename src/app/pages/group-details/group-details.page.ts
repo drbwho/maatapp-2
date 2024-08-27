@@ -340,4 +340,24 @@ export class GroupDetailsPage implements OnInit {
     await modal.present();
   }
 
+  async clearPendings(meeting: any){
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmation',
+      message: 'Are you sure to clear pending transactions?',
+      buttons: [
+        {
+          text: 'No'
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.dataProvider.clearPendingOperations(meeting).then(()=>{
+              this.update_meetings();
+            });
+          },
+        },
+      ],
+    });
+    await alert.present();  
+  }
 }

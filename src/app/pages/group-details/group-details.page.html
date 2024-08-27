@@ -32,7 +32,7 @@
   <ion-list *ngIf="segment == 'reunions' && grouptype > 0">
     <ion-item *ngFor="let meeting of meetings">
       <ion-label>
-      <ion-text [color]="meeting.pending?'danger':''">
+      <ion-text [color]="meeting.pending?'danger':''" [ngStyle]="{'text-decoration': meeting.cancelled ? 'line-through' : ''}">
         <h2>
         {{meeting.place}}
         </h2>
@@ -54,6 +54,7 @@
           <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
         <p class="actions">
+          <ion-button *ngIf="meeting.haspending && userRole > 1" size="small" color="danger" (click)="clearPendings(meeting)"><ion-icon name="trash-outline"></ion-icon></ion-button>
           <ion-button [disabled]="meeting.pending" size="small" color="success" (click)="openHistory(meeting)"><ion-icon name="document-text-outline"></ion-icon></ion-button>
         </p>
       </ion-note>
