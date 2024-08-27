@@ -67,7 +67,10 @@
     <ion-item *ngFor="let account of accounts" >
       <ion-label>
         <ion-text [color]="account.type == 1 ? '' : 'primary'">
-          <h2><strong>{{account.owner}}</strong></h2>
+          <h2>
+            <ion-icon *ngIf="account.type != 1" name="people"></ion-icon>&nbsp;
+            <strong>{{account.owner}}</strong>
+          </h2>
         </ion-text>
         <p>
           Credit avail.: <ion-text [color]="account.creditdisponible <= 0 ? 'danger': 'success'">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>

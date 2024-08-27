@@ -18,21 +18,26 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let oper of operations">
-      <ion-note>
-      {{oper.operationdate}}
-      </ion-note>
       <ion-label>
-        <p>{{oper.source}} {{oper.destination}}</p>
+        <ion-text color="secondary">
+          <ion-note class="operation-date">
+          {{oper.operationdate}}
+          </ion-note>
+        </ion-text>
+        <ion-text color="tertiary">
+          <h4>
+          {{oper.source}} <ion-icon name="arrow-forward-outline"></ion-icon> {{oper.destination}}
+          </h4>
+        </ion-text>
+        <ion-text color="primary">
+          <h3><strong>{{oper.operation}}</strong></h3>
+        </ion-text>
       </ion-label>
-      <ion-label>
-        <h2>
-        {{oper.operation}}
-        </h2>
-      </ion-label>
-      <ion-note slot="end">
-        {{oper.credit}}{{oper.debit}}
+      <ion-note slot="end" [ngStyle]="{'text-decoration': oper.is_cancelled ? 'line-through' : ''}" [color]="oper.is_cancelling ? 'danger' : ''">
+        <strong>{{oper.credit | number:'.2'}}{{oper.debit | number:'.2'}}</strong>
       </ion-note>
+
     </ion-item>
   </ion-list>
-  
+
 </ion-content>

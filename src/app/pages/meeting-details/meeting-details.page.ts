@@ -21,6 +21,7 @@ export class MeetingDetailsPage implements OnInit {
   groupid: string;
   meeting: any;
   accounts: any;
+  estimated_availability = "0.00";
 
   constructor(
     private dataProvider: DataProvider,
@@ -55,10 +56,38 @@ export class MeetingDetailsPage implements OnInit {
         return;
       }
       // load pending transactions for each account
-      this.accounts.forEach((acc) => {
+      this.accounts.forEach(async (acc) => {
         acc.transactions = transactions.filter((s)=>s.accountid == acc.id && s.meetingid == this.meeting.id);
+        if(acc.type == 2){
+          this.estimate_group_credit(acc).then((res)=>this.estimated_availability = res);
+        }
       });
     });
+  }
+
+  /*
+  * Estimate Group credit from pending transactions
+  *
+  */
+  estimate_group_credit (account: any): any {
+    return new Promise((resolve)=>{
+      let transactions = this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
+        let trans = data.filter(s=>s.meetingid == this.meeting.id);
+        let credittypes = ['ECP', 'RCB', 'REM', 'SFREM', 'FIN', 'ENF', 'PCO', 'CFS', 'AST', 'AID', 'SFND'];
+        let debittypes = ['RCP', 'EMP', 'SFEMP', 'AIN', ]
+        let params = await this.storage.get(this.config.GET_FILE('params'));
+        var disponible = parseFloat(account.creditdisponible);
+        trans.forEach((tr)=>{
+          let pcode = (params.find((s) => s.id == tr.parameterid)).code;
+          if(credittypes.includes(pcode)){
+            disponible += parseFloat(tr.amount);
+          }else if(debittypes.includes(pcode)){
+            disponible -= parseFloat(tr.amount);
+          }
+        })
+        resolve(disponible);
+      })
+    })
   }
 
   async deleleTransaction(tr: any){

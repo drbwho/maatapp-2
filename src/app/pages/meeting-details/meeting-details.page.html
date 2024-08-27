@@ -23,6 +23,14 @@
         <ion-note>New transactions will be locally stored until uploading from the Group's page</ion-note>
       </div>
     </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="secondary">
+        <h6>Estimated Group Credit Disponible:</h6>
+        </ion-text>
+      </ion-label>
+      <ion-badge slot="end" color="danger">{{estimated_availability | number:'.2'}}</ion-badge>
+    </ion-item>
   </ion-list>
 </ion-header>
 
@@ -40,6 +48,7 @@
         <ion-note class="sum-info">
           <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
           <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
+          <ion-text *ngIf="account.openloans">({{account.openloans}})</ion-text>
         </ion-note>
         <ion-grid class="transactions ion-no-padding">
           <ion-row>
