@@ -51,7 +51,7 @@
           <ion-button *ngIf="(meeting.haspending || meeting.pending) && userRole > 1" size="small" color="danger" (click)="confirmUploadMeeting(meeting)"><ion-icon name="cloud-upload"></ion-icon></ion-button>
           <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat" size="small" color="tertiary" (click)="navto(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
           <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || meeting.haspending > 0" size="small" color="secondary" (click)="closeMeeting(meeting)" ><ion-icon name="bag-check-outline"></ion-icon></ion-button>
-          <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting)"><ion-icon name="ban-outline"></ion-icon></ion-button>
+          <ion-button *ngIf="userRole > 1" [disabled]="meeting.cancelled || meeting.has_transactions || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting)"><ion-icon name="ban-outline"></ion-icon></ion-button>
         </p>
         <p class="actions">
           <ion-button *ngIf="meeting.haspending && userRole > 1" size="small" color="danger" (click)="clearPendings(meeting)"><ion-icon name="trash-outline"></ion-icon></ion-button>

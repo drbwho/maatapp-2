@@ -12,6 +12,7 @@ import { DataProvider } from '../../providers/provider-data';
 })
 export class MeetingFormComponent  implements OnInit {
   @Input() group: any;
+  @Input() meetings: any;
   @ViewChild('dateFromModal') datefromModal: IonModal;
 
   place: any;
@@ -65,11 +66,33 @@ export class MeetingFormComponent  implements OnInit {
     await alert.present();
   }
 
-  submit_meeting(){
+  async submit_meeting(){
     let date = format(parseISO(this.startedat), 'yyyy-MM-dd',{locale: enUS});
-    this.dataProvider.newMeeting(this.group.id, this.place, date).then(()=>{
-      this.modalCtrl.dismiss(true);
-    });
+
+    // Check if meeting exists the same date
+    let day_exists = false;
+    this.meetings.forEach(async (m)=>{
+      if(m.startedat == date){
+        day_exists = true;
+      }
+    })
+
+    if(day_exists){
+      const alert = await this.alertCtrl.create({
+        header: 'Error',
+        message: 'There is already a meeting in this day!',
+        buttons: [
+          {
+            text: 'Ok',
+          },
+        ], 
+      });
+      await alert.present();
+    }else{
+      this.dataProvider.newMeeting(this.group.id, this.place, date).then(()=>{
+        this.modalCtrl.dismiss(true);
+      });
+    }
   }
 }
 

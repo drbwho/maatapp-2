@@ -7,6 +7,7 @@ import { Events } from '../../providers/events';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
+import { isThisSecond } from 'date-fns';
 
 @Component({
   selector: 'app-meeting-details',
@@ -22,7 +23,9 @@ export class MeetingDetailsPage implements OnInit {
   groupid: string;
   meeting: any;
   accounts: any;
-  estimated_availability = "0.00";
+  new_credit = 0.00;
+  new_balance = 0.00;
+  new_cashbox = 0.00;
 
   constructor(
     private dataProvider: DataProvider,
@@ -60,7 +63,7 @@ export class MeetingDetailsPage implements OnInit {
       this.accounts.forEach(async (acc) => {
         acc.transactions = transactions.filter((s)=>s.accountid == acc.id && s.meetingid == this.meeting.id);
         if(acc.type == 2){
-          this.estimate_group_credit(acc).then((res)=>this.estimated_availability = res);
+          this.estimate_group_totals(acc);
         }
       });
     });
@@ -70,25 +73,31 @@ export class MeetingDetailsPage implements OnInit {
   * Estimate Group credit from pending transactions
   *
   */
-  estimate_group_credit (account: any): any {
-    return new Promise((resolve)=>{
+  estimate_group_totals (account: any): any {
       let transactions = this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
         let trans = data.filter(s=>s.meetingid == this.meeting.id);
         let credittypes = ['ECP', 'RCB', 'REM', 'SFREM', 'FIN', 'ENF', 'PCO', 'CFS', 'AST', 'AID', 'SFND'];
         let debittypes = ['RCP', 'EMP', 'SFEMP', 'AIN', ]
         let params = await this.storage.get(this.config.GET_FILE('params'));
-        var disponible = parseFloat(account.creditdisponible);
+        var credit = parseFloat(account.creditdisponible);
+        var balance = parseFloat(account.balance);
+        var cache = 0.00;
         trans.forEach((tr)=>{
           let pcode = (params.find((s) => s.id == tr.parameterid)).code;
           if(credittypes.includes(pcode)){
-            disponible += parseFloat(tr.amount);
+            credit += parseFloat(tr.amount);
+            balance += parseFloat(tr.amount);
+            cache += parseFloat(tr.amount);
           }else if(debittypes.includes(pcode)){
-            disponible -= parseFloat(tr.amount);
+            credit -= parseFloat(tr.amount);
+            balance += parseFloat(tr.amount);
+            cache -= parseFloat(tr.amount);
           }
         })
-        resolve(disponible);
+        this.new_credit = credit;
+        this.new_balance = balance;
+        this.new_cashbox = cache;
       })
-    })
   }
 
   async deleleTransaction(tr: any){

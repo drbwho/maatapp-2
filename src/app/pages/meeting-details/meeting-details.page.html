@@ -26,10 +26,24 @@
     <ion-item>
       <ion-label>
         <ion-text color="secondary">
-        <h6>New Credit Disponible:</h6>
+        <h6>Cash</h6>
         </ion-text>
       </ion-label>
-      <ion-badge slot="end" color="danger">{{estimated_availability | number:'.2'}}</ion-badge>
+      <ion-badge  color="success">{{new_cashbox | number:'.2'}}</ion-badge>
+      &nbsp;
+      <ion-label>
+        <ion-text color="secondary">
+        <h6>Balance:</h6>
+        </ion-text>
+      </ion-label>
+      <ion-badge  color="danger">{{new_balance | number:'.2'}}</ion-badge>
+      &nbsp;
+      <ion-label>
+        <ion-text color="secondary">
+        <h6>Credit:</h6>
+        </ion-text>
+      </ion-label>
+      <ion-badge  color="danger">{{new_credit | number:'.2'}}</ion-badge>
     </ion-item>
   </ion-list>
 </ion-header>

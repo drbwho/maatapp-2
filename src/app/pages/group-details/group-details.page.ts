@@ -322,7 +322,7 @@ export class GroupDetailsPage implements OnInit {
 
     const modal = await this.modalCtrl.create({
       component: MeetingFormComponent,
-      componentProps: {group: this.group}
+      componentProps: {group: this.group, meetings: this.meetings}
     });
     await modal.present();
 
