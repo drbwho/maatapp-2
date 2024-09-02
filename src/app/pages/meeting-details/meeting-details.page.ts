@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { isThisSecond } from 'date-fns';
+import { tr } from 'date-fns/locale';
 
 @Component({
   selector: 'app-meeting-details',
@@ -125,7 +126,7 @@ export class MeetingDetailsPage implements OnInit {
     await alert.present();
   }
 
-  async presentModal(event: Event, account: any) {
+  async addTransactionModal(event: Event, account: any) {
     const modal = await this.modalCtrl.create({
       component: TransactionsComponent,
       componentProps: {account: account}
@@ -140,9 +141,23 @@ export class MeetingDetailsPage implements OnInit {
   }
 
   async showAccountInfo(account){
+    let group_totals = null;
+    if(account.type == 2){
+      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      transactions = transactions.filter((s)=>s.meetingid == this.meeting.id);
+      let trs = [];
+      transactions.forEach((tr)=>{
+        if(trs[tr.parametername] != undefined){
+          trs[tr.parametername] += tr.amount;
+        }else{
+          trs[tr.parametername] = tr.amount;
+        }
+      })
+      group_totals = {'transactions': trs}
+    }
     const modal = await this.modalCtrl.create({
       component: AccountInfoComponent,
-      componentProps: {'account': account, 'currency': this.currency}
+      componentProps: {'account': account, 'currency': this.currency, 'show_transactions': false, 'group_totals': group_totals}
     });
     modal.present();
 

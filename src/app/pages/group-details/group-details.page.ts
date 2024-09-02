@@ -153,7 +153,7 @@ export class GroupDetailsPage implements OnInit {
   async showAccountInfo(account){
     const modal = await this.modalCtrl.create({
       component: AccountInfoComponent,
-      componentProps: {'account': account, 'currency': this.currency}
+      componentProps: {'account': account, 'currency': this.currency, 'show_transactions': true}
     });
     modal.present();
 

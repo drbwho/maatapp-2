@@ -49,13 +49,14 @@
    </ion-grid>
   </ion-card-content>
  </ion-card>
- <ion-text color="secondary">
+
+ <ion-text color="secondary" *ngIf="show_transactions">
   <ion-label>
     <ion-icon name="swap-horizontal-outline" class="account-type"></ion-icon>
     Transactions
   </ion-label>
 </ion-text>
- <ion-card>
+ <ion-card *ngIf="show_transactions">
   <ion-card-content>
     <ion-grid>
       <ion-row *ngFor="let oper of account.operations | keyvalue">
@@ -64,5 +65,22 @@
     </ion-grid>
   </ion-card-content>
  </ion-card>
+
+ <ion-text color="secondary" *ngIf="group_totals != null && group_totals.transactions != undefined">
+  <ion-label>
+    <ion-icon name="swap-horizontal-outline" class="account-type"></ion-icon>
+    Current Meeting Totals
+  </ion-label>
+</ion-text>
+ <ion-card *ngIf="group_totals != null && group_totals.transactions != undefined">
+  <ion-card-content>
+    <ion-grid>
+      <ion-row *ngFor="let oper of group_totals.transactions | keyvalue">
+        <ion-col size="9">{{oper.key}}</ion-col><ion-col class="ion-text-end">{{oper.value | number:'.2'}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+ </ion-card>
+
 </ion-content>
 
