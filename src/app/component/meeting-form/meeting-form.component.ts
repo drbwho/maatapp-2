@@ -28,6 +28,7 @@ export class MeetingFormComponent  implements OnInit {
   ngOnInit() {
      // min date = now for date pickers
      this.pickerMinDate = formatDate(new Date(), 'Y-MM-dd', ɵDEFAULT_LOCALE_ID);
+     this.startedat = formatDate(new Date(), 'Y-MM-dd', ɵDEFAULT_LOCALE_ID);
   }
 
   dismiss(){

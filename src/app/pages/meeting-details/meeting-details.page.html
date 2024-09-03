@@ -61,7 +61,7 @@
                 <ion-icon *ngIf="account.type == 1" name="information-outline"></ion-icon>
                 <ion-icon *ngIf="account.type != 1" name="cash-outline"></ion-icon>
               </ion-button>
-              <ion-button class="ion-float-right" size="small" color="secondary" (click)="addTransactionModal($event, account)"><ion-icon name="add"></ion-icon></ion-button>
+              <ion-button [disabled]="meeting.endedat" class="ion-float-right" size="small" color="secondary" (click)="addTransactionModal($event, account)"><ion-icon name="add"></ion-icon></ion-button>
             </ion-note>
           </h2>
          </ion-text>
@@ -85,7 +85,7 @@
                 <p>
                   {{tr.parametername}}: <strong>{{tr.amount | number:'.2'}}</strong>
                 </p>
-                <ion-button size="small" color="danger" slot="end" (click)="deleleTransaction(tr)"><ion-icon name="close"></ion-icon></ion-button>
+                <ion-button [disabled]="meeting.endedat" size="small" color="danger" slot="end" (click)="deleleTransaction(tr)"><ion-icon name="close"></ion-icon></ion-button>
               </ion-item>
             </ion-col>
           </ion-row>

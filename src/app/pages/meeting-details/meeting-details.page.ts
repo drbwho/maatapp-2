@@ -91,7 +91,7 @@ export class MeetingDetailsPage implements OnInit {
             cache += parseFloat(tr.amount);
           }else if(debittypes.includes(pcode)){
             credit -= parseFloat(tr.amount);
-            balance += parseFloat(tr.amount);
+            balance -= parseFloat(tr.amount);
             cache -= parseFloat(tr.amount);
           }
         })
@@ -142,17 +142,20 @@ export class MeetingDetailsPage implements OnInit {
 
   async showAccountInfo(account){
     let group_totals = null;
+
     if(account.type == 2){
-      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      transactions = transactions.filter((s)=>s.meetingid == this.meeting.id);
       let trs = [];
-      transactions.forEach((tr)=>{
-        if(trs[tr.parametername] != undefined){
-          trs[tr.parametername] += tr.amount;
-        }else{
-          trs[tr.parametername] = tr.amount;
-        }
-      })
+      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      if(transactions){
+        transactions = transactions.filter((s)=>s.meetingid == this.meeting.id);
+        transactions.forEach((tr)=>{
+          if(trs[tr.parametername] != undefined){
+            trs[tr.parametername] += tr.amount;
+          }else{
+            trs[tr.parametername] = tr.amount;
+          }
+        })
+      }
       group_totals = {'transactions': trs}
     }
     const modal = await this.modalCtrl.create({

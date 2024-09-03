@@ -95,7 +95,7 @@ export class GroupDetailsPage implements OnInit {
     });
   }
 
-  navto(meeting: any){
+  showTransactions(meeting: any){
     this.dataProvider.current.meeting = meeting;
     this.router.navigate(['/app/tabs/meetings/'+ meeting.id], {state: {}});
   }
@@ -281,8 +281,6 @@ export class GroupDetailsPage implements OnInit {
       }else{
         header = "Success";
         message = "Data uploaded";
-        this.update_meetings();
-        this.update_accounts();
       }
       const alert = await this.alertCtrl.create({
         header: header,
@@ -293,6 +291,8 @@ export class GroupDetailsPage implements OnInit {
           },
         ],
       });
+      this.update_meetings();
+      this.update_accounts();
       await alert.present();
     })
   }

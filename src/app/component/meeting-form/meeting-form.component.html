@@ -17,7 +17,8 @@
         </ion-item>
         <ion-item class="light ion-margin-top">
           <ion-label color="tertiary">Start date:</ion-label>
-          <ion-text class="seldatelabel" (click)="showSelectDateFrom()">
+          <ion-input type="input" disabled [(ngModel)]="startedat" placeholder="" style="width: auto;"></ion-input>
+          <!-- <ion-text class="seldatelabel" (click)="showSelectDateFrom()">
             {{startedat ? formatDate(startedat) : 'Select date'}}
           </ion-text>
           <ion-icon slot="end" class="clear-date" name="close-circle" (click)="clearDate()"></ion-icon>
@@ -31,7 +32,7 @@
                 presentation="date"
                 [showDefaultButtons]="true" ></ion-datetime>
             </ng-template>
-          </ion-modal>
+          </ion-modal>-->
         </ion-item>
       </ion-list>
       <ion-button color="tertiary" (click)="valider()" size="small">Save</ion-button>

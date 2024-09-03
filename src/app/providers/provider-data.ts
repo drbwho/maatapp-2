@@ -2,14 +2,13 @@ import { ConfigData } from './config-data';
 import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { EventEmitter, Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';
+import { Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';
 import { Network } from '@capacitor/network';
 import {v4 as uuidv4} from 'uuid';
 
 import { Router } from '@angular/router';
 import { UserData } from './user-data';
 import { Events } from './events';
-import { stat } from 'fs';
 import { formatDate } from '@angular/common';
 
 interface Current {
@@ -23,7 +22,8 @@ interface Transaction {
   accountid: any,
   parameterid: any,
   parametername: any,
-  amount: any
+  amount: any,
+  inputdate: any
 }
 
 interface Meeting {
@@ -176,7 +176,8 @@ export class DataProvider {
       accountid: accountid,
       parameterid: parameterid,
       parametername: parametername,
-      amount: amount
+      amount: amount,
+      inputdate: formatDate(new Date(), 'Y-MM-dd H:mm:ss', ɵDEFAULT_LOCALE_ID)
     };
 
     return new Promise((resolve)=>{
@@ -210,9 +211,10 @@ export class DataProvider {
   clearPendingOperations(meeting: any){
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      transactions = transactions.filter(s => s.meetingid != meeting.id);
       //find index
-      let index = transactions.findIndex(s => s.meetingid == meeting.id);
-      transactions.splice(index, 1);//remove element from array
+      /*let index = transactions.findIndex(s => s.meetingid == meeting.id);
+      transactions.splice(index, 1);//remove element from array*/
       this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
         this.events.publish('upload:updated');
         resolve(true);
@@ -308,7 +310,7 @@ export class DataProvider {
     return new Promise(async (resolve)=>{
       var res: any = {status: 'success', message: ''};
       for(let tr of transactions){
-        res = await this.syncOperation(tr.meetingid, tr.accountid, tr.parameterid, tr.amount);
+        res = await this.syncOperation(tr.meetingid, tr.accountid, tr.parameterid, tr.amount, tr.inputdate);
         //if error stop uploading and return
         if(res.status.toLowerCase() == 'error'){
           // return name of account
@@ -320,6 +322,11 @@ export class DataProvider {
         }
         //success
         this.delOperation(tr);
+      }
+      //Close meeting after succesfully uploading transactions
+      if(meeting.endedat && res.status.toLowerCase() != 'error'){
+        meeting.pending = false;
+        await this.closeMeeting(meeting);
       }
       resolve(res);
     })
@@ -345,7 +352,7 @@ export class DataProvider {
           newid: meeting.id,
           idgroup: meeting.idgroup,
           startedat: meeting.startedat,
-          endedat: meeting.endedat,
+          endedat: null,
           place: meeting.place,
           iduser: meeting.iduser,
           cancelled: meeting.cancelled
@@ -367,7 +374,7 @@ export class DataProvider {
   * Sync operations to Server
   *
   */
-  async syncOperation(meetingid, accountid, parameterid, amount){
+  async syncOperation(meetingid, accountid, parameterid, amount, inputdate){
     const loading = await this.loadingcontroller.create({showBackdrop: false});
     loading.present();
 
@@ -386,7 +393,9 @@ export class DataProvider {
             parameter: parameterid,
             accountid: accountid,
             amount: amount,
-            type: ''
+            inputdate: inputdate,
+            type: '',
+            usetimezone: 0
           },
           {headers})
         .subscribe({
