@@ -82,7 +82,7 @@ export class TransactionsComponent  implements OnInit {
     }
 
     let operation_name = (this.parameters.find((s)=> s.id == this.operation)).name;
-    this.dataProvider.newOperation(this.meeting.id, this.account.id, this.operation, operation_name, this.amount).then(async (res: any)=>{
+    this.dataProvider.newOperation(this.meeting.id, this.account, this.group, this.operation, operation_name, this.amount).then(async (res: any)=>{
       if(res.status != 'success'){
         const alert = await this.alertCtrl.create({
           header: 'Error',

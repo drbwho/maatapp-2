@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { UserData } from './user-data';
 import { Events } from './events';
 import { formatDate } from '@angular/common';
+import { OperationTools } from './operation-tools';
 
 interface Current {
   country?: any;
@@ -58,7 +59,8 @@ export class DataProvider {
     public events: Events,
     public config: ConfigData,
     public toast: ToastController,
-    public loadingcontroller: LoadingController
+    public loadingcontroller: LoadingController,
+    private operationTools: OperationTools
   ) {}
 
 
@@ -170,17 +172,23 @@ export class DataProvider {
   }
 
   // Save locally new Operation
-  async newOperation(meetingid, accountid, parameterid, parametername, amount){
+  async newOperation(meetingid, account, group, parameterid, parametername, amount){
     var trn: Transaction = {
       meetingid: meetingid,
-      accountid: accountid,
+      accountid: account.id,
       parameterid: parameterid,
       parametername: parametername,
       amount: amount,
       inputdate: formatDate(new Date(), 'Y-MM-dd H:mm:ss', ɵDEFAULT_LOCALE_ID)
     };
 
-    return new Promise((resolve)=>{
+    return new Promise(async (resolve)=>{
+      //Check operation against account totals
+      let check: any = await this.operationTools.check_operation(account, group, trn);
+      if(check.status != 'success'){
+        resolve({'status': 'error', 'message': check.message});
+        return;
+      }
       this.storage.get(this.config.TRANSACTIONS_FILE).then((res)=>{
         var trns: Transaction[] = [];
         if(res){
