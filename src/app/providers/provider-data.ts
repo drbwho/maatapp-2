@@ -287,7 +287,7 @@ export class DataProvider {
   * Init Syncing
   *
   */
-  async uloadOperations(meeting){
+  async uploadOperations(meeting){
     // First sync new meeting
     if(meeting.pending){
       let newmeet: any = await this.syncMeeting(meeting);
@@ -317,6 +317,14 @@ export class DataProvider {
     transactions = transactions.filter(s=>s.meetingid == meeting.id);
     return new Promise(async (resolve)=>{
       var res: any = {status: 'success', message: ''};
+      //Clear previous uploading errors
+      var upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
+      if(upload_errors) {
+        upload_errors = upload_errors.filter((s)=>s.meetingid != meeting.id);
+      }else{
+        upload_errors = [];
+      }
+      var found_errors = false; 
       for(let tr of transactions){
         res = await this.syncOperation(tr.meetingid, tr.accountid, tr.parameterid, tr.amount, tr.inputdate);
         //if error stop uploading and return
@@ -325,14 +333,21 @@ export class DataProvider {
           let accounts = await this.storage.get(this.config.GET_FILE('accounts'));
           let account = accounts.find(s => s.id == tr.accountid);
           res.name = account.owner;
-          resolve(res);
-          break;
+          upload_errors.push({meetingid: tr.meetingid, accountid: tr.accountid, parameterid: tr.parameterid, message: res.message});
+          found_errors = true;
+          //resolve(res);
+          //break;
+        }else{
+          //success
+          this.delOperation(tr);
         }
-        //success
-        this.delOperation(tr);
+      }
+      this.storage.set(this.config.UPLOAD_ERRORS_FILE, upload_errors);
+      if(found_errors){
+        resolve({'status': 'error', 'message': 'Uploading finished with errors! Please consult the transactions page'});
       }
       //Close meeting after succesfully uploading transactions
-      if(meeting.endedat && res.status.toLowerCase() != 'error'){
+      if(meeting.endedat){
         meeting.pending = false;
         await this.closeMeeting(meeting);
       }

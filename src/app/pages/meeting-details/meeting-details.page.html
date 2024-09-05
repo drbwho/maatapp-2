@@ -72,7 +72,7 @@
         </ion-note>
         <ion-grid class="transactions ion-no-padding">
           <ion-row>
-            <ion-col size="6">
+            <ion-col size="5">
               <p>
                 Credit disp: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
               </p>
@@ -82,9 +82,12 @@
             </ion-col>
             <ion-col>
               <ion-item color="light" *ngFor="let tr of account.transactions">
-                <p>
-                  {{tr.parametername}}: <strong>{{tr.amount | number:'.2'}}</strong>
-                </p>
+                <div>
+                  <ion-note color="danger" *ngIf="tr.error"><ion-icon name="warning"></ion-icon> {{tr.error}}</ion-note>
+                  <p>
+                    {{tr.parametername}}: <strong>{{tr.amount | number:'.2'}}</strong>
+                  </p>
+                </div>
                 <ion-button [disabled]="meeting.endedat" size="small" color="danger" slot="end" (click)="deleleTransaction(tr)"><ion-icon name="close"></ion-icon></ion-button>
               </ion-item>
             </ion-col>

@@ -272,12 +272,12 @@ export class GroupDetailsPage implements OnInit {
       return;
     }
     //upload all pending meeting transactions
-    this.dataProvider.uloadOperations(meeting).then(async (res:any) => {
+    this.dataProvider.uploadOperations(meeting).then(async (res:any) => {
       let header="";
       let message="";
       if(res.status.toLowerCase() == 'error'){
         header = "Error";
-        message = '<strong>' + res.name + '</strong>:<br/>' + res.message;
+        message = res.message;
       }else{
         header = "Success";
         message = "Data uploaded";
