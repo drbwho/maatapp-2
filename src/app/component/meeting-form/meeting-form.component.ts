@@ -73,10 +73,24 @@ export class MeetingFormComponent  implements OnInit {
     // Check if meeting exists the same date
     let day_exists = false;
     this.meetings.forEach(async (m)=>{
-      if(m.startedat == date){
+      if(m.startedat == date && !m.cancelled){
         day_exists = true;
       }
     })
+
+    if(this.place == undefined || !this.place.trim()){
+      const alert = await this.alertCtrl.create({
+        header: 'Error',
+        message: 'Place cannot be empty!',
+        buttons: [
+          {
+            text: 'Ok',
+          },
+        ], 
+      });
+      await alert.present();
+      return;  
+    }
 
     if(day_exists){
       const alert = await this.alertCtrl.create({
