@@ -60,21 +60,21 @@ export class MeetingDetailsPage implements OnInit {
     this.dataProvider.fetch_data('accounts', this.group.id, true).then(async (data: any)=> {
       this.accounts = data.filter((s)=> s.statut == 0); //active accounts
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      if(transactions == null){
-        return;
-      }
       let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
+      
       // load pending transactions for each account
       this.accounts.forEach(async (acc) => {
-        acc.transactions = transactions.filter((s)=>s.accountid == acc.id && s.meetingid == this.meeting.id);
-        //append upload errors to transactions
-        if(upload_errors){
-          acc.transactions.forEach((tr)=>{
-            let uplerr = upload_errors.find((s)=> s.meetingid == tr.meetingid && s.accountid == tr.accountid && s.parameterid == tr.parameterid);
-            if(uplerr){
-              tr.error = uplerr.message;
-            }
-          });
+        if(transactions){
+          //append upload errors to transactions
+          acc.transactions = transactions.filter((s)=>s.accountid == acc.id && s.meetingid == this.meeting.id);
+          if(upload_errors){
+            acc.transactions.forEach((tr)=>{
+              let uplerr = upload_errors.find((s)=> s.meetingid == tr.meetingid && s.accountid == tr.accountid && s.parameterid == tr.parameterid);
+              if(uplerr){
+                tr.error = uplerr.message;
+              }
+            });
+          }
         }
         if(acc.type == 2){
           this.new_totals = await this.operTools.estimate_account_totals(acc, this.meeting.id);

@@ -33,8 +33,11 @@ export class OperationTools {
         balance: 0.00,
         cash: 0.00
       };
+      let trans = [];
       this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
-        let trans = data.filter(s=>s.meetingid == meetingid);     
+        if(data){
+          trans = data.filter(s=>s.meetingid == meetingid);
+        }
         let params = await this.storage.get(this.config.GET_FILE('params'));
         totals.credit = parseFloat(account.creditdisponible);
         totals.balance = parseFloat(account.balance);
@@ -50,7 +53,7 @@ export class OperationTools {
             totals.balance -= parseFloat(tr.amount);
             totals.cash -= parseFloat(tr.amount);
           }
-        })
+        });
         resolve(totals);
       })
     });
@@ -69,8 +72,8 @@ export class OperationTools {
         group_account = account;
       }else{
         group_account = group_account.find((s)=>s.idowner == group.id);
-      }console.log(group_account)
-      let group_totals = await this.estimate_account_totals(group_account, transaction.meetingid);console.log(group_totals)
+      }
+      let group_totals = await this.estimate_account_totals(group_account, transaction.meetingid);
       switch(pcode){
         case 'EMP':
           if(transaction.amount > account.creditdisponible){
