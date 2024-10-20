@@ -124,7 +124,11 @@ export class DataProvider {
             this.storage.get(this.config.GET_FILE(type)).then((res)=>{
               if(res){
                 console.log('type: ' + type + ' fetching from storage...');
-                resolve(res);
+                if(type == 'accounts' || type == 'meetings'){
+                  resolve(res.filter(s => s.idgroup == typeid));
+                }else{
+                  resolve(res);
+                }
               }else{
                 resolve(fetch("../../assets/data/meetings.json").then(res=>res.json()).then(json=>{
                   this[type] = json.meetings;
@@ -214,6 +218,20 @@ export class DataProvider {
         resolve(true);
       });
     })
+  }
+
+  async refreshMeetingHistory(meeting: any){
+    let history: any = await this.getHistory(meeting);
+    history = history.operations;
+    if(!history || !history.length){
+      return;
+    }
+    let old_history = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
+    if(old_history && old_history.length){
+      old_history = old_history.filter(s => s.meetingid == meeting.id);
+      history = [...old_history, ...history];
+    }
+    this.storage.set(this.config.HISTORY_TRANSACTIONS_FILE, history);
   }
 
   clearPendingOperations(meeting: any){
@@ -339,6 +357,7 @@ export class DataProvider {
           //break;
         }else{
           //success
+          //delete pending operation
           this.delOperation(tr);
         }
       }

@@ -77,6 +77,8 @@ export class MeetingDetailsPage implements OnInit {
           }
         }
         if(acc.type == 2){
+          // get meeting history from api
+          await this.dataProvider.refreshMeetingHistory(this.meeting);
           this.new_totals = await this.operTools.estimate_account_totals(acc, this.meeting.id);
         }
       });

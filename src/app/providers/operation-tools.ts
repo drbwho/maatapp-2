@@ -54,6 +54,22 @@ export class OperationTools {
             totals.cash -= parseFloat(tr.amount);
           }
         });
+        // iterate already uploaded transactions
+        let uploaded_transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
+        if(uploaded_transactions && uploaded_transactions.length){
+          uploaded_transactions = uploaded_transactions.filter(s => s.idmeeting == meetingid);
+          if(uploaded_transactions.length){
+            uploaded_transactions.forEach((tr)=>{console.log(params);
+              let pcode = (params.find((s) => s.id == tr.idparameter)).code;
+              // calculate only cash from uploaded transactions
+              if(this.credit_operations.includes(pcode)){
+                totals.cash += parseFloat(tr.credit ? tr.credit : tr.debit);
+              }else if(this.debit_operations.includes(pcode)){
+                totals.cash -= parseFloat(tr.credit ? tr.credit : tr.debit);
+              }
+            });
+          }
+        }
         resolve(totals);
       })
     });
