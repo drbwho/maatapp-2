@@ -59,7 +59,7 @@ export class OperationTools {
         if(uploaded_transactions && uploaded_transactions.length){
           uploaded_transactions = uploaded_transactions.filter(s => s.idmeeting == meetingid);
           if(uploaded_transactions.length){
-            uploaded_transactions.forEach((tr)=>{console.log(params);
+            uploaded_transactions.forEach((tr)=>{
               let pcode = (params.find((s) => s.id == tr.idparameter)).code;
               // calculate only cash from uploaded transactions
               if(this.credit_operations.includes(pcode)){

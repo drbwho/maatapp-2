@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
+import { ConfigData } from '../../providers/config-data';
 
 @Component({
   selector: 'app-groups',
@@ -16,7 +18,9 @@ export class GroupsPage implements OnInit {
   constructor(
     private dataProvider: DataProvider,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private storage: Storage,
+    private config: ConfigData
   ) { }
 
   ngOnInit() {
@@ -29,6 +33,10 @@ export class GroupsPage implements OnInit {
       this.country = data.find((s) => s.id == countryId);
       this.groups = this.country.groups;
       this.countryname = this.country.name;
+      //Load Country's parameters
+      this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
+        this.storage.set(this.config.GET_FILE('params'), data);
+      });
     });
   }
 
