@@ -36,8 +36,14 @@
       <ion-note slot="end" [ngStyle]="{'text-decoration': oper.is_cancelled ? 'line-through' : ''}" [color]="oper.is_cancelling ? 'danger' : ''">
         <strong>{{oper.credit | number:'.2'}}{{oper.debit | number:'.2'}}</strong>
       </ion-note>
-
     </ion-item>
+    <ion-row *ngIf="!operations || operations.length == 0">
+      <ion-col>
+        <ion-note class="ion-margin-left">
+        Meeting has no transactions
+        </ion-note>
+      </ion-col>
+    </ion-row>
   </ion-list>
 
 </ion-content>
