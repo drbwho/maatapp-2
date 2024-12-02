@@ -198,7 +198,13 @@ export class DataProvider {
         if(res){
          trns = res;
         }
-        trns.push(trn);
+        //Insert or update transaction
+        let index = trns.findIndex((s)=> s.meetingid == meetingid && s.accountid == account.id && s.parameterid == parameterid); console.log(index)
+        if(index >= 0){
+          trns[index] = trn;
+        }else{
+          trns.push(trn);
+        }
         this.storage.set(this.config.TRANSACTIONS_FILE, trns).then((res)=>{
           this.events.publish('upload:updated');
           resolve({'status': 'success'});

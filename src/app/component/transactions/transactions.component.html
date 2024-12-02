@@ -12,16 +12,18 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item>
-          <ion-select aria-label="Select transaction" [(ngModel)]="operation" placeholder="Select transaction" interface="action-sheet">
-            <ion-select-option *ngFor="let parameter of parameters" value="{{parameter.id}}">{{parameter.name}}</ion-select-option>
+        <ion-item *ngFor="let parameter of parameters" class="ion-no-padding">
+          <ion-label >{{parameter.name}}</ion-label>
+          <ion-input type="number" [(ngModel)]="amount[parameter.id]" placeholder="0.00" [ngStyle]="{'color': amount[parameter.id] ? 'darkred' : 'gray'}"></ion-input>
+          <!--<ion-select aria-label="Select transaction" [(ngModel)]="operation" placeholder="Select transaction" interface="action-sheet">
+            <ion-select-option *ngFor="let parameter of parameters" value="{{parameter.id}}">{{parameter.name}}</ion-select-option>-->
            <!-- <ion-select-option *ngFor="let fsparameter of fsparameters" value="{{fsparameter.id}}"><ion-text class="fs">{{fsparameter.name}}</ion-text></ion-select-option> -->
-          </ion-select>
+          <!--</ion-select>
         </ion-item>
       </ion-list>
       <ion-list>
         <ion-item>
-          <ion-input label="Amount" type="number" [(ngModel)]="amount" placeholder="0.00"></ion-input>
+          <ion-input label="Amount" type="number" [(ngModel)]="amount" placeholder="0.00"></ion-input>-->
         </ion-item>
       </ion-list>
       <ion-button color="tertiary" (click)="valider()" size="small">Save</ion-button>
