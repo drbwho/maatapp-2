@@ -199,7 +199,7 @@ export class DataProvider {
          trns = res;
         }
         //Insert or update transaction
-        let index = trns.findIndex((s)=> s.meetingid == meetingid && s.accountid == account.id && s.parameterid == parameterid); console.log(index)
+        let index = trns.findIndex((s)=> s.meetingid == meetingid && s.accountid == account.id && s.parameterid == parameterid);
         if(index >= 0){
           trns[index] = trn;
         }else{
@@ -240,7 +240,18 @@ export class DataProvider {
     this.storage.set(this.config.HISTORY_TRANSACTIONS_FILE, history);
   }
 
-  clearPendingOperations(meeting: any){
+  clearPendingOperations(meeting: any, clearMeeting = false){
+    if(clearMeeting){
+      return new Promise(async (resolve)=>{
+        let newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+        newmeetings = newmeetings.filter(s => s.id != meeting.id);
+        this.storage.set(this.config.NEWMEETINS_FILE, newmeetings).then(()=>{
+          this.events.publish('upload:updated');
+          resolve(true);
+        });
+      })
+    }
+
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       transactions = transactions.filter(s => s.meetingid != meeting.id);
@@ -411,7 +422,7 @@ export class DataProvider {
           resolve({status: 'success', message: ''});
         },
         error: async (error) => {
-          resolve({status: 'error', message: 'Sync error'});
+          resolve({status: 'error', message: error.error});
         }
       });
     });

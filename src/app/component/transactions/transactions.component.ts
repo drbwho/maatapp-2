@@ -82,6 +82,31 @@ export class TransactionsComponent  implements OnInit {
       await alert.present();
   }
 
+  //Update regular contributions' amounts
+  is_cntrb_field(parameter_code){
+    let cntrb_fields = ['RCB', 'AID', 'AST', 'ENF'];
+    return cntrb_fields.includes(parameter_code);
+  }
+
+  update_cntrb(parameter_code, parameter_id){
+    let amount = 0;
+    switch(parameter_code){
+      case 'RCB':
+        amount = this.group.settings.regcontribution;
+        break;
+      case 'AID':
+        amount = this.group.settings.regsfcontribution;
+        break;
+      case 'AST':
+        amount = this.group.settings.regfacilpayment;
+        break;
+      case 'ENF':
+        amount = this.group.settings.entryfee;
+        break;
+    }
+    this.amount[parameter_id] = amount;
+  }
+
   async submit_operations(){
     /*if(!this.amount || !this.operation){
       const alert = await this.alertCtrl.create({
