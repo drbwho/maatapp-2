@@ -45,8 +45,12 @@ export class OperationTools {
         trans.forEach((tr)=>{
           let pcode = (params.find((s) => s.id == tr.parameterid)).code;
           if(this.credit_operations.includes(pcode)){
-            totals.credit += parseFloat(tr.amount);
-            totals.balance += parseFloat(tr.amount);
+            if(pcode != 'AST'){
+              totals.credit += parseFloat(tr.amount);
+              if(pcode != 'CFS'){
+                totals.balance += parseFloat(tr.amount);
+              }
+            }
             totals.cash += parseFloat(tr.amount);
           }else if(this.debit_operations.includes(pcode)){
             totals.credit -= parseFloat(tr.amount);
