@@ -13,6 +13,11 @@ ion-label ion-note {
     font-size: x-small;
 }
 
+ion-checkbox {
+    width: 25px;
+    --border-radius: 50%;
+}
+
 .sum-info {
     font-size: 11px;
 }

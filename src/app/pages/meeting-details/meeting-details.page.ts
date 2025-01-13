@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, IonCheckbox, ModalController } from '@ionic/angular';
 import { TransactionsComponent } from '../../component/transactions/transactions.component';
 import { Events } from '../../providers/events';
 import { Storage } from '@ionic/storage-angular';
@@ -29,6 +29,8 @@ export class MeetingDetailsPage implements OnInit {
     balance: 0.00,
     credit: 0.00
   }
+  selectedAll: boolean = false;
+  selectedAccounts = 0;
 
   constructor(
     private dataProvider: DataProvider,
@@ -85,7 +87,28 @@ export class MeetingDetailsPage implements OnInit {
     });
   }
 
-  async deleleTransaction(tr: any){
+  selectAll(){
+    this.selectedAll = this.selectedAll ? false : true;
+    this.accounts.forEach(a => {
+      if(a.type == 1){
+        a.selected = this.selectedAll;
+      }
+    });
+    this.selectedAccounts = this.selectedAll ? this.accounts.filter(e => e.selected === true).length : 0;
+  }
+
+  selectAccount(account){
+    if(account.type == 1){
+      account.selected = account.selected ? false : true;
+      this.selectedAccounts = this.accounts.filter(e => e.selected === true).length;
+      this.selectedAll = false;
+    }
+  }
+
+  async deleleTransaction(event: Event, tr: any){
+    //prevent ion-item click
+    event.stopPropagation();
+
     const alert = await this.alertCtrl.create({
       header: 'Are you sure?',
       buttons: [
@@ -111,20 +134,28 @@ export class MeetingDetailsPage implements OnInit {
   }
 
   async addTransactionModal(event: Event, account: any) {
+    //prevent ion-item click
+    event.stopPropagation();
+
     const modal = await this.modalCtrl.create({
       component: TransactionsComponent,
-      componentProps: {account: account}
+      componentProps: {account: account, accounts: this.accounts}
     });
     await modal.present();
 
     const { data } = await modal.onWillDismiss();
     if (data) {
       // refresh accounts totals
+      this.selectedAccounts = 0;
+      this.selectedAll = false;
       this.load_accounts();
     }
   }
 
-  async showAccountInfo(account){
+  async showAccountInfo(event: Event, account){
+    //prevent ion-item click
+    event.stopPropagation();
+
     let group_totals = null;
 
     if(account.type == 2){

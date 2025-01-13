@@ -13,8 +13,8 @@ export interface AccountTotals {
   providedIn: 'root'
 })
 export class OperationTools {
-  credit_operations = ['ECP', 'RCB', 'REM', 'SFREM', 'FIN', 'ENF', 'PCO', 'CFS', 'AST', 'AID', 'SFND'];
-  debit_operations = ['RCP', 'EMP', 'SFEMP', 'AIN'];
+  credit_operations = ['ECP', 'RCB', 'REM', 'SFREM', 'FIN', 'ENF', 'PCO', 'AST', 'AID', 'SFND'];
+  debit_operations = ['RCP', 'EMP', 'SFEMP', 'AIN', 'CFS'];
 
   constructor(
     private storage: Storage,
@@ -47,15 +47,15 @@ export class OperationTools {
           if(this.credit_operations.includes(pcode)){
             if(pcode != 'AST'){
               totals.credit += parseFloat(tr.amount);
-              if(pcode != 'CFS'){
-                totals.balance += parseFloat(tr.amount);
-              }
+              totals.balance += parseFloat(tr.amount);
             }
             totals.cash += parseFloat(tr.amount);
           }else if(this.debit_operations.includes(pcode)){
             totals.credit -= parseFloat(tr.amount);
-            totals.balance -= parseFloat(tr.amount);
-            totals.cash -= parseFloat(tr.amount);
+            if(pcode != 'CFS'){
+              totals.balance -= parseFloat(tr.amount);
+              totals.cash -= parseFloat(tr.amount);
+            }
           }
         });
         // iterate already uploaded transactions
