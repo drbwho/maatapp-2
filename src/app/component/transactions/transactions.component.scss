@@ -20,3 +20,12 @@ ion-input {
    font-size: 10px;
    margin: 0;
 }
+
+.tr-label {
+    vertical-align: super;
+    /*color: #9d2929;*/
+}
+
+ion-item {
+    --inner-padding-end: 0;
+}

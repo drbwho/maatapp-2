@@ -107,6 +107,10 @@ export class DataProvider {
         .subscribe({
           next: (data: any) => {
             this[type] = data[type];
+            if(type == 'accounts'){
+              //sort accounts 
+              this[type].sort((a,b) => a.num - b.num);
+            }
             this.storage.set(file, this[type]);
             if(loading){loading.dismiss();}
             resolve(this[type]);
@@ -131,7 +135,7 @@ export class DataProvider {
                 }
               }else{
                 resolve(fetch("../../assets/data/meetings.json").then(res=>res.json()).then(json=>{
-                  this[type] = json.meetings;
+                    this[type] = json.meetings;
                     this.storage.set(file,this[type]);
                     return this[type];
                   })
@@ -176,7 +180,7 @@ export class DataProvider {
   }
 
   // Save locally new Operation
-  async newOperation(meetingid, account, group, parameterid, parametername, amount){
+ async newOperation(meetingid, account, group, parameterid, parametername, amount){
     var trn: Transaction = {
       meetingid: meetingid,
       accountid: account.id,
@@ -193,7 +197,7 @@ export class DataProvider {
         resolve({'status': 'error', 'message': check.message});
         return;
       }
-      this.storage.get(this.config.TRANSACTIONS_FILE).then((res)=>{
+      await this.storage.get(this.config.TRANSACTIONS_FILE).then(async (res)=>{
         var trns: Transaction[] = [];
         if(res){
          trns = res;
@@ -205,7 +209,7 @@ export class DataProvider {
         }else{
           trns.push(trn);
         }
-        this.storage.set(this.config.TRANSACTIONS_FILE, trns).then((res)=>{
+        await this.storage.set(this.config.TRANSACTIONS_FILE, trns).then((res)=>{
           this.events.publish('upload:updated');
           resolve({'status': 'success'});
         })

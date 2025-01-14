@@ -17,8 +17,8 @@
     </ion-toolbar>
   </ion-header>
   <ion-list>
-    <ion-item *ngFor="let country of countries" routerLink="/app/tabs/country/{{country.id}}/groups">
-      <ion-icon slot="start" name="earth"></ion-icon>
+    <ion-item lines="none" *ngFor="let country of countries" routerLink="/app/tabs/country/{{country.id}}/groups">
+      <ion-icon slot="start" name="earth" size="large" color="primary"></ion-icon>
       <ion-label>
         <ion-text color="secondary">
           <h2>

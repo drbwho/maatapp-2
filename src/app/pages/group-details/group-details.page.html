@@ -33,8 +33,9 @@
     <ion-item *ngFor="let meeting of meetings">
       <ion-label>
       <ion-text [color]="meeting.pending?'danger':''" [ngStyle]="{'text-decoration': meeting.cancelled ? 'line-through' : ''}">
-        <h2>
+        <h2><strong>
         {{meeting.place}}
+        </strong>
         </h2>
       </ion-text>
       <p>
@@ -69,12 +70,12 @@
   </ion-list>
 
   <ion-list *ngIf="segment == 'comptes'">
-    <ion-item *ngFor="let account of accounts" >
+    <ion-item lines="none" *ngFor="let account of accounts" >
       <ion-label>
         <ion-text [color]="account.type == 1 ? '' : 'primary'">
           <h2>
             <span *ngIf="account.type != 1"><ion-icon  name="people" class="ion-margin-right"></ion-icon>&nbsp;</span>
-            <strong>{{account.owner}}</strong>
+            <ion-text color="primary" *ngIf="account.type == 1">({{account.num}}) </ion-text><strong>{{account.owner}}</strong>
           </h2>
         </ion-text>
         <p>

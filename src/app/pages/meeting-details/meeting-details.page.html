@@ -55,13 +55,13 @@
     <ion-button [disabled]="selectedAccounts ? false : true" class="ion-float-right" slot="end" size="small" color="secondary" (click)="addTransactionModal($event, null)"><ion-icon name="add"></ion-icon></ion-button>
   </ion-item>
   <ion-list>
-    <ion-item *ngFor="let account of accounts" [ngStyle]="{'--background': account.selected ? '#f5f5f5' : '', 'border-left': account.selected ? '5px solid #068edf' : ''}"
+    <ion-item *ngFor="let account of accounts" [ngStyle]="{'--background': account.selected ? '#f5f5f5' : '', 'border-left': account.selected ? '5px solid #8ec8c2' : ''}"
               (click)="selectAccount(account)">
       <ion-label>
         <ion-text [color]="account.type == 1 ? '' : 'primary'">
           <h2>
             <ion-icon *ngIf="account.type != 1" name="people"></ion-icon>
-            {{account.owner}}
+            <ion-text color="primary" *ngIf="account.type == 1">({{account.num}}) </ion-text>{{account.owner}}
             <ion-note slot="end">
               <ion-button class="ion-float-right" size="small" color="success" (click)="showAccountInfo($event, account)">
                 <ion-icon  name="information-outline"></ion-icon>

@@ -10,6 +10,9 @@ import { ConfigData } from '../../providers/config-data';
   styleUrls: ['./transactions.component.scss'],
 })
 export class TransactionsComponent  implements OnInit {
+  tr_icons = {'ECP':'person-add', 'RCB':'analytics', 'REM':'flash-off','DPR':'server', 'SFREM':'heart-dislike',
+    'FIN':'alert', 'ENF':'apps', 'PCO':'logo-apple', 'AST':'man', 'AID':'heart-half', 'SFND':'archive',
+    'RCP':'person-remove', 'EMP':'flash', 'SFEMP':'heart', 'AIN':'card', 'CFS':'heart-circle'};
   @Input() account: any;
   @Input() accounts: any;
   meeting: any;
@@ -85,14 +88,14 @@ export class TransactionsComponent  implements OnInit {
           },
           {
             text: 'Yes',
-            handler: () => {
+            handler: async () => {
               if(this.account){
                 this.submit_operations(this.account, true);
               }else{
                 // batch transations
-                this.accounts.filter( a => a.selected === true).forEach( async s => {
+                for(const s of this.accounts.filter( a => a.selected === true)){
                   await this.submit_operations(s, false);
-                })
+                }
                 if(this.completed){
                   this.modalCtrl.dismiss(true);
                 }
@@ -148,7 +151,6 @@ export class TransactionsComponent  implements OnInit {
       if(this.amount[operationid]){
         let operation_name = (this.parameters.find((s)=> s.id == operationid)).name;
         await this.dataProvider.newOperation(this.meeting.id, account, this.group, operationid, operation_name, this.amount[operationid]).then(async (res: any)=>{
-        //this.dataProvider.newOperation(this.meeting.id, this.account, this.group, this.operation, operation_name, this.amount).then(async (res: any)=>{
           if(res.status != 'success'){
             const alert = await this.alertCtrl.create({
               header: 'Error',
