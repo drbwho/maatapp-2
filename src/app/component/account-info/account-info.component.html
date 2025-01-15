@@ -49,6 +49,15 @@
     <ion-row *ngIf="account.type == 1">
       <ion-col size="9">Open SF Loans:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.sfopenloans}}</strong></ion-text></ion-col>
     </ion-row>
+    <ion-row *ngIf="account.type == 1">
+      <ion-col size="9">Reg. Contributions due:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_reg | number:'.2'}}</strong></ion-text></ion-col>
+    </ion-row>
+    <ion-row *ngIf="account.type == 1">
+      <ion-col size="9">SF Contributions due:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_sf | number:'.2'}}</strong></ion-text></ion-col>
+    </ion-row>
+    <ion-row *ngIf="account.type == 1">
+      <ion-col size="9">Facilitator payments due:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_facp | number:'.2'}}</strong></ion-text></ion-col>
+    </ion-row>
    </ion-grid>
   </ion-card-content>
  </ion-card>
