@@ -104,8 +104,9 @@ export class OperationTools {
           }
           break;
         case 'SFEMP':
-          if(transaction.amount > account.creditdisponible){
-            resolve({'status': 'error', 'message': 'Loan exceeds SF credit available'})
+          if(transaction.amount > group_account.creditdisponible || 
+             transaction.amount > (group_account.sfcontribution - group_account.sfrestearembourser)){
+            resolve({'status': 'error', 'message': 'Loan exceeds group SF or total credit available'})
           }
           if(transaction.amount > group_totals.credit){
             resolve({'status': 'error', 'message': 'Loan exceeds group credit available'})
