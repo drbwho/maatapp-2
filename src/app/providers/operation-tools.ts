@@ -103,6 +103,11 @@ export class OperationTools {
             resolve({'status': 'error', 'message': 'Loan exceeds group credit available'})
           }
           break;
+        case 'RCP':
+          if(account.restearembourser > 0){
+            resolve({'status': 'error', 'message': 'Withdrawl is not permitted when open loans exist'})
+          }
+          break;
         case 'SFEMP':
           if(transaction.amount > group_account.creditdisponible || 
              transaction.amount > (group_account.sfcontribution - group_account.sfrestearembourser)){
