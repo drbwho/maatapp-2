@@ -33,6 +33,11 @@ const config: CapacitorConfig = {
     CapacitorHttp: {
       enabled: true
     },
+    StatusBar: {
+      overlaysWebView: false,
+      style: "DEFAULT",
+      backgroundColor: "#ffffffff"
+    }
   },
   android: {
     allowMixedContent: true
