@@ -1,5 +1,4 @@
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
-import { PhotoViewer } from '@awesome-cordova-plugins/photo-viewer/ngx';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -32,6 +31,6 @@ enableProdMode();
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production
-        })], providers: [PhotoViewer, Calendar, SocialSharing, Storage, provideHttpClient(withInterceptorsFromDi())] })
+        })], providers: [Calendar, SocialSharing, Storage, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
  

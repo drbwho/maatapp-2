@@ -7,9 +7,10 @@ import { UserData } from '../../providers/user-data';
 
 
 @Component({
-  selector: 'page-account',
-  templateUrl: 'account.html',
-  styleUrls: ['./account.scss'],
+    selector: 'page-account',
+    templateUrl: 'account.html',
+    styleUrls: ['./account.scss'],
+    standalone: false
 })
 export class AccountPage implements AfterViewInit {
   user =

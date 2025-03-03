@@ -9,9 +9,10 @@ import { UserOptions } from '../../interfaces/user-options';
 
 
 @Component({
-  selector: 'page-signup',
-  templateUrl: 'signup.html',
-  styleUrls: ['./signup.scss'],
+    selector: 'page-signup',
+    templateUrl: 'signup.html',
+    styleUrls: ['./signup.scss'],
+    standalone: false
 })
 export class SignupPage {
   signup: UserOptions = { username: '', password: '' };

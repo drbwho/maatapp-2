@@ -5,9 +5,10 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 
 @Component({
-  selector: 'app-groups',
-  templateUrl: './groups.page.html',
-  styleUrls: ['./groups.page.scss'],
+    selector: 'app-groups',
+    templateUrl: './groups.page.html',
+    styleUrls: ['./groups.page.scss'],
+    standalone: false
 })
 export class GroupsPage implements OnInit {
   country: any;

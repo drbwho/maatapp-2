@@ -5,9 +5,10 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 
 @Component({
-  selector: 'app-status-icons',
-  templateUrl: './status-icons.component.html',
-  styleUrls: ['./status-icons.component.scss'],
+    selector: 'app-status-icons',
+    templateUrl: './status-icons.component.html',
+    styleUrls: ['./status-icons.component.scss'],
+    standalone: false
 })
 export class StatusIconsComponent  implements OnInit {
   network_status = false;

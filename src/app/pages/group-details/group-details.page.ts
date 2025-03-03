@@ -11,9 +11,10 @@ import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.
 import { HistoryComponent } from '../../component/history/history.component';
 
 @Component({
-  selector: 'app-group-details',
-  templateUrl: './group-details.page.html',
-  styleUrls: ['./group-details.page.scss'],
+    selector: 'app-group-details',
+    templateUrl: './group-details.page.html',
+    styleUrls: ['./group-details.page.scss'],
+    standalone: false
 })
 export class GroupDetailsPage implements OnInit {
   segment = "reunions";

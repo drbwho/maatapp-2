@@ -11,9 +11,10 @@ import { AlertController } from '@ionic/angular';
 import { UserData } from '../../providers/user-data';
 
 @Component({
-  selector: 'home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+    selector: 'home',
+    templateUrl: './home.page.html',
+    styleUrls: ['./home.page.scss'],
+    standalone: false
 })
 
 export class HomePage implements OnInit {

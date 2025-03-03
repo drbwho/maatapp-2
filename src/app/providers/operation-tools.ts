@@ -106,6 +106,10 @@ export class OperationTools {
         case 'RCP':
           if(account.restearembourser > 0){
             resolve({'status': 'error', 'message': 'Withdrawl is not permitted when open loans exist'})
+            break;
+          }
+          if(transaction.amount > account.balance){
+            resolve({'status': 'error', 'message': 'Withdrawal exceeds balance'})
           }
           break;
         case 'SFEMP':
@@ -125,11 +129,6 @@ export class OperationTools {
         case 'SFREM':
           if(transaction.amount > account.sfrestearembourser){
             resolve({'status': 'error', 'message': 'Reimbursement exceeds SF loan debt'})
-          }
-          break;
-        case 'RCP':
-          if(transaction.amount > account.balance){
-            resolve({'status': 'error', 'message': 'Withdrawal exceeds balance'})
           }
           break;
       }

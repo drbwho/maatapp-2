@@ -3,9 +3,10 @@ import { ModalController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
-  selector: 'app-account-info',
-  templateUrl: './account-info.component.html',
-  styleUrls: ['./account-info.component.scss'],
+    selector: 'app-account-info',
+    templateUrl: './account-info.component.html',
+    styleUrls: ['./account-info.component.scss'],
+    standalone: false
 })
 export class AccountInfoComponent  implements OnInit {
   @Input() account: any;

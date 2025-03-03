@@ -2,9 +2,10 @@ import { DataProvider } from '../../providers/provider-data';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'about',
-  templateUrl: './about.page.html',
-  styleUrls: ['./about.page.scss'],
+    selector: 'about',
+    templateUrl: './about.page.html',
+    styleUrls: ['./about.page.scss'],
+    standalone: false
 })
 
 export class AboutPage implements OnInit {

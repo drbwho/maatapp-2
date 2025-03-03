@@ -5,9 +5,10 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 
 @Component({
-  selector: 'app-transactions',
-  templateUrl: './transactions.component.html',
-  styleUrls: ['./transactions.component.scss'],
+    selector: 'app-transactions',
+    templateUrl: './transactions.component.html',
+    styleUrls: ['./transactions.component.scss'],
+    standalone: false
 })
 export class TransactionsComponent  implements OnInit {
   tr_icons = {'ECP':'person-add', 'RCB':'analytics', 'REM':'flash-off','DPR':'server', 'SFREM':'heart-dislike',

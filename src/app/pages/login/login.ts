@@ -12,9 +12,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html',
-  styleUrls: ['./login.scss'],
+    selector: 'page-login',
+    templateUrl: 'login.html',
+    styleUrls: ['./login.scss'],
+    standalone: false
 })
 export class LoginPage {
   login: UserOptions = { username: '', password: '' };

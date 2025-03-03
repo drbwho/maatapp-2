@@ -5,9 +5,10 @@ import { AlertController, ToastController } from '@ionic/angular';
 
 
 @Component({
-  selector: 'page-support',
-  templateUrl: 'support.html',
-  styleUrls: ['./support.scss'],
+    selector: 'page-support',
+    templateUrl: 'support.html',
+    styleUrls: ['./support.scss'],
+    standalone: false
 })
 export class SupportPage {
   submitted = false;

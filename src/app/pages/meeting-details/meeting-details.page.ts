@@ -11,9 +11,10 @@ import { OperationTools, AccountTotals } from '../../providers/operation-tools';
 
 
 @Component({
-  selector: 'app-meeting-details',
-  templateUrl: './meeting-details.page.html',
-  styleUrls: ['./meeting-details.page.scss'],
+    selector: 'app-meeting-details',
+    templateUrl: './meeting-details.page.html',
+    styleUrls: ['./meeting-details.page.scss'],
+    standalone: false
 })
 export class MeetingDetailsPage implements OnInit {
   meetingplace: string;

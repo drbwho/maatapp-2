@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'about-app',
-  templateUrl: './about-app.page.html',
-  styleUrls: ['./about-app.page.scss'],
+    selector: 'about-app',
+    templateUrl: './about-app.page.html',
+    styleUrls: ['./about-app.page.scss'],
+    standalone: false
 })
 export class AboutAppPage implements OnInit{
   backimage: string = "";

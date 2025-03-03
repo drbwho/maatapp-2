@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 
 @Component({
-  selector: 'app-countries',
-  templateUrl: './countries.page.html',
-  styleUrls: ['./countries.page.scss'],
+    selector: 'app-countries',
+    templateUrl: './countries.page.html',
+    styleUrls: ['./countries.page.scss'],
+    standalone: false
 })
 export class CountriesPage implements OnInit {
   countries: any;

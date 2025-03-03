@@ -6,9 +6,10 @@ import { el, enUS } from 'date-fns/locale';
 import { DataProvider } from '../../providers/provider-data';
 
 @Component({
-  selector: 'app-meeting-form',
-  templateUrl: './meeting-form.component.html',
-  styleUrls: ['./meeting-form.component.scss'],
+    selector: 'app-meeting-form',
+    templateUrl: './meeting-form.component.html',
+    styleUrls: ['./meeting-form.component.scss'],
+    standalone: false
 })
 export class MeetingFormComponent  implements OnInit {
   @Input() group: any;
