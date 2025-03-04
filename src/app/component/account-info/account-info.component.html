@@ -30,7 +30,10 @@
       <ion-col size="6" class="ion-padding-start">-- Due date:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''">{{account.dateecheance}}</ion-text></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9" class="ion-padding-start">-- Still to be paid:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''"><strong>{{account.restearembourser | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9" class="ion-padding-start">-- Still to be paid (today):</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''"><strong>{{account.restearembourser | number:'.2'}}</strong></ion-text></ion-col>
+    </ion-row>
+    <ion-row *ngIf="!loans_expired">
+      <ion-col size="9" class="ion-padding-start">-- Still to be paid (due date):</ion-col><ion-col class="ion-text-end"><ion-text color="primary"><strong>{{account.finalrefund | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="9"><ion-icon name="server" size="small" color="primary"></ion-icon> Loan req:</ion-col><ion-col class="ion-text-end">{{account.besoinsliquidite | number:'.2'}}</ion-col>

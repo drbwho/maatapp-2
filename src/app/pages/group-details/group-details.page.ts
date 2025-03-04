@@ -69,7 +69,7 @@ export class GroupDetailsPage implements OnInit {
   update_accounts(){
     this.dataProvider.fetch_data('accounts', this.groupId, true, true).then((data: any)=> {
       data.forEach((a)=>{
-        a.loans_expired = false;console.log(a)
+        a.loans_expired = false;
         if(a.dateecheance != null && (new Date(a.dateecheance) < (new Date())) && a.restearembourser){
           a.loans_expired = true;
         }
