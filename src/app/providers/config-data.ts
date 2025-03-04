@@ -33,6 +33,9 @@ export class ConfigData {
       case 'groups':
           return  this.API_URL + `/v1/groups`;
           break;
+      case 'tickets':
+          return  this.API_URL + `/v1/tickets`;
+          break;
     }
   }
 

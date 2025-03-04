@@ -48,6 +48,14 @@ ion-toast.toast-alert {
   --background: red;
 }
 
+ion-toast.toast-success {
+  opacity: 0.9;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  --background: rgb(35, 224, 17);
+}
+
 .action-sheet-group-cancel {
   border-top: 1px solid grey;
   .action-sheet-button {

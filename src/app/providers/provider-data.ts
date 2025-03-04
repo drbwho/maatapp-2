@@ -594,5 +594,45 @@ export class DataProvider {
    });
   }
 
+  
+  /*
+  * Post new support ticket
+  *
+  */
+  async newTicket(body: any){
+      const loading = await this.loadingcontroller.create({showBackdrop: false});
+      loading.present();
+  
+      let apiurl = this.config.GET_API_URL('tickets');
+  
+      const user = await this.user.getUser();
+      const headers =  new HttpHeaders({
+        'Authorization': 'Bearer ' + user.token,
+        'Accept': 'application/json'
+      });
+  
+      return new Promise((resolve)=>{
+        this.http
+          .post(apiurl,
+            {
+              body: body,
+            },
+            {headers})
+          .subscribe({
+            next: (data: any) => {
+              console.log(data);
+              loading.dismiss().then(()=>{
+                resolve(data);
+              });
+            },
+            error: async (error) => {
+              loading.dismiss().then(()=>{
+                resolve({status: 'error', message: 'Network error'});
+              });
+            }
+          });
+      });
+    }
+
 
 }

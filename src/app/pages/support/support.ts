@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { AlertController, ToastController } from '@ionic/angular';
+import { DataProvider } from '../../providers/provider-data';
 
 
 @Component({
@@ -16,29 +17,42 @@ export class SupportPage {
 
   constructor(
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    private dataProvider: DataProvider,
   ) { }
 
-  async ionViewDidEnter() {
-    const toast = await this.toastCtrl.create({
-      message: 'This does not actually send a support request.',
-      duration: 3000
-    });
-    // await toast.present();
-  }
+  async ionViewDidEnter() {}
 
   async submit(form: NgForm) {
     this.submitted = true;
 
     if (form.valid) {
-      this.supportMessage = '';
       this.submitted = false;
 
-      const toast = await this.toastCtrl.create({
-        message: 'Your support request has been sent.',
-        duration: 3000
-      });
-      await toast.present();
+      this.dataProvider.newTicket(this.supportMessage).then(async (res:any)=>{
+        if(res.status != undefined && res.status == 'error'){
+          const alert = await this.alertCtrl.create({
+            header: "Error",
+            message: res.message,
+            buttons: [
+              {
+                text: 'Ok',
+              },
+            ],
+          });
+          await alert.present();
+          return;
+        }else{
+          this.supportMessage = '';
+          const toast = await this.toastCtrl.create({
+            message: 'Your support request has been sent.',
+            cssClass: 'toast-success',
+            duration: 3000
+          });
+          await toast.present();
+          return;
+        }
+      })
     }
   }
 
