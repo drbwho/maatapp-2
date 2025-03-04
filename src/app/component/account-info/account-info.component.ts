@@ -14,9 +14,19 @@ export class AccountInfoComponent  implements OnInit {
   @Input() show_transactions: any;
   @Input() group_totals: any;
 
+  loans_expired = false;
+  sfloans_expired = false;
+
   constructor(private modalCtrl: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if( this.account.dateecheance != null && (new Date(this.account.dateecheance) < (new Date()))){
+      this.loans_expired = true;
+    }
+    if( this.account.sfdateecheance != null && (new Date(this.account.sfdateecheance) < (new Date()))){
+      this.sfloans_expired = true;
+    }
+  }
 
   dismiss() {
     this.modalCtrl.dismiss();

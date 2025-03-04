@@ -20,28 +20,30 @@
   <ion-card-content>
    <ion-grid>
     <ion-row>
-      <ion-col size="9"><strong>Balance:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="tertiary"><strong>{{account.balance | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9"><ion-icon name="arrow-redo" size="small" color="primary"></ion-icon> <strong>Balance:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="tertiary"><strong>{{account.balance | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="9"><strong>Credit available:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="success"><strong>{{account.creditdisponible | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9"><strong>Loans:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="danger">{{account.emprunts | number:'.2'}}</ion-text></ion-col>
+      <ion-col size="9"><ion-icon name="flash" size="small" color="primary"></ion-icon><strong> Loans:</strong></ion-col><ion-col class="ion-text-end"><ion-text>{{account.emprunts | number:'.2'}}</ion-text></ion-col>
+      <ion-col size="6" class="ion-padding-start">-- Due date:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''">{{account.dateecheance}}</ion-text></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9">Still to be paid:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.restearembourser | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9" class="ion-padding-start">-- Still to be paid:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''"><strong>{{account.restearembourser | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9">Loan req:</ion-col><ion-col class="ion-text-end">{{account.besoinsliquidite | number:'.2'}}</ion-col>
+      <ion-col size="9"><ion-icon name="server" size="small" color="primary"></ion-icon> Loan req:</ion-col><ion-col class="ion-text-end">{{account.besoinsliquidite | number:'.2'}}</ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9"><strong>SF Contributions:</strong></ion-col><ion-col class="ion-text-end"><strong>{{account.sfcontribution | number:'.2'}}</strong></ion-col>
+      <ion-col size="9"><ion-icon name="heart-half" size="small" color="primary"></ion-icon> <strong>SF Contributions:</strong></ion-col><ion-col class="ion-text-end"><strong>{{account.sfcontribution | number:'.2'}}</strong></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9">SF Loans:</ion-col><ion-col class="ion-text-end">{{account.sfemprunts | number:'.2'}}</ion-col>
+      <ion-col size="9"><ion-icon name="heart" size="small" color="primary"></ion-icon> <strong>SF Loans:</strong></ion-col><ion-col class="ion-text-end"><ion-text>{{account.sfemprunts | number:'.2'}}</ion-text></ion-col>
+      <ion-col size="6" class="ion-padding-start">-- Due date:</ion-col><ion-col class="ion-text-end"><ion-text [color]="sfloans_expired ? 'danger': ''">{{account.sfdateecheance}}</ion-text></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9">SF Still to be paid:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.sfrestearembourser | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9" class="ion-padding-start">-- SF Still to be paid:</ion-col><ion-col class="ion-text-end"><ion-text [color]="sfloans_expired ? 'danger': ''"><strong>{{account.sfrestearembourser | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row *ngIf="account.type == 1">
       <ion-col size="9">Open Loans:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.openloans}}</strong></ion-text></ion-col>

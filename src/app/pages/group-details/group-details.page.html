@@ -82,7 +82,8 @@
           Credit avail.: <ion-text [color]="account.creditdisponible <= 0 ? 'danger': 'success'">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>
         </p>
         <p>
-          Loans: {{account.emprunts | number:'.2'}} {{currency}}
+          Loans: <ion-text [color]="account.loans_expired ? 'danger': ''">{{account.emprunts | number:'.2'}}</ion-text> {{currency}}
+          <ion-icon class="alert-icon" *ngIf="account.loans_expired" name="alert-circle" color="danger" size="small"></ion-icon>
         </p>
         <p>
           Loan req.: {{account.besoinsliquidite | number:'.2'}} {{currency}}
