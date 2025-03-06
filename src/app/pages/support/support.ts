@@ -14,6 +14,7 @@ import { DataProvider } from '../../providers/provider-data';
 export class SupportPage {
   submitted = false;
   supportMessage: string;
+  tickets = [];
 
   constructor(
     public alertCtrl: AlertController,
@@ -21,7 +22,13 @@ export class SupportPage {
     private dataProvider: DataProvider,
   ) { }
 
-  async ionViewDidEnter() {}
+  ionViewWillEnter() {
+    this.update_tickets();
+  }
+
+  update_tickets(){
+    this.dataProvider.getTickets().then((data: any)=> {this.tickets = data;});
+  }
 
   async submit(form: NgForm) {
     this.submitted = true;
@@ -50,6 +57,7 @@ export class SupportPage {
             duration: 3000
           });
           await toast.present();
+          this.update_tickets();
           return;
         }
       })

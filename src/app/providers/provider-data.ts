@@ -600,39 +600,91 @@ export class DataProvider {
   *
   */
   async newTicket(body: any){
-      const loading = await this.loadingcontroller.create({showBackdrop: false});
-      loading.present();
+    const loading = await this.loadingcontroller.create({showBackdrop: false});
+    loading.present();
   
-      let apiurl = this.config.GET_API_URL('tickets');
+    let apiurl = this.config.GET_API_URL('tickets');
   
-      const user = await this.user.getUser();
-      const headers =  new HttpHeaders({
-        'Authorization': 'Bearer ' + user.token,
-        'Accept': 'application/json'
-      });
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
   
-      return new Promise((resolve)=>{
-        this.http
-          .post(apiurl,
-            {
-              body: body,
-            },
-            {headers})
-          .subscribe({
-            next: (data: any) => {
-              console.log(data);
-              loading.dismiss().then(()=>{
-                resolve(data);
-              });
-            },
-            error: async (error) => {
-              loading.dismiss().then(()=>{
-                resolve({status: 'error', message: 'Network error'});
-              });
-            }
-          });
-      });
+    return new Promise((resolve)=>{
+      this.http
+        .post(apiurl,
+          {
+            body: body,
+          },
+          {headers})
+        .subscribe({
+          next: (data: any) => {
+            console.log(data);
+            loading.dismiss().then(()=>{
+              resolve(data);
+            });
+          },
+          error: async (error) => {
+            loading.dismiss().then(()=>{
+              resolve({status: 'error', message: 'Network error'});
+            });
+          }
+        });
+    });
+  }
+
+  /*
+  * Get Submitted Tickets
+  *
+  */
+  async getTickets(){
+    let status = await Network.getStatus();
+    if(!status.connected){
+      return new Promise(async (resolve)=>{
+        const toast = await this.toast.create({
+          message: 'Network error! Cannot get tickets...',
+          cssClass: 'toast-alert',
+          duration: 3000
+        });
+        toast.present();
+        resolve([]);
+      })
     }
+
+    let loading = await this.loadingcontroller.create({showBackdrop: false});
+    loading.present();
+
+    let apiurl = this.config.GET_API_URL('tickets');
+
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
+      .get(apiurl,{headers})
+      .subscribe({
+        next: (data: any) => {
+          loading.dismiss();
+          resolve(data);
+        },
+        error: async (error) => {
+          const toast = await this.toast.create({
+            message: 'Network error! Cannot get tickets...',
+            cssClass: 'toast-alert',
+            duration: 3000
+          });
+          loading.dismiss().then(()=>{
+            toast.present();
+          });
+          resolve([]);
+        }
+      });
+    });
+  }
 
 
 }

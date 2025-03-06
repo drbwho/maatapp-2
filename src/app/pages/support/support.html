@@ -31,4 +31,54 @@
       <ion-button expand="block" type="submit">Submit</ion-button>
     </div>
   </form>
+
+  <ion-list>
+    <ion-item lines="none" *ngFor="let ticket of tickets">
+      <ion-grid>
+        <ion-row>
+          <ion-label>
+            <ion-text color="secondary">
+              <ion-note class="ticket-date">
+              {{ticket.created_at | date:'yyyy-MM-dd HH:mm:ss'}}
+              </ion-note>
+            </ion-text>
+            <ion-text color="tertiary">
+              <h5>
+              {{ticket.body}}
+              </h5>
+            </ion-text>
+          </ion-label>
+        </ion-row>
+
+        <ion-row *ngIf="ticket.response">
+          <ion-col size="2">
+            &nbsp;
+          </ion-col>
+          <ion-col>
+            <ion-label>
+              <ion-text color="secondary">
+                <ion-note class="ticket-date">
+                {{ticket.updated_at | date:'yyyy-MM-dd HH:mm:ss'}}
+                </ion-note>
+              </ion-text>
+              <ion-text color="primary">
+                <h5>
+                {{ticket.response}}
+                </h5>
+              </ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+    </ion-item>
+
+    <ion-row *ngIf="!tickets || tickets.length == 0">
+      <ion-col>
+        <ion-note class="ion-margin-left">
+          No tickets submitted
+        </ion-note>
+      </ion-col>
+    </ion-row>
+  </ion-list>
 </ion-content>
