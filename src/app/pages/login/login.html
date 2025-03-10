@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
 
-    <ion-title>Login</ion-title>
+    <ion-title>{{'login' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -23,7 +23,7 @@
 
       <ion-text color="danger">
         <p [hidden]="username.valid || submitted == false" class="ion-padding-start">
-          Email is required
+          {{'email_is_required' | translate}}
         </p>
       </ion-text>
 
@@ -34,7 +34,7 @@
 
       <ion-text color="danger">
         <p [hidden]="password.valid || submitted == false" class="ion-padding-start">
-          Password is required
+          {{'password_is_required' | translate}}
         </p>
       </ion-text>
     </ion-list>

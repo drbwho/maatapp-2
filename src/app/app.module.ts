@@ -6,6 +6,10 @@ import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Storage, Drivers } from '@ionic/storage';
 
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslateModule, TranslateService, TranslateLoader, TranslatePipe, TranslateStore } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -14,6 +18,10 @@ import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import {enableProdMode} from '@angular/core';
+
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 enableProdMode();
 
@@ -31,6 +39,14 @@ enableProdMode();
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production
-        })], providers: [Calendar, SocialSharing, Storage, provideHttpClient(withInterceptorsFromDi())] })
+        }),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        })], 
+        providers: [TranslatePipe, TranslateStore, TranslateService, Calendar, SocialSharing, Storage, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
  

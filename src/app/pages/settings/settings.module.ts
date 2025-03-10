@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CountriesPage } from './countries.page';
-import { CountriesPageRoutingModule } from './countries-routing.module';
-import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
+import { SettingsPageRoutingModule } from './settings-routing.module';
+
+import { SettingsPage } from './settings.page';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -22,8 +22,7 @@ export function createTranslateLoader(http: HttpClient) {
     CommonModule,
     FormsModule,
     IonicModule,
-    CountriesPageRoutingModule,
-    StatusIconsModule,
+    SettingsPageRoutingModule,
     // enable translate pipe
     TranslateModule.forChild({
       loader: {
@@ -33,6 +32,6 @@ export function createTranslateLoader(http: HttpClient) {
       }
     })
   ],
-  declarations: [CountriesPage]
+  declarations: [SettingsPage]
 })
-export class CountriesPageModule {}
+export class SettingsPageModule {}

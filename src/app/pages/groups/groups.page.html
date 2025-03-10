@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>{{countryname}} / Groups</ion-title>
+    <ion-title>{{countryname}} / {{'groups' | translate}}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/app/tabs/countries"></ion-back-button>
     </ion-buttons>
@@ -9,7 +9,6 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <!--<ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search"></ion-searchbar>-->
     <ion-searchbar placeholder="Search" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"></ion-searchbar>
   </ion-toolbar>
 </ion-header>

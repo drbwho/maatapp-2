@@ -16,6 +16,7 @@ import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { Browser } from '@capacitor/browser';
 import { NEVER } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 register();
 
@@ -71,7 +72,8 @@ export class AppComponent implements OnInit {
     private dataprovider: DataProvider,
     private config: ConfigData,
     private toast: ToastController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private translate: TranslateService
   ) {
     this.initializeApp();
   }
@@ -95,6 +97,14 @@ export class AppComponent implements OnInit {
     this.userData.loadFavorites();
 
     this.listenNetworkConnectionEvents();
+
+     // Set default Language or load setting from database
+     this.translate.setDefaultLang('en');
+     this.storage.get(this.config.APPLICATION_LANGUAGE).then( (lang) => {
+       if(lang){
+         this.translate.use(lang);
+       }
+     });
 
     // PWA updates
     if(this.swUpdate.isEnabled){

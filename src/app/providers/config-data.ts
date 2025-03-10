@@ -65,5 +65,17 @@ export class ConfigData {
 
   DEVICE_ID = 'DEVICE_ID';
 
+  APPLICATION_LANGUAGE = "APPLICATION_LANGUAGE";
+  AVAILABLE_LANGUAGES = [
+    {
+     code: "en",
+     title: "English"
+    },
+    {
+     code: "fr",
+     title: "Francais"
+    }
+  ];
+
   constructor() { }
 }

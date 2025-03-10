@@ -75,7 +75,16 @@ const routes: Routes = [
         path: '',
         redirectTo: '/app/tabs/program',
         pathMatch: 'full'
-      }
+      },
+      {
+        path: 'settings',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule)
+          }
+        ]
+      },
     ]
   }
 ];

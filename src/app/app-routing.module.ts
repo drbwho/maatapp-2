@@ -44,7 +44,11 @@ const routes: Routes = [
   {
     path: 'group-details',
     loadChildren: () => import('./pages/group-details/group-details.module').then( m => m.GroupDetailsPageModule)
+  },  {
+    path: 'settings',
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
   },
+
 
 ];
 

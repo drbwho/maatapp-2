@@ -13,10 +13,10 @@
   </ion-toolbar>
   <ion-segment [(ngModel)]="segment">
     <ion-segment-button value="reunions" [disabled]="grouptype == 0">
-      <ion-label>Meetings</ion-label>
+      <ion-label>{{'meetings' | translate}}</ion-label>
     </ion-segment-button>
     <ion-segment-button value="comptes">
-      <ion-label>Accounts</ion-label>
+      <ion-label>{{'accounts' | translate}}</ion-label>
     </ion-segment-button>
   </ion-segment>
 </ion-header>
@@ -44,7 +44,7 @@
         <ion-text color="danger">{{meeting.endedat}}</ion-text>
       </p>
       <p *ngIf="meeting.haspending">
-        Pending transactions: <ion-badge color="danger">{{meeting.haspending}}</ion-badge>
+        {{'pending_transactions' | translate}}: <ion-badge color="danger">{{meeting.haspending}}</ion-badge>
       </p>
       </ion-label>
       <ion-note slot="end">
@@ -63,7 +63,7 @@
     <ion-row *ngIf="!meetings || meetings.length == 0">
       <ion-col>
         <ion-note  class="ion-margin-left">
-          Group has no meetings
+          {{'group_has_no_meetings' | translate}}
         </ion-note>
       </ion-col>
     </ion-row>
@@ -79,17 +79,17 @@
           </h2>
         </ion-text>
         <p>
-          Credit avail.: <ion-text [color]="account.creditdisponible <= 0 ? 'danger': 'success'">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>
+          {{'credit_avail' | translate}}: <ion-text [color]="account.creditdisponible <= 0 ? 'danger': 'success'">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>
         </p>
         <p>
-          Loans: <ion-text [color]="account.loans_expired ? 'danger': ''">{{account.emprunts | number:'.2'}}</ion-text> {{currency}}
+          {{'loans' | translate}}: <ion-text [color]="account.loans_expired ? 'danger': ''">{{account.emprunts | number:'.2'}}</ion-text> {{currency}}
           <ion-icon class="alert-icon" *ngIf="account.loans_expired" name="alert-circle" color="danger" size="small"></ion-icon>
         </p>
         <p>
-          Loan req.: {{account.besoinsliquidite | number:'.2'}} {{currency}}
+          {{'loan_req' | translate}}: {{account.besoinsliquidite | number:'.2'}} {{currency}}
         </p>
         <p *ngIf="account.type == 1">
-          Contribution due:  <ion-text [color]="account.due > 0 ? 'danger': ''">{{account.due | number:'.2'}} {{currency}}</ion-text>
+          {{'contribution_due' | translate}}:  <ion-text [color]="account.due > 0 ? 'danger': ''">{{account.due | number:'.2'}} {{currency}}</ion-text>
         </p>
       </ion-label>
       <ion-note slot="end">
@@ -104,7 +104,7 @@
     <ion-row *ngIf="!accounts || accounts.length == 0">
       <ion-col>
         <ion-note class="ion-margin-left">
-          Group has no accounts
+          {{'group_has_no_accounts' | translate}}
         </ion-note>
       </ion-col>
     </ion-row>

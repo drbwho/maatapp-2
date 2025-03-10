@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Countries</ion-title>
+    <ion-title>{{'countries' | translate}}</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -13,7 +13,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Les Pays</ion-title>
+      <ion-title size="large">{{'countries' | translate}}</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-list>
@@ -26,7 +26,7 @@
           </h2>
         </ion-text>
         <p>
-          Initial Amount: {{country.apportinitial}} {{country.currency}}
+          {{'initial_amount' | translate}}: {{country.apportinitial}} {{country.currency}}
         </p>
       </ion-label>
     </ion-item>

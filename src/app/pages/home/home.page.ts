@@ -9,6 +9,7 @@ import { ConfigData } from '../../providers/config-data';
 import { Browser } from '@capacitor/browser';
 import { AlertController } from '@ionic/angular';
 import { UserData } from '../../providers/user-data';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'home',
@@ -21,6 +22,7 @@ export class HomePage implements OnInit {
   conftitle: string;
   backimage: string;
   confpage: string;
+  translate: TranslatePipe;
 
   constructor(
     private events: Events,
@@ -31,7 +33,8 @@ export class HomePage implements OnInit {
     private config: ConfigData,
     private storage: Storage,
     private alertController: AlertController,
-    private userData: UserData
+    private userData: UserData,
+    private translateService: TranslateService,
     ) { }
 
   async ngOnInit() {

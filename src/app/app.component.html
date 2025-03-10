@@ -16,14 +16,14 @@
           <ion-menu-toggle autoHide="false">
               <ion-item routerLink="/home" routerDirection="root">
                 <ion-icon slot="start" name="home"></ion-icon>
-                <ion-label>Home</ion-label>
+                <ion-label>{{'home' | translate}}</ion-label>
               </ion-item>
           </ion-menu-toggle>
           <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/app/tabs/countries" routerDirection="root">
               <ion-icon slot="start" name="earth"></ion-icon>
               <ion-label>
-                Countries
+                {{'countries' | translate}}
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -31,7 +31,15 @@
             <ion-item routerLink="/app/tabs/about" routerDirection="root">
               <ion-icon slot="start" name="help-circle"></ion-icon>
               <ion-label>
-                What is MA'AT
+                {{'what_is_maat' | translate}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/app/tabs/settings" routerDirection="root">
+              <ion-icon slot="start" name="settings"></ion-icon>
+              <ion-label>
+                {{'settings' | translate}}
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -39,14 +47,14 @@
 
         <ion-list *ngIf="loggedIn">
           <ion-list-header>
-            Account
+            {{'account' | translate}}
           </ion-list-header>
 
           <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/account" routerDirection="root">
               <ion-icon slot="start" name="person"></ion-icon>
               <ion-label>
-                Account
+                {{'account' | translate}}
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -55,7 +63,7 @@
             <ion-item routerLink="/support" routerDirection="root">
               <ion-icon slot="start" name="help"></ion-icon>
               <ion-label>
-                Support
+                {{'support' | translate}}
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -64,7 +72,7 @@
             <ion-item button (click)="logout()">
               <ion-icon slot="start" name="log-out"></ion-icon>
               <ion-label>
-                Logout
+                {{'logout' | translate}}
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -73,14 +81,14 @@
 
         <ion-list *ngIf="!loggedIn">
           <ion-list-header>
-            Account
+            {{'account' | translate}}
           </ion-list-header>
 
           <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/login" routerDirection="root">
               <ion-icon slot="start" name="log-in"></ion-icon>
               <ion-label>
-                Login
+                {{'login' | translate}}
               </ion-label>
             </ion-item>
           </ion-menu-toggle>

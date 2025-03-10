@@ -9,13 +9,29 @@ import { GroupsPageRoutingModule } from './groups-routing.module';
 import { GroupsPage } from './groups.page';
 import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
 
+// needed fot translate pipe activation
+import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
+}
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     GroupsPageRoutingModule,
-    StatusIconsModule
+    StatusIconsModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
   declarations: [GroupsPage]
 })
