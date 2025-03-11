@@ -73,7 +73,15 @@ export class ConfigData {
     },
     {
      code: "fr",
-     title: "Francais"
+     title: " Français"
+    },
+    {
+     code: "es",
+     title: "Español"
+    },
+    {
+     code: "pt",
+     title: "Português"
     }
   ];
 

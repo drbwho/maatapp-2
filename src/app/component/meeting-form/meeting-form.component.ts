@@ -95,8 +95,8 @@ export class MeetingFormComponent  implements OnInit {
           ],
         });
         await alert.present();
-        return;
       });
+      return;
     }
 
     if(day_exists){

@@ -32,6 +32,7 @@ export class GroupDetailsPage implements OnInit {
   allaccounts: any;
   queryText: string;
   userRole: any;
+  searchPlaceholder: string;
 
   constructor(
     private dataProvider: DataProvider,
@@ -66,6 +67,10 @@ export class GroupDetailsPage implements OnInit {
     if(this.grouptype == 0){
       this.segment = "comptes";
     }
+
+    this.translate.get('search').subscribe((keys:any)=>{
+      this.searchPlaceholder = keys;
+    })
   }
 
   update_accounts(){
@@ -174,7 +179,7 @@ export class GroupDetailsPage implements OnInit {
   }
 
   async closeAccount(account){
-    this.translate.get(['confirmation','there_is_already_a_meeting','no','yes']).subscribe(async (keys: any)=>{
+    this.translate.get(['confirmation','are_you_sure_to_close_user_account','no','yes']).subscribe(async (keys: any)=>{
       const alert = await this.alertCtrl.create({
         header: keys['confirmation'],
         message: keys['are_you_sure_to_close_user_account'],
@@ -257,7 +262,7 @@ export class GroupDetailsPage implements OnInit {
 
 
   async confirmUploadMeeting(meeting){
-    this.translate.get(['confirmation','are_you_sure_to_upload_transactions','no','yes','error']).subscribe(async (keys: any)=>{
+    this.translate.get(['confirmation','are_you_sure_to_upload_transactions','no','yes']).subscribe(async (keys: any)=>{
       const alert = await this.alertCtrl.create({
         header: keys['confirmation'],
         message: keys['are_you_sure_to_upload_transactions'],
@@ -280,7 +285,7 @@ export class GroupDetailsPage implements OnInit {
   async uploadMeeting(meeting: any){
     let net = await Network.getStatus();
     if(!net.connected){
-      this.translate.get(['confirmation','are_you_sure_to_upload_transactions','no','yes','error']).subscribe(async (keys: any)=>{
+      this.translate.get(['no_network','error']).subscribe(async (keys: any)=>{
         const alert = await this.alertCtrl.create({
           header: keys['error'],
           message: keys['no_network'],
@@ -295,7 +300,7 @@ export class GroupDetailsPage implements OnInit {
       return;
     }
     //upload all pending meeting transactions
-    this.translate.get(['confirmation','data_uploaded','success','yes','error']).subscribe(async (keys: any)=>{;
+    this.translate.get(['data_uploaded','success','error']).subscribe(async (keys: any)=>{;
       this.dataProvider.uploadOperations(meeting).then(async (res:any) => {
         let header="";
         let message="";
@@ -332,16 +337,18 @@ export class GroupDetailsPage implements OnInit {
       }
     })
     if(open_exists){
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'There is already an open meeting!',
-        buttons: [
+      this.translate.get(['there_is_open_meeting','error']).subscribe(async (keys: any)=>{
+        const alert = await this.alertCtrl.create({
+          header: keys['error'],
+          message: keys['there_is_open_meeting'],
+          buttons: [
           {
             text: 'Ok',
           }
-        ],
+          ],
+        });
+        await alert.present();
       });
-      await alert.present();
       return;
     }
 
@@ -368,43 +375,47 @@ export class GroupDetailsPage implements OnInit {
   async clearPendings(meeting: any){
     //clear pending transactions or pending meeting
     if(!meeting.haspending && meeting.pending){
-      const alert = await this.alertCtrl.create({
-        header: 'Confirmation',
-        message: 'Are you sure to clear pending meeting?',
-        buttons: [
+      this.translate.get(['confirmation','are_you_sure_to_clear_meeting','yes','no']).subscribe(async (keys: any)=>{
+        const alert = await this.alertCtrl.create({
+          header: keys['confirmation'],
+          message: keys['are_you_sure_to_clear_meeting'],
+          buttons: [
           {
-            text: 'No'
+            text: keys['no']
           },
           {
-            text: 'Yes',
+            text: keys['yes'],
             handler: () => {
               this.dataProvider.clearPendingOperations(meeting, true).then(()=>{
                 this.update_meetings();
               });
             },
           },
-        ],
+          ],
+        });
+        await alert.present();
       });
-      await alert.present();
     }else{
-      const alert = await this.alertCtrl.create({
-        header: 'Confirmation',
-        message: 'Are you sure to clear pending transactions?',
-        buttons: [
+      this.translate.get(['confirmation','are_you_sure_to_clear_transactions','yes','no']).subscribe(async (keys: any)=>{
+        const alert = await this.alertCtrl.create({
+          header: keys['confirmation'],
+          message: keys['are_you_sure_to_clear_transactions'],
+          buttons: [
           {
-            text: 'No'
+            text: keys['no']
           },
           {
-            text: 'Yes',
+            text: keys['yes'],
             handler: () => {
               this.dataProvider.clearPendingOperations(meeting).then(()=>{
                 this.update_meetings();
               });
             },
           },
-        ],
+          ],
+        });
+        await alert.present();
       });
-      await alert.present();
     }
   }
 }

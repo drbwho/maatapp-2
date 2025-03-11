@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { DataProvider } from '../../providers/provider-data';
 import { Component, OnInit } from '@angular/core';
 
@@ -9,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class AboutPage implements OnInit {
+  curLang: string;
   confdata =
     {
     'title': '',
@@ -18,9 +20,12 @@ export class AboutPage implements OnInit {
     'dateto': ''
     };
 
-  constructor(public dataProvider: DataProvider) { }
+  constructor(public dataProvider: DataProvider, private translate: TranslateService) { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.curLang = this.translate.currentLang;
   }
 
 }

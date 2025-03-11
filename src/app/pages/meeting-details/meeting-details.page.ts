@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { OperationTools, AccountTotals } from '../../providers/operation-tools';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -40,7 +41,8 @@ export class MeetingDetailsPage implements OnInit {
     private storage: Storage,
     private config: ConfigData,
     private alertCtrl: AlertController,
-    private operTools: OperationTools
+    private operTools: OperationTools,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() { 
@@ -109,15 +111,15 @@ export class MeetingDetailsPage implements OnInit {
   async deleleTransaction(event: Event, tr: any){
     //prevent ion-item click
     event.stopPropagation();
-
-    const alert = await this.alertCtrl.create({
-      header: 'Are you sure?',
-      buttons: [
+    this.translate.get(['are_you_sure','no','yes']).subscribe(async (keys: any)=>{
+      const alert = await this.alertCtrl.create({
+        header: keys['are_you_sure'],
+        buttons: [
         {
-          text: 'No',
+          text: keys['no'],
         },
         {
-          text: 'Yes',
+          text: keys['yes'],
           handler: async () => {
             /*let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
             //find index
@@ -129,9 +131,10 @@ export class MeetingDetailsPage implements OnInit {
            this.dataProvider.delOperation(tr).then(() => this.load_accounts());
           },
         },
-      ],
+        ],
+      });
+      await alert.present();
     });
-    await alert.present();
   }
 
   async addTransactionModal(event: Event, account: any) {

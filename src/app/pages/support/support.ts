@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 
 import { AlertController, ToastController } from '@ionic/angular';
 import { DataProvider } from '../../providers/provider-data';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class SupportPage {
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
     private dataProvider: DataProvider,
+    private translate: TranslateService
   ) { }
 
   ionViewWillEnter() {
@@ -38,26 +40,30 @@ export class SupportPage {
 
       this.dataProvider.newTicket(this.supportMessage).then(async (res:any)=>{
         if(res.status != undefined && res.status == 'error'){
-          const alert = await this.alertCtrl.create({
-            header: "Error",
-            message: res.message,
-            buttons: [
+          this.translate.get(['error']).subscribe(async (keys: any)=>{
+            const alert = await this.alertCtrl.create({
+              header: keys['error'],
+              message: res.message,
+              buttons: [
               {
                 text: 'Ok',
               },
-            ],
+              ],
+            });
+            await alert.present();
           });
-          await alert.present();
           return;
         }else{
           this.supportMessage = '';
-          const toast = await this.toastCtrl.create({
-            message: 'Your support request has been sent.',
-            cssClass: 'toast-success',
-            duration: 3000
+          this.translate.get(['support_request_sent']).subscribe(async (keys: any)=>{
+            const toast = await this.toastCtrl.create({
+              message: keys['support_request_sent'],
+              cssClass: 'toast-success',
+              duration: 3000
+            });
+            await toast.present();
+            this.update_tickets();
           });
-          await toast.present();
-          this.update_tickets();
           return;
         }
       })

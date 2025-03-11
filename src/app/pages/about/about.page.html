@@ -15,7 +15,7 @@
   <ion-text class="ion-text-center">
     <h4></h4>
   </ion-text>
-  <ion-note>
+  <ion-note *ngIf="curLang == 'en'">
 <p>MA'AT is a revolutionary collective credit system and the solution to creating a collective fund.</p>
 <p>Ma'at vision is about blooming ecologies and economies. It is about farmers living with dignity and pride,
 able to invest in their farms and communities, receiving a fair price for what they produce.</p>
@@ -34,4 +34,65 @@ they want according to the group rules. No collateral and no risks associated. T
 <p>Ma'at creates wealth and well-being and is based on independence, autonomy and self-determination. It pools local value and reinvests
 it into the community. It allows small groups to thrive and self-replicate and to invest individually and collectively.</p>
   </ion-note>
+
+  <ion-note *ngIf="curLang == 'fr'">
+  <p>MA'AT est un système de crédit collectif révolutionnaire et la solution pour créer un fonds collectif.</p>
+<p>La vision de Ma'at est centrée sur l'épanouissement des écologies et des économies. Il s'agit de permettre aux agriculteurs de vivre avec dignité et fierté,
+de pouvoir investir dans leurs fermes et leurs communautés, et de recevoir un prix équitable pour ce qu'ils produisent.</p>
+<p>Le nom MA'AT vient d'une déesse égyptienne. Elle était la déesse de l'harmonie, de la justice et de la vérité. La signification
+de Ma'at englobe tous les aspects de l'existence, y compris l'équilibre fondamental de l'univers, le cycle des saisons, l'honnêteté,
+et la véracité dans les interactions sociales. Les anciens Égyptiens avaient une profonde conviction d'une sainteté et d'une unité sous-jacentes dans l'univers.</p>
+<p>Mission</p>
+  <ul>
+  <li>Développer et appliquer les outils pour l'accès au crédit</li>
+  <li>Construire une communauté de pratique</li>
+  <li>Atteindre un impact et une échelle internationale</li>
+  </ul>
+<p>Ma'at apporte une révolution dans le prêt de crédit. C'est la microfinance de nouvelle génération. Avec Ma'at, les rêves deviennent réalité.</p>
+<p>Il n'y a aucune obligation, juste le respect des règles de Ma'at. Les agriculteurs peuvent emprunter et rembourser quand
+ils le souhaitent, selon les règles du groupe. Pas de garantie ni de risques associés. Il n'y a aucune dépendance à une banque, un donateur ou une institution publique.</p>
+<p>Ma'at crée de la richesse et du bien-être et est basée sur l'indépendance, l'autonomie et l'autodétermination. Elle regroupe la valeur locale et la réinvestit
+dans la communauté. Elle permet à de petits groupes de prospérer, de se reproduire et d'investir individuellement et collectivement.</p>
+</ion-note>
+
+<ion-note *ngIf="curLang == 'es'">
+  <p>MA'AT es un sistema de crédito colectivo revolucionario y la solución para crear un fondo colectivo.</p>
+  <p>La visión de Ma'at se centra en el florecimiento de las ecologías y las economías. Se trata de que los agricultores vivan con dignidad y orgullo,
+  puedan invertir en sus granjas y comunidades, y reciban un precio justo por lo que producen.</p>
+  <p>El nombre MA'AT proviene de una diosa egipcia. Ella era la diosa de la armonía, la justicia y la verdad. El significado
+  de Ma'at abarca todos los aspectos de la existencia, incluido el equilibrio básico del universo, el ciclo de las estaciones, la honestidad
+  y la veracidad en las interacciones sociales. Los antiguos egipcios tenían una profunda convicción de una santidad y unidad subyacentes en el universo.</p>
+  <p>Misión</p>
+    <ul>
+    <li>Desarrollar y aplicar herramientas para el acceso al crédito</li>
+    <li>Construir una comunidad de práctica</li>
+    <li>Lograr impacto y escalar internacionalmente</li>
+    </ul>
+  <p>Ma'at trae una revolución en los préstamos de crédito. Es la microfinanciación de próxima generación. Con Ma'at, los sueños se hacen realidad.</p>
+  <p>No hay obligaciones adjuntas, solo respetar las reglas de Ma'at. Los agricultores pueden pedir prestado y devolver el dinero cuando
+  lo deseen, según las reglas del grupo. Sin garantías ni riesgos asociados. No hay dependencia de un banco, un donante o una institución pública.</p>
+  <p>Ma'at crea riqueza y bienestar y se basa en la independencia, la autonomía y la autodeterminación. Agrupa el valor local y lo reinvierte
+  en la comunidad. Permite que pequeños grupos prosperen, se autorepliquen e inviertan individual y colectivamente.</p>
+</ion-note>
+
+<ion-note *ngIf="curLang == 'pt'">
+  <p>MA'AT é um sistema de crédito coletivo revolucionário e a solução para criar um fundo coletivo.</p>
+  <p>A visão da Ma'at está centrada no florescimento das ecologias e economias. Trata-se de permitir que os agricultores vivam com dignidade e orgulho,
+  possam investir em suas fazendas e comunidades, e recebam um preço justo pelo que produzem.</p>
+  <p>O nome MA'AT vem de uma deusa egípcia. Ela era a deusa da harmonia, justiça e verdade. O significado
+  de Ma'at abrange todos os aspectos da existência, incluindo o equilíbrio básico do universo, o ciclo das estações, a honestidade
+  e a veracidade nas interações sociais. Os antigos egípcios tinham uma profunda convicção de uma santidade e unidade subjacentes no universo.</p>
+  <p>Missão</p>
+    <ul>
+    <li>Desenvolver e aplicar ferramentas para acesso ao crédito</li>
+    <li>Construir uma comunidade de prática</li>
+    <li>Alcançar impacto e escala internacional</li>
+    </ul>
+  <p>Ma'at traz uma revolução nos empréstimos de crédito. É a microfinança de próxima geração. Com Ma'at, os sonhos se tornam realidade.</p>
+  <p>Não há obrigações vinculadas, apenas respeitar as regras da Ma'at. Os agricultores podem pedir emprestado e pagar quando
+  desejarem, de acordo com as regras do grupo. Sem garantias e sem riscos associados. Não há dependência de um banco, doador ou instituição pública.</p>
+  <p>Ma'at cria riqueza e bem-estar e é baseada na independência, autonomia e autodeterminação. Ela agrega valor local e o reinveste
+  na comunidade. Permite que pequenos grupos prosperem, se autorrepliquem e invistam individual e coletivamente.</p>
+</ion-note>
+
 </ion-content>

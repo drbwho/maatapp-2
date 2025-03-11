@@ -168,8 +168,8 @@ export class TransactionsComponent  implements OnInit {
                 ],
               });
               await alert.present();
-              success = false;
             });
+            success = false;
           }//else{
             //this.modalCtrl.dismiss(true);
           //}

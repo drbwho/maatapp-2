@@ -3,6 +3,7 @@ import { DataProvider } from '../../providers/provider-data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-groups',
@@ -15,13 +16,15 @@ export class GroupsPage implements OnInit {
   groups: any;
   countryname: any;
   queryText: string;
+  searchPlaceholder: string;
 
   constructor(
     private dataProvider: DataProvider,
     private route: ActivatedRoute,
     private router: Router,
     private storage: Storage,
-    private config: ConfigData
+    private config: ConfigData,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -39,6 +42,10 @@ export class GroupsPage implements OnInit {
         this.storage.set(this.config.GET_FILE('params'), data);
       });
     });
+
+    this.translate.get('search').subscribe((keys:any)=>{
+      this.searchPlaceholder = keys;
+    })
   }
 
   navto(group){

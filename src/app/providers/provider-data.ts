@@ -11,6 +11,7 @@ import { UserData } from './user-data';
 import { Events } from './events';
 import { formatDate } from '@angular/common';
 import { OperationTools } from './operation-tools';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Current {
   country?: any;
@@ -60,7 +61,8 @@ export class DataProvider {
     public config: ConfigData,
     public toast: ToastController,
     public loadingcontroller: LoadingController,
-    private operationTools: OperationTools
+    private operationTools: OperationTools,
+    private translate: TranslateService
   ) {}
 
 
@@ -118,12 +120,14 @@ export class DataProvider {
           error: async (error) => {
             if(loading){loading.dismiss();}
             console.log("Network Error!");
-            const toast = await this.toast.create({
-              message: 'Network error! Cannot check for updates...',
-              cssClass: 'toast-alert',
-              duration: 3000
+            this.translate.get(['network_error_no_updates']).subscribe(async (keys: any)=>{
+              const toast = await this.toast.create({
+                message: keys['network_error_no_updates'],
+                cssClass: 'toast-alert',
+                duration: 3000
+              });
+              toast.present();
             });
-            toast.present();
             // else load from storage/local file
             this.storage.get(this.config.GET_FILE(type)).then((res)=>{
               if(res){
@@ -384,7 +388,9 @@ export class DataProvider {
       }
       this.storage.set(this.config.UPLOAD_ERRORS_FILE, upload_errors);
       if(found_errors){
-        resolve({'status': 'error', 'message': 'Uploading finished with errors! Please consult the transactions page'});
+        this.translate.get('uploading_with_errors').subscribe((key)=>{
+          resolve({'status': 'error', 'message': key});
+        });
       }
       //Close meeting after succesfully uploading transactions
       if(meeting.endedat){

@@ -58,26 +58,28 @@ export class HomePage implements OnInit {
   }
 
   async user_not_loggedin(){
-    const alert = await this.alertController.create({
-      header: 'Info',
-      message: 'You must login to gain access',
-      buttons: [
+    this.translateService.get(['info','you_must_login_to_gain_access','login','cancel']).subscribe(async (keys: any)=>{
+      const alert = await this.alertController.create({
+        header: keys['info'],
+        message: keys['you_must_login_to_gain_access'],
+        buttons: [
         {
-        text: 'Login',
+        text: keys['login'],
         handler: () => {
           console.log('Not logged in');
           this.router.navigate(['/login']);
           }
         },
         {
-        text: 'Cancel',
+        text: keys['cancel'],
         handler: () => {
           alert.dismiss();
           }
         }
-      ]
+        ]
+      });
+      await alert.present();
     });
-    await alert.present();
   }
 
   openExternalUrl(url: string) {

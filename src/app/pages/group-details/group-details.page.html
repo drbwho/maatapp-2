@@ -9,7 +9,7 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar placeholder="Search" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"></ion-searchbar>
+    <ion-searchbar [(placeholder)]="searchPlaceholder" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"></ion-searchbar>
   </ion-toolbar>
   <ion-segment [(ngModel)]="segment">
     <ion-segment-button value="reunions" [disabled]="grouptype == 0">

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from './config-data';
 import { DataProvider } from './provider-data';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface AccountTotals {
   credit?: number,
@@ -19,7 +20,8 @@ export class OperationTools {
   constructor(
     private storage: Storage,
     private config: ConfigData,
-    private dataProvider: DataProvider
+    private dataProvider: DataProvider,
+    private translate: TranslateService
   ) { }
 
   /*
@@ -97,38 +99,54 @@ export class OperationTools {
       switch(pcode){
         case 'EMP':
           if(transaction.amount > account.creditdisponible){
-            resolve({'status': 'error', 'message': 'Loan exceeds credit available'})
+            this.translate.get('loan_exceeds_credit_available').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
           }
           if(transaction.amount > group_totals.credit){
-            resolve({'status': 'error', 'message': 'Loan exceeds group credit available'})
+            this.translate.get('loan_exceeds_group_credit_available').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
           }
           break;
         case 'RCP':
           if(account.restearembourser > 0){
-            resolve({'status': 'error', 'message': 'Withdrawl is not permitted when open loans exist'})
+            this.translate.get('withdrawl_not_permitted_open_loans').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
             break;
           }
           if(transaction.amount > account.balance){
-            resolve({'status': 'error', 'message': 'Withdrawal exceeds balance'})
+            this.translate.get('withdrawl_exceeds_balance').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
           }
           break;
         case 'SFEMP':
           if(transaction.amount > group_account.creditdisponible || 
              transaction.amount > (group_account.sfcontribution - group_account.sfrestearembourser)){
-            resolve({'status': 'error', 'message': 'Loan exceeds group SF or total credit available'})
+            this.translate.get('loan_exceeds_group_totals').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
           }
           if(transaction.amount > group_totals.credit){
-            resolve({'status': 'error', 'message': 'Loan exceeds group credit available'})
+            this.translate.get('loan_exceeds_group_credit_available').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
           }
           break;
         case 'REM':
           if(transaction.amount > account.restearembourser){
-            resolve({'status': 'error', 'message': 'Reimbursement exceeds loan debt'})
+            this.translate.get('reimbursement_exceeds_loan_debt').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
           }
           break;
         case 'SFREM':
           if(transaction.amount > account.sfrestearembourser){
-            resolve({'status': 'error', 'message': 'Reimbursement exceeds SF loan debt'})
+            this.translate.get('reimbursement_exceeds_sf_loan_debt').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
           }
           break;
       }
@@ -137,7 +155,9 @@ export class OperationTools {
       let groupops = ['AIN', 'CFS', 'RCPM', 'REMM', 'EMPM'];
       if(groupops.includes(pcode)){
         if(transaction.amount > group_totals.credit){
-          resolve({'status': 'error', 'message': 'Amount exceeds group credit available'})
+          this.translate.get('amount_exceeds_group_credit_available').subscribe((key)=>{
+            resolve({'status': 'error', 'message': key})
+          });
         }
       }
 
