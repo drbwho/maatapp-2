@@ -3,6 +3,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { DataProvider } from '../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-transactions',
@@ -33,7 +34,8 @@ export class TransactionsComponent  implements OnInit {
     private dataProvider: DataProvider,
     private alertCtrl: AlertController,
     private storage: Storage,
-    private config: ConfigData
+    private config: ConfigData,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {}
@@ -80,15 +82,16 @@ export class TransactionsComponent  implements OnInit {
   }
 
   async valider(){
+    this.translate.get(['confirmation','are_you_sure','no','yes']).subscribe(async (keys: any)=>{
       const alert = await this.alertCtrl.create({
-        header: 'Confirmation',
-        message: 'Are you sure?',
+        header: keys['confirmation'],
+        message: keys['are_you_sure'],
         buttons: [
           {
-            text: 'No',
+            text: keys['no'],
           },
           {
-            text: 'Yes',
+            text: keys['yes'],
             handler: async () => {
               if(this.account){
                 this.submit_operations(this.account, true);
@@ -106,6 +109,7 @@ export class TransactionsComponent  implements OnInit {
         ],
       });
       await alert.present();
+    });
   }
 
   //Update regular contributions' amounts
@@ -153,17 +157,19 @@ export class TransactionsComponent  implements OnInit {
         let operation_name = (this.parameters.find((s)=> s.id == operationid)).name;
         await this.dataProvider.newOperation(this.meeting.id, account, this.group, operationid, operation_name, this.amount[operationid]).then(async (res: any)=>{
           if(res.status != 'success'){
-            const alert = await this.alertCtrl.create({
-              header: 'Error',
-              message: res.message,
-              buttons: [
+            this.translate.get(['error','confirm']).subscribe(async (keys: any)=>{
+              const alert = await this.alertCtrl.create({
+                header: keys['error'],
+                message: res.message,
+                buttons: [
                 {
-                  text: 'Confirm',
+                  text: keys['confirm'],
                 }
-              ],
+                ],
+              });
+              await alert.present();
+              success = false;
             });
-            await alert.present();
-            success = false;
           }//else{
             //this.modalCtrl.dismiss(true);
           //}

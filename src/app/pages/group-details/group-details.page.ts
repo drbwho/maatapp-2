@@ -9,6 +9,7 @@ import { AccountInfoComponent } from '../../component/account-info/account-info.
 import { UserData } from '../../providers/user-data';
 import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
 import { HistoryComponent } from '../../component/history/history.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-group-details',
@@ -40,7 +41,8 @@ export class GroupDetailsPage implements OnInit {
     private config: ConfigData,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
-    private user: UserData
+    private user: UserData,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -172,62 +174,67 @@ export class GroupDetailsPage implements OnInit {
   }
 
   async closeAccount(account){
-    const alert = await this.alertCtrl.create({
-      header: 'Confirmation',
-      message: 'Are you sure to close user account?',
-      buttons: [
+    this.translate.get(['confirmation','there_is_already_a_meeting','no','yes']).subscribe(async (keys: any)=>{
+      const alert = await this.alertCtrl.create({
+        header: keys['confirmation'],
+        message: keys['are_you_sure_to_close_user_account'],
+        buttons: [
         {
-          text: 'No',
+          text: keys['no'],
         },
         {
-          text: 'Yes',
+          text: keys['yes'],
           handler: () => {
             this.dataProvider.closeUserAccount(account).then(()=>{
               this.update_accounts();
             })
           },
         },
-      ],
+        ],
+      });
+      await alert.present();
     });
-    await alert.present();
   }
 
   async cancelMeeting(meeting){
-    const alert = await this.alertCtrl.create({
-      header: 'Confirmation',
-      message: 'Are you sure to cancel the meeting?',
-      buttons: [
+    this.translate.get(['confirmation','are_you_sure_to_cancel_the_meeting','no','yes']).subscribe(async (keys: any)=>{
+      const alert = await this.alertCtrl.create({
+        header: keys['confirmation'],
+        message: keys['are_you_sure_to_cancel_the_meeting'],
+        buttons: [
         {
-          text: 'No',
+          text: keys['no'],
         },
         {
-          text: 'Yes',
+          text: keys['yes'],
           handler: () => {
             this.dataProvider.cancelMeeting(meeting).then((res)=>{
               this.update_meetings();
             })
           },
         },
-      ],
+        ],
+      });
+      await alert.present();
     });
-    await alert.present();
   }
 
   async closeMeeting(meeting){
-    const alert = await this.alertCtrl.create({
-      header: 'Confirmation',
-      message: 'Are you sure to close the meeting?',
-      buttons: [
+    this.translate.get(['confirmation','are_you_sure_to_close_the_meeting','no','yes','error']).subscribe(async (keys: any)=>{
+      const alert = await this.alertCtrl.create({
+        header: keys['confirmation'],
+        message: keys['are_you_sure_to_close_the_meeting'],
+        buttons: [
         {
-          text: 'No',
+          text: keys['no'],
         },
         {
-          text: 'Yes',
+          text: keys['yes'],
           handler: () => {
             this.dataProvider.closeMeeting(meeting).then(async (res: any)=>{
               if(res.status != undefined && res.status == 'error'){
                 const alert = await this.alertCtrl.create({
-                  header: "Error",
+                  header: keys['error'],
                   message: res.message,
                   buttons: [
                     {
@@ -242,69 +249,76 @@ export class GroupDetailsPage implements OnInit {
             })
           },
         },
-      ],
+        ],
+      });
+      await alert.present();
     });
-    await alert.present();
   }
 
 
   async confirmUploadMeeting(meeting){
-    const alert = await this.alertCtrl.create({
-      header: 'Confirmation',
-      message: 'Are you sure to upload pending transactions to the server?',
-      buttons: [
+    this.translate.get(['confirmation','are_you_sure_to_upload_transactions','no','yes','error']).subscribe(async (keys: any)=>{
+      const alert = await this.alertCtrl.create({
+        header: keys['confirmation'],
+        message: keys['are_you_sure_to_upload_transactions'],
+        buttons: [
         {
-          text: 'No'
+          text: keys['no']
         },
         {
-          text: 'Yes',
+          text: keys['yes'],
           handler: () => {
             this.uploadMeeting(meeting);
           },
         },
-      ],
+        ],
+      });
+      await alert.present();
     });
-    await alert.present();
   }
 
   async uploadMeeting(meeting: any){
     let net = await Network.getStatus();
     if(!net.connected){
-      const alert = await this.alertCtrl.create({
-        header: "Error",
-        message: 'There is no network connection!<br/>Please try again later',
-        buttons: [
+      this.translate.get(['confirmation','are_you_sure_to_upload_transactions','no','yes','error']).subscribe(async (keys: any)=>{
+        const alert = await this.alertCtrl.create({
+          header: keys['error'],
+          message: keys['no_network'],
+          buttons: [
           {
             text: 'Ok',
           },
-        ],
+          ],
+        });
+        await alert.present();
       });
-      await alert.present();
       return;
     }
     //upload all pending meeting transactions
-    this.dataProvider.uploadOperations(meeting).then(async (res:any) => {
-      let header="";
-      let message="";
-      if(res.status.toLowerCase() == 'error'){
-        header = "Error";
-        message = res.message;
-      }else{
-        header = "Success";
-        message = "Data uploaded";
-      }
-      const alert = await this.alertCtrl.create({
-        header: header,
-        message: message,
-        buttons: [
+    this.translate.get(['confirmation','data_uploaded','success','yes','error']).subscribe(async (keys: any)=>{;
+      this.dataProvider.uploadOperations(meeting).then(async (res:any) => {
+        let header="";
+        let message="";
+        if(res.status.toLowerCase() == 'error'){
+          header = keys['error'];
+          message = res.message;
+        }else{
+          header = keys['success'];
+          message = keys['data_uploaded'];
+        }
+        const alert = await this.alertCtrl.create({
+          header: header,
+          message: message,
+          buttons: [
           {
             text: 'Ok',
           },
-        ],
+          ],
+        });
+        this.update_meetings();
+        this.update_accounts();
+        await alert.present();
       });
-      this.update_meetings();
-      this.update_accounts();
-      await alert.present();
     })
   }
 
@@ -371,7 +385,7 @@ export class GroupDetailsPage implements OnInit {
           },
         ],
       });
-      await alert.present();  
+      await alert.present();
     }else{
       const alert = await this.alertCtrl.create({
         header: 'Confirmation',
@@ -390,7 +404,7 @@ export class GroupDetailsPage implements OnInit {
           },
         ],
       });
-      await alert.present();  
+      await alert.present();
     }
   }
 }

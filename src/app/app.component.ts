@@ -335,26 +335,28 @@ export class AppComponent implements OnInit {
   }
 
   async user_not_loggedin(){
-    const alert = await this.alertController.create({
-      header: 'Info',
-      message: 'You must login to gain access',
-      buttons: [
+    this.translate.get(['info','you_must_login_to_gain_access','login','cancel']).subscribe(async (keys: any)=>{
+      const alert = await this.alertController.create({
+        header: keys['info'],
+        message: keys['you_must_login_to_gain_access'],
+        buttons: [
         {
-        text: 'Login',
-        handler: () => {
-          console.log('Not logged in');
-          this.router.navigate(['/login']);
+          text: keys['login'],
+          handler: () => {
+            console.log('Not logged in');
+            this.router.navigate(['/login']);
+            }
+          },
+          {
+          text: keys['cancel'],
+          handler: () => {
+            alert.dismiss();
+            }
           }
-        },
-        {
-        text: 'Cancel',
-        handler: () => {
-          alert.dismiss();
-          }
-        }
-      ]
+        ]
+      });
+      await alert.present();
     });
-    await alert.present();
   }
 
   // Create a unique device id

@@ -13,34 +13,34 @@
   <ion-list lines="none" class="info-header">
     <ion-item>
       <ion-label>
-        <h2>Meeting: <strong>{{meetingplace}}</strong></h2>
+        <h2>{{'meeting' | translate}}: <strong>{{meetingplace}}</strong></h2>
       </ion-label>
       <ion-note slot="end"><strong>{{meetingdate}}</strong></ion-note>
     </ion-item>
     <ion-item>
       <ion-icon size="large" name="information-circle-outline"></ion-icon>
       <div class="ion-padding-start">
-        <ion-note>New transactions will be locally stored until uploading from the Group's page</ion-note>
+        <ion-note>{{'new_transactions_info' | translate}}</ion-note>
       </div>
     </ion-item>
     <ion-item>
       <ion-label>
         <ion-text color="secondary">
-        <h6>Cash</h6>
+        <h6>{{'cash' | translate}}</h6>
         </ion-text>
       </ion-label>
       <ion-badge  color="success">{{new_totals.cash | number:'.2'}}</ion-badge>
       &nbsp;
       <ion-label>
         <ion-text color="secondary">
-        <h6>Balance</h6>
+        <h6>{{'balance' | translate}}</h6>
         </ion-text>
       </ion-label>
       <ion-badge  color="success">{{new_totals.balance | number:'.2'}}</ion-badge>
       &nbsp;
       <ion-label>
         <ion-text color="secondary">
-        <h6>Credit av.</h6>
+        <h6>{{'credit_av' | translate}}</h6>
         </ion-text>
       </ion-label>
       <ion-badge  color="success">{{new_totals.credit | number:'.2'}}</ion-badge>
@@ -50,7 +50,7 @@
 
 <ion-content [fullscreen]="false">
   <ion-item>
-    <ion-button class="ion-float-left" [fill]="selectedAll ? 'solid' : 'outline'" color="tertiary" shape="round" (click)="selectAll()">All</ion-button>
+    <ion-button class="ion-float-left" [fill]="selectedAll ? 'solid' : 'outline'" color="tertiary" shape="round" (click)="selectAll()">{{'all' | translate}}</ion-button>
     <ion-text class="ion-margin-left" color="secondary" *ngIf="selectedAccounts">&nbsp;({{selectedAccounts}}) selected</ion-text>
     <ion-button [disabled]="selectedAccounts ? false : true" class="ion-float-right" slot="end" size="small" color="secondary" (click)="addTransactionModal($event, null)"><ion-icon name="add"></ion-icon></ion-button>
   </ion-item>
@@ -79,10 +79,10 @@
           <ion-row>
             <ion-col size="5">
               <p>
-                Credit disp: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
+                {{'credit_disp' | translate}}: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
               </p>
               <p>
-                Loan req.: {{account.besoinsliquidite | number}} {{currency}}
+                {{'loan_req' | translate}}: {{account.besoinsliquidite | number}} {{currency}}
               </p>
             </ion-col>
             <ion-col>

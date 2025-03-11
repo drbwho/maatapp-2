@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Account info</ion-title>
+    <ion-title>{{'account_info' | translate}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">Close</ion-button>
+      <ion-button (click)="dismiss()">{{'close' | translate}}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -20,48 +20,48 @@
   <ion-card-content>
    <ion-grid>
     <ion-row>
-      <ion-col size="9"><ion-icon name="arrow-redo" size="small" color="primary"></ion-icon> <strong>Balance:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="tertiary"><strong>{{account.balance | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9"><ion-icon name="arrow-redo" size="small" color="primary"></ion-icon> <strong>{{'balance' | translate}}:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="tertiary"><strong>{{account.balance | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9"><strong>Credit available:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="success"><strong>{{account.creditdisponible | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9"><strong>{{'credit_available' | translate}}:</strong></ion-col><ion-col class="ion-text-end"><ion-text color="success"><strong>{{account.creditdisponible | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9"><ion-icon name="flash" size="small" color="primary"></ion-icon><strong> Loans:</strong></ion-col><ion-col class="ion-text-end"><ion-text>{{account.emprunts | number:'.2'}}</ion-text></ion-col>
+      <ion-col size="9"><ion-icon name="flash" size="small" color="primary"></ion-icon><strong> {{'loans' | translate}}:</strong></ion-col><ion-col class="ion-text-end"><ion-text>{{account.emprunts | number:'.2'}}</ion-text></ion-col>
     </ion-row>
     <ion-row *ngIf="account.emprunts > 0">
-      <ion-col size="6" class="ion-padding-start">-- Due date:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''">{{account.dateecheance}}</ion-text></ion-col>
-      <ion-col size="9" class="ion-padding-start">-- Still to be paid (today):</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''"><strong>{{account.restearembourser | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="6" class="ion-padding-start">-- {{'due_date' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''">{{account.dateecheance}}</ion-text></ion-col>
+      <ion-col size="9" class="ion-padding-start">-- {{'still_to_be_paid_today' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''"><strong>{{account.restearembourser | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row *ngIf="account.emprunts > 0 && !loans_expired">
-      <ion-col size="9" class="ion-padding-start">-- Still to be paid (due date):</ion-col><ion-col class="ion-text-end"><ion-text color="primary"><strong>{{account.finalrefund | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9" class="ion-padding-start">-- {{'still_to_be_paid_due_date' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="primary"><strong>{{account.finalrefund | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9"><ion-icon name="server" size="small" color="primary"></ion-icon> Loan req:</ion-col><ion-col class="ion-text-end">{{account.besoinsliquidite | number:'.2'}}</ion-col>
+      <ion-col size="9"><ion-icon name="server" size="small" color="primary"></ion-icon> {{'loan_req' | translate}}:</ion-col><ion-col class="ion-text-end">{{account.besoinsliquidite | number:'.2'}}</ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9"><ion-icon name="heart-half" size="small" color="primary"></ion-icon> <strong>SF Contributions:</strong></ion-col><ion-col class="ion-text-end"><strong>{{account.sfcontribution | number:'.2'}}</strong></ion-col>
+      <ion-col size="9"><ion-icon name="heart-half" size="small" color="primary"></ion-icon> <strong>SF {{'contributions' | translate}}:</strong></ion-col><ion-col class="ion-text-end"><strong>{{account.sfcontribution | number:'.2'}}</strong></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="9"><ion-icon name="heart" size="small" color="primary"></ion-icon> <strong>SF Loans:</strong></ion-col><ion-col class="ion-text-end"><ion-text>{{account.sfemprunts | number:'.2'}}</ion-text></ion-col>
+      <ion-col size="9"><ion-icon name="heart" size="small" color="primary"></ion-icon> <strong>SF {{'loans' | translate}}:</strong></ion-col><ion-col class="ion-text-end"><ion-text>{{account.sfemprunts | number:'.2'}}</ion-text></ion-col>
     </ion-row>
     <ion-row *ngIf="account.sfemprunts > 0">
-      <ion-col size="6" class="ion-padding-start">-- Due date:</ion-col><ion-col class="ion-text-end"><ion-text [color]="sfloans_expired ? 'danger': ''">{{account.sfdateecheance}}</ion-text></ion-col>
-      <ion-col size="9" class="ion-padding-start">-- SF Still to be paid:</ion-col><ion-col class="ion-text-end"><ion-text [color]="sfloans_expired ? 'danger': ''"><strong>{{account.sfrestearembourser | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="6" class="ion-padding-start">-- {{'due_date' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="sfloans_expired ? 'danger': ''">{{account.sfdateecheance}}</ion-text></ion-col>
+      <ion-col size="9" class="ion-padding-start">-- SF {{'still_to_be_paid' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="sfloans_expired ? 'danger': ''"><strong>{{account.sfrestearembourser | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row *ngIf="account.type == 1">
-      <ion-col size="9">Open Loans:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.openloans}}</strong></ion-text></ion-col>
+      <ion-col size="9">{{'open_loans' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.openloans}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row *ngIf="account.type == 1">
-      <ion-col size="9">Open SF Loans:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.sfopenloans}}</strong></ion-text></ion-col>
+      <ion-col size="9">{{'open_SF_loans' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.sfopenloans}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row *ngIf="account.type == 1">
-      <ion-col size="9">Reg. Contributions due:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_reg | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9">{{'reg_contributions_due' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_reg | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row *ngIf="account.type == 1">
-      <ion-col size="9">SF Contributions due:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_sf | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9">SF {{'contributions_due' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_sf | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
     <ion-row *ngIf="account.type == 1">
-      <ion-col size="9">Facilitator payments due:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_facp | number:'.2'}}</strong></ion-text></ion-col>
+      <ion-col size="9">{{'facilitator_payments_due' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_facp | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
    </ion-grid>
   </ion-card-content>
@@ -70,7 +70,7 @@
  <ion-text color="secondary" *ngIf="show_transactions">
   <ion-label>
     <ion-icon name="swap-horizontal-outline" class="account-type"></ion-icon>
-    Total Transactions
+    {{'total_transactions' | translate}}
   </ion-label>
 </ion-text>
  <ion-card *ngIf="show_transactions">
@@ -86,7 +86,7 @@
  <ion-text color="secondary" *ngIf="group_totals != null && group_totals.transactions != undefined">
   <ion-label>
     <ion-icon name="swap-horizontal-outline" class="account-type"></ion-icon>
-    Current Meeting Pending Transactions
+    {{'current_meeting_pending_transactions' | translate}}
   </ion-label>
 </ion-text>
  <ion-card *ngIf="group_totals != null && group_totals.transactions != undefined">
