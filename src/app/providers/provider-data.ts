@@ -66,9 +66,17 @@ export class DataProvider {
   ) {}
 
 
+  // Clear loaded data
+  clear(){
+    this.accounts = [];
+    this.countries = [];
+    this.meetings = [];
+    this.data = null;
+  }
+
   // Get data from API/STORAGE
-  async fetch_data(type, typeid = '', force=false, showLoading = false){
-    if(this[type] && !force){
+  async fetch_data(type, typeid = '', force=false, showLoading = false){    
+    if(this[type] && (this[type]).length && !force){
       return new Promise((resolve)=>{
         resolve(this[type]);
       });

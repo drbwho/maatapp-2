@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from './config-data';
-import { DataProvider } from './provider-data';
 import { TranslateService } from '@ngx-translate/core';
 
 export interface AccountTotals {
@@ -20,7 +19,6 @@ export class OperationTools {
   constructor(
     private storage: Storage,
     private config: ConfigData,
-    private dataProvider: DataProvider,
     private translate: TranslateService
   ) { }
 

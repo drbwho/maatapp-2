@@ -31,7 +31,7 @@
     "are_you_sure": "Tem certeza?",
     "you_must_login_to_gain_access": "Você deve fazer login para acessar",
     "user_or_password_dont_match": "Usuário ou senha incorretos!",
-    "authentication_error": "Erro de autenticação!",
+    "authentication_error": "Erro de autenticação ou rede!",
     "email_is_required": "O e-mail é obrigatório",
     "password_is_required": "A senha é obrigatória",
     "support_message_is_required": "A mensagem de suporte é obrigatória",

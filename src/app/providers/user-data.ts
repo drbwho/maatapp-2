@@ -18,7 +18,7 @@ export class UserData {
     public events: Events,
     public storage: Storage,
     private http: HttpClient,
-    private config: ConfigData,
+    private config: ConfigData
   ) { }
 
   async checkAuth(){
@@ -97,7 +97,7 @@ export class UserData {
 
   logout(): Promise<any> {
     return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
-      return this.storage.remove(this.USER_FILE);
+      return this.storage.clear();//remove(this.USER_FILE);
     }).then(() => {
       this.events.publish('user:logout');
     });

@@ -31,7 +31,7 @@
     "are_you_sure": "Êtes-vous sûr ?",
     "you_must_login_to_gain_access": "Vous devez vous connecter pour accéder",
     "user_or_password_dont_match": "Utilisateur ou mot de passe incorrect !",
-    "authentication_error": "Erreur d'authentification !",
+    "authentication_error": "Erreur d'authentification ou de réseau !",
     "email_is_required": "L'email est requis",
     "password_is_required": "Le mot de passe est requis",
     "support_message_is_required": "Un message de support est requis",
