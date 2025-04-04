@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 import { UserData } from '../../providers/user-data';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class AccountPage implements AfterViewInit {
   constructor(
     public alertCtrl: AlertController,
     public router: Router,
-    public userData: UserData
+    public userData: UserData,
+    private translate: TranslateService
   ) { }
 
   ngAfterViewInit() {
@@ -92,8 +94,26 @@ export class AccountPage implements AfterViewInit {
   }
 
   logout() {
-    this.userData.logout();
-    this.router.navigateByUrl('/login');
+    this.translate.get(['confirmation','are_you_sure_logout','no','yes']).subscribe(async (keys: any)=>{
+      const alert = await this.alertCtrl.create({
+        header: keys['confirmation'],
+        message: keys['are_you_sure_logout'],
+        buttons: [
+          {
+            text: keys['no'],
+          },
+          {
+            text: keys['yes'],
+            handler: async () => {
+              this.userData.logout().then(() => {
+                return this.router.navigateByUrl('/login');
+              });
+            },
+          },
+        ],
+      });
+      await alert.present();
+    });
   }
 
   support() {

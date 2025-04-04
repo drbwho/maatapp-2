@@ -169,8 +169,25 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    this.userData.logout().then(() => {
-      return this.router.navigateByUrl('/home');
+    this.translate.get(['confirmation','are_you_sure_logout','no','yes']).subscribe(async (keys: any)=>{
+      const alert = await this.alertController.create({
+        header: keys['confirmation'],
+        message: keys['are_you_sure_logout'],
+        buttons: [
+          {
+            text: keys['no'],
+          },
+          {
+            text: keys['yes'],
+            handler: async () => {
+              this.userData.logout().then(() => {
+                return this.router.navigateByUrl('/home');
+              });
+            },
+          },
+        ],
+      });
+      await alert.present();
     });
   }
 

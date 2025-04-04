@@ -29,6 +29,7 @@
     "confirmation": "Confirmación",
     "confirm": "Confirmar",
     "are_you_sure": "¿Estás seguro?",
+    "are_you_sure_logout":"¿Estás seguro? Se perderán las transacciones pendientes.",
     "you_must_login_to_gain_access": "Debes iniciar sesión para acceder",
     "user_or_password_dont_match": "¡Usuario o contraseña incorrectos!",
     "authentication_error": "¡Error de autenticación o red!",
