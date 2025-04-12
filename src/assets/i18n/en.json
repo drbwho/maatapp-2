@@ -29,7 +29,7 @@
   "confirmation":"Confirmation",
   "confirm":"Confirm",
   "are_you_sure":"Are you sure?",
-  "are_you_sure_logout":"Are you sure? Any pending transactions will be lost",
+  "are_you_sure_logout":"Are you sure?<br>Any pending transactions will be lost",
   "you_must_login_to_gain_access":"You must login to gain access",
   "user_or_password_dont_match":"User or password dont match!",
   "authentication_error":"Authentication or network error!",

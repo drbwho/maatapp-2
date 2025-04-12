@@ -29,7 +29,7 @@
     "confirmation": "Confirmação",
     "confirm": "Confirmar",
     "are_you_sure": "Tem certeza?",
-    "are_you_sure_logout":"Tem certeza? Todas as transações pendentes serão perdidas",
+    "are_you_sure_logout":"Tem certeza?<br>Todas as transações pendentes serão perdidas",
     "you_must_login_to_gain_access": "Você deve fazer login para acessar",
     "user_or_password_dont_match": "Usuário ou senha incorretos!",
     "authentication_error": "Erro de autenticação ou rede!",
