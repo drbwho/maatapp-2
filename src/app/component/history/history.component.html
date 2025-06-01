@@ -32,6 +32,12 @@
         <ion-text color="primary">
           <h3><strong>{{oper.operation}}</strong></h3>
         </ion-text>
+        <ion-text *ngIf="oper.categories" color="warning">
+          <h4><strong>{{oper.categories}}</strong></h4>
+        </ion-text>
+        <ion-text *ngIf="oper.notes" color="medium">
+          <h4><strong>{{oper.notes}}</strong></h4>
+        </ion-text>
       </ion-label>
       <ion-note slot="end" [ngStyle]="{'text-decoration': oper.is_cancelled ? 'line-through' : ''}" [color]="oper.is_cancelling ? 'danger' : ''">
         <strong>{{oper.credit | number:'.2'}}{{oper.debit | number:'.2'}}</strong>

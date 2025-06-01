@@ -35,6 +35,9 @@
     <ion-row *ngIf="account.emprunts > 0 && !loans_expired">
       <ion-col size="9" class="ion-padding-start">-- {{'still_to_be_paid_due_date' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="primary"><strong>{{account.finalrefund | number:'.2'}}</strong></ion-text></ion-col>
     </ion-row>
+    <ion-row *ngIf="account.loancategories">
+      <ion-col size="9" class="ion-padding-start"><ion-text color="tertiary">&nbsp;<strong>{{account.loancategories}}</strong></ion-text></ion-col>
+    </ion-row>
     <ion-row>
       <ion-col size="9"><ion-icon name="server" size="small" color="primary"></ion-icon> {{'loan_req' | translate}}:</ion-col><ion-col class="ion-text-end">{{account.besoinsliquidite | number:'.2'}}</ion-col>
     </ion-row>

@@ -93,5 +93,9 @@
     "loan_exceeds_group_totals": "Le prêt dépasse le SF du groupe ou le crédit total disponible",
     "reimbursement_exceeds_loan_debt": "Le remboursement dépasse la dette du prêt",
     "reimbursement_exceeds_sf_loan_debt": "Le remboursement dépasse la dette du prêt SF",
-    "amount_exceeds_group_credit_available": "Le montant dépasse le crédit disponible du groupe"
+    "amount_exceeds_group_credit_available": "Le montant dépasse le crédit disponible du groupe",
+    "loan_info":"Informations sur les prêts",
+    "categories":"Catégories",
+    "notes":"Notes",
+    "clear_cache":"Effacement des données stockées sur l'appareil"
   }

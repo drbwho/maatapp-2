@@ -25,6 +25,8 @@ interface Transaction {
   parameterid: any,
   parametername: any,
   amount: any,
+  categories?: any,
+  notes?: any,
   inputdate: any
 }
 
@@ -192,13 +194,15 @@ export class DataProvider {
   }
 
   // Save locally new Operation
- async newOperation(meetingid, account, group, parameterid, parametername, amount){
+ async newOperation(meetingid, account, group, parameterid, parametername, amount, categories="", notes=""){
     var trn: Transaction = {
       meetingid: meetingid,
       accountid: account.id,
       parameterid: parameterid,
       parametername: parametername,
       amount: amount,
+      categories: categories,
+      notes: notes,
       inputdate: formatDate(new Date(), 'Y-MM-dd H:mm:ss', ɵDEFAULT_LOCALE_ID)
     };
 
@@ -377,7 +381,7 @@ export class DataProvider {
       }
       var found_errors = false; 
       for(let tr of transactions){
-        res = await this.syncOperation(tr.meetingid, tr.accountid, tr.parameterid, tr.amount, tr.inputdate);
+        res = await this.syncOperation(tr);
         //if error stop uploading and return
         if(res.status.toLowerCase() == 'error'){
           // return name of account
@@ -451,11 +455,11 @@ export class DataProvider {
   * Sync operations to Server
   *
   */
-  async syncOperation(meetingid, accountid, parameterid, amount, inputdate){
+  async syncOperation(tr){
     const loading = await this.loadingcontroller.create({showBackdrop: false});
     loading.present();
 
-    let apiurl = this.config.GET_API_URL('operations', meetingid);
+    let apiurl = this.config.GET_API_URL('operations', tr.meetingid);
 
     const user = await this.user.getUser();
     const headers =  new HttpHeaders({
@@ -467,10 +471,12 @@ export class DataProvider {
       this.http
         .post(apiurl,
           {
-            parameter: parameterid,
-            accountid: accountid,
-            amount: amount,
-            inputdate: inputdate,
+            parameter: tr.parameterid,
+            accountid: tr.accountid,
+            amount: tr.amount,
+            inputdate: tr.inputdate,
+            categories: tr.categories,
+            notes: tr.notes,
             type: '',
             usetimezone: 0
           },

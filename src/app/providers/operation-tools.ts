@@ -95,8 +95,8 @@ export class OperationTools {
       }
       let group_totals = await this.estimate_account_totals(group_account, transaction.meetingid);
       switch(pcode){
-        case 'EMP':
-          if(transaction.amount > account.creditdisponible){
+        case 'EMP':console.log(group.settings.credit_borrow_multiplier);
+          if(transaction.amount > account.creditdisponible && group.settings.credit_borrow_multiplier >= 0){
             this.translate.get('loan_exceeds_credit_available').subscribe((key)=>{
               resolve({'status': 'error', 'message': key})
             });

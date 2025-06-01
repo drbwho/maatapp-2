@@ -11,9 +11,13 @@
 <ion-list class="ion-margin-top">
   <ion-item>
     <ion-label>{{'application_lang' | translate}}:</ion-label>
-    <ion-select (ionChange)="updateAppLang($event)" value="{{cur_lang}}" >
+    <ion-select (ionChange)="updateAppLang($event)" value="{{cur_lang}}" slot="end" >
       <ion-select-option *ngFor="let lang of available_langs" [value]="lang.code">{{lang.title}}</ion-select-option>
     </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{'clear_cache' | translate}}:</ion-label>
+    <ion-button color="danger" (click)="clear_cache()" size="small">{{'yes' | translate}}</ion-button>
   </ion-item>
 </ion-list>
 

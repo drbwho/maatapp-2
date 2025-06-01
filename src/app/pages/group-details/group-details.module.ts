@@ -11,6 +11,7 @@ import { StatusIconsModule } from '../../component/status-icons/status-icons.mod
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
 import { HistoryComponent } from '../../component/history/history.component';
+import { LoanInfoComponent } from '../../component/loan-info/loan-info.component';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -37,6 +38,6 @@ export function createTranslateLoader(http: HttpClient) {
       }
     })
   ],
-  declarations: [GroupDetailsPage, AccountInfoComponent, MeetingFormComponent, HistoryComponent]
+  declarations: [GroupDetailsPage, AccountInfoComponent, MeetingFormComponent, HistoryComponent, LoanInfoComponent]
 })
 export class GroupDetailsPageModule {}

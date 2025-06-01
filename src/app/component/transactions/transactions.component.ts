@@ -4,6 +4,7 @@ import { DataProvider } from '../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService } from '@ngx-translate/core';
+import { LoanInfoComponent } from '../loan-info/loan-info.component';
 
 @Component({
     selector: 'app-transactions',
@@ -28,6 +29,10 @@ export class TransactionsComponent  implements OnInit {
   amount: number[]=[];
   account_label = '';
   completed = true;
+  loan_info = {
+    categories: null,
+    notes: null
+  }
 
   constructor(
     private modalCtrl: ModalController,
@@ -154,8 +159,16 @@ export class TransactionsComponent  implements OnInit {
     let success = true;
     for(let operationid in this.amount){
       if(this.amount[operationid]){
-        let operation_name = (this.parameters.find((s)=> s.id == operationid)).name;
-        await this.dataProvider.newOperation(this.meeting.id, account, this.group, operationid, operation_name, this.amount[operationid]).then(async (res: any)=>{
+        let parameter = this.parameters.find((s)=> s.id == operationid);
+        let operation_name = parameter.name;
+        let categories=""; let notes="";
+        if(parameter.code == 'EMP'){
+          categories = this.loan_info.categories;
+          notes = this.loan_info.notes;
+        }
+        await this.dataProvider.newOperation(
+          this.meeting.id, account, this.group, operationid, operation_name, this.amount[operationid], categories, notes
+        ).then(async (res: any)=>{
           if(res.status != 'success'){
             this.translate.get(['error','confirm']).subscribe(async (keys: any)=>{
               const alert = await this.alertCtrl.create({
@@ -184,4 +197,18 @@ export class TransactionsComponent  implements OnInit {
       }
     }
   }
+
+  async open_loan_info(account){
+    const modal = await this.modalCtrl.create({
+        component: LoanInfoComponent,
+        componentProps: {group: this.group, loan_info: this.loan_info}
+    });
+    modal.present();
+
+    this.loan_info = (await modal.onWillDismiss() as any).data;
+  }
+
 }
+
+
+  

@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'loan_info' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">{{'close' | translate}}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+    {{'categories' | translate}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item lines="none" *ngFor="let category of categories" class="ion-no-padding">
+          <ion-label class="ion-no-margin ion-text-nowrap">
+            <ion-note class="tr-label ion-margin-start" color="tertiary">{{category.title}}</ion-note>
+          </ion-label>
+          <ion-input type="number" class="ion-no-margin quantity" [(ngModel)]="quantity[category.id]" placeholder="0" [ngStyle]="{'color': quantity[category.id] ? 'darkred' : 'gray'}"></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      {{'notes' | translate}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input type="text" class="ion-no-margin" [(ngModel)]="notes"></ion-input>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+

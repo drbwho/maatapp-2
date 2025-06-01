@@ -93,5 +93,9 @@
     "loan_exceeds_group_totals": "O empréstimo excede o SF do grupo ou o crédito total disponível",
     "reimbursement_exceeds_loan_debt": "O reembolso excede a dívida do empréstimo",
     "reimbursement_exceeds_sf_loan_debt": "O reembolso excede a dívida do empréstimo SF",
-    "amount_exceeds_group_credit_available": "O valor excede o crédito disponível do grupo"
+    "amount_exceeds_group_credit_available": "O valor excede o crédito disponível do grupo",
+    "loan_info":"Informações sobre empréstimos",
+    "categories":"Categorias",
+    "notes":"Notas",
+    "clear_cache":"Limpando os dados armazenados do dispositivo"
   }

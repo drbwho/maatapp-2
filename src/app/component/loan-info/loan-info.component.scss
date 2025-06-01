@@ -1,0 +1,23 @@
+ion-card {
+  --ion-card-background: #f7f7f7; //#fef8f0;
+  ion-icon {
+    vertical-align: top;
+  }
+}
+
+ion-input.quantity{
+    max-width: 80px;
+    text-align: end;
+    color: darkred;
+    font-size: larger;
+    font-weight: bold;
+    --background: #fff;
+}
+
+ion-input {
+  --background: rgb(255, 255, 255);
+}
+
+ion-list {
+  border-radius: 10px;
+}

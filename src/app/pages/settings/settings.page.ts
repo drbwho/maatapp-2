@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from '../../providers/events';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
@@ -20,7 +21,8 @@ export class SettingsPage implements OnInit {
     private storage: Storage,
     private config: ConfigData,
     private translate: TranslateService,
-    private events: Events
+    private events: Events,
+    private toast: ToastController
   ) { }
 
   ngOnInit() {
@@ -45,6 +47,23 @@ export class SettingsPage implements OnInit {
         this.events.publish('data:updated', true);
       });
     });
+  }
+
+  async clear_cache(){
+    this.storage.remove(this.config.TRANSACTIONS_FILE);
+    this.storage.remove(this.config.HISTORY_TRANSACTIONS_FILE);
+    this.storage.remove(this.config.UPLOAD_ERRORS_FILE);
+    this.storage.remove(this.config.NEWMEETINS_FILE);
+    this.storage.remove(this.config.GET_FILE('countries'));
+    this.storage.remove(this.config.GET_FILE('meetings'));
+    this.storage.remove(this.config.GET_FILE('accounts'));
+    this.storage.remove(this.config.GET_FILE('params'));
+    const toast = await this.toast.create({
+      message: 'Cache cleared!',
+      cssClass: 'toast-success',
+      duration: 5000
+    });
+    toast.present();
   }
 
 }
