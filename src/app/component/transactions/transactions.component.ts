@@ -29,6 +29,7 @@ export class TransactionsComponent  implements OnInit {
   amount: number[]=[];
   account_label = '';
   completed = true;
+  single_selected = true;
   loan_info = {
     categories: null,
     notes: null
@@ -58,6 +59,7 @@ export class TransactionsComponent  implements OnInit {
     if(this.account){
       account_type = this.account.type;
       this.account_label = this.account.owner;
+      this.single_selected = true;
       //load account's pending operations
       this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
         if(trns){
@@ -65,13 +67,20 @@ export class TransactionsComponent  implements OnInit {
           if(transactions){
             transactions.forEach((tr)=>{
               this.amount[tr.parameterid] = tr.amount;
+              if(tr.categories.length){
+                this.loan_info.categories = tr.categories;
+              }
+              if(tr.notes){
+                this.loan_info.notes = tr.notes;
+              }
             })
           }
         }
       })
     }else{
       account_type = 1;
-      this.account_label = '(' + this.accounts.filter( s => s.selected == true).length + ') accounts selected'
+      this.account_label = '(' + this.accounts.filter( s => s.selected == true).length + ') accounts selected';
+      this.single_selected = false;
     }
 
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {

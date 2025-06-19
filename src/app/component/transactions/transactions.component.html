@@ -21,7 +21,7 @@
               <ion-icon name="checkmark"></ion-icon>
             </ion-button>
             <!-- loan info -->
-            <ion-button class="icon-button" (click)="open_loan_info()" color="success" *ngIf="parameter.code =='EMP'" size="small">
+            <ion-button class="icon-button" (click)="open_loan_info()" color="success" *ngIf="parameter.code =='EMP' && single_selected" size="small">
               <ion-icon name="information-outline"></ion-icon>
             </ion-button>
           </ion-label>

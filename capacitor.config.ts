@@ -35,12 +35,16 @@ const config: CapacitorConfig = {
     },
     StatusBar: {
       overlaysWebView: false,
-      style: "DEFAULT",
-      backgroundColor: "#ffffffff"
+      style: "LIGHT",
+      backgroundColor: "#ebebe0"
+    },
+    EdgeToEdge: {
+      "backgroundColor": "#ebebe0"
     }
   },
   android: {
-    allowMixedContent: true
+    allowMixedContent: true,
+    adjustMarginsForEdgeToEdge: 'force'
   },
   server: {
     androidScheme: 'http',

@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
 export class LoanInfoComponent  implements OnInit {
   @Input() group: any;
   @Input() loan_info: any;
-  categories: any;
+  categories: any = null;
   quantity={};
   notes: string;
 
