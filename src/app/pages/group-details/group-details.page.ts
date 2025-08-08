@@ -77,15 +77,15 @@ export class GroupDetailsPage implements OnInit {
     this.dataProvider.fetch_data('accounts', this.groupId, true, true).then((data: any)=> {
       data.forEach((a)=>{
         a.loans_expired = false;
-        if(a.dateecheance != null && (new Date(a.dateecheance) < (new Date())) && a.restearembourser){
+        if(a.dateecheance != null && (new Date(a.dateecheance) < (new Date())) && parseFloat(a.restearembourser) > 0){
           a.loans_expired = true;
         }
         a.sfloans_expired = false;
-        if( a.dateecheance != null && (new Date(a.sfdateecheance) < (new Date())) && a.sfrestearembourser){
+        if( a.dateecheance != null && (new Date(a.sfdateecheance) < (new Date())) && parseFloat(a.sfrestearembourser) > 0){
           a.sfloans_expired = true;
-        }
+        }console.log(a)
       })
-      this.accounts = data;
+;      this.accounts = data;
       this.allaccounts = data;
     });
   }
