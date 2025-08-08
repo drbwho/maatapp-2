@@ -8,13 +8,14 @@ import { SettingsPageRoutingModule } from './settings-routing.module';
 
 import { SettingsPage } from './settings.page';
 
-// needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
+// needed fot translate pipe activation
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader();
 }
 
 @NgModule({
@@ -24,10 +25,10 @@ export function createTranslateLoader(http: HttpClient) {
     IonicModule,
     SettingsPageRoutingModule,
     // enable translate pipe
-    TranslateModule.forChild({
+   TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
-        useFactory: createTranslateLoader,
+        useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
     })

@@ -83,7 +83,7 @@ export class GroupDetailsPage implements OnInit {
         a.sfloans_expired = false;
         if( a.dateecheance != null && (new Date(a.sfdateecheance) < (new Date())) && parseFloat(a.sfrestearembourser) > 0){
           a.sfloans_expired = true;
-        }console.log(a)
+        }
       })
 ;      this.accounts = data;
       this.allaccounts = data;

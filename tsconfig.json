@@ -6,7 +6,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "ES2022",
@@ -14,10 +14,6 @@
       "es2022",
       "dom"
     ],
-    "useDefineForClassFields": false,
-    //Matrix JS SDK
-    //"allowSyntheticDefaultImports": true,
-    //"allowJs": false,
-    //"skipLibCheck": true
+    "useDefineForClassFields": false
   }
 }

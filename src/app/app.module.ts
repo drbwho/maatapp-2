@@ -6,9 +6,10 @@ import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Storage, Drivers } from '@ionic/storage';
 
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateModule, TranslateService, TranslateLoader, TranslatePipe, TranslateStore } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader, TranslatePipe, TranslateStore } from '@ngx-translate/core';
+import { provideTranslateService } from "@ngx-translate/core";
+import { provideTranslateHttpLoader, TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,8 +20,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import {enableProdMode} from '@angular/core';
 
-export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader();
 }
 
 enableProdMode();
@@ -43,10 +44,19 @@ enableProdMode();
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
-                useFactory: (createTranslateLoader),
+                useFactory: HttpLoaderFactory,
                 deps: [HttpClient]
             }
         })], 
-        providers: [TranslatePipe, TranslateStore, TranslateService, Calendar, SocialSharing, Storage, provideHttpClient(withInterceptorsFromDi())] })
+        providers: [TranslatePipe, TranslateStore, Calendar, SocialSharing, Storage, provideHttpClient(withInterceptorsFromDi()),
+            provideTranslateService({
+                lang: 'en',
+                fallbackLang: 'en',
+                loader: provideTranslateHttpLoader({
+                    prefix: './assets/i18n/',
+                    suffix: '.json'
+                })
+            }),
+        ] })
 export class AppModule {}
  
