@@ -38,6 +38,12 @@ export class MeetingFormComponent  implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  onPlaceChange(ev) {
+    const val: string = ev.detail?.value ?? '';
+    this.place = val.replace(/[0-9]/g, '');
+    ev.target.value = this.place;
+  }
+
   showSelectDateFrom(){
     this.datefromModal.present();
   }
