@@ -39,9 +39,10 @@ export class MeetingFormComponent  implements OnInit {
   }
 
   onPlaceChange(ev) {
-    const val: string = ev.detail?.value ?? '';
-    this.place = val.replace(/[0-9]/g, '');
-    ev.target.value = this.place;
+    //remove numbers from place
+    //const val: string = ev.detail?.value ?? '';
+    //this.place = val.replace(/[0-9]/g, '');
+    //ev.target.value = this.place;
   }
 
   showSelectDateFrom(){
