@@ -180,12 +180,15 @@ export class GroupDetailsPage implements OnInit {
 
   async closeAccount(account){
     this.translate.get(['confirmation','are_you_sure_to_close_user_account','no','yes']).subscribe(async (keys: any)=>{
+      const delaySeconds = 10; // Yes delay
+      let countdown = delaySeconds;
+
       const alert = await this.alertCtrl.create({
         header: keys['confirmation'],
         message: keys['are_you_sure_to_close_user_account'],
         buttons: [
         {
-          text: keys['no'],
+          text: keys['no']
         },
         {
           text: keys['yes'],
@@ -198,6 +201,27 @@ export class GroupDetailsPage implements OnInit {
         ],
       });
       await alert.present();
+
+      // Disable Yes button
+      const yesButton = document.querySelector(
+        'ion-alert button:nth-child(2)'
+      ) as HTMLButtonElement;
+      if (yesButton){
+        yesButton.disabled = true;
+        yesButton.style.color = '#ccc';
+      }
+
+      // Countdown timer
+      const interval = setInterval(() => {
+        countdown--;
+        if (yesButton) yesButton.textContent = countdown > 0 ? keys['yes'] +` (${countdown})` : keys['yes'];
+
+        if (countdown <= 0) {
+          if (yesButton) yesButton.disabled = false;
+          yesButton.style.color = '';
+          clearInterval(interval);
+        }
+      }, 1000);
     });
   }
 
