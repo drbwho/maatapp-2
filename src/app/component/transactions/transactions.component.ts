@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService } from '@ngx-translate/core';
 import { LoanInfoComponent } from '../loan-info/loan-info.component';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
 
 @Component({
     selector: 'app-transactions',
@@ -203,6 +204,26 @@ export class TransactionsComponent  implements OnInit {
     }else{
       if(!success){
         this.completed = success;
+      }
+    }
+  }
+
+  async read_amounts(){
+    var curLang = this.translate.getCurrentLang();
+    if(curLang == 'pt') curLang='pt-PT';
+    else if(curLang == 'fr') curLang='fr-FR';
+    else if(curLang == 'es') curLang='es-ES';
+
+    for(let operationid in this.amount){
+      if(this.amount[operationid]){
+        let parameter = this.parameters.find((s)=> s.id == operationid);
+        await TextToSpeech.speak({
+          text: parameter.name + ', ' + this.amount[operationid].toString(),
+          lang: curLang,        
+          rate: 1.0,           
+          pitch: 1.0,     
+          volume: 1.0          
+        });
       }
     }
   }

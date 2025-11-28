@@ -28,8 +28,11 @@
           <ion-input type="number" class="ion-no-margin" [(ngModel)]="amount[parameter.id]" placeholder="0.00" [ngStyle]="{'color': amount[parameter.id] ? 'darkred' : 'gray'}"></ion-input>
         </ion-item>
       </ion-list>
-      <ion-button color="tertiary" (click)="valider()" size="small">{{'save' | translate}}</ion-button>
-      <ion-button color="danger" (click)="dismiss()" size="small">{{'cancel' | translate}}</ion-button>
+      <ion-item lines="none">
+        <ion-button slot="start" color="success" (click)="read_amounts()"><ion-icon name="megaphone"></ion-icon></ion-button>
+        <ion-button slot="end" color="tertiary" (click)="valider()" size="small">{{'save' | translate}}</ion-button>
+        <ion-button slot="end" color="danger" (click)="dismiss()" size="small">{{'cancel' | translate}}</ion-button>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 </ion-content>
