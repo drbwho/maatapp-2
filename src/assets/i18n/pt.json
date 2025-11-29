@@ -97,5 +97,6 @@
     "loan_info":"Informações sobre empréstimos",
     "categories":"Categorias",
     "notes":"Notas",
-    "clear_cache":"Limpando os dados armazenados do dispositivo"
+    "clear_cache":"Limpando os dados armazenados do dispositivo",
+    "accounts_selected": "contas selecionadas"
   }

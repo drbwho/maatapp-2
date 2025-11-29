@@ -80,7 +80,9 @@ export class TransactionsComponent  implements OnInit {
       })
     }else{
       account_type = 1;
-      this.account_label = '(' + this.accounts.filter( s => s.selected == true).length + ') accounts selected';
+      this.translate.get('accounts_selected').subscribe((key)=>{
+        this.account_label = '(' + this.accounts.filter( s => s.selected == true).length + ') ' + key;
+      });
       this.single_selected = false;
     }
 
@@ -168,7 +170,7 @@ export class TransactionsComponent  implements OnInit {
     }*/
     let success = true;
     for(let operationid in this.amount){
-      if(this.amount[operationid]){
+      if(this.amount[operationid] && this.amount[operationid] > 0){
         let parameter = this.parameters.find((s)=> s.id == operationid);
         let operation_name = parameter.name;
         let categories=""; let notes="";
@@ -214,18 +216,26 @@ export class TransactionsComponent  implements OnInit {
     else if(curLang == 'fr') curLang='fr-FR';
     else if(curLang == 'es') curLang='es-ES';
 
-    for(let operationid in this.amount){
-      if(this.amount[operationid]){
-        let parameter = this.parameters.find((s)=> s.id == operationid);
-        await TextToSpeech.speak({
-          text: parameter.name + ', ' + this.amount[operationid].toString(),
+    await TextToSpeech.speak({
+          text: this.account_label,
           lang: curLang,        
           rate: 1.0,           
           pitch: 1.0,     
           volume: 1.0          
-        });
-      }
-    }
+        }).then(async ()=>{
+          for(let operationid in this.amount){ 
+            if(this.amount[operationid] && this.amount[operationid] > 0){
+              let parameter = this.parameters.find((s)=> s.id == operationid);
+              await TextToSpeech.speak({
+                text: parameter.name + ', ' + this.amount[operationid].toString(),
+                lang: curLang,        
+                rate: 1.0,           
+                pitch: 1.0,     
+                volume: 1.0          
+              });
+            }
+          }
+        })
   }
 
   async open_loan_info(account){

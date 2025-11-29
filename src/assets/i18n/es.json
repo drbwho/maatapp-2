@@ -97,5 +97,6 @@
     "loan_info":"Información de préstamos",
     "categories":"Categorías",
     "notes":"Notas",
-    "clear_cache":"Borrar los datos almacenados del dispositivo"
+    "clear_cache":"Borrar los datos almacenados del dispositivo",
+    "accounts_selected": "cuentas seleccionadas"
   }

@@ -97,5 +97,6 @@
   "loan_info":"Loan Info",
   "categories":"Categories",
   "notes":"Notes",
-  "clear_cache":"Clear the device's stored data"
+  "clear_cache":"Clear the device's stored data",
+  "accounts_selected": "accounts selected"
 }
