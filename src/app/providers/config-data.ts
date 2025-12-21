@@ -69,19 +69,23 @@ export class ConfigData {
   AVAILABLE_LANGUAGES = [
     {
      code: "en",
-     title: "English"
+     title: "English",
+     iso_code: 'en-US'
     },
     {
      code: "fr",
-     title: " Français"
+     title: " Français",
+     iso_code: "fr-FR"
     },
     {
      code: "es",
-     title: "Español"
+     title: "Español",
+     iso_code: "es-ES"
     },
     {
      code: "pt",
-     title: "Português"
+     title: "Português",
+     iso_code: "pt-PT"
     }
   ];
 

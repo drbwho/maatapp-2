@@ -212,9 +212,8 @@ export class TransactionsComponent  implements OnInit {
 
   async read_amounts(){
     var curLang = this.translate.getCurrentLang();
-    if(curLang == 'pt') curLang='pt-PT';
-    else if(curLang == 'fr') curLang='fr-FR';
-    else if(curLang == 'es') curLang='es-ES';
+    //get lang iso code
+    curLang = await this.config.AVAILABLE_LANGUAGES.find((l) => l.code == curLang).iso_code;
 
     await TextToSpeech.speak({
           text: this.account_label,
