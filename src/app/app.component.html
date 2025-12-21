@@ -14,10 +14,10 @@
 
         <ion-list>
           <ion-menu-toggle autoHide="false">
-              <ion-item routerLink="/home" routerDirection="root">
-                <ion-icon slot="start" name="home"></ion-icon>
-                <ion-label>{{'home' | translate}}</ion-label>
-              </ion-item>
+            <ion-item routerLink="/home" routerDirection="root">
+              <ion-icon slot="start" name="home"></ion-icon>
+              <ion-label>{{'home' | translate}}</ion-label>
+            </ion-item>
           </ion-menu-toggle>
           <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/app/tabs/countries" routerDirection="root">
@@ -45,55 +45,52 @@
           </ion-menu-toggle>
         </ion-list>
 
-        <ion-list *ngIf="loggedIn">
-          <ion-list-header>
-            {{'account' | translate}}
-          </ion-list-header>
+        @if (loggedIn) {
+          <ion-list>
+            <ion-list-header>
+              {{'account' | translate}}
+            </ion-list-header>
+            <ion-menu-toggle autoHide="false">
+              <ion-item routerLink="/account" routerDirection="root">
+                <ion-icon slot="start" name="person"></ion-icon>
+                <ion-label>
+                  {{'account' | translate}}
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle autoHide="false">
+              <ion-item routerLink="/support" routerDirection="root">
+                <ion-icon slot="start" name="help"></ion-icon>
+                <ion-label>
+                  {{'support' | translate}}
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle autoHide="false">
+              <ion-item button (click)="logout()">
+                <ion-icon slot="start" name="log-out"></ion-icon>
+                <ion-label>
+                  {{'logout' | translate}}
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-list>
+        }
 
-          <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/account" routerDirection="root">
-              <ion-icon slot="start" name="person"></ion-icon>
-              <ion-label>
-                {{'account' | translate}}
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-
-          <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/support" routerDirection="root">
-              <ion-icon slot="start" name="help"></ion-icon>
-              <ion-label>
-                {{'support' | translate}}
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-
-          <ion-menu-toggle autoHide="false">
-            <ion-item button (click)="logout()">
-              <ion-icon slot="start" name="log-out"></ion-icon>
-              <ion-label>
-                {{'logout' | translate}}
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-
-        </ion-list>
-
-        <ion-list *ngIf="!loggedIn">
-          <ion-list-header>
-            {{'account' | translate}}
-          </ion-list-header>
-
-          <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/login" routerDirection="root">
-              <ion-icon slot="start" name="log-in"></ion-icon>
-              <ion-label>
-                {{'login' | translate}}
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-
-          <!-- <ion-menu-toggle autoHide="false">
+        @if (!loggedIn) {
+          <ion-list>
+            <ion-list-header>
+              {{'account' | translate}}
+            </ion-list-header>
+            <ion-menu-toggle autoHide="false">
+              <ion-item routerLink="/login" routerDirection="root">
+                <ion-icon slot="start" name="log-in"></ion-icon>
+                <ion-label>
+                  {{'login' | translate}}
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <!-- <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/support" routerDirection="root">
               <ion-icon slot="start" name="help"></ion-icon>
               <ion-label>
@@ -101,36 +98,36 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle> -->
+          <!-- <ion-menu-toggle autoHide="false">
+          <ion-item routerLink="/signup" routerDirection="root">
+            <ion-icon slot="start" name="person-add"></ion-icon>
+            <ion-label>
+              Signup
+            </ion-label>
+          </ion-item>
+        </ion-menu-toggle>-->
+      </ion-list>
+    }
 
-         <!-- <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/signup" routerDirection="root">
-              <ion-icon slot="start" name="person-add"></ion-icon>
-              <ion-label>
-                Signup
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>-->
-        </ion-list>
+    <!--        <ion-list>
+    <ion-list-header>
+      Info
+    </ion-list-header>
+    <ion-menu-toggle autoHide="false">
+      <ion-item routerLink="/about-app" routerDirection="root">
+        <ion-icon slot="start" name="phone-portrait"></ion-icon>
+        <ion-label>
+          About App
+        </ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+  </ion-list>-->
 
-<!--        <ion-list>
-          <ion-list-header>
-            Info
-          </ion-list-header>
-          <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/about-app" routerDirection="root">
-              <ion-icon slot="start" name="phone-portrait"></ion-icon>
-              <ion-label>
-                About App
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>-->
+</ion-content>
+</ion-menu>
 
-      </ion-content>
-    </ion-menu>
+<ion-router-outlet id="main-content"></ion-router-outlet>
 
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-
-  </ion-split-pane>
+</ion-split-pane>
 
 </ion-app>

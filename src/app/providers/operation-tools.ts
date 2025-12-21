@@ -106,6 +106,16 @@ export class OperationTools {
               resolve({'status': 'error', 'message': key})
             });
           }
+          if(group.settings.maxnumopenloans > 0 && (account.openloans >= group.settings.maxnumopenloans)){
+            this.translate.get('max_num_loans_exceeded').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
+          }
+          if(group.settings.maxnumopensfloans > 0 && (account.sfopenloans >= group.settings.maxnumopensfloans)){
+            this.translate.get('max_num_sfloans_exceeded').subscribe((key)=>{
+              resolve({'status': 'error', 'message': key})
+            });
+          }
           break;
         case 'RCP':
           if(account.restearembourser > 0){

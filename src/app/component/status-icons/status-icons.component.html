@@ -1,4 +1,12 @@
-<ion-icon *ngIf="!upload_status" class="status-icons" name="cloud-upload" [ngStyle]="{'color': 'grey'}"></ion-icon>
-<ion-icon *ngIf="upload_status" class="status-icons" name="cloud-upload" [ngStyle]="{'color': 'red'}"></ion-icon>
-<ion-icon *ngIf="!network_status" class="status-icons status-off" name="flash-off"></ion-icon>
-<ion-icon *ngIf="network_status" class="status-icons status-on" name="flash"></ion-icon>
+@if (!upload_status) {
+  <ion-icon class="status-icons" name="cloud-upload" [ngStyle]="{'color': 'grey'}"></ion-icon>
+}
+@if (upload_status) {
+  <ion-icon class="status-icons" name="cloud-upload" [ngStyle]="{'color': 'red'}"></ion-icon>
+}
+@if (!network_status) {
+  <ion-icon class="status-icons status-off" name="flash-off"></ion-icon>
+}
+@if (network_status) {
+  <ion-icon class="status-icons status-on" name="flash"></ion-icon>
+}

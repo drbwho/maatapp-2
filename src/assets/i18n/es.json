@@ -94,6 +94,8 @@
     "reimbursement_exceeds_loan_debt": "El reembolso excede la deuda del préstamo",
     "reimbursement_exceeds_sf_loan_debt": "El reembolso excede la deuda del préstamo SF",
     "amount_exceeds_group_credit_available": "El monto excede el crédito disponible del grupo",
+    "max_num_loans_exceeded":"Se superó el límite de préstamos abiertos",
+    "max_num_sfloans_exceeded":"Se superó el límite de préstamos abiertos de SF",
     "loan_info":"Información de préstamos",
     "categories":"Categorías",
     "notes":"Notas",

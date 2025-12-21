@@ -94,6 +94,8 @@
     "reimbursement_exceeds_loan_debt": "Le remboursement dépasse la dette du prêt",
     "reimbursement_exceeds_sf_loan_debt": "Le remboursement dépasse la dette du prêt SF",
     "amount_exceeds_group_credit_available": "Le montant dépasse le crédit disponible du groupe",
+    "max_num_loans_exceeded":"Limite de prêts ouverts dépassée",
+    "max_num_sfloans_exceeded":"Limite de SF prêts ouverts dépassée",
     "loan_info":"Informations sur les prêts",
     "categories":"Catégories",
     "notes":"Notes",

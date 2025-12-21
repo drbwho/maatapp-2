@@ -23,91 +23,127 @@
 
 <ion-content [fullscreen]="false">
 
-  <ion-fab *ngIf="segment == 'reunions' && grouptype > 0" horizontal="center" vertical="bottom" slot="fixed">
-    <ion-fab-button (click)="showMeetingForm()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  @if (segment == 'reunions' && grouptype > 0) {
+    <ion-fab horizontal="center" vertical="bottom" slot="fixed">
+      <ion-fab-button (click)="showMeetingForm()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  }
 
-  <ion-list *ngIf="segment == 'reunions' && grouptype > 0">
-    <ion-item *ngFor="let meeting of meetings">
-      <ion-label>
-      <ion-text [color]="meeting.pending?'danger':''" [ngStyle]="{'text-decoration': meeting.cancelled ? 'line-through' : ''}">
-        <h2><strong>
-        {{meeting.place}}
-        </strong>
-        </h2>
-      </ion-text>
-      <p>
-        <ion-text color="tertiary">{{meeting.startedat}}</ion-text>
-        <ion-icon [color]="meeting.endedat? 'danger': 'success'" name="timer" class="info-icon"></ion-icon>
-        <ion-text color="danger">{{meeting.endedat}}</ion-text>
-      </p>
-      <p *ngIf="meeting.haspending">
-        {{'pending_transactions' | translate}}: <ion-badge color="danger">{{meeting.haspending}}</ion-badge>
-      </p>
-      </ion-label>
-      <ion-note slot="end">
-        <p class="actions">
-          <ion-button *ngIf="(meeting.haspending || meeting.pending) && userRole > 1" size="small" color="danger" (click)="confirmUploadMeeting(meeting)"><ion-icon name="cloud-upload"></ion-icon></ion-button>
-          <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat && !meeting.haspending && !meeting.pending" size="small" color="tertiary" (click)="showTransactions(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
-          <ion-button *ngIf="userRole > 1" [disabled]="meeting.endedat || (!meeting.pending && meeting.haspending)" size="small" color="secondary" (click)="closeMeeting(meeting)" ><ion-icon name="bag-check-outline"></ion-icon></ion-button>
-          <ion-button *ngIf="userRole > 1" [disabled]="meeting.cancelled || meeting.has_transactions || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting)"><ion-icon name="ban-outline"></ion-icon></ion-button>
-        </p>
-        <p class="actions">
-          <ion-button *ngIf="(meeting.haspending || meeting.pending) && userRole > 1" size="small" color="danger" (click)="clearPendings(meeting)"><ion-icon name="trash-outline"></ion-icon></ion-button>
-          <ion-button [disabled]="meeting.pending" size="small" color="success" (click)="openHistory(meeting)"><ion-icon name="document-text-outline"></ion-icon></ion-button>
-        </p>
-      </ion-note>
-    </ion-item>
-    <ion-row *ngIf="!meetings || meetings.length == 0">
-      <ion-col>
-        <ion-note  class="ion-margin-left">
-          {{'group_has_no_meetings' | translate}}
+  @if (segment == 'reunions' && grouptype > 0) {
+    <ion-list>
+      @for (meeting of meetings; track meeting) {
+        <ion-item>
+          <ion-label>
+            <ion-text [color]="meeting.pending?'danger':''" [ngStyle]="{'text-decoration': meeting.cancelled ? 'line-through' : ''}">
+              <h2><strong>
+                {{meeting.place}}
+              </strong>
+            </h2>
+          </ion-text>
+          <p>
+            <ion-text color="tertiary">{{meeting.startedat}}</ion-text>
+            <ion-icon [color]="meeting.endedat? 'danger': 'success'" name="timer" class="info-icon"></ion-icon>
+            <ion-text color="danger">{{meeting.endedat}}</ion-text>
+          </p>
+          @if (meeting.haspending) {
+            <p>
+              {{'pending_transactions' | translate}}: <ion-badge color="danger">{{meeting.haspending}}</ion-badge>
+            </p>
+          }
+        </ion-label>
+        <ion-note slot="end">
+          <p class="actions">
+            @if ((meeting.haspending || meeting.pending) && userRole > 1) {
+              <ion-button size="small" color="danger" (click)="confirmUploadMeeting(meeting)"><ion-icon name="cloud-upload"></ion-icon></ion-button>
+            }
+            @if (userRole > 1) {
+              <ion-button [disabled]="meeting.endedat && !meeting.haspending && !meeting.pending" size="small" color="tertiary" (click)="showTransactions(meeting)" ><ion-icon name="swap-horizontal-outline"></ion-icon></ion-button>
+            }
+            @if (userRole > 1) {
+              <ion-button [disabled]="meeting.endedat || (!meeting.pending && meeting.haspending)" size="small" color="secondary" (click)="closeMeeting(meeting)" ><ion-icon name="bag-check-outline"></ion-icon></ion-button>
+            }
+            @if (userRole > 1) {
+              <ion-button [disabled]="meeting.cancelled || meeting.has_transactions || meeting.haspending > 0" size="small" color="danger" (click)="cancelMeeting(meeting)"><ion-icon name="ban-outline"></ion-icon></ion-button>
+            }
+          </p>
+          <p class="actions">
+            @if ((meeting.haspending || meeting.pending) && userRole > 1) {
+              <ion-button size="small" color="danger" (click)="clearPendings(meeting)"><ion-icon name="trash-outline"></ion-icon></ion-button>
+            }
+            <ion-button [disabled]="meeting.pending" size="small" color="success" (click)="openHistory(meeting)"><ion-icon name="document-text-outline"></ion-icon></ion-button>
+          </p>
         </ion-note>
-      </ion-col>
-    </ion-row>
+      </ion-item>
+    }
+    @if (!meetings || meetings.length == 0) {
+      <ion-row>
+        <ion-col>
+          <ion-note  class="ion-margin-left">
+            {{'group_has_no_meetings' | translate}}
+          </ion-note>
+        </ion-col>
+      </ion-row>
+    }
   </ion-list>
+}
 
-  <ion-list *ngIf="segment == 'comptes'">
-    <ion-item lines="none" *ngFor="let account of accounts" >
-      <ion-label>
-        <ion-text [color]="account.type == 1 ? '' : 'primary'">
-          <h2>
-            <span *ngIf="account.type != 1"><ion-icon  name="people" class="ion-margin-right"></ion-icon>&nbsp;</span>
-            <ion-text color="primary" *ngIf="account.type == 1">({{account.num}}) </ion-text><strong>{{account.owner}}</strong>
-          </h2>
-        </ion-text>
-        <p>
-          {{'credit_avail' | translate}}: <ion-text [color]="account.creditdisponible <= 0 ? 'danger': 'success'">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>
-        </p>
-        <p>
-          {{'loans' | translate}}: <ion-text [color]="account.loans_expired ? 'danger': ''">{{account.emprunts | number:'.2'}}</ion-text> {{currency}}
-          <ion-icon class="alert-icon" *ngIf="account.loans_expired" name="alert-circle" color="danger" size="small"></ion-icon>
-        </p>
-        <p>
-          {{'loan_req' | translate}}: {{account.besoinsliquidite | number:'.2'}} {{currency}}
-        </p>
-        <p *ngIf="account.type == 1">
-          {{'contribution_due' | translate}}:  <ion-text [color]="account.due > 0 ? 'danger': ''">{{account.due | number:'.2'}} {{currency}}</ion-text>
-        </p>
-      </ion-label>
-      <ion-note slot="end">
-        <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
-        <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
-        <p class="actions">
-          <ion-button size="small" color="success" (click)="showAccountInfo(account)"><ion-icon name="information-outline"></ion-icon></ion-button>
-          <ion-button *ngIf="account.type == 1 && userRole > 1" size="small" color="danger" (click)="closeAccount(account)"><ion-icon name="ban-outline"></ion-icon></ion-button>
-        </p>
-      </ion-note>
-    </ion-item>
-    <ion-row *ngIf="!accounts || accounts.length == 0">
-      <ion-col>
-        <ion-note class="ion-margin-left">
-          {{'group_has_no_accounts' | translate}}
-        </ion-note>
-      </ion-col>
-    </ion-row>
-  </ion-list>
+@if (segment == 'comptes') {
+  <ion-list>
+    @for (account of accounts; track account) {
+      <ion-item lines="none" >
+        <ion-label>
+          <ion-text [color]="account.type == 1 ? '' : 'primary'">
+            <h2>
+              @if (account.type != 1) {
+                <span><ion-icon  name="people" class="ion-margin-right"></ion-icon>&nbsp;</span>
+              }
+              @if (account.type == 1) {
+                <ion-text color="primary">({{account.num}}) </ion-text>
+                }<strong>{{account.owner}}</strong>
+              </h2>
+            </ion-text>
+            <p>
+              {{'credit_avail' | translate}}: <ion-text [color]="account.creditdisponible <= 0 ? 'danger': 'success'">{{account.creditdisponible | number:'.2'}} {{currency}}</ion-text>
+            </p>
+            <p>
+              {{'loans' | translate}}: <ion-text [color]="account.loans_expired ? 'danger': ''">{{account.emprunts | number:'.2'}}</ion-text> {{currency}}
+              @if (account.loans_expired) {
+                <ion-icon class="alert-icon" name="alert-circle" color="danger" size="small"></ion-icon>
+              }
+            </p>
+            <p>
+              {{'loan_req' | translate}}: {{account.besoinsliquidite | number:'.2'}} {{currency}}
+            </p>
+            @if (account.type == 1) {
+              <p>
+                {{'contribution_due' | translate}}:  <ion-text [color]="account.due > 0 ? 'danger': ''">{{account.due | number:'.2'}} {{currency}}</ion-text>
+              </p>
+            }
+          </ion-label>
+          <ion-note slot="end">
+            <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
+            <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
+            <p class="actions">
+              <ion-button size="small" color="success" (click)="showAccountInfo(account)"><ion-icon name="information-outline"></ion-icon></ion-button>
+              @if (account.type == 1 && userRole > 1) {
+                <ion-button size="small" color="danger" (click)="closeAccount(account)"><ion-icon name="ban-outline"></ion-icon></ion-button>
+              }
+            </p>
+          </ion-note>
+        </ion-item>
+      }
+      @if (!accounts || accounts.length == 0) {
+        <ion-row>
+          <ion-col>
+            <ion-note class="ion-margin-left">
+              {{'group_has_no_accounts' | translate}}
+            </ion-note>
+          </ion-col>
+        </ion-row>
+      }
+    </ion-list>
+  }
 
 </ion-content>

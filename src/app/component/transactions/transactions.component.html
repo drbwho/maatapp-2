@@ -12,21 +12,27 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item lines="none" *ngFor="let parameter of parameters" class="ion-no-padding">
-          <ion-label class="ion-no-margin ion-text-nowrap">
-            <ion-icon class="tr-icon" [name]="tr_icons[parameter.code]" size="large" color="primary"></ion-icon>
-            <ion-note class="tr-label ion-margin-start" color="tertiary">{{parameter.name}}</ion-note>
-            <!-- regular contributions-->
-            <ion-button class="icon-button" (click)="update_cntrb(parameter.code, parameter.id)" color="warning" *ngIf="is_cntrb_field(parameter.code)" size="small">
-              <ion-icon name="checkmark"></ion-icon>
-            </ion-button>
-            <!-- loan info -->
-            <ion-button class="icon-button" (click)="open_loan_info()" color="success" *ngIf="parameter.code =='EMP' && single_selected" size="small">
-              <ion-icon name="information-outline"></ion-icon>
-            </ion-button>
-          </ion-label>
-          <ion-input type="number" class="ion-no-margin" [(ngModel)]="amount[parameter.id]" placeholder="0.00" [ngStyle]="{'color': amount[parameter.id] ? 'darkred' : 'gray'}"></ion-input>
-        </ion-item>
+        @for (parameter of parameters; track parameter) {
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-label class="ion-no-margin ion-text-nowrap">
+              <ion-icon class="tr-icon" [name]="tr_icons[parameter.code]" size="large" color="primary"></ion-icon>
+              <ion-note class="tr-label ion-margin-start" color="tertiary">{{parameter.name}}</ion-note>
+              <!-- regular contributions-->
+              @if (is_cntrb_field(parameter.code)) {
+                <ion-button class="icon-button" (click)="update_cntrb(parameter.code, parameter.id)" color="warning" size="small">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+              }
+              <!-- loan info -->
+              @if (parameter.code =='EMP' && single_selected) {
+                <ion-button class="icon-button" (click)="open_loan_info()" color="success" size="small">
+                  <ion-icon name="information-outline"></ion-icon>
+                </ion-button>
+              }
+            </ion-label>
+            <ion-input type="number" class="ion-no-margin" [(ngModel)]="amount[parameter.id]" placeholder="0.00" [ngStyle]="{'color': amount[parameter.id] ? 'darkred' : 'gray'}"></ion-input>
+          </ion-item>
+        }
       </ion-list>
       <ion-item lines="none">
         <ion-button slot="start" color="success" (click)="read_amounts()"><ion-icon name="megaphone"></ion-icon></ion-button>

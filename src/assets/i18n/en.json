@@ -94,6 +94,8 @@
   "reimbursement_exceeds_loan_debt":"Reimbursement exceeds loan debt",
   "reimbursement_exceeds_sf_loan_debt":"Reimbursement exceeds SF loan debt",
   "amount_exceeds_group_credit_available":"Amount exceeds group credit available",
+  "max_num_loans_exceeded":"Open loans limit exceeded",
+  "max_num_sfloans_exceeded":"Open SF loans limit exceeded",
   "loan_info":"Loan Info",
   "categories":"Categories",
   "notes":"Notes",

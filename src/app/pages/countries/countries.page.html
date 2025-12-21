@@ -17,18 +17,20 @@
     </ion-toolbar>
   </ion-header>
   <ion-list>
-    <ion-item lines="none" *ngFor="let country of countries" routerLink="/app/tabs/country/{{country.id}}/groups">
-      <ion-icon slot="start" name="earth" size="large" color="primary"></ion-icon>
-      <ion-label>
-        <ion-text color="secondary">
-          <h2>
-          {{country.name}}
-          </h2>
-        </ion-text>
-        <p>
-          {{'initial_amount' | translate}}: {{country.apportinitial}} {{country.currency}}
-        </p>
-      </ion-label>
-    </ion-item>
+    @for (country of countries; track country) {
+      <ion-item lines="none" routerLink="/app/tabs/country/{{country.id}}/groups">
+        <ion-icon slot="start" name="earth" size="large" color="primary"></ion-icon>
+        <ion-label>
+          <ion-text color="secondary">
+            <h2>
+              {{country.name}}
+            </h2>
+          </ion-text>
+          <p>
+            {{'initial_amount' | translate}}: {{country.apportinitial}} {{country.currency}}
+          </p>
+        </ion-label>
+      </ion-item>
+    }
   </ion-list>
 </ion-content>
