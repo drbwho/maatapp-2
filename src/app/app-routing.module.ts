@@ -4,8 +4,16 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/intro',
     pathMatch: 'full'
+  },
+  {
+    path: 'intro',
+    loadChildren: () => import('./pages/intro/intro.module').then(m => m.IntroPageModule)
+  },
+  {
+    path: 'intro/:pageId',
+    loadChildren: () => import('./pages/intro/intro.module').then(m => m.IntroPageModule)
   },
   {
     path: 'account',
@@ -44,12 +52,11 @@ const routes: Routes = [
   {
     path: 'group-details',
     loadChildren: () => import('./pages/group-details/group-details.module').then( m => m.GroupDetailsPageModule)
-  },  {
+  },
+  {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
-  },
-
-
+  }
 ];
 
 @NgModule({

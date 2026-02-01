@@ -1,11 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>{{countryname}} / {{groupname}}</ion-title>
+    <ion-title>{{'group' | translate}}: {{groupname}}
+      <p>{{countryname}} * {{groupcity}} </p>
+    </ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/app/tabs/country/{{countryid}}/groups"></ion-back-button>
+      <ion-button (click)="show_account()">
+         <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <app-status-icons></app-status-icons>
+      <ion-button routerLink="/app/tabs/countries">
+        <ion-icon slot="icon-only" name="globe"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>

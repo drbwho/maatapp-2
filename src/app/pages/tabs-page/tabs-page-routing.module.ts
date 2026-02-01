@@ -7,6 +7,16 @@ const routes: Routes = [
     path: 'tabs',
     component: TabsPage,
     children: [
+       {
+        path: 'dashboard',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardPageModule)
+          },
+
+        ]
+      },
       {
         path: 'countries',
         children: [

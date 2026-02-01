@@ -5,6 +5,15 @@ ion-label p {
     }
 }
 
+ion-title {
+    font-size: medium;
+    font-weight: bold;
+    p {
+        font-size: small;
+        margin: 0;
+    }
+}
+
 .info-icon {
     font-size: large;
 }

@@ -1,28 +1,47 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>{{countryname}} / {{'groups' | translate}}</ion-title>
+    <ion-title *ngIf="!showSearch" >{{'select_group' | translate}}</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/app/tabs/countries"></ion-back-button>
+      <ion-back-button defaultHref="/app/tabs/countries" *ngIf="!showSearch"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <app-status-icons></app-status-icons>
+      <ion-button (click)="toggleSearch()" *ngIf="!showSearch">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
     </ion-buttons>
-  </ion-toolbar>
-  <ion-toolbar>
-    <ion-searchbar [(placeholder)]="searchPlaceholder" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"></ion-searchbar>
+    <ion-searchbar #mySearchbar *ngIf="showSearch" [(placeholder)]="searchPlaceholder" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"
+      animated="true" 
+      show-cancel-button="always"
+      cancel-button-icon="chevron-back-outline"
+      (ionCancel)="showSearch = false">
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
-    @for (group of groups; track group) {
-      <ion-item lines="none" (click)="navto(group)" [hidden]="group.hidden || group.type == 0" >
-        <ion-icon slot="start" name="people" size="large" color="primary"></ion-icon>
-        <ion-label>
-          <ion-text color="secondary">
-            <h2>{{group.name}}</h2>
+  <ion-card class="ion-text-center ion-padding" color="tertiary">
+    <img style="width:130px;height:120px;" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+  </ion-card>
+  <ion-list class="ion-no-padding">
+    @for (group of groups; track group.id) {
+      <ion-item color="tertiary" class="ion-border-rounded ion-margin-start ion-margin-end ion-margin-bottom" lines="none" (click)="navto(group)" [hidden]="group.hidden || group.type == 0" >
+        <ion-label color="dark">
+          <ion-text>
+            <h2 class="ion-flex ion-align-items-center">
+              <b>{{group.name}} * {{group.ville}}</b>
+              <ion-badge color="danger" class="ion-margin-start">{{'no_active' | translate}}</ion-badge>
+            </h2>
           </ion-text>
-          <p>{{group.ville}}</p>
+          <p>{{group.numberofmembers}} {{'members' | translate}}</p>
+          <p>{{'last_activity' | translate}}: {{group.lastactivity | date:'MMM dd'}} </p>
+        </ion-label>
+        <ion-icon name="chevron-forward-sharp" slot="end" color="dark"></ion-icon>
+      </ion-item>
+    }
+    @if (groups?.length === 1) {
+      <ion-item lines="none">
+        <ion-label color="danger">
+          {{'country_has_no_groups' | translate}}
         </ion-label>
       </ion-item>
     }

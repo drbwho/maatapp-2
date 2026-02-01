@@ -10,6 +10,7 @@ import { UserData } from '../../providers/user-data';
 import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
 import { HistoryComponent } from '../../component/history/history.component';
 import { TranslateService } from '@ngx-translate/core';
+import { AccountPage } from '../account/account';
 
 @Component({
     selector: 'app-group-details',
@@ -20,6 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class GroupDetailsPage implements OnInit {
   segment = "reunions";
   groupname: string;
+  groupcity: string;
   grouptype: any;
   countryname: string;
   countryid: string;
@@ -54,6 +56,7 @@ export class GroupDetailsPage implements OnInit {
 
     this.group = this.dataProvider.current.group;
     this.groupname = this.dataProvider.current.group.name;
+    this.groupcity = this.dataProvider.current.group.ville;
     this.grouptype = this.dataProvider.current.group.type;
     this.countryname = this.dataProvider.current.country.name;
     this.countryid = this.dataProvider.current.country.id;
@@ -73,6 +76,16 @@ export class GroupDetailsPage implements OnInit {
     })
   }
 
+  async show_account(){
+    const modal = await this.modalCtrl.create({
+      component: AccountPage,
+      componentProps: {}
+    });
+    modal.present();
+
+    await modal.onWillDismiss();
+  }
+
   update_accounts(){
     this.dataProvider.fetch_data('accounts', this.groupId, true, true).then((data: any)=> {
       data.forEach((a)=>{
@@ -85,7 +98,7 @@ export class GroupDetailsPage implements OnInit {
           a.sfloans_expired = true;
         }
       })
-;      this.accounts = data;
+      this.accounts = data;
       this.allaccounts = data;
     });
   }

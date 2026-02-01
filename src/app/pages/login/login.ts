@@ -47,7 +47,7 @@ export class LoginPage {
           console.log('logged in:' + data.user.username);
           if (data.status) {
             this.userData.login(data.user);
-            this.router.navigateByUrl('/home');
+            this.router.navigateByUrl('/');
           } else {
             this.translate.get(['error','user_or_password_dont_match']).subscribe(async (keys: any)=>{
               const alert = await this.alertController.create({
