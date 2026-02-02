@@ -8,6 +8,22 @@
   max-width: 150px;
 }
 
-.list {
-  margin-bottom: 0;
+ion-input {
+  background-color: #ebeaea;
+  border-radius: 20px;
+  padding-left: 10px !important;
+}
+
+ion-list {
+  margin: 0 !important;
+  padding:0 !important;
+}
+
+ion-item{
+  --padding-start: 5px;
+}
+
+ion-text {
+  font-size: 12px;
+  color: grey;
 }
