@@ -1,7 +1,5 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-progress-bar *ngIf="pageId > 1" [value]="pageId / 7" ></ion-progress-bar>
-  </ion-toolbar>
+    <ion-progress-bar  *ngIf="pageId > 1" [value]="pageId / 7" ></ion-progress-bar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -9,7 +7,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-button *ngIf="pageId < 7" expand="block" shape="round" [routerLink]="'/intro/' + nextPage">Next</ion-button>
-  <ion-button *ngIf="pageId > 1 && pageId < 7" expand="block" shape="round" color="light" [routerLink]="'/app/tabs/dashboard'">Skip</ion-button>
-  <ion-button *ngIf="pageId == 7" expand="block" shape="round" [routerLink]="'/app/tabs/dashboard'">Go to Dashboard</ion-button>
+  <ion-button class="ion-margin" *ngIf="pageId < 7" expand="block" shape="round" [routerLink]="'/intro/' + nextPage">Next</ion-button>
+  <ion-button class="ion-margin" *ngIf="pageId > 1 && pageId < 7" expand="block" shape="round" color="light" [routerLink]="'/app/tabs/dashboard'">Skip</ion-button>
+  <ion-button class="ion-margin" *ngIf="pageId == 7" expand="block" shape="round" [routerLink]="'/app/tabs/dashboard'">Go to Dashboard</ion-button>
 </ion-footer>

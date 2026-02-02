@@ -1,0 +1,7 @@
+.fade-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+          mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  display: block;
+  width: 100%;
+  // object-fit: cover;
+}

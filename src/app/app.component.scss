@@ -1,7 +1,17 @@
 .header-md,
 .footer-md,
-ion-card {
+ion-card,
+ion-button {
   box-shadow: none;
+  --box-shadow: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+ion-button {
+  text-transform: none !important;
 }
 
 .md .menu-header {

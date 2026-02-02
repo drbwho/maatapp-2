@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-page-7',
   templateUrl: './page-7.component.html',
   styleUrls: ['./page-7.component.scss'],
+  standalone: false
 })
 export class Page7Component  implements OnInit {
 

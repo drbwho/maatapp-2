@@ -1,51 +1,57 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
 
-    <ion-title>{{'login' | translate}}</ion-title>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="login-logo">
-    <img src="assets/img/maat.png" alt="Ionic logo">
+  <div class="login-header">
+    <h1>Nice to see you!</h1>
   </div>
+
+  <ion-text>
+    <h6 class="ion-margin big-margin">Sign in to access your group and continue your work</h6>
+  </ion-text>
 
   <form #loginForm="ngForm" novalidate>
     <ion-list>
-      <ion-text class="ion-margin-start">Email address</ion-text>
+      <ion-text >
+        <h6 class="ion-no-margin ion-margin-start ion-margin-top">E-mail</h6>
+      </ion-text>
       <ion-item lines="none">
-        <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off" required>
+        <ion-input [(ngModel)]="login.username" placeholder="name@example.com" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off" required>
         </ion-input>
       </ion-item>
 
-      <ion-label color="danger" [hidden]="username.valid || submitted == false" class="ion-padding-start">
-        {{'email_is_required' | translate}}
-      </ion-label>
+      <ion-note color="danger">
+        <p color="danger" [hidden]="username.valid || submitted == false" class="ion-padding-start ion-no-margin">
+          {{'email_is_required' | translate}}
+        </p>
+      </ion-note>
 
-      <ion-text class="ion-margin-start ion-margin-top">Password:</ion-text>
+      <ion-text >
+        <h6 class="ion-no-margin ion-margin-start ion-margin-top">Password</h6>
+      </ion-text>
       <ion-item lines="none">
-        <ion-input [(ngModel)]="login.password" name="password" type="password" #password="ngModel" required>
+        <ion-input [(ngModel)]="login.password" placeholder="Enter your password" name="password" type="password" #password="ngModel" required>
         </ion-input>
       </ion-item>
 
-      <ion-text color="danger">
-        <p [hidden]="password.valid || submitted == false" class="ion-padding-start">
+      <ion-note color="danger">
+        <p [hidden]="password.valid || submitted == false" class="ion-padding-start ion-no-margin">
           {{'password_is_required' | translate}}
         </p>
+      </ion-note>
+
+      <ion-text>
+        <h6 class="ion-margin-start big-margin"><a href="#">Forgot password?</a></h6>
+      </ion-text>
+
+      <ion-text>
+        <h6 class="ion-margin-start big-margin">By continuing, you confirm your acceptance of the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</h6>
       </ion-text>
     </ion-list>
-
-    <ion-row>
-      <ion-col>
-        <ion-button (click)="onLogin(loginForm)" type="submit" expand="block">Login</ion-button>
-      </ion-col>
-      <!-- <ion-col>
-        <ion-button (click)="onSignup()" color="light" expand="block">Signup</ion-button>
-      </ion-col> -->
-    </ion-row>
   </form>
-
 </ion-content>
+
+<ion-footer>
+  <ion-button class="ion-margin" (click)="onLogin(loginForm)" type="submit" expand="block" shape="round">Sign In</ion-button>
+</ion-footer>

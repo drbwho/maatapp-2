@@ -1,21 +1,30 @@
-.login-logo {
-  padding: 20px 0;
-  min-height: 100px;
-  text-align: center;
-}
-
-.login-logo img {
-  max-width: 150px;
+.login-header {
+  background: url('/assets/img/feather-col.png');
+  background-position:left 0px bottom 10px;
+  background-repeat: no-repeat;
+  background-size: 30%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: flex-end;
+  h1 {
+    margin: 0px;
+    padding-left: 10px;
+    font-size: 30px;
+  }
 }
 
 ion-input {
   background-color: #ebeaea;
   border-radius: 20px;
   padding-left: 10px !important;
+  --placeholder-color: #b3b3b3; 
+  --placeholder-opacity: 1;   
 }
 
 ion-list {
   margin: 0 !important;
+  margin-top: 35px !important;
   padding:0 !important;
 }
 
@@ -24,6 +33,13 @@ ion-item{
 }
 
 ion-text {
+  color: rgb(155, 155, 155);
+}
+
+ion-note {
   font-size: 12px;
-  color: grey;
+}
+
+.big-margin {
+  margin-top: 20px;
 }
