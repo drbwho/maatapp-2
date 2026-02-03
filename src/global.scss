@@ -36,3 +36,9 @@
 [hidden] {
   display: none !important;
 }
+
+.text-xs { font-size: 0.75rem !important; } // 12px
+.text-sm { font-size: 0.85rem !important; } // 0.875? 14px
+.text-md { font-size: 1rem !important; }     // 16px
+.text-lg { font-size: 1.25rem !important; }  // 20px
+.text-xl { font-size: 1.5rem !important; }   // 24px

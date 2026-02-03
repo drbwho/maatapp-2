@@ -5,12 +5,11 @@
   background-size: 30%;
   min-height: 200px;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   justify-content: flex-end;
   h1 {
     margin: 0px;
     padding-left: 10px;
-    font-size: 30px;
   }
 }
 
@@ -18,8 +17,8 @@ ion-input {
   background-color: #ebeaea;
   border-radius: 20px;
   padding-left: 10px !important;
-  --placeholder-color: #b3b3b3; 
-  --placeholder-opacity: 1;   
+  --placeholder-color: #b3b3b3;
+  --placeholder-opacity: 1;
 }
 
 ion-list {
@@ -34,10 +33,6 @@ ion-item{
 
 ion-text {
   color: rgb(155, 155, 155);
-}
-
-ion-note {
-  font-size: 12px;
 }
 
 .big-margin {
