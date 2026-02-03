@@ -1,7 +1,22 @@
 ion-item {
-  --ion-item-background: url('/assets/img/intro/group-image.png');
+  --background: url('/assets/img/intro/group-image.png') no-repeat right bottom / 50% auto;
+  background-color: #E7EFEA;
+  --min-height: 130px;
+  margin-top: 60px;
 }
 
 ion-label {
-  color: grey !important;
+  color: #757575 !important;
+  flex: 0 0 51% !important; 
+  overflow: hidden;
+}
+
+ion-text {
+  color: #757575;
+}
+
+.arrow {
+  height: 116px;
+  margin-left: 190px;
+  margin-bottom: -25px;
 }

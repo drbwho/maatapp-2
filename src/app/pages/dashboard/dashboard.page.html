@@ -1,9 +1,79 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Dashboard</ion-title>
+  <ion-toolbar class="group-habs-header">  
+    <ion-title>
+      <div class="title-container">
+        <h2 class="main-group-title">Group: Habs</h2>
+        <p class="sub-location text-12">Canada · Montreal</p>
+      </div>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-avatar class="flag-circle">
+        <img src="assets/img/canada-flag.png" alt="C" />
+      </ion-avatar>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
- Dashboard
+  <ion-list>
+    <ion-item lines="none" class="meeting-status-item ion-margin-horizontal ion-border-rounded-20">
+      <ion-label>
+        <h4>Meeting in progress</h4>
+        <p>You can continue entering transactions or review the current totals.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round">Start New Meeting</ion-button>
+  <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="light">Upload Data</ion-button>
+
+  <ion-list>
+
+    <ion-item lines="none" class="meeting-item">
+      <ion-label class="ion-text-wrap">
+        <div class="header-row">
+          <h2 class="title">Last meeting</h2>
+          <span class="meta-info">Dec 12 · Closed</span>
+        </div>
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="value">18<small>/22</small></div>
+            <div class="caption">Attendance</div>
+          </div>
+          <div class="stat-box">
+            <div class="value">16<small>/22</small></div>
+            <div class="caption">Balance</div>
+          </div>
+          <div class="stat-box">
+            <div class="value">420</div>
+            <div class="caption">CAD collected</div>
+          </div>
+        </div>
+      </ion-label>
+      <ion-button slot="end" fill="clear" color="medium" class="arrow-button">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item lines="none" class="fund-item dashboard-item ion-margin ion-border-rounded-20">
+      <ion-label>
+        <p class="dashboard-label text-22">Group fund</p>
+        <div class="amount-container">
+          <span class="amount">2.340</span>
+          <span class="currency">CAD</span>
+        </div>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none" class="active-item dashboard-item ion-margin ion-border-rounded-20">
+      <ion-label>
+        <p class="dashboard-label text-22">Active maats</p>
+        <div class="amount-container">
+          <span class="amount">480</span>
+          <span class="currency">CAD</span>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

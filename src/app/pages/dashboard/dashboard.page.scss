@@ -1,0 +1,168 @@
+.group-habs-header {
+  --min-height: 100px;
+  --background: url('/assets/img/feather-mono.png') no-repeat left 10px / 70px 72px;
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 10px;
+    
+    .main-group-title {
+      margin: 0 30px 2px;
+      font-weight: 400;
+    }
+
+    .sub-location {
+      color: black;
+      margin: 0 0 0 30px;
+      letter-spacing: 0.3px;
+    }
+  }
+
+  .flag-circle {
+    width: 48px;
+    height: 48px;
+    margin-right: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+}
+
+// MEETING STATUS
+ion-item.meeting-status-item {
+  --background: url('/assets/img/intro/group-image.png') no-repeat right bottom / 50% auto;
+  background-color: #E7EFEA;
+  --min-height: 130px;
+  
+  ion-label {
+    color: #757575 !important;
+    flex: 0 0 51% !important; 
+    overflow: hidden;
+  }
+}
+
+// MEETING TOTALS *************
+.meeting-item {
+  --padding-start: 16px;
+  --inner-padding-end: 8px;
+  margin-bottom: 30px;
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+
+    .title {
+      font-weight: 400;
+      color: #000;
+      margin: 0;
+    }
+
+    .meta-info {
+      font-size: 0.75rem;
+      color: var(--ion-color-medium);
+    }
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 25px; 
+    
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+
+      .value {
+        font-size: 1.8rem;
+        font-weight: 400;
+        color: #000;
+
+        small {
+          font-size: 0.9rem;
+          color: var(--ion-color-medium);
+          margin-left: 2px;
+        }
+      }
+
+      .caption {
+        font-size: 0.7rem;
+        color: var(--ion-color-medium);
+        margin-top: -2px;
+      }
+    }
+  }
+  .arrow-button {
+    border-radius: 50%;
+    background: #f4f4f4;
+    width: 32px;
+    height: 32px;
+    margin-top: 15px;
+  }
+}
+
+// GROUP TOTALS *************
+.fund-item {
+  --background: url('/assets/img/intro/feather-white.png') no-repeat right 10px center / contain;
+  background-color: #e9f5f2;
+  .dashboard-label,
+  .amount,
+  .currency {
+    color: #1a746b;
+  }
+}
+
+// ACTIVE TOTALS *************
+.active-item {
+  --background: url('/assets/img/intro/feather-white.png') no-repeat right 10px center / contain;
+  background-color: #F3EFE9;
+  .dashboard-label,
+  .amount,
+  .currency {
+    color: #6B4B1B;
+  }
+}
+
+.dashboard-item {
+  --min-height: 110px;
+
+  ion-label {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-left: 5px;
+  }
+
+  .dashboard-label {
+    margin-bottom: 40px;
+    font-family: var(--app-font-serif); 
+  }
+
+  .amount-container {
+    display: flex;
+    align-items: flex-end; 
+    gap: 8px;
+  }
+
+  .amount {
+    font-size: 2.8rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .currency {
+    font-size: 1rem;
+    font-weight: 600;
+    padding-bottom: 6px;
+  }
+}
+
+
+
+ion-text {
+    color: #757575;
+    h2 {
+        font-weight: 400;
+        margin-top: 130px;
+    }
+}
+

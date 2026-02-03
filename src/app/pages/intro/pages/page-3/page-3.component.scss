@@ -1,0 +1,74 @@
+.arrow {
+  height: 116px;
+  margin-left:100px;
+  margin-top: 50px;
+  margin-bottom: -25px;
+  position: relative;
+  z-index: 1000;
+}
+
+ion-text {
+    h2 {
+        font-weight: 400;
+        margin-top: 60px;
+    }
+}
+
+.meeting-item {
+  --padding-start: 16px;
+  --inner-padding-end: 8px;
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+
+    .title {
+      font-weight: 400;
+      color: #000;
+      margin: 0;
+    }
+
+    .meta-info {
+      font-size: 0.75rem;
+      color: var(--ion-color-medium);
+    }
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 25px; 
+    
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+
+      .value {
+        font-size: 1.8rem;
+        font-weight: 400;
+        color: #000;
+
+        small {
+          font-size: 0.9rem;
+          color: var(--ion-color-medium);
+          margin-left: 2px;
+        }
+      }
+
+      .caption {
+        font-size: 0.7rem;
+        color: var(--ion-color-medium);
+        margin-top: -2px;
+      }
+    }
+  }
+
+  .arrow-button {
+    border-radius: 50%;
+    background: #f4f4f4;
+    width: 32px;
+    height: 32px;
+    margin-top: 15px;
+  }
+}

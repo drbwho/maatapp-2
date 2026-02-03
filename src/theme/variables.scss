@@ -22,7 +22,7 @@
 
  :root {
   //--ion-background-color: #fcf9f5 !important;
-  --ion-color-primary: #579C99 !important; /*#282969;*/
+  --ion-color-primary: #6B6FB8 !important; /*#282969;*/
   --ion-color-primary-rgb: 87,156,153; /*201,11,5;*/
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255,255,255;
@@ -87,8 +87,10 @@
 
   --ion-margin: 10px;
   --color: black !;
-}
-
+  --ion-font-family: 'Inter', sans-serif;
+  --app-font-serif: 'Lora', serif;
+ }
+ 
 /*
  * Additional Ionic Colors
  * ----------------------------------------------------------------------------

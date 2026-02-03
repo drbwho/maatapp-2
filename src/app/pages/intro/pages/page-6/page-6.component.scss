@@ -1,0 +1,18 @@
+ion-item {
+  --background: url('/assets/img/feather-mono.png') no-repeat left 0px / contain;
+}
+
+ion-label {
+  padding: 10px 0 0 25px;
+  margin: 0;
+  h2 {
+    padding: 0;
+    margin: 0;
+    line-height: 1.5rem;
+  }
+}
+
+.arrow {
+  height: 116px;
+  margin: 10px 0 0 80px;
+}

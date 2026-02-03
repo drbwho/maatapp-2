@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-progress-bar  *ngIf="pageId > 1" [value]="pageId / 7" ></ion-progress-bar>
+    <ion-progress-bar color="success" *ngIf="pageId > 1 && pageId < 7" [value]="pageId / 7" ></ion-progress-bar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
