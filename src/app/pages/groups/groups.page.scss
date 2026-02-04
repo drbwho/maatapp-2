@@ -2,11 +2,10 @@ ion-searchbar {
   --border-radius: 20px;
 }
 
-
 ion-badge {
     font-size: 10px;
     font-weight: normal;
-    background-color: #EADAF4;
+    background-color: #ECECFF;
     color: #8655A4;
     vertical-align: bottom;
 }
@@ -16,3 +15,7 @@ ion-list {
   padding:0 !important;
 }
 
+p {
+  line-height: 1rem;
+  margin: 0 !important;
+}

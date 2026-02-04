@@ -17,6 +17,7 @@ export class GroupsPage implements OnInit {
   countryname: any;
   queryText: string;
   searchPlaceholder: string;
+  currentid: 0;
 
   constructor(
     private dataProvider: DataProvider,
@@ -46,6 +47,7 @@ export class GroupsPage implements OnInit {
     this.translate.get('search').subscribe((keys:any)=>{
       this.searchPlaceholder = keys;
     })
+    this.currentid = await (this.dataProvider.getCurrent()).id; 
   }
 
   async navto(group){

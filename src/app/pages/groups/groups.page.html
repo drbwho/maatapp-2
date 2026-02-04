@@ -9,30 +9,32 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar class="small-search" color="light" [(placeholder)]="searchPlaceholder" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()" animated="true">
+    <ion-searchbar class="small-search" color="light" [(placeholder)]="searchPlaceholder" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content [fullscreen]="true">
-  <ion-card class="ion-text-center ion-padding" color="tertiary">
+  <!--<ion-card color="light" class="ion-text-center ion-padding ion-border-rounded-10">
     <img style="width:130px;height:120px;" src="https://ionicframework.com/docs/img/demos/card-media.png" />
-  </ion-card>
+  </ion-card>-->
   <ion-list class="ion-no-padding">
     @for (group of groups; track group.id) {
-      <ion-item color="tertiary" class="ion-border-rounded ion-margin-start ion-margin-end ion-margin-bottom" lines="none" (click)="navto(group)" [hidden]="group.hidden || group.type == 0" >
+      <ion-item color="light" class="ion-border-rounded-10 ion-margin-start ion-margin-end ion-margin-bottom" lines="none" (click)="navto(group)" [hidden]="group.hidden || group.type == 0" >
         <ion-label color="dark">
           <ion-text>
-            <h2 class="ion-flex ion-align-items-center">
-              <b>{{group.name}} * {{group.ville}}</b>
-              <ion-badge color="danger" class="ion-margin-start">{{'no_active' | translate}}</ion-badge>
-            </h2>
+            <h5 class="ion-flex ion-align-items-center">
+              {{group.name}} · {{group.ville}}
+              <ion-badge color="danger" class="ion-margin-start text-14">{{'no_active' | translate}}</ion-badge>
+            </h5>
           </ion-text>
-          <p>{{group.numberofmembers}} {{'members' | translate}}</p>
-          <p>{{'last_activity' | translate}}: {{group.lastactivity | date:'MMM dd'}} </p>
+          <p class="text-12">{{group.numberofmembers}} {{'members' | translate}}</p>
+          <p class="text-12">{{'last_activity' | translate}}: {{group.lastactivity | date:'MMM dd'}} </p>
         </ion-label>
-        <ion-icon name="chevron-forward-sharp" slot="end" color="dark"></ion-icon>
+        @if(group.id === currentid){
+          <ion-icon name="checkmark-circle" slot="end" color="success"></ion-icon>
+        }
       </ion-item>
     }
     @if (groups?.length === 1) {
