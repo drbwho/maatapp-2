@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class CountriesPage implements OnInit {
   countries: any;
+  currentid = 0;
 
   constructor(
     private dataProvider: DataProvider,
@@ -19,8 +20,12 @@ export class CountriesPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.dataProvider.fetch_data('countries', null, false, true).then((data: any)=> {this.countries = data;});
+    var current = await this.dataProvider.getCurrent();
+    if(current && current.country){
+      this.currentid = current.country.id;
+    }
   }
 
   async navto(country){
@@ -29,7 +34,7 @@ export class CountriesPage implements OnInit {
     current.country = country;
     current.group = null;
     this.dataProvider.setCurrent(current);
-    this.router.navigate(['/app/tabs/country/'+ country.id+'/groups'], {state: {}});
+    this.router.navigate(['/country/'+ country.id+'/groups'], {state: {direction: 'forward'}});
   }
 
 }

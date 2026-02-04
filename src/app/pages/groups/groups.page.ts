@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService } from '@ngx-translate/core';
+import { NavController } from '@ionic/angular';
+import { Events } from '../../providers/events';
 
 @Component({
     selector: 'app-groups',
@@ -25,13 +27,15 @@ export class GroupsPage implements OnInit {
     private router: Router,
     private storage: Storage,
     private config: ConfigData,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private navController: NavController,
+    private event: Events
   ) { }
 
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     const countryId = this.route.snapshot.paramMap.get('countryId');
 
     this.dataProvider.fetch_data('countries', null, false, true).then((data: any) =>{
@@ -47,17 +51,26 @@ export class GroupsPage implements OnInit {
     this.translate.get('search').subscribe((keys:any)=>{
       this.searchPlaceholder = keys;
     })
-    this.currentid = await (this.dataProvider.getCurrent()).id; 
+
+    var current = await this.dataProvider.getCurrent();
+    if(current && current.group){
+      this.currentid = current.group.id;
+    }
   }
 
   async navto(group){
     // Set current group
     var current = await this.dataProvider.getCurrent();
     current.group = group;
-    this.dataProvider.setCurrent(current);
-    this.router.navigate(['/app/tabs/dashboard'], {state: {}});
+    this.dataProvider.setCurrent(current).then(()=>{
+      this.navController.navigateRoot('/app/tabs/dashboard',{
+        animated: true,
+        animationDirection: 'forward'
+      });
+    });
   }
 
+ 
   searcher(){
     if(this.queryText == ''){
       this.groups = this.country.groups;

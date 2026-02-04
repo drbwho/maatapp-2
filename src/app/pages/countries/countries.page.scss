@@ -2,3 +2,20 @@ ion-list {
   margin: 0 !important;
   padding:0 !important;
 }
+
+p {
+  line-height: 1rem;
+  margin: 0 !important;
+}
+
+
+.flag-circle {
+  width: 32px;  
+  height: 32px;
+  margin-right: 10px;
+    
+  img {
+    object-fit: cover; 
+    //transform: scale(0.8);
+  }
+}

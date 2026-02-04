@@ -15,7 +15,6 @@ import { register } from 'swiper/element/bundle';
 import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { Browser } from '@capacitor/browser';
-import { NEVER } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 register();
@@ -29,29 +28,6 @@ register();
 })
 export class AppComponent implements OnInit {
   localversion: any;
-
-  appPages = [
-    {
-      title: 'Program',
-      url: '/app/tabs/program',
-      icon: 'calendar'
-    },
-    {
-      title: 'Speakers',
-      url: '/app/tabs/speakers',
-      icon: 'contacts'
-    },
-    {
-      title: 'Map',
-      url: '/app/tabs/map',
-      icon: 'map'
-    },
-    {
-      title: 'About',
-      url: '/app/tabs/about',
-      icon: 'information-circle'
-    }
-  ];
   loggedIn = false;
   hasUnreadNews = false;
   hasUnreadChat = 0;
@@ -208,109 +184,6 @@ export class AppComponent implements OnInit {
     })
   }*/
 
-  // check if new version of conference data exists
-  /*async check_new_jsonfile() {
-    const headers = new HttpHeaders();
-    headers.append('Cache-control', 'no-cache');
-    headers.append('Cache-control', 'no-store');
-    headers.append('Cache-control', 'max-age=0');
-    headers.append('Expires', '0');
-    headers.append('Pragma', 'no-cache');
-
-    // first check if is current meeting selected?
-    let curmeet = await this.storage.get(this.config.CUR_MEETING);
-    if(!curmeet){
-      this.get_current_meeting(true);
-      return;
-    }
-    this.storage.get(this.config.JSON_FILE).then( (res) => {
-        // trick to disable response caching
-        const salt = (new Date()).getTime();
-        this.http
-           .get(this.config.API_JSONFILE_URL + '/' + curmeet.id + '?' + salt, {headers})
-           .subscribe( async (data: any) => {
-              if (res) {
-                if (res.version < data.version) {
-                    const alert = await this.alertController.create({
-                      header: 'Update available!',
-                      message: 'New Conference Data <strong>Available</strong>! Do you want to update now?',
-                      buttons: [
-                        {
-                          text: 'Ignore',
-                          role: 'cancel',
-                          cssClass: 'secondary',
-                          handler: (blah) => {
-                            console.log('Confirm Cancel: Update');
-                          }
-                        }, {
-                          text: 'Update',
-                          handler: async () => {
-                            const loading = await this.loadingcontroller.create({
-                              message: 'Updating<br/>Please wait...'
-                            });
-                            loading.present();
-                            setTimeout(() => {
-                              loading.dismiss();
-                            }, 3000);
-                            this.storage.set(this.config.JSON_FILE, data).then(()=>{
-                              this.dataprovider.processData(data);
-                            });
-                          }
-                        }
-                      ]
-                    });
-                    await alert.present();
-                } else {
-                  this.dataprovider.processData(res);
-                }
-              } else {
-                const loading = await this.loadingcontroller.create({
-                  message: 'Updating<br/>Please wait...'
-                });
-                loading.present();
-                setTimeout(() => {
-                  loading.dismiss();
-                }, 3000);
-                this.storage.set(this.config.JSON_FILE, data).then(()=>{
-                  this.dataprovider.processData(data);
-                });
-              }
-            },
-            async (error) => {
-              console.log("Network Error!");
-              const toast = await this.toast.create({
-                message: 'Network error! Cannot check for updates...',
-                cssClass: 'toast-alert',
-                duration: 5000
-              });
-              toast.present();
-            });
-    });
-  }*/
-
-  loadInfoPage (infotype: any) {
-    // restrict access
-    if(infotype == 'bookofabstracts'){
-      this.userData.isLoggedIn().then((value)=>{
-        if(!value){
-          this.user_not_loggedin();
-        }else{
-          this.events.publish('info:updated', infotype);
-          this.router.navigate(['/app/tabs/info/' + infotype], {state: {updateInfos: true}});
-        }
-      });
-    }else{
-      this.events.publish('info:updated', infotype);
-      this.router.navigate(['/app/tabs/info/' + infotype], {state: {updateInfos: true}});
-    }
-  }
-
-  loadTaxonomyPage (page: any) {
-    this.events.publish('taxonomy:updated', page);
-    this.router.navigate(['/app/tabs/taxonomy/type/' + page], {state: {updateInfos: true}});
-  }
-
-
   listenNetworkConnectionEvents() {
     // Check on init
     Network.getStatus().then((status)=>{
@@ -346,10 +219,6 @@ export class AppComponent implements OnInit {
     Browser.open(
       {url: url}
     );
-  }
-
-  openConfLink(){
-    this.openExternalUrl('https://twitter.com/' + this.dataprovider.data.info[0].twitter);
   }
 
   async user_not_loggedin(){

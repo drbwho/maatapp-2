@@ -7,8 +7,10 @@
       </div>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/app/tabs/countries">
-        <ion-icon slot="icon-only" name="globe"></ion-icon>
+      <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
+        <ion-avatar class="flag-circle">
+          <img [src]="'assets/flags/' + country.flagcode?.toLowerCase() + '.svg'" />
+        </ion-avatar>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -24,29 +26,30 @@
     </ion-item>
   </ion-list>
 
-  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round">Start New Meeting</ion-button>
-  <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="light">Upload Data</ion-button>
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round">{{'start_new_meeting' | translate}}</ion-button>
+  <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="light">{{'upload_data' | translate}}</ion-button>
 
   <ion-list>
 
+    @if(lastmeeting){
     <ion-item lines="none" class="meeting-item">
       <ion-label class="ion-text-wrap">
         <div class="header-row">
-          <h2 class="title">Last meeting</h2>
-          <span class="meta-info">Dec 12 · Closed</span>
+          <h2 class="title">{{'last_meeting' | translate}}</h2>
+          <span class="meta-info">{{lastmeeting?.startedat | date:'MMM d'}} @if(lastmeeting.endedat){ · {{'closed' | translate}} }</span>
         </div>
         <div class="stats-row">
           <div class="stat-box">
             <div class="value">18<small>/22</small></div>
-            <div class="caption">Attendance</div>
+            <div class="caption">{{'attendance' | translate}}</div>
           </div>
           <div class="stat-box">
             <div class="value">16<small>/22</small></div>
-            <div class="caption">Balance</div>
+            <div class="caption">{{'balance' | translate}}</div>
           </div>
           <div class="stat-box">
             <div class="value">420</div>
-            <div class="caption">CAD collected</div>
+            <div class="caption">{{country.currency}} {{'collected' | translate}}</div>
           </div>
         </div>
       </ion-label>
@@ -54,23 +57,24 @@
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-button>
     </ion-item>
-
+    }
+    
     <ion-item lines="none" class="fund-item dashboard-item ion-margin ion-border-rounded-20">
       <ion-label>
-        <p class="dashboard-label text-22">Group fund</p>
+        <p class="dashboard-label text-22">{{'group_fund' | translate}}</p>
         <div class="amount-container">
-          <span class="amount">2.340</span>
-          <span class="currency">CAD</span>
+          <span class="amount">{{account?.balance | number:'.2'}}</span>
+          <span class="currency">{{country.currency}}</span>
         </div>
       </ion-label>
     </ion-item>
 
     <ion-item lines="none" class="active-item dashboard-item ion-margin ion-border-rounded-20">
       <ion-label>
-        <p class="dashboard-label text-22">Active maats</p>
+        <p class="dashboard-label text-22">{{'active_maats' | translate}}</p>
         <div class="amount-container">
-          <span class="amount">480</span>
-          <span class="currency">CAD</span>
+          <span class="amount">{{account?.creditdisponible | number:'.2'}}</span>
+          <span class="currency">{{country.currency}}</span>
         </div>
       </ion-label>
     </ion-item>

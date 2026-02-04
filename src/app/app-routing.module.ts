@@ -42,6 +42,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/countries/countries.module').then( m => m.CountriesPageModule)
   },
   {
+    path: 'country/:countryId/groups',
+    loadChildren: () => import('./pages/groups/groups.module').then(m => m.GroupsPageModule)
+  },
+  {
     path: 'groups',
     loadChildren: () => import('./pages/groups/groups.module').then( m => m.GroupsPageModule)
   },

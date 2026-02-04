@@ -620,7 +620,12 @@ export class DataProvider {
   * */
   getCurrent(): Promise<Current> {
     return this.storage.get(this.config.CURRENT_FILE).then((value: any) => {
-      return value ? value : {};
+      if(value){
+        this.current = value;
+        return value;
+      }else{
+        return {};
+      }
     });
   }
 

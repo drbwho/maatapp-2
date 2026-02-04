@@ -19,12 +19,21 @@
       letter-spacing: 0.3px;
     }
   }
+}
+
+.flag-button {
+  --padding-start: 0px;
+  --padding-end: 0px;
+  margin-right: 5px;
 
   .flag-circle {
-    width: 48px;
-    height: 48px;
-    margin-right: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: 44px;  
+    height: 44px;
+    
+    img {
+      object-fit: cover; 
+      //transform: scale(0.8);
+    }
   }
 }
 

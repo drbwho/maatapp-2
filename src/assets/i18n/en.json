@@ -100,5 +100,44 @@
   "categories":"Categories",
   "notes":"Notes",
   "clear_cache":"Clear the device's stored data",
-  "accounts_selected": "accounts selected"
+  "accounts_selected": "accounts selected",
+  "meeting_in_progress": "Meeting in progress",
+  "intro": {
+    "page-1": {
+      "title": "Welcome to MA'AT",
+      "message":"What you cannot do alone, you can do together. This app helps your group save, support, and grow as one."
+    },
+    "page-2": {  
+      "card-message": "You can continue entering transactions or review the current totals",
+      "title": "Meeting status",
+      "message":"This indicator shows the current status of the meeting. This meeting is currently active. You can continue entering transactions or review the current totals. A new meeting can be started once this one is closed"
+    },
+    "page-3": {
+      "title": "Last meeting summary",
+      "message": "A quick overview of the last meeting. Here you can see how many group members attended the meeting. For example, we currently see that 18 out of 22 participants attended. Balance shows how many contributed to their personal accounts. And you can see the total amount collected during the meeting."
+    },
+    "meeting-card": {
+      "no-meetings": {
+        "title": "No meetings yet",
+        "message": "This is where your group’s journey starts when everyone is ready."
+      },
+      "in-progress": {
+        "title": "Meeting in progress",
+        "message": "You can continue entering transactions or review the current totals."
+      },
+      "no-active": {
+        "title": "No Active meetings",
+        "message": "The last meeting is closed. You can start a new one when the group is ready."
+      },
+      "saved-local": {
+        "title": "Meeting data saved offline",
+        "message": "Some data hasn't been uploaded yet. You can continue the meeting."
+      },
+      "saved-offline": {
+        "title": "Meeting data saved offline",
+        "message": "You can continue or upload data when internet is available."
+      }
+    }
+  }
+
 }

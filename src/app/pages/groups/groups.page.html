@@ -5,7 +5,7 @@
   <ion-toolbar>
     <ion-label class="text-14">Back</ion-label>
     <ion-buttons slot="start">
-      <ion-back-button icon="chevron-back-outline" defaultHref="/app/tabs/dashboard"></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" ></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
@@ -16,9 +16,6 @@
 
 
 <ion-content [fullscreen]="true">
-  <!--<ion-card color="light" class="ion-text-center ion-padding ion-border-rounded-10">
-    <img style="width:130px;height:120px;" src="https://ionicframework.com/docs/img/demos/card-media.png" />
-  </ion-card>-->
   <ion-list class="ion-no-padding">
     @for (group of groups; track group.id) {
       <ion-item color="light" class="ion-border-rounded-10 ion-margin-start ion-margin-end ion-margin-bottom" lines="none" (click)="navto(group)" [hidden]="group.hidden || group.type == 0" >
@@ -30,7 +27,7 @@
             </h5>
           </ion-text>
           <p class="text-12">{{group.numberofmembers}} {{'members' | translate}}</p>
-          <p class="text-12">{{'last_activity' | translate}}: {{group.lastactivity | date:'MMM dd'}} </p>
+          <p class="text-12">{{'last_activity' | translate}}: @if(group.lastmeeting){ {{group.lastmeeting.startedat | date:'MMM dd'}} }</p>
         </ion-label>
         @if(group.id === currentid){
           <ion-icon name="checkmark-circle" slot="end" color="success"></ion-icon>

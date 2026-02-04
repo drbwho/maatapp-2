@@ -15,12 +15,29 @@ import { Page5Component } from './pages/page-5/page-5.component';
 import { Page6Component } from './pages/page-6/page-6.component';
 import { Page7Component } from './pages/page-7/page-7.component';
 
+// needed fot translate pipe activation
+import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader();
+}
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    IntroPageRoutingModule
+    IntroPageRoutingModule,
+    // enable translate pipe
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   declarations: [IntroPage, Page1Component, Page2Component, Page3Component, Page4Component, Page5Component, Page6Component, Page7Component]
 })
