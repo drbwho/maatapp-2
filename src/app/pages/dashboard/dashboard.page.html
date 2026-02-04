@@ -1,15 +1,15 @@
 <ion-header [translucent]="true">
-  <ion-toolbar class="group-habs-header">  
-    <ion-title>
+  <ion-toolbar class="group-habs-header">
+    <ion-title role="button" (click)='navToGroups()'>
       <div class="title-container">
-        <h2 class="main-group-title">Group: Habs</h2>
-        <p class="sub-location text-12">Canada · Montreal</p>
+        <h2 class="main-group-title">Group: {{group.name}}</h2>
+        <p class="sub-location text-12">{{country.name}} · {{group.ville}}</p>
       </div>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-avatar class="flag-circle">
-        <img src="assets/img/canada-flag.png" alt="C" />
-      </ion-avatar>
+      <ion-button routerLink="/app/tabs/countries">
+        <ion-icon slot="icon-only" name="globe"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

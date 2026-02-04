@@ -4,8 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService } from '@ngx-translate/core';
-import { ViewChild } from '@angular/core';
-import { IonSearchbar } from '@ionic/angular';
 
 @Component({
     selector: 'app-groups',
@@ -14,13 +12,11 @@ import { IonSearchbar } from '@ionic/angular';
     standalone: false
 })
 export class GroupsPage implements OnInit {
-  @ViewChild('mySearchbar', { static: false }) searchbar!: IonSearchbar;
   country: any;
   groups: any;
   countryname: any;
   queryText: string;
   searchPlaceholder: string;
-  showSearch = false;
 
   constructor(
     private dataProvider: DataProvider,
@@ -52,17 +48,12 @@ export class GroupsPage implements OnInit {
     })
   }
 
-  navto(group){
-    this.dataProvider.current.country = this.country;
-    this.dataProvider.current.group = group;
-    this.router.navigate(['/app/tabs/groups/'+ group.id], {state: {}});
-  }
-
-  toggleSearch() {
-    this.showSearch = true;
-    setTimeout(() => {
-      this.searchbar.setFocus();
-    }, 100);
+  async navto(group){
+    // Set current group
+    var current = await this.dataProvider.getCurrent();
+    current.group = group;
+    this.dataProvider.setCurrent(current);
+    this.router.navigate(['/app/tabs/dashboard'], {state: {}});
   }
 
   searcher(){

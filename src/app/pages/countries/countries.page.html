@@ -13,7 +13,7 @@
   </ion-card>
   <ion-list>
     @for (country of countries; track country.id) {
-      <ion-item lines="none" color="tertiary" class="ion-border-rounded ion-margin-start ion-margin-end ion-margin-bottom" routerLink="/app/tabs/country/{{country.id}}/groups">
+      <ion-item lines="none" color="tertiary" class="ion-border-rounded ion-margin-start ion-margin-end ion-margin-bottom" (click)="navto(country)">
         <ion-icon slot="start" name="earth" size="large" color="primary"></ion-icon>
         <ion-label color="dark">
           <ion-text>

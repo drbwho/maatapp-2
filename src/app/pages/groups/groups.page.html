@@ -1,22 +1,19 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title *ngIf="!showSearch" >{{'select_group' | translate}}</ion-title>
+    <ion-title class="ion-text-center"><h2>{{'select_group' | translate}}</h2></ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-label class="text-14">Back</ion-label>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/app/tabs/countries" *ngIf="!showSearch"></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/app/tabs/dashboard"></ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="toggleSearch()" *ngIf="!showSearch">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-searchbar #mySearchbar *ngIf="showSearch" [(placeholder)]="searchPlaceholder" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()"
-      animated="true" 
-      show-cancel-button="always"
-      cancel-button-icon="chevron-back-outline"
-      (ionCancel)="showSearch = false">
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar class="small-search" color="light" [(placeholder)]="searchPlaceholder" [(ngModel)]="queryText" (ionChange)="searcher()" (ionInput)="searcher()" animated="true">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content [fullscreen]="true">
   <ion-card class="ion-text-center ion-padding" color="tertiary">

@@ -77,7 +77,7 @@ export class DataProvider {
   }
 
   // Get data from API/STORAGE
-  async fetch_data(type, typeid = '', force=false, showLoading = false){    
+  async fetch_data(type, typeid = '', force=false, showLoading = false){
     if(this[type] && (this[type]).length && !force){
       return new Promise((resolve)=>{
         resolve(this[type]);
@@ -120,7 +120,7 @@ export class DataProvider {
           next: (data: any) => {
             this[type] = data[type];
             if(type == 'accounts'){
-              //sort accounts 
+              //sort accounts
               this[type].sort((a,b) => a.num - b.num);
             }
             this.storage.set(file, this[type]);
@@ -379,7 +379,7 @@ export class DataProvider {
       }else{
         upload_errors = [];
       }
-      var found_errors = false; 
+      var found_errors = false;
       for(let tr of transactions){
         res = await this.syncOperation(tr);
         //if error stop uploading and return
@@ -614,7 +614,24 @@ export class DataProvider {
    });
   }
 
-  
+  /*
+  * Set / Get Current Country/Group
+  *
+  * */
+  getCurrent(): Promise<Current> {
+    return this.storage.get(this.config.CURRENT_FILE).then((value: any) => {
+      return value ? value : {};
+    });
+  }
+
+  setCurrent(current: Current): Promise<boolean> {
+    return this.storage.set(this.config.CURRENT_FILE, current).then((value) => {
+      this.current = current;
+      return true;
+    });
+  }
+
+
   /*
   * Post new support ticket
   *
@@ -622,15 +639,15 @@ export class DataProvider {
   async newTicket(body: any){
     const loading = await this.loadingcontroller.create({showBackdrop: false});
     loading.present();
-  
+
     let apiurl = this.config.GET_API_URL('tickets');
-  
+
     const user = await this.user.getUser();
     const headers =  new HttpHeaders({
       'Authorization': 'Bearer ' + user.token,
       'Accept': 'application/json'
     });
-  
+
     return new Promise((resolve)=>{
       this.http
         .post(apiurl,
