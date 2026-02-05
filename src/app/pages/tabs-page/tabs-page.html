@@ -10,9 +10,9 @@
       <ion-label>{{'countries' | translate}}</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="about">
+    <ion-tab-button (click)="openAccount()">
       <ion-icon name="information-circle"></ion-icon>
-      <ion-label>{{'about' | translate}}</ion-label>
+      <ion-label>{{'more' | translate}}</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

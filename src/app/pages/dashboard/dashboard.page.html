@@ -2,7 +2,7 @@
   <ion-toolbar class="group-habs-header">
     <ion-title role="button" (click)='navToGroups()'>
       <div class="title-container">
-        <h2 class="main-group-title">Group: {{group.name}}</h2>
+        <h2 class="main-group-title">{{'group' | translate}}: {{group.name}}</h2>
         <p class="sub-location text-12">{{country.name}} · {{group.ville}}</p>
       </div>
     </ion-title>
@@ -20,14 +20,19 @@
   <ion-list>
     <ion-item lines="none" class="meeting-status-item ion-margin-horizontal ion-border-rounded-20">
       <ion-label>
-        <h4>Meeting in progress</h4>
-        <p>You can continue entering transactions or review the current totals.</p>
+        <h4>{{'meeting-card.' + meeting_status + '.title' | translate}}</h4>
+        <p>{{'meeting-card.' + meeting_status + '.message' | translate}}</p>
       </ion-label>
     </ion-item>
   </ion-list>
 
-  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round">{{'start_new_meeting' | translate}}</ion-button>
-  <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="light">{{'upload_data' | translate}}</ion-button>
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round" [disabled]="meeting_status != 'no-active'">{{'start_new_meeting' | translate}}</ion-button>
+  @if(network_status && upload_status){
+   <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
+  }
+  @if(!network_status && upload_status){
+   <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-disabled" disabled>{{'upload_data' | translate}}</ion-button>
+  }
 
   <ion-list>
 
@@ -58,7 +63,7 @@
       </ion-button>
     </ion-item>
     }
-    
+
     <ion-item lines="none" class="fund-item dashboard-item ion-margin ion-border-rounded-20">
       <ion-label>
         <p class="dashboard-label text-22">{{'group_fund' | translate}}</p>

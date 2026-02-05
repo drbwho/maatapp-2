@@ -87,4 +87,18 @@ p {
 .text-24 { font-size: 1.5rem !important; }
 .text-32 { font-size: 2rem !important; }
 
+.ion-color-maat-primary {
+    --ion-color-base: #6B6FB8;
+ }
+
+.ion-color-maat-secondary {
+    --ion-color-base: #F3F3FF;
+    --ion-color-contrast: #484DB3;
+ }
+
+ .ion-color-maat-disabled {
+    --ion-color-base: #F5F5F5;
+    --ion-color-contrast: #C9C9C9;
+    opacity: 1 !important;
+ }
 
