@@ -124,7 +124,7 @@ export class AccountPage implements AfterViewInit {
 
   }
 
-  dismiss() {console.log('dismiss');
+  dismiss() {
     this.modalCtrl.dismiss();
   }
 
@@ -141,6 +141,7 @@ export class AccountPage implements AfterViewInit {
   }
 
   openAbout(){
-
+    this.dismiss();
+    this.router.navigateByUrl('/about');
   }
 }

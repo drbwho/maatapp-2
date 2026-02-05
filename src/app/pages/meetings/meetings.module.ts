@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { IonicModule } from '@ionic/angular';
 
-import { TabsPage } from './tabs-page';
-import { TabsPageRoutingModule } from './tabs-page-routing.module';
+import { MeetingsPageRoutingModule } from './meetings-routing.module';
 
-import { SelectLangComponent } from '../../component/select-lang/select-lang.component';
+import { MeetingsPage } from './meetings.page';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -19,19 +20,17 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     IonicModule,
-    TabsPageRoutingModule,
-    // enable translate pipe
+    MeetingsPageRoutingModule,
     TranslateModule.forChild({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
+        })    
   ],
-  declarations: [
-    TabsPage, SelectLangComponent
-  ]
+  declarations: [MeetingsPage]
 })
-export class TabsModule { }
+export class MeetingsPageModule {}

@@ -246,6 +246,31 @@ export class AppComponent implements OnInit {
     });
   }
 
+  async check_upload_status (){
+    var res = await this.storage.get(this.config.TRANSACTIONS_FILE);
+    var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+    if((res && res.length) || newmeetings && newmeetings.length){
+      return true;
+    }
+    return false;
+  }
+
+  async get_meeting_status(meeting){
+    var upload_status = await this.check_upload_status();
+    if(!meeting){
+      return "no-meetings";
+    }else if(!meeting.endedat && !upload_status){
+      return "in-progress";
+    }else if(meeting.endedat && !upload_status){
+      return "no-active";
+    }else if(!meeting.endedat && upload_status && this.networkStatus){
+      return "saved-local";
+    }else if(!meeting.endedat && upload_status && !this.networkStatus){
+      return "saved-offline";
+    }
+    return "";
+  }
+
   // Create a unique device id
   createDeviceId(){
     this.storage.get(this.config.DEVICE_ID).then(data => {

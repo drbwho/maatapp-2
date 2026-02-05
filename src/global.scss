@@ -102,3 +102,46 @@ p {
     opacity: 1 !important;
  }
 
+
+.settings-action-sheet {
+  .action-sheet-title {
+    font-family: 'Lora', serif !important;
+    font-size: 24px !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    color: #000 !important;
+    border-bottom: none !important;
+  }
+
+  .action-sheet-group {
+    border-radius: 20px 20px 0 0 !important;
+    overflow: hidden;
+  }
+  .action-sheet-group-cancel {
+    border-radius: 0px !important;
+  }
+
+  .action-sheet-button {
+    font-size: 16px;
+    padding-inline-start: 20px !important;
+    color: #5E5C57 !important;
+    
+    .action-sheet-icon {
+      font-size: 22px !important;
+      margin-inline-end: 15px !important;
+      color: #333 !important;
+    }
+  }
+
+  .action-sheet-destructive {
+    color: #eb445a !important;
+    .action-sheet-icon {
+      color: #eb445a !important;
+    }
+  }
+}
+
+.lang-modal-sheet {
+  --border-radius: 30px; 
+  overflow: hidden;
+}

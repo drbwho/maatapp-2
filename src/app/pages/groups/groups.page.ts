@@ -5,7 +5,6 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController } from '@ionic/angular';
-import { Events } from '../../providers/events';
 
 @Component({
     selector: 'app-groups',
@@ -20,16 +19,15 @@ export class GroupsPage implements OnInit {
   queryText: string;
   searchPlaceholder: string;
   currentid: 0;
+  
 
   constructor(
     private dataProvider: DataProvider,
     private route: ActivatedRoute,
-    private router: Router,
     private storage: Storage,
     private config: ConfigData,
     private translate: TranslateService,
     private navController: NavController,
-    private event: Events
   ) { }
 
   ngOnInit() {
@@ -70,7 +68,6 @@ export class GroupsPage implements OnInit {
     });
   }
 
- 
   searcher(){
     if(this.queryText == ''){
       this.groups = this.country.groups;

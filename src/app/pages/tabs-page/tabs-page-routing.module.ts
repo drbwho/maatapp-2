@@ -18,16 +18,6 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'countries',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../countries/countries.module').then(m => m.CountriesPageModule)
-          },
-
-        ]
-      },
-      {
         path: 'country/:countryId/groups',
         children: [
           {
@@ -46,7 +36,16 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'meetings/:meetingId',
+        path: 'meetings',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../meetings/meetings.module').then(m => m.MeetingsPageModule)
+          },
+        ]
+      },
+      {
+        path: 'meetings/:meetingId', // --OLD
         children: [
           {
             path: '',

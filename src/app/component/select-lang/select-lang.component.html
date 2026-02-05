@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center"><h2>{{'language' | translate}}</h2></ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="ion-margin-top">
+    @for (lang of available_langs; track lang) {
+    <ion-item lines="none" color="light" class="ion-border-rounded-30 ion-margin-start ion-margin-end ion-margin-bottom" (click)="updateAppLang(lang)">
+      <ion-avatar class="flag-circle">
+        <img [src]="'assets/flags/' + (lang?.code == 'en' ? 'gb' : lang.code?.toLowerCase()) + '.svg'" />
+      </ion-avatar>
+      <ion-label color="dark">
+        <ion-text>
+          <h5>{{lang.title}}</h5>
+        </ion-text>
+      </ion-label>
+      @if(lang.code === cur_lang){
+        <ion-icon name="checkmark-circle" slot="end" color="success"></ion-icon>
+      }
+    </ion-item>
+    }
+  </ion-list>
+</ion-content>

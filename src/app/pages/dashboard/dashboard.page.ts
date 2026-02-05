@@ -14,8 +14,8 @@ import { AppComponent } from '../../app.component';
   standalone: false
 })
 export class DashboardPage implements OnInit {
-  group = {id:"", name:"", ville:""}
-  country = {id:"", name:"", currency:"", flagcode:"gb"};
+  group: any = null;
+  country: any = null;
   lastmeeting: any = {};
   account: any = {};
   meeting_status = "";
@@ -25,10 +25,7 @@ export class DashboardPage implements OnInit {
   constructor(
     private dataProvider: DataProvider,
     private navCtrl: NavController,
-    private events: Events,
     private route: ActivatedRoute,
-    private storage: Storage,
-    private config: ConfigData,
     private appcomponent: AppComponent
   ) {
     this.route.url.subscribe(() => {
@@ -53,7 +50,7 @@ export class DashboardPage implements OnInit {
       this.group = current.group;
       this.lastmeeting = current.group.lastmeeting;
       this.account = current.group.totals;
-      this.set_meeting_status();
+      this.meeting_status = await this.appcomponent.get_meeting_status(this.lastmeeting);
     }
   }
 
@@ -64,31 +61,6 @@ export class DashboardPage implements OnInit {
     }else{
       this.navCtrl.navigateForward('/country/' + curcountry.id + '/groups');
     }
-  }
-
-  async set_meeting_status(){
-    this.network_status = this.appcomponent.networkStatus;
-    this.upload_status = await this.check_upload_status();
-    if(!this.lastmeeting){
-      this.meeting_status = "no-meetings";
-    }else if(!this.lastmeeting.endedat && !this.upload_status){
-      this.meeting_status = "in-progress";
-    }else if(this.lastmeeting.endedat && !this.upload_status){
-      this.meeting_status = "no-active";
-    }else if(!this.lastmeeting.endedat && this.upload_status && this.network_status){
-      this.meeting_status = "saved-local";
-    }else if(!this.lastmeeting.endedat && this.upload_status && !this.network_status){
-      this.meeting_status = "saved-offline";
-    }
-  }
-
-  async check_upload_status (){
-    var res = await this.storage.get(this.config.TRANSACTIONS_FILE);
-    var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
-    if((res && res.length) || newmeetings && newmeetings.length){
-      return true;
-    }
-    return false;
   }
 
 }

@@ -1,0 +1,15 @@
+.flag-button {
+  --padding-start: 0px;
+  --padding-end: 0px;
+  margin-right: 5px;
+
+  .flag-circle {
+    width: 44px;  
+    height: 44px;
+    
+    img {
+      object-fit: cover; 
+      //transform: scale(0.8);
+    }
+  }
+}

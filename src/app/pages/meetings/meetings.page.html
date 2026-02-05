@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="group-habs-header">
+    <ion-title>
+      <div class="title-container">
+        <h2 class="main-group-title">{{'group' | translate}}: {{group.name}}</h2>
+        <p class="sub-location text-12">{{country.name}} · {{group.ville}}</p>
+      </div>
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" defaultHref="/app/tabs/dashboard">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerDirection="forward" class="flag-button">
+        <ion-avatar class="flag-circle">
+          <img [src]="'assets/flags/' + country.flagcode?.toLowerCase() + '.svg'" />
+        </ion-avatar>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round" [disabled]="meeting_status != 'no-active'">{{'start_new_meeting' | translate}}</ion-button>
+  @if(meeting_status == 'saved_local'){
+   <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
+  }
+  @if(meeting_status == 'saved_offline'){
+   <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-disabled" disabled>{{'upload_data' | translate}}</ion-button>
+  }
+
+  @if(lastmeeting && meetings.length == 0){
+  <ion-list>
+    <ion-item color="light" lines="none" class="ion-border-rounded-10 ion-margin-start ion-margin-end ion-margin-bottom">
+      <ion-label class="ion-text-wrap">
+        <div class="header-row">
+          <h3 class="title">{{'last_meeting_summary' | translate}} </h3>
+        </div>
+        <p>@if(lastmeeting.endedat){ {{'closed' | translate}} }: {{lastmeeting?.startedat | date:'MMM d'}}</p>
+        <p>18/22 {{'members' | translate}} · 420 {{country.currency}} {{'collected' | translate}}</p>
+        <p>&nbsp;</p>
+        <p>{{'tap_to_view_history' | translate}}</p>
+      </ion-label>
+      <!--<ion-button slot="end" fill="clear" color="medium" class="arrow-button">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-button>-->
+    </ion-item>
+  </ion-list>
+  }
+
+  @if(meetings.length == 0){
+  <ion-text class="ion-text-center" (click)="show_all_meetings()">
+    <h4>{{'show_all_meetings' | translate}}</h4>
+  </ion-text>
+  }
+
+  <ion-list>
+    @for (meeting of meetings; track meeting) {
+    <ion-item color="light" lines="none" class="ion-border-rounded-10 ion-margin-start ion-margin-end ion-margin-bottom">
+      <ion-label class="ion-text-wrap">
+        <div class="header-row">
+          <h3 class="title">{{meeting.place}}</h3>
+        </div>
+        <p>@if(meeting.endedat){ {{'closed' | translate}} }: {{meeting?.startedat | date:'MMM d'}}</p>
+        <p>18/22 {{'members' | translate}} · 420 {{country.currency}} {{'collected' | translate}}</p>
+        <p>&nbsp;</p>
+        <p>{{'tap_to_view_history' | translate}}</p>
+      </ion-label>
+      <!--<ion-button slot="end" fill="clear" color="medium" class="arrow-button">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-button>-->
+    </ion-item>
+    }  
+  </ion-list>
+
+</ion-content>

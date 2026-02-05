@@ -1,20 +1,21 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header class="ion-no-border">
+  <ion-toolbar class="transparent-toolbar">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-button routerLink="/app/tabs/dashboard" routerDirection="forward">
+        <ion-icon name="close-outline" ></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>{{'about' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-text class="ion-text-center" color="primary">
-    <img src="/assets/img/maat_dark.png">
-    <!--<h3>MA'AT</h3>-->
+<ion-content [fullscreen]="true" >
+  <div class="image-container">
+  <img src="assets/img/intro/page-about-header.png" class="fade-bottom">
+  </div>
+  <ion-text>
+    <h1 class="ion-margin-horizontal">{{'what_is_maat' | translate}}</h1>
   </ion-text>
-  <ion-text class="ion-text-center">
-    <h4></h4>
-  </ion-text>
+  <div class="ion-margin">
   @if (curLang == 'en') {
     <ion-note>
       <p>MA'AT is a revolutionary collective credit system and the solution to creating a collective fund.</p>
@@ -102,5 +103,10 @@
       na comunidade. Permite que pequenos grupos prosperem, se autorrepliquem e invistam individual e coletivamente.</p>
     </ion-note>
   }
+  </div>
 
+  <ion-footer>
+    <ion-button class="ion-margin" expand="block" shape="round" routerLink="/app/tabs/dashboard">{{'go_to_dashboard' | translate}}</ion-button>
+  </ion-footer>
 </ion-content>
+

@@ -2,14 +2,14 @@
   <ion-toolbar class="group-habs-header">
     <ion-title role="button" (click)='navToGroups()'>
       <div class="title-container">
-        <h2 class="main-group-title">{{'group' | translate}}: {{group.name}}</h2>
-        <p class="sub-location text-12">{{country.name}} · {{group.ville}}</p>
+        <h2 class="main-group-title">{{'group' | translate}}: {{group?.name}}</h2>
+        <p class="sub-location text-12">{{country?.name}} · {{group?.ville}}</p>
       </div>
     </ion-title>
     <ion-buttons slot="end">
       <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
         <ion-avatar class="flag-circle">
-          <img [src]="'assets/flags/' + country.flagcode?.toLowerCase() + '.svg'" />
+          <img [src]="'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg'" />
         </ion-avatar>
       </ion-button>
     </ion-buttons>
@@ -27,17 +27,16 @@
   </ion-list>
 
   <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round" [disabled]="meeting_status != 'no-active'">{{'start_new_meeting' | translate}}</ion-button>
-  @if(network_status && upload_status){
+  @if(meeting_status == 'saved_local'){
    <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
   }
-  @if(!network_status && upload_status){
+  @if(meeting_status == 'saved_offline'){
    <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-disabled" disabled>{{'upload_data' | translate}}</ion-button>
   }
 
   <ion-list>
-
     @if(lastmeeting){
-    <ion-item lines="none" class="meeting-item">
+    <ion-item lines="none" class="meeting-item" routerLink="/app/tabs/meetings" routerDirection="forward">
       <ion-label class="ion-text-wrap">
         <div class="header-row">
           <h2 class="title">{{'last_meeting' | translate}}</h2>
@@ -54,7 +53,7 @@
           </div>
           <div class="stat-box">
             <div class="value">420</div>
-            <div class="caption">{{country.currency}} {{'collected' | translate}}</div>
+            <div class="caption">{{country?.currency}} {{'collected' | translate}}</div>
           </div>
         </div>
       </ion-label>
@@ -69,7 +68,7 @@
         <p class="dashboard-label text-22">{{'group_fund' | translate}}</p>
         <div class="amount-container">
           <span class="amount">{{account?.balance | number:'.2'}}</span>
-          <span class="currency">{{country.currency}}</span>
+          <span class="currency">{{country?.currency}}</span>
         </div>
       </ion-label>
     </ion-item>
@@ -79,7 +78,7 @@
         <p class="dashboard-label text-22">{{'active_maats' | translate}}</p>
         <div class="amount-container">
           <span class="amount">{{account?.creditdisponible | number:'.2'}}</span>
-          <span class="currency">{{country.currency}}</span>
+          <span class="currency">{{country?.currency}}</span>
         </div>
       </ion-label>
     </ion-item>
