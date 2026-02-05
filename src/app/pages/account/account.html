@@ -1,32 +1,82 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" ></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>{{'account' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="outer-content">
-  @if (user.username) {
-    <div class="ion-padding-top ion-text-center">
+<ion-content class="ion-padding">
+  <div class="profile-header ion-text-center">
+    <div class="avatar-container">
       @if (!user.photo) {
         <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
       }
       @if (user.photo) {
         <img [src]="user.photo" alt="avatar">
       }
-      <ion-text color="tertiary"><h2>{{user.lname}} {{user.fname}}</h2></ion-text>
-      <p>{{user.username}} - {{user.email}}</p>
-      {{user.city}}
-      <ion-text color="primary"><h4>{{role}}</h4></ion-text>
-      <ion-list inset>
-        <!-- <ion-item (click)="updatePicture()">Update Picture</ion-item> -->
-        <!-- <ion-item (click)="changeUsername()">Change Username</ion-item> -->
-        <!-- <ion-item (click)="changePassword()">Change Password</ion-item> -->
-        <ion-item (click)="support()">{{'support' | translate}}</ion-item>
-        <ion-item (click)="logout()">{{'logout' | translate}}</ion-item>
-      </ion-list>
     </div>
-  }
+    <ion-button fill="clear" size="small" class="change-photo-btn" disabled>
+      {{'change_profile_photo' | translate}}
+    </ion-button>
+  </div>
+
+  <div class="details-section">
+    <div class="detail-item">
+      <label>{{'name' | translate}}</label>
+      <p>{{user.fname}} {{user.lname}}</p>
+    </div>
+
+    <div class="detail-item">
+      <label>Email</label>
+      <p>{{user.email}}</p>
+    </div>
+
+    <div class="detail-item">
+      <label>Location</label>
+      <div class="location-row">
+        <img src="assets/flags/ca.svg" class="mini-flag" alt="Canada" />
+        <p>{{user.country}} @if(user.city){• {{user.city}} }</p>
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <label>{{'role'}}</label>
+      <p>{{role}}</p>
+    </div>
+  </div>
+
+  <hr class="separator" />
+
+  <ion-list lines="none" class="action-list">
+    <ion-item button (click)="startMeeting()">
+      <ion-icon slot="start" name="paper-plane"></ion-icon>
+      <ion-label>{{'start_new_meeting' | translate}}</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="openSettings()">
+      <ion-icon slot="start" name="settings-sharp"></ion-icon>
+      <ion-label>{{'settings' | translate}}</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="openSupport()">
+      <ion-icon slot="start" name="chatbox-ellipses"></ion-icon>
+      <ion-label>{{'support' | translate}}</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="openAbout()">
+      <ion-icon slot="start" name="information-circle"></ion-icon>
+      <ion-label>{{'about' | translate}} MA'AT Peasant</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <hr class="separator" />
+
+  <ion-item lines="none" button class="logout-item" (click)="logout()">
+    <ion-icon slot="start" name="log-out-outline"></ion-icon>
+    <ion-label>Log out</ion-label>
+  </ion-item>
 </ion-content>
+

@@ -5,7 +5,7 @@ import { AlertController } from '@ionic/angular';
 
 import { UserData } from '../../providers/user-data';
 import { TranslateService } from '@ngx-translate/core';
-
+import { ModalController } from '@ionic/angular';
 
 @Component({
     selector: 'page-account',
@@ -22,7 +22,10 @@ export class AccountPage implements AfterViewInit {
       fname: '',
       lname: '',
       org: '',
-      email: ''
+      email: '',
+      city: '',
+      country: '',
+      photo: null
     };
   role = "";
 
@@ -30,7 +33,8 @@ export class AccountPage implements AfterViewInit {
     public alertCtrl: AlertController,
     public router: Router,
     public userData: UserData,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalCtrl: ModalController
   ) { }
 
   ngAfterViewInit() {
@@ -117,6 +121,26 @@ export class AccountPage implements AfterViewInit {
   }
 
   support() {
+
+  }
+
+  dismiss() {console.log('dismiss');
+    this.modalCtrl.dismiss();
+  }
+
+  startMeeting(){
+
+  }
+
+  openSettings(){
+
+  }
+
+  openSupport(){
     this.router.navigateByUrl('/support');
+  }
+
+  openAbout(){
+
   }
 }
