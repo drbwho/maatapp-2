@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
   loggedIn = false;
   hasUnreadNews = false;
   hasUnreadChat = 0;
-  networkStatus = false;
 
   constructor(
     private events: Events,
@@ -100,7 +99,6 @@ export class AppComponent implements OnInit {
       console.log('Service workers disabled')
     }
   }
-
 
   checkLoginStatus() {
     return this.userData.isLoggedIn().then(async loggedIn => {
@@ -188,7 +186,7 @@ export class AppComponent implements OnInit {
     // Check on init
     Network.getStatus().then((status)=>{
       if(status.connected){
-        this.networkStatus = true;
+        this.dataprovider.networkStatus = true;
       };
     })
 
@@ -197,7 +195,7 @@ export class AppComponent implements OnInit {
       console.log('Network status changed', status);
       if(status.connected){
         this.events.publish('network:connect');
-        this.networkStatus = true;
+        this.dataprovider.networkStatus = true;
         /*const toast = await this.toast.create({
           message: 'Network Connected!',
           duration: 2000
@@ -205,7 +203,7 @@ export class AppComponent implements OnInit {
         toast.present();*/
       }else{
         this.events.publish('network:disconnect');
-        this.networkStatus = false;
+        this.dataprovider.networkStatus = false;
         const toast = await this.toast.create({
           message: 'Network disconnected...',
           duration: 2000
@@ -244,46 +242,6 @@ export class AppComponent implements OnInit {
       });
       await alert.present();
     });
-  }
-
-  async get_pending_meeting(groupId){
-    var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
-    if(newmeetings){
-      return (newmeetings.filter((a)=> a.idgroup == groupId))[0];
-    }else{
-      return null;
-    }
-  }
-
-  async check_upload_status (groupId){
-    var res = await this.storage.get(this.config.TRANSACTIONS_FILE);
-    if(res){
-      res = res.filter((a)=> a.idgroup == groupId);
-    }
-    var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
-    if(newmeetings){
-      newmeetings = newmeetings.filter((a)=> a.idgroup == groupId);
-    }
-    if((res && res.length) || newmeetings && newmeetings.length){
-      return true;
-    }
-    return false;
-  }
-
-  async get_meeting_status(meeting){
-    var upload_status = await this.check_upload_status(meeting.idgroup);
-    if(!meeting){
-      return "no-meetings";
-    }else if(!meeting.endedat && !upload_status){
-      return "in-progress";
-    }else if(meeting.endedat && !upload_status){
-      return "no-active";
-    }else if(!meeting.endedat && upload_status && this.networkStatus){
-      return "saved-local";
-    }else if(!meeting.endedat && upload_status && !this.networkStatus){
-      return "saved-offline";
-    }
-    return "";
   }
 
   // Create a unique device id

@@ -1,5 +1,5 @@
 import { Component, OnInit, ɵDEFAULT_LOCALE_ID } from '@angular/core';
-import { DataProvider } from '../../providers/provider-data';
+import { DataProvider, Meeting } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { ModalController } from '@ionic/angular';
@@ -8,7 +8,8 @@ import { enUS } from 'date-fns/locale';
 import { TranslateService } from '@ngx-translate/core';
 import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
 import { AlertController } from '@ionic/angular';
-import { AppComponent } from '../../app.component';
+import { GroupTools } from '../../providers/group-tools';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-meeting',
@@ -29,7 +30,8 @@ export class NewMeetingPage implements OnInit {
     private modalCtrl: ModalController,
     private translate: TranslateService,
     private alertCtrl: AlertController,
-    private appcomponent: AppComponent
+    private groupTools: GroupTools,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -50,6 +52,7 @@ export class NewMeetingPage implements OnInit {
     }else {
       this.country = current.country;
       this.group = current.group;
+      this.meetings = await this.groupTools.get_meetings(this.group);
     }
   }
 
@@ -72,21 +75,11 @@ export class NewMeetingPage implements OnInit {
 
     // Check if meeting exists the same date
     let day_exists = false;
-    //this.meetings.forEach(async (m)=>{
-    //  if(m.startedat == date && !m.cancelled){
-    //    day_exists = true;
-    //  }
-    //})
-
-    if(this.group.lastmeeting){
-      if(this.group.lastmeeting.startedat == date){
+    this.meetings.forEach(async (m)=>{
+      if(m.startedat == date && !m.cancelled){
         day_exists = true;
       }
-      let status = await this.appcomponent.get_meeting_status(this.group.lastmeeting);
-      if(status != 'no-meetings' && status !='no-active'){
-        day_exists = true;
-      }
-    }
+    })
 
     if(this.place == undefined || !this.place.trim()){
       this.translate.get(['error','place_cannot_be_empty']).subscribe(async (keys: any)=>{
@@ -121,8 +114,10 @@ export class NewMeetingPage implements OnInit {
       this.dataProvider.newMeeting(this.group.id, this.place, date).then((data: any)=>{
         if(data.meeting){
           this.dataProvider.current.meeting = data.meeting;
-          this.navCtrl.navigateForward('/meeting-details/');
+          //this.navCtrl.navigateForward('/meeting-details/');
+          this.router.navigate(['/meeting-details'], {state: {direction: 'forward'}}); return;
         }
+        return;
       });
     }
   }

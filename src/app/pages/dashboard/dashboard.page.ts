@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DataProvider } from '../../providers/provider-data';
+import { DataProvider, Meeting } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
-import { Events } from '../../providers/events';
 import { ActivatedRoute } from '@angular/router';
-import { Storage } from '@ionic/storage-angular';
-import { ConfigData } from '../../providers/config-data';
-import { AppComponent } from '../../app.component';
+import { GroupTools } from '../../providers/group-tools';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -16,8 +14,8 @@ import { AppComponent } from '../../app.component';
 export class DashboardPage implements OnInit {
   group: any = null;
   country: any = null;
+  meetings: any = {};
   lastmeeting: any = {};
-  pendingmeeting: any = {};
   account: any = {};
   meeting_status = "";
   upload_status = false;
@@ -27,7 +25,7 @@ export class DashboardPage implements OnInit {
     private dataProvider: DataProvider,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private appcomponent: AppComponent
+    private groupTools: GroupTools
   ) {
     this.route.url.subscribe(() => {
       this.load_currents(); // Hack to refresh page in every visit!
@@ -49,14 +47,10 @@ export class DashboardPage implements OnInit {
     }else {
       this.country = current.country;
       this.group = current.group;
-      this.lastmeeting = current.group.lastmeeting;
+      this.meetings = await this.groupTools.get_meetings(this.group)
       this.account = current.group.totals;
-      this.pendingmeeting = await this.appcomponent.get_pending_meeting(this.group.id);
-      if(this.pendingmeeting){
-        this.meeting_status = await this.appcomponent.get_meeting_status(this.pendingmeeting);
-      }else{
-        this.meeting_status = await this.appcomponent.get_meeting_status(this.lastmeeting);
-      }
+      this.lastmeeting = this.groupTools.get_last_meeting(this.meetings);
+      this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group);
     }
   }
 

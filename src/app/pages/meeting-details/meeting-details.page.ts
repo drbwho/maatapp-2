@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
-import { ActivatedRoute } from '@angular/router';
-import { AlertController, IonCheckbox, ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { TransactionsComponent } from '../../component/transactions/transactions.component';
-import { Events } from '../../providers/events';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
@@ -36,7 +34,6 @@ export class MeetingDetailsPage implements OnInit {
 
   constructor(
     private dataProvider: DataProvider,
-    private route: ActivatedRoute,
     private modalCtrl: ModalController,
     private storage: Storage,
     private config: ConfigData,
@@ -48,8 +45,7 @@ export class MeetingDetailsPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
-    //const meetingId = this.route.snapshot.paramMap.get('meetingId');
+  async ionViewWillEnter() {
     this.meeting = this.dataProvider.current.meeting;
     this.meetingplace = this.meeting.place;
     this.meetingdate = this.meeting.startedat;
@@ -128,7 +124,7 @@ export class MeetingDetailsPage implements OnInit {
             this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
               this.load_accounts();
             })*/
-           this.dataProvider.delOperation(tr).then(() => this.load_accounts());
+          this.dataProvider.delOperation(tr).then(() => this.load_accounts());
           },
         },
         ],

@@ -8,7 +8,6 @@ import { MeetingDetailsPageRoutingModule } from './meeting-details-routing.modul
 
 import { MeetingDetailsPage } from './meeting-details.page';
 import { TransactionsComponent } from '../../component/transactions/transactions.component';
-import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -25,7 +24,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     IonicModule,
     MeetingDetailsPageRoutingModule,
-    StatusIconsModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,

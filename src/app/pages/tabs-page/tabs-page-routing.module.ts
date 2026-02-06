@@ -45,15 +45,6 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'meetings/:meetingId', // --OLD
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../meeting-details/meeting-details.module').then(m => m.MeetingDetailsPageModule)
-          },
-        ]
-      },
-      {
         path: 'notifications/:data',
         children: [
           {

@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';
 import { Network } from '@capacitor/network';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4} from 'uuid';
 
 import { Router } from '@angular/router';
 import { UserData } from './user-data';
@@ -13,13 +13,13 @@ import { formatDate } from '@angular/common';
 import { OperationTools } from './operation-tools';
 import { TranslateService } from '@ngx-translate/core';
 
-interface Current {
+export interface Current {
   country?: any;
   group?: any;
   meeting?: any;
 }
 
-interface Transaction {
+export interface Transaction {
   meetingid: any,
   accountid: any,
   parameterid: any,
@@ -30,16 +30,16 @@ interface Transaction {
   inputdate: any
 }
 
-interface Meeting {
+export interface Meeting {
   id: any,
   idgroup: any,
-  place: any,
+  place?: any,
   startedat: any,
-  endedat: any,
+  endedat?: any,
   iduser: any,
-  has_transactions: any,
-  haspending: any,
-  pending: any
+  has_transactions?: any,
+  haspending?: any,
+  pending?: any
 }
 
 @Injectable({
@@ -52,6 +52,7 @@ export class DataProvider {
   meetings: [];
   accounts: [];
   current: Current = {};
+  networkStatus = false;
 
   constructor(
     public http: HttpClient,
@@ -187,7 +188,7 @@ export class DataProvider {
         meets.push(meet);
         this.storage.set(this.config.NEWMEETINS_FILE, meets).then((res)=>{
           this.events.publish('upload:updated');
-          resolve({'status': 'success', 'meetind': meet});
+          resolve({'status': 'success', 'meeting': meet});
         })
       })
     });
@@ -629,7 +630,7 @@ export class DataProvider {
     });
   }
 
-  setCurrent(current: Current): Promise<boolean> {
+  setCurrent(current: Current): Promise<boolean> {console.log(current)
     return this.storage.set(this.config.CURRENT_FILE, current).then((value) => {
       this.current = current;
       return true;

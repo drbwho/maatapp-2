@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
-import { AppComponent } from '../../app.component';
 import { ConfigData } from '../../providers/config-data';
 import { Storage } from '@ionic/storage-angular';
+import { GroupTools } from '../../providers/group-tools';
 
 @Component({
   selector: 'app-meetings',
@@ -15,16 +15,16 @@ export class MeetingsPage implements OnInit {
   group = {id:"", name:"", ville:""}
   country = {id:"", name:"", currency:"", flagcode:"gb"};
   lastmeeting: any = {};
-  pendingmeeting: any = {};
   meeting_status = "";
   meetings = [];
+  show_all = false;
 
   constructor(
     private dataProvider: DataProvider,
     private navCtrl: NavController,
-    private appcomponent: AppComponent,
     private storage: Storage,
-    private config: ConfigData
+    private config: ConfigData,
+    private groupTools: GroupTools
   ) { }
 
   ngOnInit() {
@@ -43,14 +43,9 @@ export class MeetingsPage implements OnInit {
     }else {
       this.country = current.country;
       this.group = current.group;
-      this.lastmeeting = current.group.lastmeeting;
-      this.pendingmeeting = await this.appcomponent.get_pending_meeting(this.group.id);
-      if(this.pendingmeeting){
-        this.meeting_status = await this.appcomponent.get_meeting_status(this.pendingmeeting);
-      }else{
-        this.meeting_status = await this.appcomponent.get_meeting_status(this.lastmeeting);
-      }
-      this.meetings = [];
+      this.meetings = await this.groupTools.get_meetings(this.group);
+      this.lastmeeting = this.groupTools.get_last_meeting(this.meetings);
+      this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group.id);
     }
   }
 
@@ -75,6 +70,12 @@ export class MeetingsPage implements OnInit {
         });
       })
     });
+    this.show_all = true;
+  }
+
+  async open_details(meeting: any){
+    this.dataProvider.current.meeting = meeting;
+    this.navCtrl.navigateForward('/meeting-details');
   }
 
 }

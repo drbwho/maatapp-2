@@ -3,6 +3,7 @@ import { Events } from '../../providers/events';
 import { AppComponent } from '../../app.component';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
+import { DataProvider } from '../../providers/provider-data';
 
 @Component({
     selector: 'app-status-icons',
@@ -18,12 +19,13 @@ export class StatusIconsComponent  implements OnInit {
     private events: Events,
     private appcomponent: AppComponent,
     private storage: Storage,
-    private config: ConfigData
+    private config: ConfigData,
+    private dataProvider: DataProvider
   ) { }
 
   async ngOnInit() {
     // Set status on init
-    this.network_status = this.appcomponent.networkStatus;
+    this.network_status = this.dataProvider.networkStatus;
     this.upload_status = await this.check_upload_status();
 
     // Subscribe to changing events

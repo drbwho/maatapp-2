@@ -18,7 +18,7 @@
               <ion-icon class="tr-icon" [name]="tr_icons[parameter.code]" size="large" color="primary"></ion-icon>
               <ion-note class="tr-label ion-margin-start" color="tertiary">{{parameter.name}}</ion-note>
               <!-- regular contributions-->
-              @if (is_cntrb_field(parameter.code)) {
+    <!--          @if (is_cntrb_field(parameter.code)) {
                 <ion-button class="icon-button" (click)="update_cntrb(parameter.code, parameter.id)" color="warning" size="small">
                   <ion-icon name="checkmark"></ion-icon>
                 </ion-button>
