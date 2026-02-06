@@ -15,6 +15,7 @@ export class MeetingsPage implements OnInit {
   group = {id:"", name:"", ville:""}
   country = {id:"", name:"", currency:"", flagcode:"gb"};
   lastmeeting: any = {};
+  pendingmeeting: any = {};
   meeting_status = "";
   meetings = [];
 
@@ -32,7 +33,7 @@ export class MeetingsPage implements OnInit {
   ionViewWillEnter(){
     this.load_currents();
   }
-  
+
   async load_currents(){
     var current = await this.dataProvider.getCurrent();
     if(!current || current.country == undefined){
@@ -43,7 +44,12 @@ export class MeetingsPage implements OnInit {
       this.country = current.country;
       this.group = current.group;
       this.lastmeeting = current.group.lastmeeting;
-      this.meeting_status = await this.appcomponent.get_meeting_status(this.lastmeeting);
+      this.pendingmeeting = await this.appcomponent.get_pending_meeting(this.group.id);
+      if(this.pendingmeeting){
+        this.meeting_status = await this.appcomponent.get_meeting_status(this.pendingmeeting);
+      }else{
+        this.meeting_status = await this.appcomponent.get_meeting_status(this.lastmeeting);
+      }
       this.meetings = [];
     }
   }
@@ -57,7 +63,7 @@ export class MeetingsPage implements OnInit {
         this.meetings = [...newmeetings, ...data];
       }else{
         // filter already loaded lastmeeting
-        this.meetings = data;//.filter((a) => a.id != this.lastmeeting.id); 
+        this.meetings = data;//.filter((a) => a.id != this.lastmeeting.id);
       }
       //check if meeting has pending transactions to upload
       this.meetings.forEach((m)=>{

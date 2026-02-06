@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { ToastController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { SelectLangComponent } from '../../component/select-lang/select-lang.component';
 
 @Component({
@@ -20,7 +21,8 @@ export class TabsPage {
     private translate: TranslateService,
     private storage: Storage,
     private config: ConfigData,
-    private toast: ToastController
+    private toast: ToastController,
+    private navCtrl: NavController
   ){}
 
   async openAccount(){
@@ -53,11 +55,15 @@ export class TabsPage {
     const modal = await this.modalCtrl.create({
       component: SelectLangComponent,
       initialBreakpoint: 0.5,
-      breakpoints: [0, 0.5, 0.6], 
-      handle: true, 
+      breakpoints: [0, 0.5, 0.6],
+      handle: true,
       cssClass: 'lang-modal-sheet'
     });
     await modal.present();
+  }
+
+  newMeeting(){
+    this.navCtrl.navigateForward('/new-meeting');
   }
 
   async openSettings() {

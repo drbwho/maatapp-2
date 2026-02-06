@@ -26,7 +26,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round" [disabled]="meeting_status != 'no-active'">{{'start_new_meeting' | translate}}</ion-button>
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" routerLink="/new-meeting" routerDirection="forward" expand="block" shape="round" [disabled]="meeting_status != 'no-active'">{{'start_new_meeting' | translate}}</ion-button>
   @if(meeting_status == 'saved_local'){
    <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
   }
@@ -35,7 +35,35 @@
   }
 
   <ion-list>
-    @if(lastmeeting){
+     @if(pendingmeeting){
+    <ion-item lines="none" class="meeting-item" routerLink="/app/tabs/meetings" routerDirection="forward">
+      <ion-label class="ion-text-wrap">
+        <div class="header-row">
+          <h2 class="title">{{'last_meeting' | translate}}</h2>
+          <span class="meta-info">{{pendingmeeting?.startedat | date:'MMM d'}}
+            @if(pendingmeeting.endedat){ · {{'closed' | translate}} } @else { · {{'opened' | translate}} }</span>
+        </div>
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="value">18<small>/22</small></div>
+            <div class="caption">{{'attendance' | translate}}</div>
+          </div>
+          <div class="stat-box">
+            <div class="value">16<small>/22</small></div>
+            <div class="caption">{{'balance' | translate}}</div>
+          </div>
+          <div class="stat-box">
+            <div class="value">420</div>
+            <div class="caption">{{country?.currency}} {{'collected' | translate}}</div>
+          </div>
+        </div>
+      </ion-label>
+      <ion-button slot="end" fill="clear" color="medium" class="arrow-button">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    }
+    @if(lastmeeting && !pendingmeeting){
     <ion-item lines="none" class="meeting-item" routerLink="/app/tabs/meetings" routerDirection="forward">
       <ion-label class="ion-text-wrap">
         <div class="header-row">

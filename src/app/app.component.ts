@@ -246,9 +246,24 @@ export class AppComponent implements OnInit {
     });
   }
 
-  async check_upload_status (){
-    var res = await this.storage.get(this.config.TRANSACTIONS_FILE);
+  async get_pending_meeting(groupId){
     var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+    if(newmeetings){
+      return (newmeetings.filter((a)=> a.idgroup == groupId))[0];
+    }else{
+      return null;
+    }
+  }
+
+  async check_upload_status (groupId){
+    var res = await this.storage.get(this.config.TRANSACTIONS_FILE);
+    if(res){
+      res = res.filter((a)=> a.idgroup == groupId);
+    }
+    var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+    if(newmeetings){
+      newmeetings = newmeetings.filter((a)=> a.idgroup == groupId);
+    }
     if((res && res.length) || newmeetings && newmeetings.length){
       return true;
     }
@@ -256,7 +271,7 @@ export class AppComponent implements OnInit {
   }
 
   async get_meeting_status(meeting){
-    var upload_status = await this.check_upload_status();
+    var upload_status = await this.check_upload_status(meeting.idgroup);
     if(!meeting){
       return "no-meetings";
     }else if(!meeting.endedat && !upload_status){

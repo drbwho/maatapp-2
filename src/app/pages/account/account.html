@@ -37,8 +37,10 @@
     <div class="detail-item">
       <label>Location</label>
       <div class="location-row">
-        <img src="assets/flags/ca.svg" class="mini-flag" alt="Canada" />
-        <p>{{user.country}} @if(user.city){• {{user.city}} }</p>
+        @if(user.country){
+          <img [src]="'assets/flags/' + user.country?.flagcode + '.svg'" class="mini-flag" />
+          <p>{{user.country}} @if(user.city){• {{user.city}} }</p>
+        }
       </div>
     </div>
 

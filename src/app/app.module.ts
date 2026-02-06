@@ -18,6 +18,9 @@ import { environment } from '../environments/environment';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+import { SelectLangComponent } from './component/select-lang/select-lang.component';
+import { MeetingFormComponent } from './component/meeting-form/meeting-form.component';
+
 import {enableProdMode} from '@angular/core';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -47,7 +50,7 @@ enableProdMode();
                 useFactory: HttpLoaderFactory,
                 deps: [HttpClient]
             }
-        })], 
+        })],
         providers: [TranslatePipe, TranslateStore, Calendar, SocialSharing, Storage, provideHttpClient(withInterceptorsFromDi()),
             provideTranslateService({
                 lang: 'en',
@@ -59,4 +62,3 @@ enableProdMode();
             }),
         ] })
 export class AppModule {}
- 

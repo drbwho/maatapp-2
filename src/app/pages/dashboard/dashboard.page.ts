@@ -17,6 +17,7 @@ export class DashboardPage implements OnInit {
   group: any = null;
   country: any = null;
   lastmeeting: any = {};
+  pendingmeeting: any = {};
   account: any = {};
   meeting_status = "";
   upload_status = false;
@@ -50,7 +51,12 @@ export class DashboardPage implements OnInit {
       this.group = current.group;
       this.lastmeeting = current.group.lastmeeting;
       this.account = current.group.totals;
-      this.meeting_status = await this.appcomponent.get_meeting_status(this.lastmeeting);
+      this.pendingmeeting = await this.appcomponent.get_pending_meeting(this.group.id);
+      if(this.pendingmeeting){
+        this.meeting_status = await this.appcomponent.get_meeting_status(this.pendingmeeting);
+      }else{
+        this.meeting_status = await this.appcomponent.get_meeting_status(this.lastmeeting);
+      }
     }
   }
 

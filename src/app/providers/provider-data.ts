@@ -187,7 +187,7 @@ export class DataProvider {
         meets.push(meet);
         this.storage.set(this.config.NEWMEETINS_FILE, meets).then((res)=>{
           this.events.publish('upload:updated');
-          resolve({'status': 'success'});
+          resolve({'status': 'success', 'meetind': meet});
         })
       })
     });

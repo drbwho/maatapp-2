@@ -24,7 +24,7 @@ export class AccountPage implements AfterViewInit {
       org: '',
       email: '',
       city: '',
-      country: '',
+      country: null,
       photo: null
     };
   role = "";
@@ -129,7 +129,8 @@ export class AccountPage implements AfterViewInit {
   }
 
   startMeeting(){
-
+    this.dismiss();
+    this.router.navigateByUrl('/new-meeting');
   }
 
   openSettings(){

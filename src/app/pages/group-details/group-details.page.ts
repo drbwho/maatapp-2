@@ -7,7 +7,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Network } from '@capacitor/network';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { UserData } from '../../providers/user-data';
-import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
+//import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
 import { HistoryComponent } from '../../component/history/history.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountPage } from '../account/account';
@@ -389,7 +389,7 @@ export class GroupDetailsPage implements OnInit {
       return;
     }
 
-    const modal = await this.modalCtrl.create({
+    /*const modal = await this.modalCtrl.create({
       component: MeetingFormComponent,
       componentProps: {group: this.group, meetings: this.meetings}
     });
@@ -398,7 +398,7 @@ export class GroupDetailsPage implements OnInit {
     const { data } = await modal.onWillDismiss();
     if (data) {
       this.update_meetings();
-    }
+    }*/
   }
 
   async openHistory(meeting: any){

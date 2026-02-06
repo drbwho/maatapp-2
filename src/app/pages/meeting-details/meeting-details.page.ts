@@ -45,11 +45,11 @@ export class MeetingDetailsPage implements OnInit {
     private translate: TranslateService
   ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
   }
 
   ionViewWillEnter() {
-    const meetingId = this.route.snapshot.paramMap.get('meetingId');
+    //const meetingId = this.route.snapshot.paramMap.get('meetingId');
     this.meeting = this.dataProvider.current.meeting;
     this.meetingplace = this.meeting.place;
     this.meetingdate = this.meeting.startedat;
@@ -66,7 +66,7 @@ export class MeetingDetailsPage implements OnInit {
       this.accounts = data.filter((s)=> s.statut == 0); //active accounts
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
-      
+
       // load pending transactions for each account
       this.accounts.forEach(async (acc) => {
         if(transactions){
