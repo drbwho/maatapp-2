@@ -4,6 +4,8 @@ import { NavController } from '@ionic/angular';
 import { ConfigData } from '../../providers/config-data';
 import { Storage } from '@ionic/storage-angular';
 import { GroupTools } from '../../providers/group-tools';
+import { TranslateService } from '@ngx-translate/core';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-meetings',
@@ -24,7 +26,9 @@ export class MeetingsPage implements OnInit {
     private navCtrl: NavController,
     private storage: Storage,
     private config: ConfigData,
-    private groupTools: GroupTools
+    private groupTools: GroupTools,
+    private translate: TranslateService,
+    private actionSheetCtrl: ActionSheetController
   ) { }
 
   ngOnInit() {
@@ -47,6 +51,39 @@ export class MeetingsPage implements OnInit {
       this.lastmeeting = this.groupTools.get_last_meeting(this.meetings);
       this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group.id);
     }
+  }
+
+
+  async openOptions(meeting) {
+    this.translate.get(['upload_data','view_transactions', 'cancel']).subscribe(async (keys: any)=>{
+      const actionSheet = await this.actionSheetCtrl.create({
+        header: meeting.place,
+        cssClass: 'settings-action-sheet ion-padding',
+        buttons: [
+        {
+          text: keys['upload_data'],
+          icon: 'cloud-upload',
+          cssClass:'action-sheet-primary',
+          handler: () => {
+            
+          },
+        },
+        {
+          text: keys['view_transactions'],
+          icon: 'stats-chart',
+          handler: () => {
+            this.open_details(meeting);
+          },
+        },
+        {
+          text: keys['cancel'],
+          role: 'cancel',
+          icon: 'close-outline'
+        },
+        ],
+      });
+      await actionSheet.present();
+    })
   }
 
   show_all_meetings(){

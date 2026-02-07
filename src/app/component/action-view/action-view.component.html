@@ -1,13 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="ion-text-center">{{ title }}</ion-title>
+    <ion-title class="ion-text-center ion-margin-top"><h3>{{ title }}</h3></ion-title>
+    <p class="text-12 ion-text-center ion-no-margin">{{ subtitle }}</p>
   </ion-toolbar>
   <ion-toolbar>
-     <ion-buttons slot="start">
+    @if(hasBackButton){
+    <ion-buttons slot="start">
       <ion-back-button icon="chevron-back-outline" defaultHref="" (click)="click('close')" >
       </ion-back-button>
       <ion-label>Back</ion-label>
     </ion-buttons>
+    }
   </ion-toolbar>
 </ion-header>
 
@@ -18,7 +21,7 @@
     </div>
 
     <div class="text-wrapper">
-      <h2 class="serif-title">{{ heading }}</h2>
+      <h5 class="serif-title">{{ heading }}</h5>
       <p class="description text-14">{{ description }}</p>
     </div>
   </div>
@@ -26,12 +29,10 @@
 
 <ion-footer class="ion-no-border ion-padding">
   <div class="button-group">
-    <ion-button expand="block" class="primary-action" (click)="click('primary')" [color]="primaryBtn.color">
-      {{ primaryBtn.text }}
+    @for(button of buttons; track button){
+    <ion-button expand="block" class="primary-action" shape="round" (click)="click(button.action)" [color]="button.color">
+      {{ button.text }}
     </ion-button>
-    
-    <ion-button expand="block" fill="clear" class="secondary-action" (click)="click('secondary')">
-      {{ secondaryBtn }}
-    </ion-button>
+    }
   </div>
 </ion-footer>

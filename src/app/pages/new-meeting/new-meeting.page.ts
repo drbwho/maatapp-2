@@ -112,24 +112,31 @@ export class NewMeetingPage implements OnInit {
         await alert.present();
       });
     }else{
-      this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any)=>{
-        if(data.meeting){
-          this.dataProvider.current.meeting = data.meeting;
-          //this.navCtrl.navigateForward('/meeting-details/');
-          const modal = await this.modalCtrl.create({
-            component: ActionViewComponent,
-            componentProps: {
-              title: 'dfsdfsd',
-              primaryBtn: {text: 'Start meeting', color: 'primary'}
-            },
-            cssClass: ''
-          });
-          await modal.present();
-          await modal.onWillDismiss().then(()=>{
-            this.router.navigate(['/meeting-details'], {state: {direction: 'forward'}}); return;
-          });
-        }
-        return;
+      this.translate.get(['messages.new-meeting.heading', 'messages.new-meeting.description', 'messages.new-meeting.button']).subscribe((keys)=>{
+        this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any)=>{
+          if(data.meeting){
+            this.dataProvider.current.meeting = data.meeting;
+            //this.navCtrl.navigateForward('/meeting-details/');
+            const modal = await this.modalCtrl.create({
+              component: ActionViewComponent,
+              componentProps: {
+                title: 'Group: ' + this.group.name,
+                subtitle: this.country.name + ' · ' + this.group.ville,
+                heading: keys['messages.new-meeting.heading'],
+                description: keys['messages.new-meeting.description'],
+                buttons: [
+                  {text: keys['messages.new-meeting.button'], color: 'primary', action:'close'}
+                ]
+              },
+              cssClass: ''
+            });
+            await modal.present();
+            await modal.onWillDismiss().then(()=>{
+              this.router.navigate(['/meeting-details'], {state: {direction: 'forward'}}); return;
+            });
+          }
+          return;
+        });
       });
     }
   }

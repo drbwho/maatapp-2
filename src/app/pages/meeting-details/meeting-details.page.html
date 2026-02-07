@@ -45,7 +45,88 @@
   </ion-list>
 </ion-header>
 
-<ion-content [fullscreen]="false">
+<ion-content class="ion-padding">
+  
+  <div class="summary-card ion-padding">
+    <h3 class="serif-text ion-no-margin">{{ summary.title }}</h3>
+    
+    <ion-grid class="ion-no-padding ion-margin-top">
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <h1 class="stat-value ion-no-margin">{{ summary.collected }}</h1>
+          <p class="stat-label ion-text-uppercase">CAD collected</p>
+        </ion-col>
+        <ion-col class="ion-text-center">
+          <h1 class="stat-value ion-no-margin">{{ summary.issued }}</h1>
+          <p class="stat-label ion-text-uppercase">Maats issued</p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-margin-top footer-stats">
+        <ion-col size="4">
+          <span class="mini-label ion-text-uppercase">Closed</span>
+          <div class="stat-row">
+            <span class="date-box">17</span>
+            <span class="small-val">{{ summary.closedDate }}</span>
+          </div>
+        </ion-col>
+        <ion-col size="4">
+          <span class="mini-label ion-text-uppercase">Highest Day</span>
+          <div class="stat-row">
+            <span>🔥</span>
+            <span class="small-val">{{ summary.highestDay }} CAD</span>
+          </div>
+        </ion-col>
+        <ion-col size="4">
+          <span class="mini-label ion-text-uppercase">Attended</span>
+          <div class="stat-row">
+            <span>🤝</span>
+            <span class="small-val">{{ summary.attended }}</span>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-list class="ion-margin-top" lines="none">
+    @for (member of members; track member.name) {
+      <ion-item class="member-item ion-margin-bottom">
+        
+        <ion-avatar slot="start" [class]="'avatar-' + member.status">
+           <div class="status-icon"></div>
+        </ion-avatar>
+
+        <ion-label>
+          <h2 class="member-name">{{ member.name }}</h2>
+          @for (warn of member.warnings; track warn) {
+            <p class="warning-text">
+              <ion-icon [name]="member.icon || 'close-circle'" color="danger"></ion-icon>
+              {{ warn }}
+            </p>
+          }
+        </ion-label>
+
+        <div slot="end" class="badge-container">
+          @if (member.maat) {
+            <div class="custom-badge maat-badge">
+              <span class="val">{{ member.maat }}</span>
+              <span class="lab">Maat</span>
+            </div>
+          }
+          @if (member.balance) {
+            <div class="custom-badge balance-badge">
+              <span class="val">{{ member.balance }}</span>
+              <span class="lab">Balance</span>
+            </div>
+          }
+        </div>
+
+      </ion-item>
+    }
+  </ion-list>
+</ion-content>
+
+<!-- <ion-content [fullscreen]="false">
   <ion-item>
     <ion-button class="ion-float-left" [fill]="selectedAll ? 'solid' : 'outline'" color="tertiary" shape="round" (click)="selectAll()">{{'all' | translate}}</ion-button>
     @if (selectedAccounts) {
@@ -112,4 +193,4 @@
         </ion-item>
       }
     </ion-list>
-  </ion-content>
+  </ion-content>-->

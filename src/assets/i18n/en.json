@@ -116,6 +116,8 @@
   "tap_to_view_history": "Tap to view transaction history",
   "meeting_in_progress": "Meeting in progress",
   "continue_meeting": "Continue Meeting",
+  "upload_data": "Upload data",
+  "view_transactions": "View transactions history",
   "intro": {
     "page-1": {
       "title": "Welcome to MA'AT",
@@ -166,6 +168,13 @@
     "saved-offline": {
       "title": "Meeting data saved offline",
       "message": "You can continue or upload data when internet is available."
+    }
+  },
+  "messages": {
+    "new-meeting": {
+      "heading": "Welcome to today's meeting",
+      "description": "You’ll review contributions and transactions together with the group.",
+      "button": "Start meeting"
     }
   }
 

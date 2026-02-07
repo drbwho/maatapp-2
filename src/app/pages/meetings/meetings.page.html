@@ -36,7 +36,7 @@
   <ion-list>
     <app-meeting-card 
       [meeting]="lastmeeting"
-      attendance="18/22">
+      attendance="18/22" (click)="openOptions(lastmeeting)">
     </app-meeting-card>
   </ion-list>
   }

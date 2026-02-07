@@ -10,11 +10,12 @@ import { CommonModule } from '@angular/common';
 })
 export class ActionViewComponent {
   @Input() title: string;
+  @Input() subtitle: string;
   @Input() image?: string;
   @Input() heading?: string;
   @Input() description?: string;
-  @Input() primaryBtn?: any;
-  @Input() secondaryBtn?: any;
+  @Input() hasBackButton? = false;
+  @Input() buttons?: any;
 
   constructor(
     private modalCtrl: ModalController

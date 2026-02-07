@@ -45,3 +45,63 @@ ion-checkbox {
     }
 }
 
+// New CSS
+/* Summary Card Styling */
+.summary-card {
+  background: #f1ece2;
+  border-radius: 24px;
+  color: #4a4a4a;
+
+  .serif-text { font-family: 'Times New Roman', serif; opacity: 0.8; }
+  
+  .stat-value { font-size: 48px; font-weight: 400; color: #333; }
+  .stat-label { font-size: 11px; font-weight: 600; color: #888; }
+
+  .mini-label { font-size: 9px; font-weight: 800; color: #a09a8e; display: block; }
+  .stat-row { display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+  .small-val { font-weight: 600; font-size: 14px; }
+
+  .date-box {
+    background: white; border: 1px solid #ddd; border-radius: 4px;
+    padding: 2px 4px; font-size: 10px; font-weight: 800;
+  }
+}
+
+/* Member Item Styling */
+.member-item {
+  --background: #f8f8f8;
+  --border-radius: 20px;
+  --padding-start: 12px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+
+  .member-name { font-weight: 600; font-size: 16px; color: #333; }
+  
+  .warning-text {
+    font-size: 11px; display: flex; align-items: center; gap: 4px;
+    ion-icon { font-size: 14px; }
+  }
+}
+
+/* Badges */
+.badge-container { display: flex; gap: 8px; }
+
+.custom-badge {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; border-radius: 12px; padding: 4px 12px; min-width: 60px;
+  
+  .val { font-weight: 700; font-size: 14px; }
+  .lab { font-size: 9px; font-weight: 600; }
+
+  &.balance-badge { background: #e8f9f2; color: #1fb37d; }
+  &.maat-badge { background: #f0f0f0; color: #666; }
+}
+
+/* Avatars (Smiley faces) */
+ion-avatar {
+  background: #c5eeea; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  &.avatar-neutral { background: #e8e8e8; }
+  &.avatar-sad { background: #ffdada; }
+}
+
