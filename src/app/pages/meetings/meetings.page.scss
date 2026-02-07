@@ -1,3 +1,28 @@
+.group-habs-header {
+  --min-height: 100px;
+  --background: url('/assets/img/feather-mono.png') no-repeat left 10px / 70px 72px;
+  --background-color: white;
+  background-color: white;
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 10px;
+    
+    .main-group-title {
+      margin: 0 30px 2px;
+      font-weight: 400;
+    }
+
+    .sub-location {
+      color: black;
+      margin: 0 0 0 30px;
+      letter-spacing: 0.3px;
+    }
+  }
+}
+
 .flag-button {
   --padding-start: 0px;
   --padding-end: 0px;

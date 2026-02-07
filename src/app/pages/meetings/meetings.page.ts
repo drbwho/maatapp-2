@@ -50,7 +50,7 @@ export class MeetingsPage implements OnInit {
   }
 
   show_all_meetings(){
-    this.dataProvider.fetch_data('meetings', this.group.id, true, true).then(async (data: any)=> {
+    /*this.dataProvider.fetch_data('meetings', this.group.id, true, true).then(async (data: any)=> {
       // merge with local stored new meetings
       var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
       if(newmeetings != null && newmeetings.length){
@@ -69,7 +69,7 @@ export class MeetingsPage implements OnInit {
           }
         });
       })
-    });
+    });*/
     this.show_all = true;
   }
 

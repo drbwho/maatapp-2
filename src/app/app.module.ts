@@ -57,5 +57,6 @@ enableProdMode();
                     suffix: '.json'
                 })
             }),
-        ] })
+        ]
+    })
 export class AppModule {}

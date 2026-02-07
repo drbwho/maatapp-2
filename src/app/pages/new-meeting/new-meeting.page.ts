@@ -10,6 +10,7 @@ import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.
 import { AlertController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
 import { Router } from '@angular/router';
+import { ActionViewComponent } from '../../component/action-view/action-view.component';
 
 @Component({
   selector: 'app-new-meeting',
@@ -76,7 +77,7 @@ export class NewMeetingPage implements OnInit {
     // Check if meeting exists the same date
     let day_exists = false;
     this.meetings.forEach(async (m)=>{
-      if(m.startedat == date && !m.cancelled){
+      if((m.startedat == date || m.endedat == date || !m.endedat) && !m.cancelled ){
         day_exists = true;
       }
     })
@@ -111,11 +112,22 @@ export class NewMeetingPage implements OnInit {
         await alert.present();
       });
     }else{
-      this.dataProvider.newMeeting(this.group.id, this.place, date).then((data: any)=>{
+      this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any)=>{
         if(data.meeting){
           this.dataProvider.current.meeting = data.meeting;
           //this.navCtrl.navigateForward('/meeting-details/');
-          this.router.navigate(['/meeting-details'], {state: {direction: 'forward'}}); return;
+          const modal = await this.modalCtrl.create({
+            component: ActionViewComponent,
+            componentProps: {
+              title: 'dfsdfsd',
+              primaryBtn: {text: 'Start meeting', color: 'primary'}
+            },
+            cssClass: ''
+          });
+          await modal.present();
+          await modal.onWillDismiss().then(()=>{
+            this.router.navigate(['/meeting-details'], {state: {direction: 'forward'}}); return;
+          });
         }
         return;
       });

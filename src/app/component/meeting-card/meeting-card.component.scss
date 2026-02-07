@@ -1,0 +1,86 @@
+.card-container {
+  --main-teal: #148f7d;
+  --bg-teal: #e9f7f6;
+  --text-dark: #0d3b36;
+
+  background: var(--bg-teal);
+  --background: var(--bg-teal);
+  border-radius: 28px;
+  padding: 10px 5px 10px 5px;
+  margin: 10px 10px;
+  color: var(--text-dark);
+
+  // Closed Card
+  &.closed {
+    background: #f8f8f8;
+    --background: #f8f8f8;
+    color: #333;
+    .top-label { color: #888; }
+    .mini-calendar .cal-top { background: var(--main-teal); }
+  }
+
+  // Closed Pending sync Card
+  &.closed-pending {
+    background: #EFE6D8;
+    --background: #EFE6D8;
+    color: #3F3C37;
+    .top-label { color: #7C6A4E; }
+    .mini-calendar .cal-top { background: var(--main-teal); }
+  }
+
+  .title-serif {
+    margin: 0;
+    display: flex;
+    align-items: start;
+    color: #3F3C37;
+    .title-chevron { font-size: 18px; margin-left: 4px; margin-top: 4px; }
+  }
+
+  .top-label {
+    font-weight: 600;
+    color: #497673;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .info-row {
+    margin-top: 20px;
+  }
+
+  .info-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    .info-text { font-weight: 500;}
+    .icon-emoji { font-size: 22px; }
+  }
+
+  /* Status Indicator (Boxes) */
+  .status-boxes {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+    margin-bottom: 2px;
+    .box {
+      width: 28px; height: 18px; border-radius: 6px;
+      &.active { background: #c5eeea; border: 2px solid var(--main-teal); }
+      &.empty { background: #d1d9d8; }
+    }
+  }
+  .status-label { font-weight: 600; margin: 0; }
+
+  /* Calendar Icon */
+  .mini-calendar {
+    width: 32px; border-radius: 5px; overflow: hidden; border: 1px solid #ddd;
+    background: white; text-align: center;
+    .cal-top { background: var(--main-teal); color: white; font-size: 8px; padding: 1px; }
+    .cal-bottom { font-size: 13px; font-weight: 800; color: #333; }
+  }
+
+  .circle-btn {
+    --border-radius: 50%;
+    background: #eeeeee;
+    width: 36px; height: 36px; margin: 0;
+  }
+}

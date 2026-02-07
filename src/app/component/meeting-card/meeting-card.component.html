@@ -1,0 +1,67 @@
+<ion-item class="card-container" [class]="status()" lines="none" [detail]="status() === 'closed'">
+  <ion-grid class="ion-no-padding">
+    
+    <ion-row class="ion-align-items-start ion-margin-bottom">
+      <ion-col size="7">
+        <h4 class="title-serif">
+          {{ meeting$()?.place }} <ion-icon name="chevron-forward-outline" class="title-chevron"></ion-icon>
+        </h4>
+      </ion-col>
+      
+      <ion-col size="5" class="ion-text-end">
+        @if (status() == 'progress') {
+          <div class="progress-indicator">
+            <div class="status-boxes">
+              <span class="box active"></span>
+              @if(meeting$()?.haspending){
+                <span class="box active"></span>
+              }@else{
+                <span class="box empty"></span>
+              }
+              <span class="box empty"></span>
+            </div>
+            <p class="status-label text-12">In progress @if(meeting$()?.haspending){ / Sync }</p>
+          </div>
+        } <!--@else {
+          <div class="closed-action">
+            <ion-button fill="clear" color="dark" class="circle-btn">
+              <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        }-->
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="info-row">
+      <ion-col [size]="status() === 'closed' ? 4 : 5">
+        <span class="top-label text-12">{{ status() === 'progress' ? 'OPENED' : 'CLOSED' }}</span>
+        <div class="info-content">
+          <div class="mini-calendar">
+            <div class="cal-top">{{ fullDate() | date: 'MMM' }}</div>
+            <div class="cal-bottom">{{ fullDate() | date: 'd'}}</div>
+          </div>
+          <span class="info-text text-16">{{ fullDate() | date: 'MMM d'}}</span>
+        </div>
+      </ion-col>
+
+      <ion-col [size]="status() === 'closed' ? 4 : 7">
+        <span class="top-label text-12">ATTENDED</span>
+        <div class="info-content">
+          <span class="icon-emoji">🤝</span>
+          <span class="info-text text-16">{{ attendance }}</span>
+        </div>
+      </ion-col>
+
+      @if (status() === 'closed' && collectedValue) {
+        <ion-col size="4">
+          <span class="top-label text-12">COLLECTED</span>
+          <div class="info-content">
+            <span class="icon-emoji">🏺</span>
+            <span class="info-text text-16">{{ collectedValue }}</span>
+          </div>
+        </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
+</ion-item>
+

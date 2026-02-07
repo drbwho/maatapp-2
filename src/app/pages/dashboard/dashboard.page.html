@@ -27,6 +27,9 @@
   </ion-list>
 
   <ion-button class="ion-margin-horizontal ion-margin-bottom" routerLink="/new-meeting" routerDirection="forward" expand="block" shape="round" [disabled]="meeting_status != 'no-active'">{{'start_new_meeting' | translate}}</ion-button>
+  @if(meeting_status != 'no-active' ){
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" routerLink="/app/tabs/meetings" routerDirection="forward" expand="block" shape="round" >{{'continue_meeting' | translate}}</ion-button>
+  }
   @if(meeting_status == 'saved_local'){
    <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
   }

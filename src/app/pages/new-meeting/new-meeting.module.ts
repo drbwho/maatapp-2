@@ -8,6 +8,7 @@ import { NewMeetingPageRoutingModule } from './new-meeting-routing.module';
 
 import { NewMeetingPage } from './new-meeting.page';
 import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
+import { ActionViewComponent } from '../../component/action-view/action-view.component';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -24,6 +25,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     IonicModule,
     NewMeetingPageRoutingModule,
+    ActionViewComponent,
     TranslateModule.forChild({
           loader: {
             provide: TranslateLoader,
