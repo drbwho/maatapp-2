@@ -1,87 +1,71 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      {{groupname}}
+<ion-header [translucent]="false">
+  <ion-toolbar class="group-habs-header">
+    <ion-title role="button">
+      <div class="title-container">
+        <h2 class="main-group-title">{{'group' | translate}}: {{group?.name}}</h2>
+        <p class="sub-location text-12">{{country?.name}} · {{group?.ville}}</p>
+      </div>
     </ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/app/tabs/groups/{{groupid}}"></ion-back-button>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
+        <ion-avatar class="flag-circle">
+          <img [src]="'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg'" />
+        </ion-avatar>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-list lines="none" class="info-header">
-    <ion-item>
-      <ion-label>
-        <h2>{{'meeting' | translate}}: <strong>{{meetingplace}}</strong></h2>
-      </ion-label>
-      <ion-note slot="end"><strong>{{meetingdate}}</strong></ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-icon size="large" name="information-circle-outline"></ion-icon>
-      <div class="ion-padding-start">
-        <ion-note>{{'new_transactions_info' | translate}}</ion-note>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label>
-        <ion-text color="secondary">
-          <h6>{{'cash' | translate}}</h6>
-        </ion-text>
-      </ion-label>
-      <ion-badge  color="success">{{new_totals.cash | number:'.2'}}</ion-badge>
-      &nbsp;
-      <ion-label>
-        <ion-text color="secondary">
-          <h6>{{'balance' | translate}}</h6>
-        </ion-text>
-      </ion-label>
-      <ion-badge  color="success">{{new_totals.balance | number:'.2'}}</ion-badge>
-      &nbsp;
-      <ion-label>
-        <ion-text color="secondary">
-          <h6>{{'credit_av' | translate}}</h6>
-        </ion-text>
-      </ion-label>
-      <ion-badge  color="success">{{new_totals.credit | number:'.2'}}</ion-badge>
-    </ion-item>
-  </ion-list>
+  <ion-toolbar>
+     <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" defaultHref="/app/tabs/dashboard">
+      </ion-back-button>
+      <ion-label>Back</ion-label>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   
   <div class="summary-card ion-padding">
-    <h3 class="serif-text ion-no-margin">{{ summary.title }}</h3>
+    <h3 class="serif-text ion-no-margin">{{ meeting?.place }} summary</h3>
     
     <ion-grid class="ion-no-padding ion-margin-top">
       <ion-row>
         <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">{{ summary.collected }}</h1>
-          <p class="stat-label ion-text-uppercase">CAD collected</p>
+          <h1 class="stat-value ion-no-margin">420</h1>
+          <p class="stat-label text-12">{{currency}} {{'collected' | translate}}</p>
         </ion-col>
         <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">{{ summary.issued }}</h1>
-          <p class="stat-label ion-text-uppercase">Maats issued</p>
+          <h1 class="stat-value ion-no-margin">500</h1>
+          <p class="stat-label text-12">Maats {{'issued' | translate}}</p>
         </ion-col>
       </ion-row>
 
       <ion-row class="ion-margin-top footer-stats">
         <ion-col size="4">
-          <span class="mini-label ion-text-uppercase">Closed</span>
+          <span class="mini-label ion-text-uppercase text-12">
+            @if(status == 'progress'){ {{'opened' | translate}} }
+            @else{ {{'closed' | translate}} }
+          </span>
           <div class="stat-row">
-            <span class="date-box">17</span>
-            <span class="small-val">{{ summary.closedDate }}</span>
+            <div class="mini-calendar">
+              <div class="cal-top">{{ fullDate | date: 'MMM' }}</div>
+              <div class="cal-bottom">{{ fullDate | date: 'd'}}</div>
+            </div>
+            <span class="info-text text-16">{{ fullDate | date: 'MMM d'}}</span>
           </div>
         </ion-col>
         <ion-col size="4">
-          <span class="mini-label ion-text-uppercase">Highest Day</span>
+          <span class="mini-label ion-text-uppercase text-12">Highest Day</span>
           <div class="stat-row">
             <span>🔥</span>
-            <span class="small-val">{{ summary.highestDay }} CAD</span>
+            <span class="small-val">345 {{currency}}</span>
           </div>
         </ion-col>
         <ion-col size="4">
-          <span class="mini-label ion-text-uppercase">Attended</span>
+          <span class="mini-label ion-text-uppercase text-12">Attended</span>
           <div class="stat-row">
             <span>🤝</span>
-            <span class="small-val">{{ summary.attended }}</span>
+            <span class="small-val">23/23</span>
           </div>
         </ion-col>
       </ion-row>
@@ -89,38 +73,69 @@
   </div>
 
   <ion-list class="ion-margin-top" lines="none">
-    @for (member of members; track member.name) {
-      <ion-item class="member-item ion-margin-bottom">
-        
-        <ion-avatar slot="start" [class]="'avatar-' + member.status">
-           <div class="status-icon"></div>
-        </ion-avatar>
+    @for (account of accounts; track account.id) {
+      <ion-item class="member-item ion-margin-bottom ion-border-rounded-20" color="light">
+        <ion-grid class="ion-no-padding ion-no-margin">
 
-        <ion-label>
-          <h2 class="member-name">{{ member.name }}</h2>
-          @for (warn of member.warnings; track warn) {
-            <p class="warning-text">
-              <ion-icon [name]="member.icon || 'close-circle'" color="danger"></ion-icon>
-              {{ warn }}
-            </p>
-          }
-        </ion-label>
+          <ion-row>
+            <ion-col size="2">        
+              <ion-avatar [class]="'avatar-' + account?.status">
+                <div class="status-icon">
+                  <ion-icon name="happy"></ion-icon>
+                </div>
+              </ion-avatar>
+            </ion-col>
+            <ion-col size="5">
+              <ion-label>
+                <h5 class="member-name">{{ account.owner }}</h5>
+              </ion-label>
+            </ion-col>
+            <ion-col size="5">
+              <div class="badge-container">
+                @if (account?.restearembourser) {
+                <div class="custom-badge maat-badge">
+                  <span class="val text-16">{{ account.restearembourser }}</span>
+                  <span class="lab text-12">Maat</span>
+                </div>
+                }
+                @if (account.balance) {
+                <div class="custom-badge balance-badge">
+                  <span class="val text-16">{{ account.balance }}</span>
+                  <span class="lab text-12">Balance</span>
+                </div>
+                }
+              </div>
+            </ion-col>
+          </ion-row>
 
-        <div slot="end" class="badge-container">
-          @if (member.maat) {
-            <div class="custom-badge maat-badge">
-              <span class="val">{{ member.maat }}</span>
-              <span class="lab">Maat</span>
-            </div>
-          }
-          @if (member.balance) {
-            <div class="custom-badge balance-badge">
-              <span class="val">{{ member.balance }}</span>
-              <span class="lab">Balance</span>
-            </div>
-          }
-        </div>
+          <ion-row>
+            <ion-col size="12">
+              <div class="due-container ion-margin-vertical">
+                @if(pf(account?.due) > 0){
+                  @if(pf(account?.due_reg) > 0){
+                  <p class="warning-text">
+                    <ion-icon [name]="account?.icon || 'close'" color="danger"></ion-icon>
+                    {{ 'missing_regular_contribs' | translate }} {{account?.due_reg}} {{currency}}
+                  </p>
+                  }
+                  @if(pf(account?.due_sf) > 0){
+                  <p class="warning-text">
+                    <ion-icon [name]="account?.icon || 'close-circle'" color="danger"></ion-icon>
+                    {{ 'missing_sf_contribs' | translate }} {{account?.due_sf}} {{currency}}
+                  </p>
+                  }
+                  @if(pf(account?.due_facp) > 0){
+                  <p class="warning-text">
+                    <ion-icon [name]="account?.icon || 'close-circle'" color="danger"></ion-icon>
+                    {{ 'missing_facp_contribs' | translate }} {{account.due_facp}} {{currency}}
+                  </p>
+                  }
+                }
+              </div>
+            </ion-col>
+          </ion-row>
 
+        </ion-grid>
       </ion-item>
     }
   </ion-list>

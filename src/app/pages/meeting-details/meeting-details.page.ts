@@ -20,10 +20,14 @@ export class MeetingDetailsPage implements OnInit {
   meetingdate: string;
   groupname: string;
   currency: string;
+  country: any;
   group: any;
   groupid: string;
   meeting: any;
+  allaccounts: any;
   accounts: any;
+  status: string;
+  fullDate: string;
   new_totals: AccountTotals = {
     cash: 0.00,
     balance: 0.00,
@@ -31,6 +35,7 @@ export class MeetingDetailsPage implements OnInit {
   }
   selectedAll: boolean = false;
   selectedAccounts = 0;
+  public pf = parseFloat;
 
   constructor(
     private dataProvider: DataProvider,
@@ -52,19 +57,34 @@ export class MeetingDetailsPage implements OnInit {
     this.group = this.dataProvider.current.group;
     this.groupname = this.group.name;
     this.groupid = this.group.id;
-    this.currency = this.dataProvider.current.country.currency;
+    this.country = this.dataProvider.current.country;
+    this.currency = this.country.currency;
+   
+    this.calc_status();
+    await this.load_accounts();
+  }
 
-    this.load_accounts();
+  calc_status(){
+    if(this.meeting.endedat){
+      if(this.meeting.haspending){
+        this.status ='closed-pending';
+      }else{
+        this.status = 'closed';
+      }
+    }else{
+      this.status = 'progress';
+    }
+    this.fullDate = this.meeting.endedat ? this.meeting.endedat : this.meeting.startedat;
   }
 
   load_accounts(){
     this.dataProvider.fetch_data('accounts', this.group.id, true).then(async (data: any)=> {
-      this.accounts = data.filter((s)=> s.statut == 0); //active accounts
+      this.allaccounts = data.filter((s)=> s.statut == 0); //active accounts
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
 
       // load pending transactions for each account
-      this.accounts.forEach(async (acc) => {
+      this.allaccounts.forEach(async (acc) => {
         if(transactions){
           //append upload errors to transactions
           acc.transactions = transactions.filter((s)=>s.accountid == acc.id && s.meetingid == this.meeting.id);
@@ -83,6 +103,8 @@ export class MeetingDetailsPage implements OnInit {
           this.new_totals = await this.operTools.estimate_account_totals(acc, this.meeting.id);
         }
       });
+      // Show only member accounts
+      this.accounts = this.allaccounts.filter((a)=> a.type == 1);
     });
   }
 
