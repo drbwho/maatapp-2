@@ -91,6 +91,7 @@
 
   &.balance-badge { background: #e8f9f2; color: #1fb37d; }
   &.maat-badge { background: #f0f0f0; color: #666; }
+  &.maat-badge-due { background: #FDEEEE; color: #9C2F2F; }
 }
 
 /* Avatars (Smiley faces) */
@@ -101,8 +102,8 @@ ion-avatar {
   padding: 0px;
   font-size: 22px;
   color: white;
-  &.avatar-neutral { background: #e8e8e8; }
-  &.avatar-sad { background: #ffdada; }
+  &.avatar-neutral { background: #C9C9C9; }
+  &.avatar-sad { background: #F08A8A; }
 }
 
 /* Calendar Icon */

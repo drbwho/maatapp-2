@@ -78,7 +78,7 @@ export class MeetingDetailsPage implements OnInit {
   }
 
   load_accounts(){
-    this.dataProvider.fetch_data('accounts', this.group.id, true).then(async (data: any)=> {
+    this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
       this.allaccounts = data.filter((s)=> s.statut == 0); //active accounts
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
@@ -101,6 +101,21 @@ export class MeetingDetailsPage implements OnInit {
           // get meeting history from api
           await this.dataProvider.refreshMeetingHistory(this.meeting);
           this.new_totals = await this.operTools.estimate_account_totals(acc, this.meeting.id);
+        }
+        // loan overdues
+        if( acc.dateecheance != null && (new Date(acc.dateecheance) < (new Date()))){
+          acc.loans_expired = true;
+        }
+        if( acc.sfdateecheance != null && (new Date(acc.sfdateecheance) < (new Date()))){
+          acc.sfloans_expired = true;
+        }
+        // dues
+        if(acc.due){
+          acc.status = "neutral";
+        }else if(acc.loans_expired || acc.sfloans_expired){
+          acc.status = "sad";
+        }else{
+          acc.status = "happy";
         }
       });
       // Show only member accounts

@@ -53,22 +53,20 @@ export class MeetingsPage implements OnInit {
     }
   }
 
-
   async openOptions(meeting) {
     this.translate.get(['upload_data','view_transactions', 'cancel']).subscribe(async (keys: any)=>{
-      const actionSheet = await this.actionSheetCtrl.create({
-        header: meeting.place,
-        cssClass: 'settings-action-sheet ion-padding',
-        buttons: [
-        {
+      let buttons = [];
+      if(meeting.pending || meeting.haspending){
+        buttons.push({
           text: keys['upload_data'],
           icon: 'cloud-upload',
           cssClass:'action-sheet-primary',
           handler: () => {
             
           },
-        },
-        {
+        });
+      }
+      buttons.push({
           text: keys['view_transactions'],
           icon: 'stats-chart',
           handler: () => {
@@ -79,8 +77,12 @@ export class MeetingsPage implements OnInit {
           text: keys['cancel'],
           role: 'cancel',
           icon: 'close-outline'
-        },
-        ],
+        });
+
+      const actionSheet = await this.actionSheetCtrl.create({
+        header: meeting.place,
+        cssClass: 'settings-action-sheet ion-padding',
+        buttons: buttons
       });
       await actionSheet.present();
     })

@@ -63,4 +63,10 @@ export class DashboardPage implements OnInit {
     }
   }
 
+  async open_details(){
+
+    this.dataProvider.current.meeting = this.lastmeeting;
+    this.navCtrl.navigateForward('/meeting-details');
+  }
+
 }

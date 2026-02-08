@@ -24,7 +24,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round" [disabled]="meeting_status != 'no-active'">{{'start_new_meeting' | translate}}</ion-button>
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round" 
+    [disabled]="meeting_status != 'no-active'"
+    routerLink="/new-meeting" routerDirection="forward">{{'start_new_meeting' | translate}}</ion-button>
   @if(meeting_status == 'saved_local'){
    <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
   }
@@ -36,7 +38,8 @@
   <ion-list>
     <app-meeting-card 
       [meeting]="lastmeeting"
-      attendance="18/22" (click)="openOptions(lastmeeting)">
+      attendance="18/22" 
+      (click)="openOptions(lastmeeting)">
     </app-meeting-card>
   </ion-list>
   }
@@ -53,7 +56,8 @@
      <app-meeting-card 
       [meeting]="meeting"
       attendance="18/22"
-      collectedValue="200">
+      collectedValue="200"
+      (click)="openOptions(meeting)">
     </app-meeting-card>
     }
   </ion-list>

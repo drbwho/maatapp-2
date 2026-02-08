@@ -9,7 +9,7 @@
     <ion-buttons slot="end">
       <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
         <ion-avatar class="flag-circle">
-          <img [src]="'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg'" />
+          <img [src]="'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg'"/>
         </ion-avatar>
       </ion-button>
     </ion-buttons>
@@ -81,7 +81,7 @@
             <ion-col size="2">        
               <ion-avatar [class]="'avatar-' + account?.status">
                 <div class="status-icon">
-                  <ion-icon name="happy"></ion-icon>
+                  <ion-icon [name]="account?.status == 'sad'? account?.status : 'happy'"></ion-icon>
                 </div>
               </ion-avatar>
             </ion-col>
@@ -93,7 +93,7 @@
             <ion-col size="5">
               <div class="badge-container">
                 @if (account?.restearembourser) {
-                <div class="custom-badge maat-badge">
+                <div [class]="account?.loans_expired ? 'custom-badge maat-badge-due' : 'custom-badge maat-badge'">
                   <span class="val text-16">{{ account.restearembourser }}</span>
                   <span class="lab text-12">Maat</span>
                 </div>
@@ -120,16 +120,22 @@
                   }
                   @if(pf(account?.due_sf) > 0){
                   <p class="warning-text">
-                    <ion-icon [name]="account?.icon || 'close-circle'" color="danger"></ion-icon>
+                    <ion-icon [name]="account?.icon || 'close'" color="danger"></ion-icon>
                     {{ 'missing_sf_contribs' | translate }} {{account?.due_sf}} {{currency}}
                   </p>
                   }
                   @if(pf(account?.due_facp) > 0){
                   <p class="warning-text">
-                    <ion-icon [name]="account?.icon || 'close-circle'" color="danger"></ion-icon>
+                    <ion-icon [name]="account?.icon || 'close'" color="danger"></ion-icon>
                     {{ 'missing_facp_contribs' | translate }} {{account.due_facp}} {{currency}}
                   </p>
                   }
+                }
+                @if(pf(account?.fines) > 0){
+                <p class="warning-text">
+                  <ion-icon [name]="account?.icon || 'warning-outline'" color="warning"></ion-icon>
+                  {{ 'fine_applied' | translate }} {{account.fines}} {{currency}}
+                </p>
                 }
               </div>
             </ion-col>

@@ -118,6 +118,10 @@
   "continue_meeting": "Continue Meeting",
   "upload_data": "Upload data",
   "view_transactions": "View transactions history",
+  "missing_regular_contribs": "Missing: Regular",
+  "missing_sf_contribs": "Missing: Solidarity",
+  "missing_facp_contribs": "Missing: Facilitator",
+  "fine_applied": "File applied:",
   "intro": {
     "page-1": {
       "title": "Welcome to MA'AT",
@@ -173,7 +177,7 @@
   "messages": {
     "new-meeting": {
       "heading": "Welcome to today's meeting",
-      "description": "You’ll review contributions and transactions together with the group.",
+      "description": "You'll review contributions and transactions together with the group.",
       "button": "Start meeting"
     }
   }
