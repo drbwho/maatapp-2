@@ -25,7 +25,7 @@ export class HistoryComponent implements OnInit {
     this.meetingplace = this.meeting.place;
     this.meetingdate = this.meeting.startedat;
 
-    this.operationTools.getHistory(this.meeting).then((data: any)=>{
+    this.operationTools.getHistory(this.meeting.id).then((data: any)=>{
       this.operations = data.operations;
     })
   }

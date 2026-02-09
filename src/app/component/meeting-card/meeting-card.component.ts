@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, computed, signal } from '@angular/core';
+import { DataProvider } from '../../providers/provider-data';
 
 @Component({
   selector: 'app-meeting-card',
@@ -9,7 +10,7 @@ import { Component, Input, OnInit, computed, signal } from '@angular/core';
 export class MeetingCardComponent  implements OnInit {
   //Use Setter and signal to compute values
   @Input() attendance: string = '';
-  @Input() collectedValue?: string;
+  @Input() group?: any = null;
   @Input() set meeting(value: any) {
     this.meeting$.set(value);
   }
@@ -27,7 +28,8 @@ export class MeetingCardComponent  implements OnInit {
     });
   fullDate = computed(() => this.meeting$()?.endedat ? this.meeting$()?.endedat : this.meeting$()?.startedat);
 
-  constructor() {}
+  constructor(
+  ) {}
 
   ngOnInit() {
   }

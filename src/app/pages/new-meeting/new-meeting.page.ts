@@ -6,7 +6,7 @@ import { ModalController } from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { TranslateService } from '@ngx-translate/core';
-import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
+import { NewMeetingFormComponent } from '../../component/new-meeting-form/new-meeting-form.component';
 import { AlertController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
 import { Router } from '@angular/router';
@@ -59,7 +59,7 @@ export class NewMeetingPage implements OnInit {
 
   async openDate(){
     const modal = await this.modalCtrl.create({
-        component: MeetingFormComponent,
+        component: NewMeetingFormComponent,
         componentProps: {place: this.place },
         initialBreakpoint: 0.3,
         breakpoints: [0, 0.3, 0.5],

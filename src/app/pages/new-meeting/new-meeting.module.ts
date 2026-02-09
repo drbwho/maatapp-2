@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NewMeetingPageRoutingModule } from './new-meeting-routing.module';
 
 import { NewMeetingPage } from './new-meeting.page';
-import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
+import { NewMeetingFormComponent } from '../../component/new-meeting-form/new-meeting-form.component';
 import { ActionViewComponent } from '../../component/action-view/action-view.component';
 
 // needed fot translate pipe activation
@@ -34,6 +34,6 @@ export function HttpLoaderFactory(http: HttpClient) {
           }
         })
   ],
-  declarations: [NewMeetingPage, MeetingFormComponent]
+  declarations: [NewMeetingPage, NewMeetingFormComponent]
 })
 export class NewMeetingPageModule {}

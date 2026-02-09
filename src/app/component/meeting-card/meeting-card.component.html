@@ -48,16 +48,16 @@
         <span class="top-label text-12">ATTENDED</span>
         <div class="info-content">
           <span class="icon-emoji">🤝</span>
-          <span class="info-text text-16">{{ attendance }}</span>
+          <span class="info-text text-16">{{ attendance }} / {{group?.numberofmembers}}</span>
         </div>
       </ion-col>
 
-      @if (status() === 'closed' && collectedValue) {
+      @if (status() === 'closed' && meeting$()?.collection) {
         <ion-col size="4">
           <span class="top-label text-12">COLLECTED</span>
           <div class="info-content">
             <span class="icon-emoji">🏺</span>
-            <span class="info-text text-16">{{ collectedValue }}</span>
+            <span class="info-text text-16">{{ meeting$()?.collection | number:'.0'}}</span>
           </div>
         </ion-col>
       }

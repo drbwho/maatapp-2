@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
-import { ConfigData } from '../../providers/config-data';
-import { Storage } from '@ionic/storage-angular';
 import { GroupTools } from '../../providers/group-tools';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController } from '@ionic/angular';
@@ -24,8 +22,6 @@ export class MeetingsPage implements OnInit {
   constructor(
     private dataProvider: DataProvider,
     private navCtrl: NavController,
-    private storage: Storage,
-    private config: ConfigData,
     private groupTools: GroupTools,
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController

@@ -38,7 +38,8 @@
   <ion-list>
     <app-meeting-card 
       [meeting]="lastmeeting"
-      attendance="18/22" 
+      [group]="group"
+      attendance="0" 
       (click)="openOptions(lastmeeting)">
     </app-meeting-card>
   </ion-list>
@@ -55,8 +56,8 @@
     @for (meeting of meetings; track meeting) {
      <app-meeting-card 
       [meeting]="meeting"
-      attendance="18/22"
-      collectedValue="200"
+      [group]="group"
+      attendance="0"
       (click)="openOptions(meeting)">
     </app-meeting-card>
     }

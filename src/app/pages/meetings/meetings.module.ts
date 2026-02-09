@@ -9,6 +9,7 @@ import { MeetingsPageRoutingModule } from './meetings-routing.module';
 import { MeetingsPage } from './meetings.page';
 import { MeetingCardComponent } from '../../component/meeting-card/meeting-card.component';
 import { ActionViewComponent } from '../../component/action-view/action-view.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -26,6 +27,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     IonicModule,
     MeetingsPageRoutingModule,
     ActionViewComponent,
+    ScrollingModule,
     TranslateModule.forChild({
           loader: {
             provide: TranslateLoader,

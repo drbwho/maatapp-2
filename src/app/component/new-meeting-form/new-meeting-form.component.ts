@@ -2,12 +2,12 @@ import { Component, Input, OnInit, ViewChild, ɵDEFAULT_LOCALE_ID } from '@angul
 import { ModalController } from '@ionic/angular';
 
 @Component({
-    selector: 'app-meeting-form',
-    templateUrl: './meeting-form.component.html',
-    styleUrls: ['./meeting-form.component.scss'],
+    selector: 'app-new-meeting-form',
+    templateUrl: './new-meeting-form.component.html',
+    styleUrls: ['./new-meeting-form.component.scss'],
     standalone: false
 })
-export class MeetingFormComponent  implements OnInit {
+export class NewMeetingFormComponent  implements OnInit {
   @Input() place: any;
 
   constructor(

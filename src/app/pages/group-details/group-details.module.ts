@@ -9,7 +9,6 @@ import { GroupDetailsPageRoutingModule } from './group-details-routing.module';
 import { GroupDetailsPage } from './group-details.page';
 import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
-//import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
 import { HistoryComponent } from '../../component/history/history.component';
 import { LoanInfoComponent } from '../../component/loan-info/loan-info.component';
 

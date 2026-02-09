@@ -5,9 +5,9 @@ import { TransactionsComponent } from '../../component/transactions/transactions
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
-import { OperationTools, AccountTotals } from '../../providers/operation-tools';
+import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService } from '@ngx-translate/core';
-
+import { MeetingTotals } from '../../interfaces/data-interfaces';
 
 @Component({
     selector: 'app-meeting-details',
@@ -28,10 +28,12 @@ export class MeetingDetailsPage implements OnInit {
   accounts: any;
   status: string;
   fullDate: string;
-  new_totals: AccountTotals = {
+  num_ECP = 0;
+  new_totals: MeetingTotals = {
     cash: 0.00,
     balance: 0.00,
-    credit: 0.00
+    credit: 0.00,
+    loans: 0.00
   }
   selectedAll: boolean = false;
   selectedAccounts = 0;
@@ -59,6 +61,8 @@ export class MeetingDetailsPage implements OnInit {
     this.groupid = this.group.id;
     this.country = this.dataProvider.current.country;
     this.currency = this.country.currency;
+    this.num_ECP = await this.operTools.get_num_of_ECP(this.meeting, this.country.id);
+    this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);console.log(this.new_totals)
 
     this.calc_status();
     await this.load_accounts();
@@ -97,11 +101,11 @@ export class MeetingDetailsPage implements OnInit {
             });
           }
         }
-        if(acc.type == 2){
+        /*if(acc.type == 2){
           // get meeting history from api
-          await this.operTools.refreshMeetingHistory(this.meeting);
-          this.new_totals = await this.operTools.estimate_account_totals(acc, this.meeting.id);
-        }
+          await this.operTools.refreshMeetingHistory(this.meeting.id);
+          this.new_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
+        }*/
         // loan overdues
         if( acc.dateecheance != null && (new Date(acc.dateecheance) < (new Date()))){
           acc.loans_expired = true;

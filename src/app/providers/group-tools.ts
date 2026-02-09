@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from './config-data';
-import { DataProvider, Meeting } from './provider-data';
+import { DataProvider } from './provider-data';
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +25,15 @@ export class GroupTools {
       }else{
         meetings = data;
       }
-      //check if meeting has pending transactions to upload
-      meetings.forEach((m)=>{
+      // check if meeting has pending transactions to upload
+      meetings.forEach(async (m)=>{
         m.haspending = 0;
         this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
           if(trns && (trns.filter(s => s.meetingid == m.id)).length){
             m.haspending = (trns.filter(s => s.meetingid == m.id)).length;
           }
         });
+        m.collection = Math.round(m.collection); // parse collected amount as float
       })
       return meetings;
     });

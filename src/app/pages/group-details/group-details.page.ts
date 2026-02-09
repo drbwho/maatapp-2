@@ -7,7 +7,6 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Network } from '@capacitor/network';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { UserData } from '../../providers/user-data';
-//import { MeetingFormComponent } from '../../component/meeting-form/meeting-form.component';
 import { HistoryComponent } from '../../component/history/history.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountPage } from '../account/account';

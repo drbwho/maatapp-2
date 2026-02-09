@@ -56,7 +56,7 @@
             <div class="caption">{{'balance' | translate}}</div>
           </div>
           <div class="stat-box">
-            <div class="value">{{collected}}</div>
+            <div class="value">{{lastmeeting?.collection | number:'.0'}}</div>
             <div class="caption">{{country?.currency}} {{'collected' | translate}}</div>
           </div>
         </div>

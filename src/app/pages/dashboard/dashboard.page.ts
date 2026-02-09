@@ -30,17 +30,13 @@ export class DashboardPage implements OnInit {
     private route: ActivatedRoute,
     private groupTools: GroupTools,
     private operationTools: OperationTools
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.route.url.subscribe(() => {
-      this.load_currents(); // Hack to refresh page in every visit!
+      this.load_currents(); // Hack to force refreshing page in every visit!
     });
-  }
-
-  ngOnInit() { }
-
-  ionViewWillEnter(){
-    this.load_currents();
-  }
+   }
 
   async load_currents(){
     var current = await this.dataProvider.getCurrent();
@@ -55,12 +51,7 @@ export class DashboardPage implements OnInit {
       this.totals = current.group.totals;
       this.lastmeeting = this.groupTools.get_last_meeting(this.meetings);
       this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group);
-
-      //num of PA transactions
       this.num_ECP = await this.operationTools.get_num_of_ECP(this.lastmeeting, this.country.id);
-      this.operationTools.estimate_account_totals(null, this.lastmeeting.id).then((data)=>{
-        this.collected = data.cash;
-      })
     }
   }
 
@@ -74,7 +65,6 @@ export class DashboardPage implements OnInit {
   }
 
   async open_details(){
-
     this.dataProvider.current.meeting = this.lastmeeting;
     this.navCtrl.navigateForward('/meeting-details');
   }

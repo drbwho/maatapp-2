@@ -31,11 +31,11 @@
     <ion-grid class="ion-no-padding ion-margin-top">
       <ion-row>
         <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">420</h1>
+          <h1 class="stat-value ion-no-margin">{{ meeting?.collection | number:'.0'}}</h1>
           <p class="stat-label text-12">{{currency}} {{'collected' | translate}}</p>
         </ion-col>
         <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">500</h1>
+          <h1 class="stat-value ion-no-margin">{{ new_totals?.loans }}</h1>
           <p class="stat-label text-12">Maats {{'issued' | translate}}</p>
         </ion-col>
       </ion-row>
@@ -58,14 +58,14 @@
           <span class="mini-label ion-text-uppercase text-12">Highest Day</span>
           <div class="stat-row">
             <span>🔥</span>
-            <span class="small-val">345 {{currency}}</span>
+            <span class="small-val">{{group?.maxcollection | number:'.0'}} {{currency}}</span>
           </div>
         </ion-col>
         <ion-col size="4">
           <span class="mini-label ion-text-uppercase text-12">Attended</span>
           <div class="stat-row">
             <span>🤝</span>
-            <span class="small-val">23/23</span>
+            <span class="small-val">{{num_ECP}}/{{group?.numberofmembers}}</span>
           </div>
         </ion-col>
       </ion-row>

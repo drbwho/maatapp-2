@@ -10,23 +10,7 @@ import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserData } from './user-data';
-
-export interface AccountTotals {
-  credit?: number,
-  balance?: number,
-  cash?: number
-};
-
-export interface Transaction {
-  meetingid: any,
-  accountid: any,
-  parameterid: any,
-  parametername: any,
-  amount: any,
-  categories?: any,
-  notes?: any,
-  inputdate: any
-}
+import { MeetingTotals, Transaction } from '../interfaces/data-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -101,15 +85,15 @@ export class OperationTools {
     })
   }
 
-  async refreshMeetingHistory(meeting: any){
-    let history: any = await this.getHistory(meeting);
+  async refreshMeetingHistory(meetingId: any){
+    let history: any = await this.getHistory(meetingId);
     history = history.operations;
     if(!history || !history.length){
       return;
     }
     let old_history = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
     if(old_history && old_history.length){
-      old_history = old_history.filter(s => s.meetingid == meeting.id);
+      old_history = old_history.filter(s => s.meetingid == meetingId);
       history = [...old_history, ...history];
     }
     this.storage.set(this.config.HISTORY_TRANSACTIONS_FILE, history);
@@ -144,7 +128,7 @@ export class OperationTools {
   * Get History of transactions
   *
   */
-  async getHistory(object: any, type=''){
+  async getHistory(objectId: any, type=''){
     let status = await Network.getStatus();
     if(!status.connected){
       return new Promise(async (resolve)=>{
@@ -161,7 +145,7 @@ export class OperationTools {
     let loading = await this.loadingcontroller.create({showBackdrop: false});
     loading.present();
 
-    let apiurl = this.config.GET_API_URL('operations', object.id);
+    let apiurl = this.config.GET_API_URL('operations', objectId);
 
     const user = await this.user.getUser();
     const headers =  new HttpHeaders({
@@ -317,25 +301,32 @@ export class OperationTools {
 
 
   /*
-  * Estimate Account totals from pending transactions
+  * Estimate account/meeting totals from all transactions
   *
   */
-  estimate_account_totals (account: any, meetingid: any): Promise<any> {
-    return new Promise((resolve)=>{
-      let totals: AccountTotals = {
+  estimate_meeting_totals (account: any, meetingId: any): Promise<any> {
+    return new Promise(async (resolve)=>{
+      let totals: MeetingTotals = {
         credit: 0.00,
         balance: 0.00,
-        cash: 0.00
+        cash: 0.00,
+        loans: 0.00,
+        transactions: new Map<string, number>()
       };
       let trans = [];
+      await this.refreshMeetingHistory(meetingId);
       this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
         if(data){
-          trans = data.filter(s=>s.meetingid == meetingid);
+          trans = data.filter(s => s.meetingid == meetingId);
+          if(account){
+            trans = trans.filter(s => s.idaccount == account.id);
+          }
         }
         let params = await this.storage.get(this.config.GET_FILE('params'));
-        totals.credit = parseFloat(account?.creditdisponible);
-        totals.balance = parseFloat(account?.balance);
+        totals.credit = account?.creditdisponible ? parseFloat(account?.creditdisponible) : 0.00;
+        totals.balance = account?.balance ? parseFloat(account?.balance) : 0.00;
         totals.cash = 0.00;
+        totals.loans = 0.00;
         trans.forEach((tr)=>{
           let pcode = (params.find((s) => s.id == tr.parameterid)).code;
           if(this.credit_operations.includes(pcode)){
@@ -351,11 +342,19 @@ export class OperationTools {
               totals.cash -= parseFloat(tr.amount);
             }
           }
+          if(pcode == 'EMP'){
+            totals.loans += parseFloat(tr.amount);
+          }
+          const current = totals.transactions.get(pcode) || 0;
+          totals.transactions.set(pcode, current + tr.amount);
         });
         // iterate in already uploaded transactions
         let uploaded_transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
         if(uploaded_transactions && uploaded_transactions.length){
-          uploaded_transactions = uploaded_transactions.filter(s => s.idmeeting == meetingid);
+          uploaded_transactions = uploaded_transactions.filter(s => s.idmeeting == meetingId);
+           if(account){
+            uploaded_transactions = uploaded_transactions.filter(s => s.idaccount == account.id);
+          }
           if(uploaded_transactions.length){
             uploaded_transactions.forEach((tr)=>{
               let pcode = (params.find((s) => s.id == tr.idparameter)).code;
@@ -365,6 +364,11 @@ export class OperationTools {
               }else if(this.debit_operations.includes(pcode)){
                 totals.cash -= parseFloat(tr.credit ? tr.credit : tr.debit);
               }
+              if(pcode == 'EMP'){
+                totals.loans += parseFloat(tr.debit);
+              }
+              const current = totals.transactions.get(pcode) || 0;
+              totals.transactions.set(pcode, current + (tr.credit != 0 ? tr.credit : tr.debit));
             });
           }
         }
@@ -387,7 +391,7 @@ export class OperationTools {
       }else{
         group_account = group_account.find((s)=>s.idowner == group.id);
       }
-      let group_totals = await this.estimate_account_totals(group_account, transaction.meetingid);
+      let group_totals = await this.estimate_meeting_totals(group_account, transaction.meetingid);
       switch(pcode){
         case 'EMP':
           if(transaction.amount > account.creditdisponible && group.settings.credit_borrow_multiplier >= 0){
@@ -478,7 +482,7 @@ export class OperationTools {
         if(data.length){
           param = (data.filter((a)=> a.code === 'ECP'))[0];
         }
-        this.refreshMeetingHistory(meeting).then(()=>{
+        this.refreshMeetingHistory(meeting.id).then(()=>{
           let trans = [];
           this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
             if(data && data.length){
