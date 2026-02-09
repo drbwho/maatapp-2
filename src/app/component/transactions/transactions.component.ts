@@ -6,6 +6,7 @@ import { ConfigData } from '../../providers/config-data';
 import { TranslateService } from '@ngx-translate/core';
 import { LoanInfoComponent } from '../loan-info/loan-info.component';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import { OperationTools } from '../../providers/operation-tools';
 
 @Component({
     selector: 'app-transactions',
@@ -42,7 +43,8 @@ export class TransactionsComponent  implements OnInit {
     private alertCtrl: AlertController,
     private storage: Storage,
     private config: ConfigData,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private operationTools: OperationTools
   ) { }
 
   ngOnInit() {}
@@ -178,7 +180,7 @@ export class TransactionsComponent  implements OnInit {
           categories = this.loan_info.categories;
           notes = this.loan_info.notes;
         }
-        await this.dataProvider.newOperation(
+        await this.operationTools.newOperation(
           this.meeting.id, account, this.group, operationid, operation_name, this.amount[operationid], categories, notes
         ).then(async (res: any)=>{
           if(res.status != 'success'){
@@ -217,20 +219,20 @@ export class TransactionsComponent  implements OnInit {
 
     await TextToSpeech.speak({
           text: this.account_label,
-          lang: curLang,        
-          rate: 1.0,           
-          pitch: 1.0,     
-          volume: 1.0          
+          lang: curLang,
+          rate: 1.0,
+          pitch: 1.0,
+          volume: 1.0
         }).then(async ()=>{
-          for(let operationid in this.amount){ 
+          for(let operationid in this.amount){
             if(this.amount[operationid] && this.amount[operationid] > 0){
               let parameter = this.parameters.find((s)=> s.id == operationid);
               await TextToSpeech.speak({
                 text: parameter.name + ', ' + this.amount[operationid].toString(),
-                lang: curLang,        
-                rate: 1.0,           
-                pitch: 1.0,     
-                volume: 1.0          
+                lang: curLang,
+                rate: 1.0,
+                pitch: 1.0,
+                volume: 1.0
               });
             }
           }
@@ -250,4 +252,4 @@ export class TransactionsComponent  implements OnInit {
 }
 
 
-  
+

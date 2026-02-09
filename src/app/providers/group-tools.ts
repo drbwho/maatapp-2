@@ -58,7 +58,7 @@ export class GroupTools {
     if(!meetings.length || !meetings){
       return "no-meetings";
     }
-    
+
     let open_meetings = meetings.filter((a) => !a.endedat).length;
 
     if(open_meetings && !upload_status){
@@ -78,5 +78,5 @@ export class GroupTools {
       return (prev.startedat > current.startedat) ? prev : current;
     });
   }
-  
+
 }

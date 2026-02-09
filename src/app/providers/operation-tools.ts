@@ -1,13 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from './config-data';
 import { TranslateService } from '@ngx-translate/core';
+import { formatDate } from '@angular/common';
+import { Events } from './events';
+import { DataProvider } from './provider-data';
+import { Network } from '@capacitor/network';
+import { ToastController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserData } from './user-data';
 
 export interface AccountTotals {
   credit?: number,
   balance?: number,
   cash?: number
 };
+
+export interface Transaction {
+  meetingid: any,
+  accountid: any,
+  parameterid: any,
+  parametername: any,
+  amount: any,
+  categories?: any,
+  notes?: any,
+  inputdate: any
+}
 
 @Injectable({
   providedIn: 'root'
@@ -17,16 +36,291 @@ export class OperationTools {
   debit_operations = ['RCP', 'EMP', 'SFEMP', 'AIN', 'CFS'];
 
   constructor(
+    private http: HttpClient,
     private storage: Storage,
     private config: ConfigData,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events,
+    private dataProvider: DataProvider,
+    private toast: ToastController,
+    private loadingcontroller: LoadingController,
+    private user: UserData
   ) { }
+
+
+   // Save locally new Operation
+ async newOperation(meetingid, account, group, parameterid, parametername, amount, categories="", notes=""){
+    var trn: Transaction = {
+      meetingid: meetingid,
+      accountid: account.id,
+      parameterid: parameterid,
+      parametername: parametername,
+      amount: amount,
+      categories: categories,
+      notes: notes,
+      inputdate: formatDate(new Date(), 'Y-MM-dd H:mm:ss', ɵDEFAULT_LOCALE_ID)
+    };
+
+    return new Promise(async (resolve)=>{
+      //Check operation against account totals
+      let check: any = await this.check_operation(account, group, trn);
+      if(check.status != 'success'){
+        resolve({'status': 'error', 'message': check.message});
+        return;
+      }
+      await this.storage.get(this.config.TRANSACTIONS_FILE).then(async (res)=>{
+        var trns: Transaction[] = [];
+        if(res){
+         trns = res;
+        }
+        //Insert or update transaction
+        let index = trns.findIndex((s)=> s.meetingid == meetingid && s.accountid == account.id && s.parameterid == parameterid);
+        if(index >= 0){
+          trns[index] = trn;
+        }else{
+          trns.push(trn);
+        }
+        await this.storage.set(this.config.TRANSACTIONS_FILE, trns).then((res)=>{
+          this.events.publish('upload:updated');
+          resolve({'status': 'success'});
+        })
+      })
+    });
+  }
+
+  delOperation(tr: any){
+    return new Promise(async (resolve)=>{
+      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      //find index
+      let index = transactions.findIndex(s => s.accountid == tr.accountid && s.meetingid == tr.meetingid && s.parameterid == tr.parameterid && s.amount == tr.amount);
+      transactions.splice(index, 1);//remove element from array
+      this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
+        this.events.publish('upload:updated');
+        resolve(true);
+      });
+    })
+  }
+
+  async refreshMeetingHistory(meeting: any){
+    let history: any = await this.getHistory(meeting);
+    history = history.operations;
+    if(!history || !history.length){
+      return;
+    }
+    let old_history = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
+    if(old_history && old_history.length){
+      old_history = old_history.filter(s => s.meetingid == meeting.id);
+      history = [...old_history, ...history];
+    }
+    this.storage.set(this.config.HISTORY_TRANSACTIONS_FILE, history);
+  }
+
+  clearPendingOperations(meeting: any, clearMeeting = false){
+    if(clearMeeting){
+      return new Promise(async (resolve)=>{
+        let newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+        newmeetings = newmeetings.filter(s => s.id != meeting.id);
+        this.storage.set(this.config.NEWMEETINS_FILE, newmeetings).then(()=>{
+          this.events.publish('upload:updated');
+          resolve(true);
+        });
+      })
+    }
+
+    return new Promise(async (resolve)=>{
+      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      transactions = transactions.filter(s => s.meetingid != meeting.id);
+      //find index
+      /*let index = transactions.findIndex(s => s.meetingid == meeting.id);
+      transactions.splice(index, 1);//remove element from array*/
+      this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
+        this.events.publish('upload:updated');
+        resolve(true);
+      });
+    })
+  }
+
+  /*
+  * Get History of transactions
+  *
+  */
+  async getHistory(object: any, type=''){
+    let status = await Network.getStatus();
+    if(!status.connected){
+      return new Promise(async (resolve)=>{
+        const toast = await this.toast.create({
+          message: 'Network error! Cannot get history data...',
+          cssClass: 'toast-alert',
+          duration: 3000
+        });
+        toast.present();
+        resolve([]);
+      })
+    }
+
+    let loading = await this.loadingcontroller.create({showBackdrop: false});
+    loading.present();
+
+    let apiurl = this.config.GET_API_URL('operations', object.id);
+
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
+      .get(apiurl,{headers})
+      .subscribe({
+        next: (data: any) => {
+          loading.dismiss();
+          resolve(data);
+        },
+        error: async (error) => {
+          const toast = await this.toast.create({
+            message: 'Network error! Cannot get history data...',
+            cssClass: 'toast-alert',
+            duration: 3000
+          });
+          loading.dismiss().then(()=>{
+            toast.present();
+          });
+          resolve([]);
+        }
+      });
+    });
+  }
+
+
+  /*
+  * Init Syncing
+  *
+  */
+  async uploadOperations(meeting){
+    // First sync new meeting
+    if(meeting.pending){
+      let newmeet: any = await this.dataProvider.syncMeeting(meeting);
+      if(newmeet.status != "success"){
+        return new Promise((resolve)=>{
+          resolve(newmeet);
+        })
+      }else{
+        // clear meeting from local storage
+        this.storage.get(this.config.NEWMEETINS_FILE).then((res)=>{
+          let newmeetings = res;
+          // find index
+          let index = newmeetings.findIndex(s => s.id == meeting.id);
+          newmeetings.splice(index, 1);//remove element from array
+          this.storage.set(this.config.NEWMEETINS_FILE, newmeetings);
+        })
+      }
+    }
+
+    // Start sync transactions
+    var transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+    if(transactions == null || !transactions.length){
+      return new Promise((resolve)=>{
+        resolve({'status': 'success'});
+      })
+    }
+    transactions = transactions.filter(s=>s.meetingid == meeting.id);
+    return new Promise(async (resolve)=>{
+      var res: any = {status: 'success', message: ''};
+      //Clear previous uploading errors
+      var upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
+      if(upload_errors) {
+        upload_errors = upload_errors.filter((s)=>s.meetingid != meeting.id);
+      }else{
+        upload_errors = [];
+      }
+      var found_errors = false;
+      for(let tr of transactions){
+        res = await this.syncOperation(tr);
+        //if error stop uploading and return
+        if(res.status.toLowerCase() == 'error'){
+          // return name of account
+          let accounts = await this.storage.get(this.config.GET_FILE('accounts'));
+          let account = accounts.find(s => s.id == tr.accountid);
+          res.name = account.owner;
+          upload_errors.push({meetingid: tr.meetingid, accountid: tr.accountid, parameterid: tr.parameterid, message: res.message});
+          found_errors = true;
+          //resolve(res);
+          //break;
+        }else{
+          //success
+          //delete pending operation
+          this.delOperation(tr);
+        }
+      }
+      this.storage.set(this.config.UPLOAD_ERRORS_FILE, upload_errors);
+      if(found_errors){
+        this.translate.get('uploading_with_errors').subscribe((key)=>{
+          resolve({'status': 'error', 'message': key});
+        });
+      }
+      //Close meeting after succesfully uploading transactions
+      if(meeting.endedat){
+        meeting.pending = false;
+        await this.dataProvider.closeMeeting(meeting);
+      }
+      resolve(res);
+    })
+  }
+
+
+  /*
+  * Sync operations to Server
+  *
+  */
+  async syncOperation(tr){
+    const loading = await this.loadingcontroller.create({showBackdrop: false});
+    loading.present();
+
+    let apiurl = this.config.GET_API_URL('operations', tr.meetingid);
+
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
+        .post(apiurl,
+          {
+            parameter: tr.parameterid,
+            accountid: tr.accountid,
+            amount: tr.amount,
+            inputdate: tr.inputdate,
+            categories: tr.categories,
+            notes: tr.notes,
+            type: '',
+            usetimezone: 0
+          },
+          {headers})
+        .subscribe({
+          next: (data: any) => {
+            console.log(data);
+            loading.dismiss().then(()=>{
+              resolve(data);
+            });
+          },
+          error: async (error) => {
+            loading.dismiss().then(()=>{
+              resolve({status: 'error', message: 'Network error'});
+            });
+          }
+        });
+    });
+  }
+
 
   /*
   * Estimate Account totals from pending transactions
   *
   */
-  estimate_account_totals (account: any, meetingid: any): any {
+  estimate_account_totals (account: any, meetingid: any): Promise<any> {
     return new Promise((resolve)=>{
       let totals: AccountTotals = {
         credit: 0.00,
@@ -39,8 +333,8 @@ export class OperationTools {
           trans = data.filter(s=>s.meetingid == meetingid);
         }
         let params = await this.storage.get(this.config.GET_FILE('params'));
-        totals.credit = parseFloat(account.creditdisponible);
-        totals.balance = parseFloat(account.balance);
+        totals.credit = parseFloat(account?.creditdisponible);
+        totals.balance = parseFloat(account?.balance);
         totals.cash = 0.00;
         trans.forEach((tr)=>{
           let pcode = (params.find((s) => s.id == tr.parameterid)).code;
@@ -58,7 +352,7 @@ export class OperationTools {
             }
           }
         });
-        // iterate already uploaded transactions
+        // iterate in already uploaded transactions
         let uploaded_transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
         if(uploaded_transactions && uploaded_transactions.length){
           uploaded_transactions = uploaded_transactions.filter(s => s.idmeeting == meetingid);
@@ -131,7 +425,7 @@ export class OperationTools {
           }
           break;
         case 'SFEMP':
-          if(transaction.amount > group_account.creditdisponible || 
+          if(transaction.amount > group_account.creditdisponible ||
              transaction.amount > (group_account.sfcontribution - group_account.sfrestearembourser)){
             this.translate.get('loan_exceeds_group_totals').subscribe((key)=>{
               resolve({'status': 'error', 'message': key})
@@ -170,7 +464,39 @@ export class OperationTools {
       }
 
       resolve({'status':'success'});
-    }) 
+    })
+  }
+
+  /*
+  * Get number of ECP transactions
+  *
+  */
+  get_num_of_ECP(meeting, countryId):Promise<number>{
+    return new Promise((resolve) => {
+      this.storage.get(this.config.GET_FILE('params')).then(async (data: any)=> {
+        let param = null;
+        if(data.length){
+          param = (data.filter((a)=> a.code === 'ECP'))[0];
+        }
+        this.refreshMeetingHistory(meeting).then(()=>{
+          let trans = [];
+          this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
+            if(data && data.length){
+              trans = data.filter(s=>s.idmeeting == meeting.id && s.idparameter == param.id && s.is_cancelled == false);
+            }
+            // iterate in already uploaded transactions
+            this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE).then((data)=>{
+              if(data && data.length){
+                let uptrans = data.filter(s=>s.idmeeting == meeting.id && s.idparameter == param.id && s.is_cancelled == false);
+                trans = [...trans, ...uptrans];
+              }
+              let num = new Set(trans?.map(d => d.idaccount)).size;
+              resolve(num);
+            });
+          })
+        })
+      })
+    })
   }
 
 }

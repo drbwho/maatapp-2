@@ -11,6 +11,7 @@ import { UserData } from '../../providers/user-data';
 import { HistoryComponent } from '../../component/history/history.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountPage } from '../account/account';
+import { OperationTools } from '../../providers/operation-tools';
 
 @Component({
     selector: 'app-group-details',
@@ -45,7 +46,8 @@ export class GroupDetailsPage implements OnInit {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private user: UserData,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private operationTools: OperationTools
   ) { }
 
   ngOnInit() {
@@ -338,7 +340,7 @@ export class GroupDetailsPage implements OnInit {
     }
     //upload all pending meeting transactions
     this.translate.get(['data_uploaded','success','error']).subscribe(async (keys: any)=>{;
-      this.dataProvider.uploadOperations(meeting).then(async (res:any) => {
+      this.operationTools.uploadOperations(meeting).then(async (res:any) => {
         let header="";
         let message="";
         if(res.status.toLowerCase() == 'error'){
@@ -423,7 +425,7 @@ export class GroupDetailsPage implements OnInit {
           {
             text: keys['yes'],
             handler: () => {
-              this.dataProvider.clearPendingOperations(meeting, true).then(()=>{
+              this.operationTools.clearPendingOperations(meeting, true).then(()=>{
                 this.update_meetings();
               });
             },
@@ -444,7 +446,7 @@ export class GroupDetailsPage implements OnInit {
           {
             text: keys['yes'],
             handler: () => {
-              this.dataProvider.clearPendingOperations(meeting).then(()=>{
+              this.operationTools.clearPendingOperations(meeting).then(()=>{
                 this.update_meetings();
               });
             },

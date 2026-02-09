@@ -3,6 +3,7 @@ import { DataProvider, Meeting } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { GroupTools } from '../../providers/group-tools';
+import { OperationTools } from '../../providers/operation-tools';
 
 
 @Component({
@@ -16,16 +17,19 @@ export class DashboardPage implements OnInit {
   country: any = null;
   meetings: any = {};
   lastmeeting: any = {};
-  account: any = {};
+  totals: any = {};
   meeting_status = "";
   upload_status = false;
   network_status = false;
+  num_ECP = 0;
+  collected = 0;
 
   constructor(
     private dataProvider: DataProvider,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private groupTools: GroupTools
+    private groupTools: GroupTools,
+    private operationTools: OperationTools
   ) {
     this.route.url.subscribe(() => {
       this.load_currents(); // Hack to refresh page in every visit!
@@ -48,9 +52,15 @@ export class DashboardPage implements OnInit {
       this.country = current.country;
       this.group = current.group;
       this.meetings = await this.groupTools.get_meetings(this.group)
-      this.account = current.group.totals;
+      this.totals = current.group.totals;
       this.lastmeeting = this.groupTools.get_last_meeting(this.meetings);
       this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group);
+
+      //num of PA transactions
+      this.num_ECP = await this.operationTools.get_num_of_ECP(this.lastmeeting, this.country.id);
+      this.operationTools.estimate_account_totals(null, this.lastmeeting.id).then((data)=>{
+        this.collected = data.cash;
+      })
     }
   }
 

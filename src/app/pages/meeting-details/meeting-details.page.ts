@@ -59,7 +59,7 @@ export class MeetingDetailsPage implements OnInit {
     this.groupid = this.group.id;
     this.country = this.dataProvider.current.country;
     this.currency = this.country.currency;
-   
+
     this.calc_status();
     await this.load_accounts();
   }
@@ -99,7 +99,7 @@ export class MeetingDetailsPage implements OnInit {
         }
         if(acc.type == 2){
           // get meeting history from api
-          await this.dataProvider.refreshMeetingHistory(this.meeting);
+          await this.operTools.refreshMeetingHistory(this.meeting);
           this.new_totals = await this.operTools.estimate_account_totals(acc, this.meeting.id);
         }
         // loan overdues
@@ -161,7 +161,7 @@ export class MeetingDetailsPage implements OnInit {
             this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
               this.load_accounts();
             })*/
-          this.dataProvider.delOperation(tr).then(() => this.load_accounts());
+          this.operTools.delOperation(tr).then(() => this.load_accounts());
           },
         },
         ],
