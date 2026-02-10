@@ -114,11 +114,22 @@ export class MeetingDetailsPage implements OnInit {
           acc.sfloans_expired = true;
         }
         // Calc meeting dues
-        let account_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
-        if(!account_totals.transactions.get('RCB')){
+        acc.missing_contribs = false;
+        let account_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id); 
+        if(!account_totals.transactions.get('RCB') && parseFloat(this.group.settings.regcontribution) > 0){
+          acc.missing_rcb = this.group.settings.regcontribution;
           acc.missing_contribs = true;
-        }else{
-          acc.missing_contribs = false;
+        }
+        if(!account_totals.transactions.get('AST') && parseFloat(this.group.settings.regfacilpayment) > 0){
+          acc.missing_fcp = this.group.settings.regfacilpayment;
+          acc.missing_contribs = true;
+        }
+        if(!account_totals.transactions.get('AID') && parseFloat(this.group.settings.regsfcontribution) > 0){
+          acc.missing_sfcb = this.group.settings.regsfcontribution;
+          acc.missing_contribs = true;
+        }
+        if(account_totals.transactions.get('FIN')){
+          acc.appliedfines = account_totals.transactions.get('FIN');
         }
 
         // dues

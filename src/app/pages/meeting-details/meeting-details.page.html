@@ -111,30 +111,30 @@
           <ion-row>
             <ion-col size="12">
               <div class="due-container ion-margin-vertical">
-                @if(pf(account?.due) > 0){
-                  @if(pf(account?.due_reg) > 0){
+                @if(account?.missing_contribs){
+                  @if(account?.missing_rcb){
                   <p class="warning-text">
                     <ion-icon [name]="account?.icon || 'close'" color="danger"></ion-icon>
-                    {{ 'missing_regular_contribs' | translate }} {{account?.due_reg}} {{currency}}
+                    {{ 'missing_regular_contribs' | translate }} {{account?.missing_rcb}} {{currency}}
                   </p>
                   }
-                  @if(pf(account?.due_sf) > 0){
+                  @if(account?.missing_sfcb){
                   <p class="warning-text">
                     <ion-icon [name]="account?.icon || 'close'" color="danger"></ion-icon>
-                    {{ 'missing_sf_contribs' | translate }} {{account?.due_sf}} {{currency}}
+                    {{ 'missing_sf_contribs' | translate }} {{account?.missing_sfcb}} {{currency}}
                   </p>
                   }
-                  @if(pf(account?.due_facp) > 0){
+                  @if(account?.missing_fcp){
                   <p class="warning-text">
                     <ion-icon [name]="account?.icon || 'close'" color="danger"></ion-icon>
-                    {{ 'missing_facp_contribs' | translate }} {{account.due_facp}} {{currency}}
+                    {{ 'missing_facp_contribs' | translate }} {{account?.missing_fcp}} {{currency}}
                   </p>
                   }
                 }
-                @if(pf(account?.fines) > 0){
+                @if(pf(account?.appliedfines) > 0){
                 <p class="warning-text">
                   <ion-icon [name]="account?.icon || 'warning-outline'" color="warning"></ion-icon>
-                  {{ 'fine_applied' | translate }} {{account.fines}} {{currency}}
+                  {{ 'fine_applied' | translate }} {{account?.appliedfines}} {{currency}}
                 </p>
                 }
               </div>

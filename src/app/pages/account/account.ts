@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AlertController } from '@ionic/angular';
@@ -13,7 +13,7 @@ import { ModalController } from '@ionic/angular';
     styleUrls: ['./account.scss'],
     standalone: false
 })
-export class AccountPage implements AfterViewInit {
+export class AccountPage implements OnInit {
   user =
     {
       username: '',
@@ -37,8 +37,8 @@ export class AccountPage implements AfterViewInit {
     private modalCtrl: ModalController
   ) { }
 
-  ngAfterViewInit() {
-    this.getUser();
+  async ngOnInit() {
+    await this.getUser();
   }
 
   updatePicture() {
@@ -75,7 +75,7 @@ export class AccountPage implements AfterViewInit {
 
   getUser() {
     this.userData.getUser().then((user: any) => {
-      this.user = user;
+      this.user = user;console.log(user);
       switch(user.role){
         case 1:
           this.role = 'Farmer';

@@ -175,10 +175,33 @@
     }
   },
   "messages": {
-    "new-meeting": {
-      "heading": "Welcome to today's meeting",
-      "description": "You'll review contributions and transactions together with the group.",
-      "button": "Start meeting"
+    "meetings":{
+      "new-meeting": {
+        "heading": "Welcome to today's meeting",
+        "description": "You'll review contributions and transactions together with the group.",
+        "button": "Start meeting"
+      },
+      "upload-close":{
+        "heading": "Upload data before closing",
+        "description": "This meeting still has data stored on this device. Please upload it first to make sure everything is safely saved.",
+        "button": "Upload data",
+        "button_1": "Close meeting"
+      },
+      "great":{
+        "heading": "Great meeting!",
+        "description": "Most members are active, the group fund is growing steadily.",
+        "button": "View meeting details"
+      },
+      "good-progress":{
+        "heading": "Good progress",
+        "description": "The group is moving in the right direction.",
+        "button": "View meeting details"
+      },
+      "stable":{
+        "heading": "Stable meeting",
+        "description": "The group is steady, with a few things to improve.",
+        "button": "View meeting details"
+      }
     }
   }
 

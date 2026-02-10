@@ -3,7 +3,8 @@ import { DataProvider } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
 import { TranslateService } from '@ngx-translate/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActionViewComponent } from '../../component/action-view/action-view.component';
 
 @Component({
   selector: 'app-meetings',
@@ -24,7 +25,8 @@ export class MeetingsPage implements OnInit {
     private navCtrl: NavController,
     private groupTools: GroupTools,
     private translate: TranslateService,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -110,7 +112,27 @@ export class MeetingsPage implements OnInit {
 
   async open_details(meeting: any){
     this.dataProvider.current.meeting = meeting;
-    this.navCtrl.navigateForward('/meeting-details');
+    this.translate.get(['messages.new-meeting.heading', 'messages.new-meeting.description', 'messages.new-meeting.button']).subscribe(async (keys)=>{
+      const modal = await this.modalCtrl.create({
+        component: ActionViewComponent,
+        componentProps: {
+          title: 'Group: ' + this.group.name,
+          subtitle: this.country.name + ' · ' + this.group.ville,
+          heading: keys['messages.meetings.new-meeting.heading'],
+          description: keys['messages.meetings.new-meeting.description'],
+          buttons: [
+            {text: keys['messages.meetings.new-meeting.button'], color: 'primary', action:'close'}
+          ]
+        },
+        cssClass: ''
+      });
+      await modal.present();
+      await modal.onWillDismiss().then(()=>{
+        //this.router.navigate(['/meeting-details'], {state: {direction: 'forward'}}); return;
+        this.navCtrl.navigateForward('/meeting-details');
+      });    
+      return;
+    });
   }
 
 }
