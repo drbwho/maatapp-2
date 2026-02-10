@@ -62,7 +62,7 @@ export class MeetingDetailsPage implements OnInit {
     this.country = this.dataProvider.current.country;
     this.currency = this.country.currency;
     this.num_ECP = await this.operTools.get_num_of_ECP(this.meeting, this.country.id);
-    this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);console.log(this.new_totals)
+    this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);
 
     this.calc_status();
     await this.load_accounts();
@@ -113,8 +113,16 @@ export class MeetingDetailsPage implements OnInit {
         if( acc.sfdateecheance != null && (new Date(acc.sfdateecheance) < (new Date()))){
           acc.sfloans_expired = true;
         }
+        // Calc meeting dues
+        let account_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
+        if(!account_totals.transactions.get('RCB')){
+          acc.missing_contribs = true;
+        }else{
+          acc.missing_contribs = false;
+        }
+
         // dues
-        if(acc.due){
+        if(acc.missing_contribs){ //acc.due
           acc.status = "neutral";
         }else if(acc.loans_expired || acc.sfloans_expired){
           acc.status = "sad";

@@ -4,7 +4,7 @@ import { ConfigData } from './config-data';
 import { TranslateService } from '@ngx-translate/core';
 import { formatDate } from '@angular/common';
 import { Events } from './events';
-import { DataProvider } from './provider-data';
+import { DataProvider, Current } from './provider-data';
 import { Network } from '@capacitor/network';
 import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
@@ -313,6 +313,7 @@ export class OperationTools {
         loans: 0.00,
         transactions: new Map<string, number>()
       };
+      let currenttr = 0.00;
       let trans = [];
       await this.refreshMeetingHistory(meetingId);
       this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
@@ -345,8 +346,9 @@ export class OperationTools {
           if(pcode == 'EMP'){
             totals.loans += parseFloat(tr.amount);
           }
-          const current = totals.transactions.get(pcode) || 0;
-          totals.transactions.set(pcode, current + tr.amount);
+          // save transactions' sums
+          currenttr = totals.transactions.get(pcode) || 0.00;
+          totals.transactions.set(pcode, currenttr + parseFloat(tr.amount));
         });
         // iterate in already uploaded transactions
         let uploaded_transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
@@ -367,8 +369,9 @@ export class OperationTools {
               if(pcode == 'EMP'){
                 totals.loans += parseFloat(tr.debit);
               }
-              const current = totals.transactions.get(pcode) || 0;
-              totals.transactions.set(pcode, current + (tr.credit != 0 ? tr.credit : tr.debit));
+              // save transactions' sums
+              currenttr = totals.transactions.get(pcode) || 0.00;
+              totals.transactions.set(pcode, currenttr + parseFloat((tr.credit ? tr.credit : tr.debit)));
             });
           }
         }
