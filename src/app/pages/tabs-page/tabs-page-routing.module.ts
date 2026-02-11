@@ -45,6 +45,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'accounts',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../accounts/accounts.module').then(m => m.AccountsPageModule)
+          },
+        ]
+      },
+      {
         path: 'notifications/:data',
         children: [
           {

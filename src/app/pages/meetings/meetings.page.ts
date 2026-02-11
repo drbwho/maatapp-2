@@ -112,33 +112,38 @@ export class MeetingsPage implements OnInit {
 
   async open_details(meeting: any){
     this.dataProvider.current.meeting = meeting;
-    let meeting_status = 'upload-close';
+    let meet_status = '';
+    if(meeting.pending || meeting.haspending){
+      meet_status = 'upload-close';
+    }else{
+      meet_status = 'great';
+    }
 
-
-    let keys = ['messages.meetings.'+ meeting_status +'.heading', 'messages.meetings.'+ meeting_status +'.description', 'messages.meetings.'+ meeting_status +'.button'];
-    if(meeting_status == 'upload-close'){
-      keys.push('messages.meetings.'+ meeting_status +'.button_1');
+    let keys = ['messages.meetings.'+ meet_status +'.heading', 'messages.meetings.'+ meet_status +'.description', 'messages.meetings.'+ meet_status +'.button'];
+    if(meet_status == 'upload-close'){
+      keys.push('messages.meetings.'+ meet_status +'.button_1');
     }
     this.translate.get(keys).subscribe(async (keys)=>{
       let buttons = [];
-      switch(meeting_status){
+      switch(meet_status){
         case 'upload-close':
           buttons.push(
-            {text: keys['messages.meetings.'+ meeting_status +'.button'], color: 'primary', action:'upload'},
-            {text: keys['messages.meetings.'+ meeting_status +'.button_1'], color: 'light', action:'close'}
-          )
+            {text: keys['messages.meetings.'+ meet_status +'.button'], color: 'primary', action:'upload'});
+          if(!meeting.endedat){
+            buttons.push({text: keys['messages.meetings.'+ meet_status +'.button_1'], color: 'light', action:'close'});
+          }
           break;
         default:
-           buttons.push({text: keys['messages.meetings.'+ meeting_status +'.button'], color: 'primary', action:'view'});
+           buttons.push({text: keys['messages.meetings.'+ meet_status +'.button'], color: 'primary', action:'view'});
            break;
       }
       const modal = await this.modalCtrl.create({
         component: ActionViewComponent,
         componentProps: {
           alttitle: meeting.place,
-          heading: keys['messages.meetings.'+ meeting_status +'.heading'],
-          description: keys['messages.meetings.'+ meeting_status +'.description'],
-          image: 'assets/img/action-views/'+ meeting_status +'-meeting.png',
+          heading: keys['messages.meetings.'+ meet_status +'.heading'],
+          description: keys['messages.meetings.'+ meet_status +'.description'],
+          image: 'assets/img/action-views/'+ meet_status +'-meeting.png',
           hasBackButton: true,
           buttons: buttons
         },

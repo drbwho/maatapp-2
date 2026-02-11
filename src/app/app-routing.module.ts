@@ -16,8 +16,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/intro/intro.module').then(m => m.IntroPageModule)
   },
   {
-    path: 'account',
-    loadChildren: () => import('./pages/account/account.module').then(m => m.AccountModule)
+    path: 'profile',
+    loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
   },
   {
     path: 'support',
@@ -61,10 +61,15 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
-  },  {
+  },
+  {
     path: 'new-meeting',
     loadChildren: () => import('./pages/new-meeting/new-meeting.module').then( m => m.NewMeetingPageModule)
+  },  {
+    path: 'accounts',
+    loadChildren: () => import('./pages/accounts/accounts.module').then( m => m.AccountsPageModule)
   }
+
 
 
 ];

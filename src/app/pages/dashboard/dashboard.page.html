@@ -56,7 +56,7 @@
             <div class="caption">{{'balance' | translate}}</div>
           </div>
           <div class="stat-box">
-            <div class="value">{{lastmeeting?.collection | number:'.0'}}</div>
+            <div class="value">@if(!lastmeeting?.collection){ 0 } @else{ {{lastmeeting?.collection | number:'.0'}} }</div>
             <div class="caption">{{country?.currency}} {{'collected' | translate}}</div>
           </div>
         </div>
@@ -71,7 +71,7 @@
       <ion-label>
         <p class="dashboard-label text-22">{{'group_fund' | translate}}</p>
         <div class="amount-container">
-          <span class="amount">{{totals?.creditdisponible | number:'.2'}}</span>
+          <span class="amount">{{totals?.balance | number:'.2'}}</span>
           <span class="currency">{{country?.currency}}</span>
         </div>
       </ion-label>

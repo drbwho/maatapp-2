@@ -9,7 +9,7 @@ import { AccountInfoComponent } from '../../component/account-info/account-info.
 import { UserData } from '../../providers/user-data';
 import { HistoryComponent } from '../../component/history/history.component';
 import { TranslateService } from '@ngx-translate/core';
-import { AccountPage } from '../account/account';
+import { ProfilePage } from '../profile/profile.page';
 import { OperationTools } from '../../providers/operation-tools';
 
 @Component({
@@ -79,7 +79,7 @@ export class GroupDetailsPage implements OnInit {
 
   async show_account(){
     const modal = await this.modalCtrl.create({
-      component: AccountPage,
+      component: ProfilePage,
       componentProps: {}
     });
     modal.present();

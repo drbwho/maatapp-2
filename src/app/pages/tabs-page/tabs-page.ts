@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { AccountPage } from '../account/account';
+import { ProfilePage } from '../profile/profile.page';
 import { ActionSheetController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage-angular';
@@ -25,9 +25,9 @@ export class TabsPage {
     private navCtrl: NavController
   ){}
 
-  async openAccount(){
+  async openProfile(){
     const modal = await this.modalCtrl.create({
-        component: AccountPage,
+        component: ProfilePage,
         componentProps: { }
       });
       await modal.present();
@@ -49,6 +49,10 @@ export class TabsPage {
       duration: 5000
     });
     toast.present();
+  }
+
+  openAccounts(){
+    this.navCtrl.navigateForward('/app/tabs/accounts');
   }
 
   async openLanguage() {
@@ -83,7 +87,7 @@ export class TabsPage {
           text: keys['account'],
           icon: 'person-circle-outline',
           handler: () => {
-           this.openAccount();
+           this.openProfile();
           },
         },
         {

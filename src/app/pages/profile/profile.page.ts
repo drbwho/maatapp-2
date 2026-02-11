@@ -8,12 +8,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
-    selector: 'page-account',
-    templateUrl: 'account.html',
-    styleUrls: ['./account.scss'],
+    selector: 'app-profile',
+    templateUrl: 'profile.page.html',
+    styleUrls: ['./profile.page.scss'],
     standalone: false
 })
-export class AccountPage implements OnInit {
+export class ProfilePage implements OnInit {
   user =
     {
       username: '',
@@ -75,7 +75,7 @@ export class AccountPage implements OnInit {
 
   getUser() {
     this.userData.getUser().then((user: any) => {
-      this.user = user;console.log(user);
+      this.user = user;
       switch(user.role){
         case 1:
           this.role = 'Farmer';

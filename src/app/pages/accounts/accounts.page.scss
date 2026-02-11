@@ -1,0 +1,116 @@
+/* Header */
+.group-habs-header {
+  --min-height: 100px;
+  --background: url('/assets/img/feather-mono.png') no-repeat left 10px / 70px 72px;
+  --background-color: white;
+  background-color: white;
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 10px;
+    
+    .main-group-title {
+      margin: 0 30px 2px;
+      font-weight: 400;
+    }
+
+    .sub-location {
+      color: black;
+      margin: 0 0 0 30px;
+      letter-spacing: 0.3px;
+    }
+  }
+}
+
+.flag-button {
+  --padding-start: 0px;
+  --padding-end: 0px;
+  margin-right: 5px;
+
+  .flag-circle {
+    width: 44px;  
+    height: 44px;
+    
+    img {
+      object-fit: cover; 
+      //transform: scale(0.8);
+    }
+  }
+}
+
+
+// New CSS
+/* Summary Card Styling */
+.summary-card {
+  --main-teal: #148f7d;
+  background: #EFE6D8;
+  border-radius: 24px;
+  color: #4a4a4a;
+
+  .serif-text { opacity: 0.8; }
+  
+  .stat-value { font-family: 'Inter','serif'; font-size: 44px; font-weight: 400; color: #333; }
+  .stat-label { font-weight: 500; color: #888; }
+
+  .mini-label { font-weight: 600; color: #64594A; display: block; }
+  .stat-row { display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+  .small-val { font-weight: 600; font-size: 14px; }
+
+  .date-box {
+    background: white; border: 1px solid #ddd; border-radius: 4px;
+    padding: 2px 4px; font-size: 10px; font-weight: 800;
+  }
+}
+
+/* Member Item Styling */
+.member-item {
+  --padding-start: 12px;
+  --padding-top: 5px;
+  --padding-bottom: 5px;
+
+  .member-name { color: #161514; }
+  
+  .warning-text {
+    font-size: 11px; display: flex; align-items: normal; gap: 4px;
+    margin: 0px;
+    ion-icon { font-size: 18px; font-weight: 500;}
+  }
+}
+
+/* Badges */
+.badge-container { display: flex; gap: 8px; }
+
+.custom-badge {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; border-radius: 12px; padding: 4px 12px; min-width: 60px;
+  
+  .val { font-weight: 500; }
+  .lab { font-weight: 500; }
+
+  &.balance-badge { background: #e8f9f2; color: #1fb37d; }
+  &.maat-badge { background: #f0f0f0; color: #666; }
+  &.maat-badge-due { background: #FDEEEE; color: #9C2F2F; }
+}
+
+/* Avatars (Smiley faces) */
+ion-avatar {
+  background: #7CC4AE; border-radius: 50%;
+  display: flex; align-items: end; justify-content: center;
+  width: 32px; height: 32px;
+  padding: 0px;
+  font-size: 22px;
+  color: white;
+  &.avatar-neutral { background: #C9C9C9; }
+  &.avatar-sad { background: #F08A8A; }
+}
+
+/* Calendar Icon */
+  .mini-calendar {
+    width: 32px; border-radius: 5px; overflow: hidden; border: 1px solid #ddd;
+    background: white; text-align: center;
+    .cal-top { background: var(--main-teal); color: white; font-size: 8px; padding: 1px; }
+    .cal-bottom { font-size: 13px; font-weight: 800; color: #333; }
+  }
+

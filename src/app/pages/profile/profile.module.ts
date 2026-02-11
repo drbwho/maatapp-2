@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 
-import { AccountPage } from './account';
-import { AccountPageRoutingModule } from './account-routing.module';
+import { ProfilePage } from './profile.page';
+import { ProfilePageRoutingModule } from './profile-routing.module';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -18,7 +18,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     CommonModule,
     IonicModule,
-    AccountPageRoutingModule,
+    ProfilePageRoutingModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -28,7 +28,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     })
   ],
   declarations: [
-    AccountPage,
+    ProfilePage,
   ]
 })
-export class AccountModule { }
+export class ProfilePageModule { }
