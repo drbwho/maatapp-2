@@ -112,7 +112,7 @@ export class NewMeetingPage implements OnInit {
         await alert.present();
       });
     }else{
-      this.translate.get(['messages.new-meeting.heading', 'messages.new-meeting.description', 'messages.new-meeting.button']).subscribe((keys)=>{
+      this.translate.get(['messages.meetings.new-meeting.heading', 'messages.meetings.new-meeting.description', 'messages.meetings.new-meeting.button']).subscribe((keys)=>{
         this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any)=>{
           if(data.meeting){
             this.dataProvider.current.meeting = data.meeting;
@@ -122,10 +122,10 @@ export class NewMeetingPage implements OnInit {
               componentProps: {
                 title: 'Group: ' + this.group.name,
                 subtitle: this.country.name + ' · ' + this.group.ville,
-                heading: keys['messages.new-meeting.heading'],
-                description: keys['messages.new-meeting.description'],
+                heading: keys['messages.meetings.new-meeting.heading'],
+                description: keys['messages.meetings.new-meeting.description'],
                 buttons: [
-                  {text: keys['messages.new-meeting.button'], color: 'primary', action:'close'}
+                  {text: keys['messages.meetings.new-meeting.button'], color: 'primary', action:'close'}
                 ]
               },
               cssClass: ''

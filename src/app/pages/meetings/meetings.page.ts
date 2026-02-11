@@ -60,7 +60,7 @@ export class MeetingsPage implements OnInit {
           icon: 'cloud-upload',
           cssClass:'action-sheet-primary',
           handler: () => {
-            
+
           },
         });
       }
@@ -112,25 +112,45 @@ export class MeetingsPage implements OnInit {
 
   async open_details(meeting: any){
     this.dataProvider.current.meeting = meeting;
-    this.translate.get(['messages.new-meeting.heading', 'messages.new-meeting.description', 'messages.new-meeting.button']).subscribe(async (keys)=>{
+    let meeting_status = 'upload-close';
+
+
+    let keys = ['messages.meetings.'+ meeting_status +'.heading', 'messages.meetings.'+ meeting_status +'.description', 'messages.meetings.'+ meeting_status +'.button'];
+    if(meeting_status == 'upload-close'){
+      keys.push('messages.meetings.'+ meeting_status +'.button_1');
+    }
+    this.translate.get(keys).subscribe(async (keys)=>{
+      let buttons = [];
+      switch(meeting_status){
+        case 'upload-close':
+          buttons.push(
+            {text: keys['messages.meetings.'+ meeting_status +'.button'], color: 'primary', action:'upload'},
+            {text: keys['messages.meetings.'+ meeting_status +'.button_1'], color: 'light', action:'close'}
+          )
+          break;
+        default:
+           buttons.push({text: keys['messages.meetings.'+ meeting_status +'.button'], color: 'primary', action:'view'});
+           break;
+      }
       const modal = await this.modalCtrl.create({
         component: ActionViewComponent,
         componentProps: {
-          title: 'Group: ' + this.group.name,
-          subtitle: this.country.name + ' · ' + this.group.ville,
-          heading: keys['messages.meetings.new-meeting.heading'],
-          description: keys['messages.meetings.new-meeting.description'],
-          buttons: [
-            {text: keys['messages.meetings.new-meeting.button'], color: 'primary', action:'close'}
-          ]
+          alttitle: meeting.place,
+          heading: keys['messages.meetings.'+ meeting_status +'.heading'],
+          description: keys['messages.meetings.'+ meeting_status +'.description'],
+          image: 'assets/img/action-views/'+ meeting_status +'-meeting.png',
+          hasBackButton: true,
+          buttons: buttons
         },
         cssClass: ''
       });
       await modal.present();
-      await modal.onWillDismiss().then(()=>{
+      await modal.onWillDismiss().then((data)=>{
         //this.router.navigate(['/meeting-details'], {state: {direction: 'forward'}}); return;
-        this.navCtrl.navigateForward('/meeting-details');
-      });    
+        if(data.data!='close'){
+          this.navCtrl.navigateForward('/meeting-details');
+        }
+      });
       return;
     });
   }

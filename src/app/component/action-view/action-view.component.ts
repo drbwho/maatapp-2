@@ -9,8 +9,9 @@ import { CommonModule } from '@angular/common';
   imports: [IonicModule, CommonModule],
 })
 export class ActionViewComponent {
-  @Input() title: string;
-  @Input() subtitle: string;
+  @Input() title?: string;
+  @Input() alttitle?: string;
+  @Input() subtitle?: string;
   @Input() image?: string;
   @Input() heading?: string;
   @Input() description?: string;

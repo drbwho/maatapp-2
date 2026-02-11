@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="ion-text-center ion-margin-top"><h3>{{ title }}</h3></ion-title>
+    @if(title){ <ion-title class="ion-text-center ion-margin-top"><h3>{{ title }}</h3></ion-title> }
+    @if(alttitle){ <ion-title class="ion-text-center ion-margin-top"><h2>{{ alttitle }}</h2></ion-title> }
     <p class="text-12 ion-text-center ion-no-margin">{{ subtitle }}</p>
   </ion-toolbar>
   <ion-toolbar>
