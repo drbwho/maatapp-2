@@ -133,12 +133,12 @@ export class MeetingDetailsPage implements OnInit {
         }
 
         // dues
+        acc.status = "happy";
         if(acc.missing_contribs){ //acc.due
           acc.status = "neutral";
-        }else if(acc.loans_expired || acc.sfloans_expired){
+        }
+        if(acc.loans_expired || acc.sfloans_expired){
           acc.status = "sad";
-        }else{
-          acc.status = "happy";
         }
       });
       // Show only member accounts

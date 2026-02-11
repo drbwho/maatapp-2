@@ -111,7 +111,7 @@
   "total_group_fund": "Total Group fund",
   "group_summary": "Group summary",
   "total_outstanding_maats": "Total outstanding maats",
-  "number_of_active_maats": "number of active maats",
+  "number_of_active_maats": "Number of active maats",
   "active_maats": "Active maats",
   "start_new_meeting": "Start New Meeting",
   "last_meeting": "Last meeting",
@@ -126,6 +126,9 @@
   "missing_sf_contribs": "Missing: Solidarity",
   "missing_facp_contribs": "Missing: Facilitator",
   "fine_applied": "Fine applied:",
+  "the_group_is_ready": "The Group is ready",
+  "eligible_for_maat": "Eligible for maat",
+  "not_eligible_for_maat": "Not eligible for maat!",
   "intro": {
     "page-1": {
       "title": "Welcome to MA'AT",
@@ -180,6 +183,8 @@
   },
   "messages": {
     "meetings":{
+      "intro": "This space helps you review member accounts. Transactions are recorded together during group meetings.",
+      "new-meeting-intro": "Just a few final steps left. Set the meeting location and dates to move forward.",
       "new-meeting": {
         "heading": "Welcome to today's meeting",
         "description": "You'll review contributions and transactions together with the group.",

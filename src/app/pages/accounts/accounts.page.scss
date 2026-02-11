@@ -67,13 +67,13 @@
 /* Member Item Styling */
 .member-item {
   --padding-start: 12px;
-  --padding-top: 5px;
+  --padding-top: 10px;
   --padding-bottom: 5px;
 
   .member-name { color: #161514; }
   
   .warning-text {
-    font-size: 11px; display: flex; align-items: normal; gap: 4px;
+    font-size: 11px !important; display: flex; align-items: normal; gap: 4px;
     margin: 0px;
     ion-icon { font-size: 18px; font-weight: 500;}
   }
@@ -89,7 +89,7 @@
   .val { font-weight: 500; }
   .lab { font-weight: 500; }
 
-  &.balance-badge { background: #e8f9f2; color: #1fb37d; }
+  &.balance-badge { background: #e8f9f2; color: #1fb37d; margin-left: auto;}
   &.maat-badge { background: #f0f0f0; color: #666; }
   &.maat-badge-due { background: #FDEEEE; color: #9C2F2F; }
 }
@@ -104,6 +104,8 @@ ion-avatar {
   color: white;
   &.avatar-neutral { background: #C9C9C9; }
   &.avatar-sad { background: #F08A8A; }
+  float: left;
+  margin-right: 10px;
 }
 
 /* Calendar Icon */

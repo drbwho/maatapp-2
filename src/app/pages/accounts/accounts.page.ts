@@ -124,16 +124,16 @@ export class AccountsPage implements OnInit {
         }
         if(account_totals.transactions.get('FIN')){
           acc.appliedfines = account_totals.transactions.get('FIN');
-        }
+        }*/
 
         // dues
-        if(acc.missing_contribs){ //acc.due
+        acc.status = "happy";
+        if(acc.due){
           acc.status = "neutral";
-        }else if(acc.loans_expired || acc.sfloans_expired){
+        }
+        if(acc.loans_expired || acc.sfloans_expired){
           acc.status = "sad";
-        }else{
-          acc.status = "happy";
-        }*/
+        }
       });
       // Show only member accounts
       this.accounts = this.allaccounts.filter((a)=> a.type == 1);

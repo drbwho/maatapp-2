@@ -40,6 +40,21 @@
   }
 }
 
+// MEETING STATUS
+ion-item.meeting-status-item {
+  --background: url('/assets/img/intro/meetings-main.png') no-repeat right bottom / 50% auto;
+  background-color: #F3F1EC;
+  --min-height: 130px;
+  h4 {
+    color: #393734;
+  }
+  ion-label {
+    color: #757575 !important;
+    flex: 0 0 51% !important; 
+    overflow: hidden;
+  }
+}
+
 cdk-virtual-scroll-viewport {
   height: 100%;
   width: 100%;

@@ -24,6 +24,15 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item lines="none" class="meeting-status-item ion-margin-horizontal ion-border-rounded-20">
+      <ion-label>
+        <h4>{{'meetings' | translate}}</h4>
+        <p>{{'messages.meetings.intro' | translate}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
   <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round" 
     [disabled]="meeting_status != 'no-active'"
     routerLink="/new-meeting" routerDirection="forward">{{'start_new_meeting' | translate}}</ion-button>

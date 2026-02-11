@@ -15,6 +15,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+    <ion-list>
+    <ion-item lines="none" class="meeting-status-item ion-margin-horizontal ion-border-rounded-20">
+      <ion-label>
+        <h4>{{'the_group_is_ready' | translate}}</h4>
+        <p>{{'messages.meetings.new-meeting-intro' | translate}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
   <ion-list>
     <ion-item lines="none" color="light" class="ion-border-rounded-10 ion-margin-start ion-margin-end ion-margin-bottom">
