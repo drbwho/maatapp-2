@@ -275,22 +275,35 @@ export class AccountsPage implements OnInit {
   }
 
   async show_progress(){
-      let group_status = this.groupTools.get_group_status(this.group);
-      let keys = ['messages.accounts.'+ group_status +'.heading', 'messages.accounts.'+ group_status +'.description', 'messages.accounts.view_members_details'];
+      let group_status: string;
+      if(this.group.groupstatus >= 2.8){
+        group_status = 'great';       
+      }else if(this.group.groupstatus >= 2.6){
+        group_status = 'well';
+      }else if(this.group.groupstatus >= 2.5){
+        group_status = 'stable';
+      }else{
+        group_status = 'attention';
+      }
+
+      let keys = ['messages.accounts.'+ group_status +'.heading', 'messages.accounts.'+ group_status +'.description',
+         'messages.accounts.view_members_details', 'total_outstanding_maats'];
 
       this.translate.get(keys).subscribe(async (keys)=>{
-        let buttons = [];
-        switch(group_status){
-          case 2:
+        let info: string;
+        if(group_status == 'great' || group_status == 'well'){ info = '<h1>'+ this.group.totals.balance +'</h1>'; }
+        else if(group_status == 'stable'){}
+        else if(group_status == 'attention'){ info = "<h1>"+ this.group.totals.restearembourser +"</h1>\
+          <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>"; }
 
-        }
         const modal = await this.modalCtrl.create({
           component: ActionViewComponent,
           componentProps: {
             alttitle: this.group.name,
-            heading: keys['messages.accounts.heading'],
-            description: keys['messages.accounts.description'],
-            image: 'assets/img/action-views/'+ group_status +'-meeting.png',
+            heading: keys['messages.accounts.'+ group_status +'.heading'],
+            description: keys['messages.accounts.'+ group_status +'.description'],
+            information: info,
+            image: 'assets/img/action-views/'+ group_status +'-group.png',
             hasBackButton: true,
             buttons: [{text: keys['messages.accounts.view_members_details'], color: 'primary'}]
           },

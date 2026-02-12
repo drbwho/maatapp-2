@@ -214,7 +214,23 @@
       }
     },
     "accounts":{
-      "view_members_details": "View members details"
+      "view_members_details": "View members details",
+      "great":{
+        "heading": "Your group is doing great",
+        "description": "Most members are active, the fund is alive and growing."
+      },
+      "well":{
+        "heading": "Your group is doing well",
+        "description": "The group is stable, with good participation and room to grow."
+      },
+      "stable":{
+        "heading": "Your group is stable",
+        "description": "Some payments and maats may need attention before the next meeting."
+      },
+      "attention":{
+        "heading": "Your group needs attention",
+        "description": "Several payments or maats are overdue and should be addressed before the next meeting."
+      }
     }
   }
 

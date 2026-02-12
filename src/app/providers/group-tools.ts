@@ -79,23 +79,4 @@ export class GroupTools {
       return (prev.startedat > current.startedat) ? prev : current;
     });
   }
-
-  get_group_status(group: any){
-    const params = ["on_time_loans", "reg_contributions", "attendance", "value_balance_loans", "value_credit", "collectives"];
-    const weights ={
-      [params[0]]: { high: 0.9, low: 0.6, weight: 0.3 },
-      [params[0]]: { high: 0.9, low: 0.6, weight: 0.2 },
-      [params[0]]: { high: 0.8, low: 0.5, weight: 0.15 },
-      [params[0]]: { high: 1, low: 1, weight: 0.15 },
-      [params[0]]: { high: 0.4, low: 0.2, weight: 0.1 },
-      [params[0]]: { high: 18, low: 0.6, weight: 0.1 }
-    };
-
-    let values = [];
-    values.push(group.numofloans ? group.paidloans / group.numofloans : 0);
-
-
-    return 2;
-  }
-
 }
