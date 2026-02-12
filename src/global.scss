@@ -139,7 +139,7 @@ p {
       color: #333 !important;
     }
   }
-  
+
   .action-sheet-primary {
     background-color: var(--ion-color-primary) !important;
     border-radius: 20px !important;
@@ -164,5 +164,17 @@ p {
 .lang-modal-sheet {
   --border-radius: 30px;
   overflow: hidden;
+}
+
+.searchbar-input-container {
+  width: 98% !important;
+}
+.searchbar-input {
+  border-radius: 20px !important;
+  line-height: 24px !important;
+  font-size: 12px !important;
+}
+.searchbar-search-icon {
+  color: #b4b3b3!important;
 }
 

@@ -129,6 +129,7 @@
   "the_group_is_ready": "The Group is ready",
   "eligible_for_maat": "Eligible for maat",
   "not_eligible_for_maat": "Not eligible for maat!",
+  "days_left": "days left",
   "intro": {
     "page-1": {
       "title": "Welcome to MA'AT",
@@ -211,6 +212,9 @@
         "description": "The group is steady, with a few things to improve.",
         "button": "View meeting details"
       }
+    },
+    "accounts":{
+      "view_members_details": "View members details"
     }
   }
 

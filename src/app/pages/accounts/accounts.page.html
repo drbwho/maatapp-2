@@ -21,13 +21,16 @@
       <ion-label>Back</ion-label>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar color="light" [(placeholder)]="searchPlaceholder" [(ngModel)]="queryText" (ionChange)="search_accounts()" (ionInput)="search_accounts()"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  
-  <div class="summary-card ion-padding">
+<ion-content class="">
+
+  <div class="summary-card ion-padding ion-margin">
     <h3 class="serif-text ion-no-margin">{{'group_summary' | translate}}</h3>
-    
+
     <ion-grid class="ion-no-padding ion-margin-top">
       <ion-row>
         <ion-col class="ion-text-center">
@@ -46,20 +49,24 @@
     </ion-grid>
   </div>
 
-  <ion-list class="ion-margin-top" lines="none">
+  <ion-list class="ion-margin" lines="none">
     @for (account of accounts; track account.id) {
       <ion-item class="member-item ion-margin-bottom ion-border-rounded-20" color="light">
         <ion-grid class="ion-no-padding ion-no-margin">
 
           <ion-row>
-            <ion-col size="7">        
+            <ion-col size="7">
               <ion-avatar [class]="'avatar-' + account?.status">
                 <div class="status-icon">
                   <ion-icon [name]="account?.status == 'sad'? account?.status : 'happy'"></ion-icon>
                 </div>
               </ion-avatar>
-              <ion-label>
-                <h5 class="member-name">{{ account.owner }}</h5>
+              <ion-label class="member-label">
+                <h5 class="member-name ion-no-margin">{{ account.owner }}</h5>
+                @if(account?.loans_to_be_expired){
+                  <ion-badge class="due-warning">{{account?.loans_to_be_expired}} {{'days_left' | translate}}</ion-badge>
+                }
+
               </ion-label>
               <p class="warning-text">
               @if(pf(account?.creditdisponible) > 0){
@@ -72,10 +79,17 @@
             <ion-col size="5">
               <div class="badge-container">
                 @if (pf(account?.restearembourser) > 0) {
-                <div [class]="account?.loans_expired ? 'custom-badge maat-badge-due' : 'custom-badge maat-badge'">
-                  <span class="val text-16">{{ account.restearembourser }}</span>
-                  <span class="lab text-12">Maat</span>
-                </div>
+                  @if(account?.loans_to_be_expired){
+                    <div class="custom-badge maat-badge-to-due">
+                      <span class="val text-16">{{ account.restearembourser }}</span>
+                      <span class="lab text-12">Maat</span>
+                    </div>
+                  }@else{
+                    <div [class]="account?.loans_expired ? 'custom-badge maat-badge-due' : 'custom-badge maat-badge'">
+                      <span class="val text-16">{{ account.restearembourser }}</span>
+                      <span class="lab text-12">Maat</span>
+                    </div>
+                  }
                 }
                 @if (account.balance) {
                 <div class="custom-badge balance-badge">

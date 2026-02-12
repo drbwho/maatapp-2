@@ -8,6 +8,8 @@ import { AccountInfoComponent } from '../../component/account-info/account-info.
 import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
+import { GroupTools } from '../../providers/group-tools';
+import { ActionViewComponent } from '../../component/action-view/action-view.component';
 
 @Component({
     selector: 'app-accounts',
@@ -34,16 +36,17 @@ export class AccountsPage implements OnInit {
   }
   selectedAll: boolean = false;
   selectedAccounts = 0;
+  queryText: string = "";
+  searchPlaceholder: string = "";
   public pf = parseFloat;
 
   constructor(
     private dataProvider: DataProvider,
     private modalCtrl: ModalController,
-    private storage: Storage,
-    private config: ConfigData,
     private alertCtrl: AlertController,
     private operTools: OperationTools,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private groupTools: GroupTools
   ) { }
 
   ngOnInit() {
@@ -60,6 +63,7 @@ export class AccountsPage implements OnInit {
 
     //this.calc_status();
     await this.load_accounts();
+    this.show_progress();
   }
 
   /*calc_status(){
@@ -77,9 +81,9 @@ export class AccountsPage implements OnInit {
 
   load_accounts(){
     this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
-      this.allaccounts = data.filter((s)=> s.statut == 0); //active accounts
-      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
+      this.allaccounts = data.filter((s)=> s.statut == 0 && s.type == 1); //active accounts & member acounts
+      //let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      //let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
 
       // load pending transactions for each account
       this.allaccounts.forEach(async (acc) => {
@@ -101,15 +105,29 @@ export class AccountsPage implements OnInit {
           this.new_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
         }*/
         // loan overdues
+
         if( acc.dateecheance != null && (new Date(acc.dateecheance) < (new Date()))){
           acc.loans_expired = true;
+        }else{
+          const diffInMs = Math.abs((new Date()).getTime() - (new Date(acc.dateecheance)).getTime());
+          const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+          if(diffInDays < 10){
+            acc.loans_to_be_expired = diffInDays;
+          }
         }
         if( acc.sfdateecheance != null && (new Date(acc.sfdateecheance) < (new Date()))){
           acc.sfloans_expired = true;
+        }else{
+          const diffInMs = Math.abs((new Date()).getTime() - (new Date(acc.sfdateecheance)).getTime());
+          const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+          if(diffInDays < 10){
+            acc.sfloans_to_be_expired = diffInDays;
+          }
         }
+
         // Calc meeting dues
         /*acc.missing_contribs = false;
-        let account_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id); 
+        let account_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
         if(!account_totals.transactions.get('RCB') && parseFloat(this.group.settings.regcontribution) > 0){
           acc.missing_rcb = this.group.settings.regcontribution;
           acc.missing_contribs = true;
@@ -135,8 +153,7 @@ export class AccountsPage implements OnInit {
           acc.status = "sad";
         }
       });
-      // Show only member accounts
-      this.accounts = this.allaccounts.filter((a)=> a.type == 1);
+      this.accounts = this.allaccounts;
     });
   }
 
@@ -236,5 +253,51 @@ export class AccountsPage implements OnInit {
     await modal.onWillDismiss();
   }*/
 
+  search_accounts(){
+    if(this.queryText == ''){
+      this.accounts = this.allaccounts;
+      return;
+    }
+
+    let queryText = this.queryText.toLowerCase().replace(/,|\.|-/g, ' ');
+    const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
+
+    this.accounts = [];
+    this.allaccounts.forEach((gr: any) => {
+      if (queryWords.length) {
+        queryWords.forEach((queryWord: string) => {
+          if (gr.owner.toLowerCase().indexOf(queryWord) > -1) {
+            this.accounts.push(gr);
+          }
+        });
+      }
+    });
+  }
+
+  async show_progress(){
+      let group_status = this.groupTools.get_group_status(this.group);
+      let keys = ['messages.accounts.'+ group_status +'.heading', 'messages.accounts.'+ group_status +'.description', 'messages.accounts.view_members_details'];
+
+      this.translate.get(keys).subscribe(async (keys)=>{
+        let buttons = [];
+        switch(group_status){
+          case 2:
+
+        }
+        const modal = await this.modalCtrl.create({
+          component: ActionViewComponent,
+          componentProps: {
+            alttitle: this.group.name,
+            heading: keys['messages.accounts.heading'],
+            description: keys['messages.accounts.description'],
+            image: 'assets/img/action-views/'+ group_status +'-meeting.png',
+            hasBackButton: true,
+            buttons: [{text: keys['messages.accounts.view_members_details'], color: 'primary'}]
+          },
+          cssClass: ''
+        });
+        await modal.present();
+      });
+    }
 }
 

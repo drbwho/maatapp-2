@@ -10,7 +10,7 @@
     flex-direction: column;
     justify-content: center;
     padding-top: 10px;
-    
+
     .main-group-title {
       margin: 0 30px 2px;
       font-weight: 400;
@@ -30,11 +30,11 @@
   margin-right: 5px;
 
   .flag-circle {
-    width: 44px;  
+    width: 44px;
     height: 44px;
-    
+
     img {
-      object-fit: cover; 
+      object-fit: cover;
       //transform: scale(0.8);
     }
   }
@@ -50,7 +50,7 @@
   color: #4a4a4a;
 
   .serif-text { opacity: 0.8; }
-  
+
   .stat-value { font-family: 'Inter','serif'; font-size: 44px; font-weight: 400; color: #333; }
   .stat-label { font-weight: 500; color: #888; }
 
@@ -71,7 +71,27 @@
   --padding-bottom: 5px;
 
   .member-name { color: #161514; }
-  
+  .member-label {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    white-space: normal;
+    align-items: center;
+    column-gap: 5px;
+    row-gap: 3px;
+
+    h5 {
+      flex-shrink: 0;
+      margin: 0;
+    }
+    .due-warning {
+      font-size: 10px;
+      background-color: #E6A23C;
+      padding: 3px 10px 3px 7px;
+      border-radius: 10px;
+    }
+}
+
   .warning-text {
     font-size: 11px !important; display: flex; align-items: normal; gap: 4px;
     margin: 0px;
@@ -85,13 +105,14 @@
 .custom-badge {
   display: flex; flex-direction: column; align-items: center;
   justify-content: center; border-radius: 12px; padding: 4px 12px; min-width: 60px;
-  
+
   .val { font-weight: 500; }
   .lab { font-weight: 500; }
 
   &.balance-badge { background: #e8f9f2; color: #1fb37d; margin-left: auto;}
   &.maat-badge { background: #f0f0f0; color: #666; }
   &.maat-badge-due { background: #FDEEEE; color: #9C2F2F; }
+  &.maat-badge-to-due { background: #FFF7E6; color: #B17114; }
 }
 
 /* Avatars (Smiley faces) */
