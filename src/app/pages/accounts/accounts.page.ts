@@ -20,7 +20,7 @@ import { ActionViewComponent } from '../../component/action-view/action-view.com
 export class AccountsPage implements OnInit {
   groupname: string;
   currency: string;
-  country: any;
+  country: any = {flagcode: 'gb'};
   group: any;
   groupid: string;
   allaccounts: any;
@@ -275,44 +275,47 @@ export class AccountsPage implements OnInit {
   }
 
   async show_progress(){
-      let group_status: string;
-      if(this.group.groupstatus >= 2.8){
-        group_status = 'great';
-      }else if(this.group.groupstatus >= 2.6){
-        group_status = 'well';
-      }else if(this.group.groupstatus >= 2.5){
-        group_status = 'stable';
+      let group_health: string;
+      if(this.group.grouphealth >= 2.8){
+        group_health = 'great';
+      }else if(this.group.grouphealth >= 2.6){
+        group_health = 'well';
+      }else if(this.group.grouphealth >= 2.5){
+        group_health = 'stable';
       }else{
-        group_status = 'attention';
+        group_health = 'attention';
       }
-      //let lastcollection =  (await this.groupTools.get_last_meeting(this.groupTools.get_meetings(this.group))).collection;
+
       let lastcollection = this.group.lastmeeting.collection;
 
-      let keys = ['messages.accounts.'+ group_status +'.heading', 'messages.accounts.'+ group_status +'.description',
-         'messages.accounts.view_members_details', 'total_outstanding_maats', "since_last_meeting", "overdue"];
+      let keys = ['messages.accounts.'+ group_health +'.heading', 'messages.accounts.'+ group_health +'.description',
+        'messages.accounts.view_members_details', 'total_outstanding_maats', "since_last_meeting", "overdue",
+        "members_have_pending_payments"];
 
       this.translate.get(keys).subscribe(async (keys)=>{
         let info: string;
         let badge: any = null;
-        if(group_status == 'great' || group_status == 'well'){
-          info = "<h1>"+ this.group.totals.balance +"</h1> \
+        if(group_health == 'great' || group_health == 'well'){
+          info = "<h1 class='emphassis'>"+ this.group.totals.balance +"</h1> \
             <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
-          badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']} }
-        else if(group_status == 'stable'){}
-        else if(group_status == 'attention'){
-          info = "<h1>"+ this.group.totals.restearembourser +"</h1>\
+          badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']} 
+        }else if(group_health == 'stable'){
+           info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
+            <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
+        }else if(group_health == 'attention'){
+          info = "<h1 class='ion-no-margin'>"+ this.group.totals.restearembourser +"</h1>\
             <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>";
-          badge = {class: 'danger', information: this.group.totals.restearembourser + " "+ keys['overdue']} }
+          badge = {class: 'danger', information: this.group.numdueloans + " "+ keys['overdue']} }
 
         const modal = await this.modalCtrl.create({
           component: ActionViewComponent,
           componentProps: {
             alttitle: this.group.name,
-            heading: keys['messages.accounts.'+ group_status +'.heading'],
-            description: keys['messages.accounts.'+ group_status +'.description'],
+            heading: keys['messages.accounts.'+ group_health +'.heading'],
+            description: keys['messages.accounts.'+ group_health +'.description'],
             information: info,
             badge: badge,
-            image: 'assets/img/action-views/'+ group_status +'-group.png',
+            image: 'assets/img/action-views/'+ group_health +'-group.png',
             hasBackButton: true,
             buttons: [{text: keys['messages.accounts.view_members_details'], color: 'primary'}]
           },

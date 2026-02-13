@@ -31,7 +31,7 @@
     <ion-grid class="ion-no-padding ion-margin-top">
       <ion-row>
         <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">{{ meeting?.collection | number:'.0'}}</h1>
+          <h1 class="stat-value ion-no-margin">@if(meeting?.collection > 0){ {{ meeting?.collection | number:'.0'}} }@else{ 0 }</h1>
           <p class="stat-label text-12">{{currency}} {{'collected' | translate}}</p>
         </ion-col>
         <ion-col class="ion-text-center">
@@ -92,13 +92,13 @@
             </ion-col>
             <ion-col size="5">
               <div class="badge-container">
-                @if (account?.restearembourser) {
-                <div [class]="account?.loans_expired ? 'custom-badge maat-badge-due' : 'custom-badge maat-badge'">
+                @if (pf(account?.restearembourser) > 0) {
+                <div [class]="account?.loans_expired ? 'custom-badge maat-badge-due' : 'custom-badge maat-badge'" slot="end">
                   <span class="val text-16">{{ account.restearembourser }}</span>
                   <span class="lab text-12">Maat</span>
                 </div>
                 }
-                @if (account.balance) {
+                @if (pf(account?.balance) > 0) {
                 <div class="custom-badge balance-badge">
                   <span class="val text-16">{{ account.balance }}</span>
                   <span class="lab text-12">Balance</span>

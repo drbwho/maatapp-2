@@ -51,10 +51,6 @@ export class TabsPage {
     toast.present();
   }
 
-  openAccounts(){
-    this.navCtrl.navigateForward('/app/tabs/accounts');
-  }
-
   async openLanguage() {
     const modal = await this.modalCtrl.create({
       component: SelectLangComponent,

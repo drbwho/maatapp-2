@@ -20,7 +20,7 @@ export class MeetingDetailsPage implements OnInit {
   meetingdate: string;
   groupname: string;
   currency: string;
-  country: any;
+  country: any = {flagcode: 'gb'};
   group: any;
   groupid: string;
   meeting: any;
@@ -81,12 +81,12 @@ export class MeetingDetailsPage implements OnInit {
     this.fullDate = this.meeting.endedat ? this.meeting.endedat : this.meeting.startedat;
   }
 
-  load_accounts(){
+  async load_accounts(){console.log('load accounts')
+    let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+    let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
+
     this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
       this.allaccounts = data.filter((s)=> s.statut == 0); //active accounts
-      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
-
       // load pending transactions for each account
       this.allaccounts.forEach(async (acc) => {
         if(transactions){

@@ -315,7 +315,7 @@ export class OperationTools {
       };
       let currenttr = 0.00;
       let trans = [];
-      await this.refreshMeetingHistory(meetingId);
+      //await this.refreshMeetingHistory(meetingId); history is already refreshed! by total_ECP
       this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
         if(data){
           trans = data.filter(s => s.meetingid == meetingId);

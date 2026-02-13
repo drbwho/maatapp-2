@@ -34,7 +34,7 @@
     <ion-grid class="ion-no-padding ion-margin-top">
       <ion-row>
         <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">{{ group?.totals.balance | number:'.0'}}</h1>
+          <h1 class="stat-value ion-no-margin">{{ pf(group?.totals.balance) | number:'.0'}}</h1>
           <p class="stat-label text-12">{{'total_group_fund' | translate}}</p>
         </ion-col>
         <ion-col class="ion-text-center">
@@ -91,7 +91,7 @@
                     </div>
                   }
                 }
-                @if (account.balance) {
+                @if (pf(account?.balance) > 0) {
                 <div class="custom-badge balance-badge">
                   <span class="val text-16">{{ account.balance }}</span>
                   <span class="lab text-12">Balance</span>
