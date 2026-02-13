@@ -16,6 +16,7 @@ export class ActionViewComponent {
   @Input() heading?: string;
   @Input() description?: string;
   @Input() information?: string;
+  @Input() badge?: any;
   @Input() hasBackButton? = false;
   @Input() buttons?: any;
 

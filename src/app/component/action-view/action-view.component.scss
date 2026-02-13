@@ -23,3 +23,22 @@
   padding: 0 20px;
 }
 
+h1 {
+  margin-bottom: 0 !important;
+}
+
+ion-badge.danger {
+  font-size: 12px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 20px;
+  &.danger {
+    background-color: #F9D2D2;
+    color: #9C2F2F;
+  }
+  &.success {
+    background-color: #CFEAE0;
+    color: #068C75;
+  }
+}
+
