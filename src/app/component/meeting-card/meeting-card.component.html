@@ -1,15 +1,49 @@
-<ion-item class="card-container" [class]="status()" lines="none" [detail]="status() === 'closed'">
+<ion-item class="card-container" [class]="status()" lines="none">
   <ion-grid class="ion-no-padding">
     
     <ion-row class="ion-align-items-start ion-margin-bottom">
-      <ion-col size="7">
-        <h4 class="title-serif">
-          {{ meeting$()?.place }} <ion-icon name="chevron-forward-outline" class="title-chevron"></ion-icon>
+      <ion-col size="12">
+        <h4 class="title-serif" [class]="status()">
+          {{ meeting$()?.place }}
+          @if(status() == 'closed'){
+           · &nbsp; <span class="date-label" >{{ fullDate() | date: 'MMM d'}}</span>
+          }
+          <ion-icon name="chevron-forward-outline" class="title-chevron"></ion-icon>
         </h4>
       </ion-col>
-      
-      <ion-col size="5" class="ion-text-end">
-        @if (status() == 'progress') {
+    </ion-row>
+
+    <ion-row class="info-row">
+      <ion-col size="4">
+        <div class="info-content">
+          <div class="icon-container">
+            <ion-img src="assets/img/icons/calendar.png"></ion-img>
+          </div>
+          <span class="info-text text-16" [class]="status()">{{ fullDate() | date: 'MMM d'}}</span>
+        </div>
+        <span class="status-label text-12" [class]="status()">{{ status() === 'progress' ? 'opened' : 'closed' | translate}}</span>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="info-content">
+          <span class="icon-emoji">🤝</span>
+          <span class="info-text text-16">{{ attendance }} / {{group?.numberofmembers}}</span>
+        </div>
+        <span class="status-label text-12">ATTENDED</span>
+      </ion-col>
+
+      @if (status() === 'closed' && meeting$()?.collection) {
+        <ion-col size="4">
+          <div class="info-content">
+            <span class="icon-emoji">🏺</span>
+            <span class="info-text text-16">{{ meeting$()?.collection | number:'.0'}}</span>
+          </div>
+          <span class="status-label text-12">COLLECTED</span>
+        </ion-col>
+      }
+
+      @if (status() == 'progress') {
+        <ion-col size="4" class="ion-text-end">
           <div class="progress-indicator">
             <div class="status-boxes">
               <span class="box active"></span>
@@ -20,9 +54,9 @@
               }
               <span class="box empty"></span>
             </div>
-            <p class="status-label text-12">In progress @if(meeting$()?.haspending){ / Sync }</p>
+            <span class="status-label text-12">In progress @if(meeting$()?.haspending){ / Sync }</span>
           </div>
-        } <!--@else {
+        <!--@else {
           <div class="closed-action">
             <ion-button fill="clear" color="dark" class="circle-btn">
               <ion-icon name="chevron-forward-outline" slot="icon-only"></ion-icon>
@@ -30,36 +64,6 @@
           </div>
         }-->
       </ion-col>
-    </ion-row>
-
-    <ion-row class="info-row">
-      <ion-col [size]="status() === 'closed' ? 4 : 5">
-        <span class="top-label text-12">{{ status() === 'progress' ? 'OPENED' : 'CLOSED' }}</span>
-        <div class="info-content">
-          <div class="mini-calendar">
-            <div class="cal-top">{{ fullDate() | date: 'MMM' }}</div>
-            <div class="cal-bottom">{{ fullDate() | date: 'd'}}</div>
-          </div>
-          <span class="info-text text-16">{{ fullDate() | date: 'MMM d'}}</span>
-        </div>
-      </ion-col>
-
-      <ion-col [size]="status() === 'closed' ? 4 : 7">
-        <span class="top-label text-12">ATTENDED</span>
-        <div class="info-content">
-          <span class="icon-emoji">🤝</span>
-          <span class="info-text text-16">{{ attendance }} / {{group?.numberofmembers}}</span>
-        </div>
-      </ion-col>
-
-      @if (status() === 'closed' && meeting$()?.collection) {
-        <ion-col size="4">
-          <span class="top-label text-12">COLLECTED</span>
-          <div class="info-content">
-            <span class="icon-emoji">🏺</span>
-            <span class="info-text text-16">{{ meeting$()?.collection | number:'.0'}}</span>
-          </div>
-        </ion-col>
       }
     </ion-row>
   </ion-grid>
