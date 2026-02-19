@@ -131,6 +131,9 @@
   "not_eligible_for_maat": "Not eligible for maat!",
   "days_left": "days left",
   "overdue": "Overdue",
+  "attended": "Attended",
+  "closed": "Closed",
+  "opened": "Opened",
   "intro": {
     "page-1": {
       "title": "Welcome to MA'AT",

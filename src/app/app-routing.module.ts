@@ -51,8 +51,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/groups/groups.module').then( m => m.GroupsPageModule)
   },
   {
-    path: 'meeting-details',
-    loadChildren: () => import('./pages/meeting-details/meeting-details.module').then( m => m.MeetingDetailsPageModule)
+    path: 'meeting-history',
+    loadChildren: () => import('./pages/meeting-history/meeting-history.module').then( m => m.MeetingHistoryPageModule)
   },
   {
     path: 'group-details',
@@ -65,9 +65,14 @@ const routes: Routes = [
   {
     path: 'new-meeting',
     loadChildren: () => import('./pages/new-meeting/new-meeting.module').then( m => m.NewMeetingPageModule)
-  },  {
+  },
+  {
     path: 'accounts',
     loadChildren: () => import('./pages/accounts/accounts.module').then( m => m.AccountsPageModule)
+  },
+  {
+    path: 'meeting-transactions',
+    loadChildren: () => import('./pages/meeting-transactions/meeting-transactions.module').then( m => m.MeetingTransactionsPageModule)
   }
 
 

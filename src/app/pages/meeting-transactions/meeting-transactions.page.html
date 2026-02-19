@@ -1,0 +1,30 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">
+      <h2 class="ion-no-margin">Meeting 4</h2>
+      <div class="sub-status text-12 ion-display-flex ion-align-items-center ion-justify-content-center">
+        <span class="dot-purple">●</span> In progress
+      </div>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="dark" class="close-btn">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" defaultHref="" class="back-btn">
+      </ion-back-button>
+      <ion-label>Back</ion-label>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-margin">
+  <ng-container *ngComponentOutlet="transactionsPageComponent"></ng-container>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="ion-margin" expand="block" shape="round" [routerLink]="'/app/tabs/meeting-transactions'">Confirm Attendance</ion-button>
+</ion-footer>

@@ -151,9 +151,9 @@ export class MeetingsPage implements OnInit {
       });
       await modal.present();
       await modal.onWillDismiss().then((data)=>{
-        //this.router.navigate(['/meeting-details'], {state: {direction: 'forward'}}); return;
+        //this.router.navigate(['/meeting-history'], {state: {direction: 'forward'}}); return;
         if(data.data!='close'){
-          this.navCtrl.navigateForward('/meeting-details');
+          this.navCtrl.navigateForward('/meeting-history');
         }
       });
       return;

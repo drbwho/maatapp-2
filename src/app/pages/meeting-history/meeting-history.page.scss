@@ -10,7 +10,7 @@
     flex-direction: column;
     justify-content: center;
     padding-top: 10px;
-    
+
     .main-group-title {
       margin: 0 30px 2px;
       font-weight: 400;
@@ -30,11 +30,11 @@
   margin-right: 5px;
 
   .flag-circle {
-    width: 44px;  
+    width: 44px;
     height: 44px;
-    
+
     img {
-      object-fit: cover; 
+      object-fit: cover;
       //transform: scale(0.8);
     }
   }
@@ -47,20 +47,24 @@
   --main-teal: #148f7d;
   background: #EFE6D8;
   border-radius: 24px;
-  color: #4a4a4a;
 
-  .serif-text { opacity: 0.8; }
-  
-  .stat-value { font-family: 'Inter','serif'; font-size: 44px; font-weight: 400; color: #333; }
-  .stat-label { font-weight: 500; color: #888; }
+  .serif-text { opacity: 0.8; color: #6E6E6E; }
+  ion-note {
+    color: #6E6E6E;
+  }
 
-  .mini-label { font-weight: 600; color: #64594A; display: block; }
-  .stat-row { display: flex; align-items: center; gap: 5px; margin-top: 4px; }
-  .small-val { font-weight: 600; font-size: 14px; }
-
-  .date-box {
-    background: white; border: 1px solid #ddd; border-radius: 4px;
-    padding: 2px 4px; font-size: 10px; font-weight: 800;
+  .stat-value { font-family: 'Inter','serif'; font-size: 44px; font-weight: 400; }
+  .stat-label {
+    font-weight: 500;
+  }
+  .text-dark {
+    color: #3F3C37 !important;
+    p {
+       color: #3F3C37 !important;
+    }
+  }
+  .text-grey {
+    color: #6E6E6E !important;
   }
 }
 
@@ -71,11 +75,11 @@
   --padding-bottom: 5px;
 
   .member-name { color: #161514; }
-  
+
   .warning-text {
-    font-size: 11px; display: flex; align-items: normal; gap: 4px;
+    font-size: 11px !important; display: flex; align-items: center; gap: 4px;
     margin: 0px;
-    ion-icon { font-size: 18px; font-weight: 500;}
+    ion-icon { font-size: 18px; font-weight: 600;}
   }
 }
 

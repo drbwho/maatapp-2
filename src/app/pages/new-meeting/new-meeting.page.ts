@@ -116,7 +116,7 @@ export class NewMeetingPage implements OnInit {
         this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any)=>{
           if(data.meeting){
             this.dataProvider.current.meeting = data.meeting;
-            //this.navCtrl.navigateForward('/meeting-details/');
+            //this.navCtrl.navigateForward('/meeting-history/');
             const modal = await this.modalCtrl.create({
               component: ActionViewComponent,
               componentProps: {
@@ -132,7 +132,7 @@ export class NewMeetingPage implements OnInit {
             });
             await modal.present();
             await modal.onWillDismiss().then(()=>{
-              this.router.navigate(['/meeting-details'], {state: {direction: 'forward'}}); return;
+              this.router.navigate(['/meeting-history'], {state: {direction: 'forward'}}); return;
             });
           }
           return;

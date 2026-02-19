@@ -10,12 +10,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
 
 @Component({
-    selector: 'app-meeting-details',
-    templateUrl: './meeting-details.page.html',
-    styleUrls: ['./meeting-details.page.scss'],
+    selector: 'app-meeting-history',
+    templateUrl: './meeting-history.page.html',
+    styleUrls: ['./meeting-history.page.scss'],
     standalone: false
 })
-export class MeetingDetailsPage implements OnInit {
+export class MeetingHistoryPage implements OnInit {
   meetingplace: string;
   meetingdate: string;
   groupname: string;
@@ -115,7 +115,7 @@ export class MeetingDetailsPage implements OnInit {
         }
         // Calc meeting dues
         acc.missing_contribs = false;
-        let account_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id); 
+        let account_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
         if(!account_totals.transactions.get('RCB') && parseFloat(this.group.settings.regcontribution) > 0){
           acc.missing_rcb = this.group.settings.regcontribution;
           acc.missing_contribs = true;

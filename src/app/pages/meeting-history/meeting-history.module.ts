@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MeetingDetailsPageRoutingModule } from './meeting-details-routing.module';
+import { MeetingHistoryPageRoutingModule } from './meeting-history-routing.module';
 
-import { MeetingDetailsPage } from './meeting-details.page';
+import { MeetingHistoryPage } from './meeting-history.page';
 import { TransactionsComponent } from '../../component/transactions/transactions.component';
 
 // needed fot translate pipe activation
@@ -23,7 +23,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CommonModule,
     FormsModule,
     IonicModule,
-    MeetingDetailsPageRoutingModule,
+    MeetingHistoryPageRoutingModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -32,6 +32,6 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  declarations: [MeetingDetailsPage, TransactionsComponent]
+  declarations: [MeetingHistoryPage, TransactionsComponent]
 })
-export class MeetingDetailsPageModule {}
+export class MeetingHistoryPageModule {}
