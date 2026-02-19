@@ -15,12 +15,28 @@ import { MaatsComponent } from './pages/maats/maats.component';
 import { MemberComponent } from './pages/member/member.component';
 import { SettlementComponent } from './pages/settlement/settlement.component';
 
+// needed fot translate pipe activation
+import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader();
+}
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MeetingTransactionsPageRoutingModule
+    MeetingTransactionsPageRoutingModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })    
   ],
   declarations: [MeetingTransactionsPage, AttendanceComponent, CloseComponent, GroupReviewComponent,
     GroupSummaryComponent, MaatsComponent, MemberComponent, SettlementComponent]

@@ -23,10 +23,10 @@ export class MeetingTransactionsPage implements OnInit {
   meetingdate: string;
   groupname: string;
   currency: string;
-  country: any = {flagcode: 'gb'};
   group: any;
   groupid: string;
   meeting: any;
+  country: any;
   allaccounts: any;
   accounts: any;
   status: string;
@@ -55,7 +55,6 @@ export class MeetingTransactionsPage implements OnInit {
     this.groupname = this.group.name;
     this.groupid = this.group.id;
     this.country = this.dataProvider.current.country;
-    this.currency = this.country.currency;
     this.num_ECP = await this.operTools.get_num_of_ECP(this.meeting, this.country.id);
     this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);
 
