@@ -1,3 +1,17 @@
-<p>
-  attendance works!
+<h2 class="serif-title ion-margin">
+  {{'lets_confirm_who_is_present_today' | translate}}.
+</h2>
+
+<p class="attending-subtitle text-14 ion-margin ion-padding-top">
+  {{ attendance }} {{'of' | translate}} {{ numberofmembers}} {{'attending' | translate}}
 </p>
+
+<div class="chips-wrapper ion-margin ion-display-flex ion-flex-wrap-wrap">
+  @for (account of accounts; track account.id) {
+    <div class="member-badge"
+      [class.is-present]="account.isPresent"
+      (click)="togglePresence(account)">
+      {{ account.owner }}
+    </div>
+  }
+</div>
