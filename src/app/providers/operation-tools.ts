@@ -33,7 +33,7 @@ export class OperationTools {
 
 
    // Save locally new Operation
- async newOperation(meetingid, account, group, parameterid, parametername, amount, categories="", notes=""){
+  newOperation(meetingid, account, group, parameterid, parametername, amount, categories="", notes=""): Promise<any>{
     var trn: Transaction = {
       meetingid: meetingid,
       accountid: account.id,
@@ -67,6 +67,7 @@ export class OperationTools {
         await this.storage.set(this.config.TRANSACTIONS_FILE, trns).then((res)=>{
           this.events.publish('upload:updated');
           resolve({'status': 'success'});
+          return;
         })
       })
     });
