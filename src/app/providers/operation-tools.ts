@@ -4,7 +4,7 @@ import { ConfigData } from './config-data';
 import { TranslateService } from '@ngx-translate/core';
 import { formatDate } from '@angular/common';
 import { Events } from './events';
-import { DataProvider, Current } from './provider-data';
+import { DataProvider, Current, Meeting } from './provider-data';
 import { Network } from '@capacitor/network';
 import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
@@ -16,8 +16,15 @@ import { MeetingTotals, Transaction } from '../interfaces/data-interfaces';
   providedIn: 'root'
 })
 export class OperationTools {
-  credit_operations = ['ECP', 'RCB', 'REM', 'SFREM', 'FIN', 'ENF', 'PCO', 'AST', 'AID', 'SFND'];
-  debit_operations = ['RCP', 'EMP', 'SFEMP', 'AIN', 'CFS'];
+  public credit_operations = ['ECP', 'RCB', 'REM', 'SFREM', 'FIN', 'ENF', 'PCO', 'AST', 'AID', 'SFND'];
+  public debit_operations = ['RCP', 'EMP', 'SFEMP', 'AIN', 'CFS'];
+  public contrib_operations = ['RCB','AID','AST'];
+  public map_default_to_settings = {
+    'RCB': 'regcontribution',
+    'AID': 'regsfcontribution',
+    'AST': 'regfacilpayment',
+    'ENF': 'entryfee'
+  }
 
   constructor(
     private http: HttpClient,
@@ -505,6 +512,39 @@ export class OperationTools {
         })
       })
     })
+  }
+
+  get_contribution_totals(meetingId: string){
+    let totals = [];
+    let total = 0.0;
+    return new Promise((resolve) => {
+      this.storage.get(this.config.GET_FILE('params')).then(async (data: any)=> {
+        let params = data
+                    .filter(p => this.contrib_operations.includes(p.code))
+                    .reduce((p, { id, code }) => {
+                      p[id] = code;
+                      return p;
+                    }, {}); // create array of ids..
+        Object.values(params).forEach((code: any) => totals[code] = 0.0);
+
+        let trans: Transaction[] = [];
+        this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
+          if(data){
+            trans = data.filter(s => s.meetingid == meetingId);
+            trans.forEach(tr => {
+              if(params[tr.parameterid] !== undefined){ 
+                totals[params[tr.parameterid]] += tr.amount;
+                total += tr.amount;
+              }
+            });
+            totals['ALL'] = total;
+            resolve(totals);
+            return;
+          }
+          resolve(totals);
+        });
+      });
+    });
   }
 
 }

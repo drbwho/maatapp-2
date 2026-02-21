@@ -16,7 +16,7 @@ export class ContributionsComponent  implements OnInit {
   numberofmembers = 0;
   attendance = 0;
   parameters: any;
-  totals = {'RCB': 0.0,'AID': 0.0,'AST': 0.0, 'ALL': 0.0}
+  totals = {};
   selectAll = false;
 
   constructor(
@@ -28,6 +28,8 @@ export class ContributionsComponent  implements OnInit {
     this.numberofmembers = this.group.numberofmembers;
     this.accounts = this.accounts.filter(m => m.isPresent);
     this.attendance = this.accounts.length;
+    this.resetTotals();
+    this.readTotals();
 
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.parameters = data;
@@ -44,43 +46,32 @@ export class ContributionsComponent  implements OnInit {
     this.submit_operations();
   }
 
-  update_cntrb(parameter_code){
-    let amount = 0;
-    switch(parameter_code){
-      case 'RCB':
-        amount = parseFloat(this.group.settings.regcontribution);
-        break;
-      case 'AID':
-        amount = parseFloat(this.group.settings.regsfcontribution);
-        break;
-      case 'AST':
-        amount = parseFloat(this.group.settings.regfacilpayment);
-        break;
-      case 'ENF':
-        amount = parseFloat(this.group.settings.entryfee);
-        break;
-    }
-    return amount;
+  resetTotals(){
+    this.operationTools.contrib_operations.forEach(c => this.totals[c] = 0.0);
+    this.totals['ALL'] = 0;
+  }
+
+  async readTotals(){
+    this.totals = await this.operationTools.get_contribution_totals(this.meeting.id);
   }
 
   async submit_operations(){
-    let contribs = ['RCB','AID','AST'];
+    let contribs = this.operationTools.contrib_operations;
     let params = this.parameters.filter(p => contribs.includes(p.code));
     let amount = 0;
     let categories=""; let notes="";
-    this.totals = {'RCB': 0.0,'AID': 0.0,'AST': 0.0, 'ALL': 0.0}
+    this.resetTotals();
 
     // use for() with awaits!!!!
-    for (const prm of params){  
-      amount = this.update_cntrb(prm.code);
+    for (const prm of params){
+      amount = parseFloat(this.group.settings[this.operationTools.map_default_to_settings[prm.code]]);
       this.accounts.filter(a => a.selected);
       for (const acc of this.accounts){
         await this.operationTools.newOperation(
             this.meeting.id, acc, this.group, prm.id, prm.name, amount, categories, notes);
-          this.totals[prm.code] += amount;
-          this.totals['ALL'] += amount;
       };
     };
+    this.readTotals();
   }
 
 }

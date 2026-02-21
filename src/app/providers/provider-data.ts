@@ -359,6 +359,27 @@ export class DataProvider {
     });
   }
 
+  /*
+  * Update pending meeting in storage
+  *
+  */
+  updatePendingMeeting(meeting){
+    // its a new meeting?
+    if(meeting.pending){
+      return new Promise(async (resolve)=>{
+        let newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+        const index = newmeetings.findIndex(m => m.id === meeting.id);
+        //update the hole object
+        if (index !== -1) {
+          newmeetings[index] = meeting;
+          this.storage.set(this.config.NEWMEETINS_FILE, newmeetings).then(()=>{
+            resolve(true);
+          })
+        }
+      })
+    }
+  }
+
 
   /*
   * Post new support ticket

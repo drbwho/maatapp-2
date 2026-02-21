@@ -14,6 +14,7 @@ import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService } from '@ngx-translate/core';
 import { ContributionsComponent } from './pages/contributions/contributions.component';
 import { BalanceComponent } from './pages/balance/balance.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-meeting-transactions',
@@ -43,6 +44,7 @@ export class MeetingTransactionsPage implements OnInit {
   }
   params: any;
   buttonText: string;
+  previousUrl = "";
   pageIndex = 0;
 
    readonly componentMap = {
@@ -59,8 +61,12 @@ export class MeetingTransactionsPage implements OnInit {
   constructor(
     private dataProvider: DataProvider,
     private operTools: OperationTools,
-    private translate: TranslateService
-  ) { }
+    private translate: TranslateService,
+    private router: Router
+  ) { 
+    const navigation = this.router.currentNavigation(); 
+    this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString();
+  }
 
   ngOnInit() {
   }
@@ -89,7 +95,10 @@ export class MeetingTransactionsPage implements OnInit {
 
   previousPage(){
     this.pageIndex--;
-    if(this.pageIndex < 0){ this.pageIndex = 0}
+    if(this.pageIndex < 1){
+      this.router.navigate([this.previousUrl], {state: {direction: 'forward'}});
+      return;
+    }
     this.gotoPage();
   }
 

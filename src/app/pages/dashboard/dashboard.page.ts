@@ -17,6 +17,7 @@ export class DashboardPage implements OnInit {
   country: any = null;
   meetings: any = {};
   lastmeeting: any = {};
+  last_attendance = 0;
   totals: any = {};
   meeting_status = "";
   upload_status = false;
@@ -50,6 +51,7 @@ export class DashboardPage implements OnInit {
       this.meetings = await this.groupTools.get_meetings(this.group)
       this.totals = current.group.totals;
       this.lastmeeting = this.groupTools.get_last_meeting(this.meetings);
+      this.last_attendance = this.lastmeeting.absences ? this.group.numberofmembers - this.lastmeeting.absences.length : 0;
       this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group);
       this.num_ECP = await this.operationTools.get_num_of_ECP(this.lastmeeting, this.country.id);
     }
