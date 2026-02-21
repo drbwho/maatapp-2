@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { DataProvider } from '../../../../providers/provider-data';
 import { OperationTools } from '../../../../providers/operation-tools';
+import { TransactionsComponent } from '../transactions/transactions.component';
 
 @Component({
   selector: 'app-contributions',
@@ -20,6 +22,7 @@ export class ContributionsComponent  implements OnInit {
   selectAll = false;
 
   constructor(
+    private modalCtrl: ModalController,
     private dataProvider: DataProvider,
     private operationTools: OperationTools
   ) { }
@@ -72,6 +75,15 @@ export class ContributionsComponent  implements OnInit {
       };
     };
     this.readTotals();
+  }
+
+  async openTransactions(account: any){
+    const modal = await this.modalCtrl.create({
+      component: TransactionsComponent,
+      componentProps: {account: account, meeting: this.meeting}
+    });
+    modal.present();
+        //this.loan_info = (await modal.onWillDismiss() as any).data;
   }
 
 }

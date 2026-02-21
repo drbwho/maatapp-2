@@ -49,11 +49,11 @@
 
 <ion-list lines="none" class="transparent-list ion-margin">
   @for (acc of accounts; track acc.id) {
-    <ion-item (click)="toggleAccount(acc)" class="account-item">
-      <div slot="start" class="avatar-icon" [class.inactive]="!acc.selected">
+    <ion-item class="account-item">
+      <div slot="start" class="avatar-icon" (click)="toggleAccount(acc)" [class.inactive]="!acc.selected">
         <ion-icon src="assets/img/icons/feather.svg" class="custom-icon"></ion-icon>
       </div>
-      <ion-label class="text-16">
+      <ion-label class="text-16" (click)="openTransactions(acc)">
         {{ acc.owner }}
       </ion-label>
     </ion-item>

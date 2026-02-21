@@ -16,6 +16,7 @@ import { MaatsComponent } from './pages/maats/maats.component';
 import { MemberComponent } from './pages/member/member.component';
 import { SettlementComponent } from './pages/settlement/settlement.component';
 import { BalanceComponent } from './pages/balance/balance.component';
+import { TransactionsComponent } from './pages/transactions/transactions.component';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -42,6 +43,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   declarations: [MeetingTransactionsPage, AttendanceComponent, CloseComponent, GroupReviewComponent,
     GroupSummaryComponent, MaatsComponent, MemberComponent, SettlementComponent, ContributionsComponent,
-    BalanceComponent]
+    BalanceComponent, TransactionsComponent]
 })
 export class MeetingTransactionsPageModule {}

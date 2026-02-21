@@ -109,5 +109,4 @@ export class MeetingTransactionsPage implements OnInit {
       this.transactionsPageComponent = this.componentMap[this.pageIndex].component;
     });
   }
-
 }
