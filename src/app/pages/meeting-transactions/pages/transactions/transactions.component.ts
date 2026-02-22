@@ -13,9 +13,9 @@ import { isThisSecond } from 'date-fns';
   standalone: false
 })
 export class TransactionsComponent  implements OnInit {
-  tr_icons = {'ECP':'wallet-plus', 'RCB':'coins', 'REM':'feather','DPR':'sprout', 'SFREM':'heart-dislike',
-    'FIN':'alert', 'ENF':'apps', 'PCO':'logo-apple', 'AST':'school', 'AID':'ribbon', 'SFND':'archive',
-    'RCP':'person-remove', 'EMP':'feather', 'SFEMP':'heart', 'AIN':'card', 'CFS':'heart-circle'};
+  tr_icons = {'ECP':'wallet-plus', 'RCB':'coins', 'REM':'vase-plus','DPR':'sprout', 'SFREM':'vase-ok',
+    'FIN':'alert', 'ENF':'entry', 'PCO':'logo-apple', 'AST':'school', 'AID':'ribbon', 'SFND':'archive',
+    'RCP':'wallet-minus', 'EMP':'feather', 'SFEMP':'vase-plus', 'AIN':'card', 'CFS':'heart-circle'};
   @Input() account: any;
   @Input() meeting: any;
   @Input() country: any;
