@@ -6,10 +6,10 @@
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test --watch=false",
-    "lint": "ng lint"
+    "start": "nx serve",
+    "build": "nx build",
+    "test": "nx test --watch=false",
+    "lint": "nx lint"
   },
   "repository": {
     "type": "",
@@ -78,6 +78,9 @@
     "@capacitor/cli": "8.0.2",
     "@ionic/angular-toolkit": "12.3.0",
     "@ionic/lab": "3.2.15",
+    "@nx/angular": "22.5.2",
+    "@nx/workspace": "22.5.2",
+    "@schematics/angular": "21.1.2",
     "@types/node": "25.1.0",
     "jasmine-core": "6.0.1",
     "jasmine-spec-reporter": "7.0.0",
@@ -86,6 +89,7 @@
     "karma-coverage-istanbul-reporter": "3.0.3",
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.2.0",
+    "nx": "22.5.2",
     "ts-node": "10.9.2",
     "typescript": "5.9.3"
   },

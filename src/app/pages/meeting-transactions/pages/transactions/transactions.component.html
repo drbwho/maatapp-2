@@ -23,13 +23,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-margin">
-  <h4 class="ion-margin-start">{{account?.owner}}</h4>
-
+  <div class="owner-container">
+    <h2 class="ion-margin-start">{{account?.owner}}</h2>
+    @if(pf(account?.creditdisponible)){
+    <ion-badge class="success text-12">{{'maat_available' | translate}}</ion-badge>
+    }@else{
+    <ion-badge class="alert text-12">{{'maat_unavailable' | translate}}</ion-badge>
+    }
+  </div>
   <ion-card class="summary-card ion-margin ion-padding">
     <div class="card-header-flex">
       <h2 class="serif-title text-22">{{'participant_summary' | translate}}</h2>
       <div class="avatar-box">
-        <img src="assets/img/pot-sm.png">
+        <img src="assets/img/feather-blue-sm.png">
       </div>
     </div>
 
@@ -40,18 +46,78 @@
           <div class="stat-label primary ion-padding-horizontal">{{'balance' | translate}}</div>
         </ion-col>
         <ion-col size="4" class="ion-text-center">
-          <div class="stat-value secondary">{{account?.numloans | number:'.0'}}</div>
+          <div class="stat-value secondary">{{account?.openloans | number:'.0'}}</div>
           <div class="stat-label ion-padding-horizontal">{{'active_maats' | translate}}</div>
         </ion-col>
         <ion-col size="4" class="ion-text-center">
-          <div class="stat-value secondary">{{ account?.restearembourser }}</div>
+          <div class="stat-value secondary">{{ account?.restearembourser | number:'.0'}}</div>
           <div class="stat-label">{{'overdue_amount' | translate}}</div>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
+ 
+  <!-- TRANSACTIONS -->
+  <ion-list lines="none" class="custom-card ion-margin">
+    @for (parameter of parameters; track parameter.id) {
+      @if(contrib_params.includes(parameter.code)){
+      <ng-container 
+        *ngTemplateOutlet="transactionItem; context: { parameter: parameter, amount: amount }">
+      </ng-container>
+      }
+    }
+  </ion-list>
+
+  <!-- Balance -->
+  <ion-list lines="none" class="custom-card ion-margin">
+    <ng-container 
+        *ngTemplateOutlet="transactionItem; context: { parameter: param_balance, amount: amount }">
+    </ng-container>
+  </ion-list>
+
+  <!-- Maat request-->
+  @if(pf(account?.creditdisponible)){
+  <ion-list lines="none" class="custom-card ion-margin">
+    <ion-item button detail="true" detail-icon="chevron-forward">
+      <ion-icon slot="start" 
+          [src]="'assets/img/icons/transactions/'+ tr_icons[param_request?.code] +'.svg'" 
+          class="primary-icon">
+      </ion-icon>
+      <ion-label>
+        <h5 class="ion-no-margin">{{ param_request?.name }}</h5>
+        <p class="ion-no-margin">{{'maats_available' | translate}}: {{account?.creditdisponible | number:'.0'}} {{country.currency}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  }
+
+  <!-- More... -->
+  @if(show_more){
+  <ion-list lines="none" class="custom-card ion-margin">
+    @for (parameter of parameters; track parameter.id) {
+      @if(!contrib_params.includes(parameter.code)  && parameter.code != 'DPR' && parameter.code != 'ECP'){
+      <ng-container 
+        *ngTemplateOutlet="transactionItem; context: { parameter: parameter, amount: amount }">
+      </ng-container>
+      }
+    }
+  </ion-list>
+  }
+  
+  <ion-button class="ion-margin" expand="block" color="medium" fill="clear" (click)="toggleMore()">{{show_more ? 'hide' : 'see_more' | translate}}</ion-button>
+  <ion-button class="ion-margin" expand="block" shape="round" >{{'save' | translate}}</ion-button>
 </ion-content>
 
-<ion-footer>
-  <ion-button class="ion-margin" expand="block" shape="round" >{{'save' | translate}}</ion-button>
-</ion-footer>
+<!-- Item Component -->
+<ng-template #transactionItem let-parameter="parameter" let-amount="amount">
+  <ion-item>
+    <ion-icon slot="start" 
+      [src]="'assets/img/icons/transactions/'+ tr_icons[parameter?.code] +'.svg'" 
+      class="primary-icon">
+    </ion-icon>
+    <ion-label class="ion-text-wrap"><h5>{{ parameter?.name }}</h5></ion-label>
+    <ion-icon name="checkmark-circle-sharp" slot="end" size="small" color="primary" class="ion-no-margin"></ion-icon>
+    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]" placeholder="0" class="amount-input ion-no-padding"></ion-input>
+    <ion-icon slot="end" name="close" color="medium" class="close-icon ion-no-margin" (click)="clear_amount(parameter?.id)"></ion-icon>
+  </ion-item>  
+</ng-template>
