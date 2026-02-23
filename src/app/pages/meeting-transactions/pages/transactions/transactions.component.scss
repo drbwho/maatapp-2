@@ -128,6 +128,17 @@ $text-muted: #8a8a8a;
   }
 }
 
+.details-row {
+  display: flex;
+  color: #55747C;
+  font-size: 14px; 
+  font-weight: 400;
+  .value {
+    text-align: right;
+  }
+}
+
+
 //---- Transactions ----
 .custom-card {
   background: #f4f5f7;
@@ -154,6 +165,7 @@ $text-muted: #8a8a8a;
   --padding-start: 12px;
   --padding-end: 12px;
   --border-radius: 12px;
+  --placeholder-color: grey;
   margin-inline-start: 5px !important;
   width: 55px !important;
   height: 40px;
@@ -171,15 +183,29 @@ $text-muted: #8a8a8a;
   }
 }
 
-.primary-icon {
+.empty-icon {
   color: #6b6fb8;
   font-size: 40px;
   margin-inline-end: 15px;
+  border-radius: 50%;
+}
+
+.filled-icon {
+  color: white;
+  background-color: #6b6fb8;
+  font-size: 40px;
+  margin-inline-end: 15px;
+  border-radius: 50%;
 }
 
 .close-icon {
   background: white;
-  border-radius: 50%;
+  border-radius: 7px;
   font-size: 14px !important;
-  padding: 3px;
+  padding: 4px;
+  color: #6b6fb8;
+  &.disabled {
+    color: grey;
+    background: none;
+  }
 }

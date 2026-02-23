@@ -4,7 +4,6 @@ import { DataProvider } from '../../../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';
 import { OperationTools } from '../../../../providers/operation-tools';
-import { isThisSecond } from 'date-fns';
 
 @Component({
   selector: 'app-transactions',
@@ -14,17 +13,19 @@ import { isThisSecond } from 'date-fns';
 })
 export class TransactionsComponent  implements OnInit {
   tr_icons = {'ECP':'wallet-plus', 'RCB':'coins', 'REM':'vase-plus','DPR':'sprout', 'SFREM':'vase-ok',
-    'FIN':'alert', 'ENF':'entry', 'PCO':'logo-apple', 'AST':'school', 'AID':'ribbon', 'SFND':'archive',
-    'RCP':'wallet-minus', 'EMP':'feather', 'SFEMP':'vase-plus', 'AIN':'card', 'CFS':'heart-circle'};
+    'FIN':'fine', 'ENF':'entry', 'PCO':'feather', 'AST':'school', 'AID':'ribbon', 'SFND':'feather',
+    'RCP':'wallet-minus', 'EMP':'feather', 'SFEMP':'vase-plus', 'AIN':'feather', 'CFS':'hand-heart'};
   @Input() account: any;
   @Input() meeting: any;
   @Input() country: any;
+  @Input() group: any;
   parameters: any;
   contrib_params: any;
   amount: number[]=[];
   param_balance: any;
   param_request: any;
   show_more = false;
+  show_details = false;
   public pf = parseFloat;
 
   constructor(
@@ -40,6 +41,17 @@ export class TransactionsComponent  implements OnInit {
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.parameters = data.filter((s) => (account_type == 1 ? s.type == 1 : s.type == 2)); //paysants/group operations
       //this.fsparameters = data.filter((s) => s.type == 3); //solidarity operations
+      // default contribs
+      this.parameters.forEach(p => {
+        if(this.operTools.contrib_operations.includes(p.code)){
+          let amount = parseFloat(this.group.settings[this.operTools.map_default_to_settings[p.code]]);
+          if(amount){
+            p.default = amount;
+          }else{
+            p.default = 0;
+          }
+        }
+      })
       this.param_balance = this.parameters.find(p => p.code == 'ECP');
       this.param_request = this.parameters.find(p => p.code == 'DPR');
     });
@@ -65,12 +77,15 @@ export class TransactionsComponent  implements OnInit {
     this.contrib_params = this.operTools.contrib_operations;
   }
 
-  clear_amount(parameterId: string){
-    this.amount[parameterId] = 0;
+  set_default(parameter: any){
+    if(!parameter){ return; } 
+    if(parameter.default != undefined){
+      this.amount[parameter.id] = parameter.default;
+    }
   }
 
-  toggleMore(){
-    this.show_more = !this.show_more;
+  clear_amount(parameterId: string){
+    delete(this.amount[parameterId]);
   }
 
   dismiss(){

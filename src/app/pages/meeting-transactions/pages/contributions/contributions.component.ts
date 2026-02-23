@@ -80,7 +80,7 @@ export class ContributionsComponent  implements OnInit {
   async openTransactions(account: any){
     const modal = await this.modalCtrl.create({
       component: TransactionsComponent,
-      componentProps: {account: account, meeting: this.meeting, country: this.country}
+      componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country}
     });
     modal.present();
         //this.loan_info = (await modal.onWillDismiss() as any).data;
