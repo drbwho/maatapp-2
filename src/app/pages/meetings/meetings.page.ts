@@ -46,7 +46,7 @@ export class MeetingsPage implements OnInit {
       this.country = current.country;
       this.group = current.group;
       this.meetings = await this.groupTools.get_meetings(this.group);
-      this.lastmeeting = this.groupTools.get_last_meeting(this.meetings);
+      this.lastmeeting = await this.groupTools.get_last_meeting(this.meetings);
       this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group.id);
     }
   }

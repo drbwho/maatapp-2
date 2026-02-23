@@ -50,7 +50,7 @@
           <div class="stat-label ion-padding-horizontal">{{'active_maats' | translate}}</div>
         </ion-col>
         <ion-col size="4" class="ion-text-center">
-          <div class="stat-value secondary">{{ account?.restearembourser | number:'.0'}}</div>
+          <div class="stat-value secondary">{{loans_expired ? (account?.restearembourser | number:'.0') : 0}}</div>
           <div class="stat-label">{{'overdue_amount' | translate}}</div>
         </ion-col>
       </ion-row>
@@ -139,7 +139,7 @@
   }
   
   <ion-button class="ion-margin" expand="block" color="medium" fill="clear" (click)="show_more = !show_more">{{show_more ? 'hide' : 'see_more' | translate}}</ion-button>
-  <ion-button class="ion-margin" expand="block" shape="round" >{{'save' | translate}}</ion-button>
+  <ion-button class="ion-margin" expand="block" shape="round" (click)="dismiss(true)">{{'save' | translate}}</ion-button>
 </ion-content>
 
 <!-- Item Component -->

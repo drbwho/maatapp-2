@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from './config-data';
 import { DataProvider } from './provider-data';
+import { OperationTools } from './operation-tools';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class GroupTools {
   constructor(
     private storage: Storage,
     private config: ConfigData,
-    private dataProvider: DataProvider
+    private dataProvider: DataProvider,
+    private operTools: OperationTools
   ){}
 
   get_meetings(group: any){
@@ -74,9 +76,15 @@ export class GroupTools {
     return null;
   }
 
-  get_last_meeting(meetings){
-    return meetings.reduce((prev, current) => {
+  async get_last_meeting(meetings){
+    let last = meetings.reduce((prev, current) => {
       return (prev.startedat > current.startedat) ? prev : current;
     });
+    // get collection from pending transactions
+    if(last.haspending || last.pending){
+      let totals: any = await this.operTools.estimate_meeting_totals(null, last.id);
+      last.collection = totals.cash;
+    }
+    return last;
   }
 }

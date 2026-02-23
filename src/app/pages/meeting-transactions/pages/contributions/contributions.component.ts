@@ -18,7 +18,8 @@ export class ContributionsComponent  implements OnInit {
   numberofmembers = 0;
   attendance = 0;
   parameters: any;
-  totals = {};
+  totals:any = {};
+  meetingTotals: any = {};
   selectAll = false;
 
   constructor(
@@ -41,24 +42,24 @@ export class ContributionsComponent  implements OnInit {
 
   onSelectAllChange() {
     this.accounts.forEach(acc => acc.selected = this.selectAll);
-    this.submit_operations();
+    this.submit_contrib_operations();
   }
 
   toggleAccount(acc: any) {
     acc.selected = !acc.selected;
-    this.submit_operations();
+    this.submit_contrib_operations(acc);
   }
 
   resetTotals(){
     this.operationTools.contrib_operations.forEach(c => this.totals[c] = 0.0);
-    this.totals['ALL'] = 0;
   }
 
   async readTotals(){
     this.totals = await this.operationTools.get_contribution_totals(this.meeting.id);
+    this.meetingTotals = await this.operationTools.estimate_meeting_totals(null, this.meeting.id);
   }
 
-  async submit_operations(){
+  async submit_contrib_operations(account:any = null){
     let contribs = this.operationTools.contrib_operations;
     let params = this.parameters.filter(p => contribs.includes(p.code));
     let amount = 0;
@@ -68,22 +69,52 @@ export class ContributionsComponent  implements OnInit {
     // use for() with awaits!!!!
     for (const prm of params){
       amount = parseFloat(this.group.settings[this.operationTools.map_default_to_settings[prm.code]]);
-      this.accounts.filter(a => a.selected);
-      for (const acc of this.accounts){
-        await this.operationTools.newOperation(
-            this.meeting.id, acc, this.group, prm.id, prm.name, amount, categories, notes);
+      if(account){
+        // treat specific account
+        if(account.selected){
+          await this.operationTools.newOperation(
+              this.meeting.id, account, this.group, prm.id, prm.name, amount, categories, notes);
+        }else{
+          await this.operationTools.delOperationByParameter(account.id, this.meeting.id, prm.id);
+        }
+      }else{
+        for (const acc of this.accounts){
+          if(acc.selected){
+            // add contributions for selected accounts
+            await this.operationTools.newOperation(
+                this.meeting.id, acc, this.group, prm.id, prm.name, amount, categories, notes);
+          }else{
+            // remove from the rest
+            await this.operationTools.delOperationByParameter(acc.id, this.meeting.id, prm.id);
+          }
+        }
       };
-    };
+    }
     this.readTotals();
   }
 
-  async openTransactions(account: any){
+  async openAccountTransactions(account: any){
+    let categories=""; let notes="";
+
     const modal = await this.modalCtrl.create({
       component: TransactionsComponent,
       componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country}
     });
     modal.present();
-        //this.loan_info = (await modal.onWillDismiss() as any).data;
+    
+    let acc_transactions = (await modal.onWillDismiss() as any).data;
+
+    // save transactions
+    if(acc_transactions){
+      // first clear previous transactions
+      await this.operationTools.delAccountOperations(account, this.meeting);
+      for (const [parm_id, amount] of Object.entries(acc_transactions)) {
+        let prm = this.parameters.find(p => p.id === parm_id);
+        await this.operationTools.newOperation(
+          this.meeting.id, account, this.group, parm_id, prm.name, amount, categories, notes);  
+      }
+      this.readTotals();
+    }
   }
 
 }

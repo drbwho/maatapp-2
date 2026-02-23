@@ -50,7 +50,7 @@ export class DashboardPage implements OnInit {
       this.group = current.group;
       this.meetings = await this.groupTools.get_meetings(this.group)
       this.totals = current.group.totals;
-      this.lastmeeting = this.groupTools.get_last_meeting(this.meetings);
+      this.lastmeeting = await this.groupTools.get_last_meeting(this.meetings);
       this.last_attendance = this.lastmeeting.absences ? this.group.numberofmembers - this.lastmeeting.absences.length : 0;
       this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group);
       this.num_ECP = await this.operationTools.get_num_of_ECP(this.lastmeeting, this.country.id);

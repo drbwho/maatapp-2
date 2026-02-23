@@ -33,7 +33,7 @@
     <ion-label>
       <p class="dashboard-label text-22">{{'total_collected' | translate}}</p>
       <div class="amount-container">
-        <span class="amount">{{totals['ALL'] | number:'.2'}}</span>
+        <span class="amount">{{meetingTotals?.cash | number:'.2'}}</span>
         <span class="currency">{{country?.currency}}</span>
       </div>
     </ion-label>
@@ -53,7 +53,7 @@
       <div slot="start" class="avatar-icon" (click)="toggleAccount(acc)" [class.inactive]="!acc.selected">
         <ion-icon src="assets/img/icons/feather.svg" class="custom-icon"></ion-icon>
       </div>
-      <ion-label class="text-16" (click)="openTransactions(acc)">
+      <ion-label class="text-16" (click)="openAccountTransactions(acc)">
         {{ acc.owner }}
       </ion-label>
     </ion-item>

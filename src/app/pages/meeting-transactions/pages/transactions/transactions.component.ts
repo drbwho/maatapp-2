@@ -24,6 +24,7 @@ export class TransactionsComponent  implements OnInit {
   amount: number[]=[];
   param_balance: any;
   param_request: any;
+  loans_expired = false;
   show_more = false;
   show_details = false;
   public pf = parseFloat;
@@ -73,6 +74,9 @@ export class TransactionsComponent  implements OnInit {
           }
         }
       })
+      if(this.account.dateecheance != null && (new Date(this.account.dateecheance) < (new Date()))){
+        this.loans_expired = true;
+      }
     }
     this.contrib_params = this.operTools.contrib_operations;
   }
@@ -88,7 +92,11 @@ export class TransactionsComponent  implements OnInit {
     delete(this.amount[parameterId]);
   }
 
-  dismiss(){
-    this.modalCtrl.dismiss();
+  dismiss(returndata = false){
+    if(returndata){
+      this.modalCtrl.dismiss(this.amount);
+    }else{
+      this.modalCtrl.dismiss();
+    }
   }
 }

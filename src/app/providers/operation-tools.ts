@@ -93,6 +93,32 @@ export class OperationTools {
     })
   }
 
+  delOperationByParameter(accountId: any, meetingId: any, parameterId: any){
+    return new Promise(async (resolve)=>{
+      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      transactions = transactions.filter(s => !(s.accountid == accountId && s.meetingid == meetingId && s.parameterid == parameterId));
+      await this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
+        this.events.publish('upload:updated');
+        resolve(true);
+      });
+    })
+  }
+
+  /*
+  * Remove account's pending operations
+  *
+  */
+  delAccountOperations(account: any, meeting: any){
+    return new Promise(async (resolve)=>{
+      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);    
+      transactions = transactions.filter(tr => !(tr.accountid === account.id && tr.meetingid === meeting.id));
+      await this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
+        this.events.publish('upload:updated');
+        resolve(true);
+      });
+    })
+  }
+
   async refreshMeetingHistory(meetingId: any){
     let history: any = await this.getHistory(meetingId);
     history = history.operations;
@@ -497,7 +523,7 @@ export class OperationTools {
           let trans = [];
           this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
             if(data && data.length){
-              trans = data.filter(s=>s.idmeeting == meeting.id && s.idparameter == param.id && s.is_cancelled == false);
+              trans = data.filter(s=>s.meetingid == meeting.id && s.parameterid == param.id && !s.is_cancelled);
             }
             // iterate in already uploaded transactions
             this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE).then((data)=>{
