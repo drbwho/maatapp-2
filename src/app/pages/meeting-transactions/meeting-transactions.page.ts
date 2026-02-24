@@ -5,7 +5,6 @@ import { CloseComponent } from './pages/close/close.component';
 import { GroupReviewComponent } from './pages/group-review/group-review.component';
 import { GroupSummaryComponent } from './pages/group-summary/group-summary.component';
 import { MaatsComponent } from './pages/maats/maats.component';
-import { MemberComponent } from './pages/member/member.component';
 import { SettlementComponent } from './pages/settlement/settlement.component';
 
 import { MeetingTotals } from '../../interfaces/data-interfaces';
@@ -63,8 +62,8 @@ export class MeetingTransactionsPage implements OnInit {
     private operTools: OperationTools,
     private translate: TranslateService,
     private router: Router
-  ) { 
-    const navigation = this.router.currentNavigation(); 
+  ) {
+    const navigation = this.router.currentNavigation();
     this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString();
   }
 

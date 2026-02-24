@@ -36,7 +36,7 @@ export class BalanceComponent  implements OnInit {
     this.numberofmembers = this.group.numberofmembers;
     this.accounts = this.accounts.filter(m => m.isPresent);
     this.attendance = this.accounts.length;
-    
+
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.parameters = data;
       this.param_balance = this.parameters.find(p => p.code == 'ECP');
@@ -62,7 +62,9 @@ export class BalanceComponent  implements OnInit {
     });
   }
 
-  clear_amount(){
+  async clear_amount(account: any){
+    await this.operationTools.delOperationByParameter(account.id, this.meeting.id, this.param_balance.id);
+    this.readTotals();
   }
 
   async openAccountTransactions(account: any){
@@ -73,7 +75,7 @@ export class BalanceComponent  implements OnInit {
       componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country}
     });
     modal.present();
-    
+
     let acc_transactions = (await modal.onWillDismiss() as any).data;
 
     // save transactions
@@ -83,10 +85,10 @@ export class BalanceComponent  implements OnInit {
       for (const [parm_id, amount] of Object.entries(acc_transactions)) {
         let prm = this.parameters.find(p => p.id === parm_id);
         await this.operationTools.newOperation(
-          this.meeting.id, account, this.group, parm_id, prm.name, amount, categories, notes);  
+          this.meeting.id, account, this.group, parm_id, prm.name, amount, categories, notes);
       }
       this.readTotals();
     }
   }
-  
+
 }

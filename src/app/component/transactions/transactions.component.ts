@@ -95,8 +95,6 @@ export class TransactionsComponent  implements OnInit {
   }
 
   dismiss(data = true) {
-    // using the injected ModalController this page
-    // can "dismiss" itself and pass back data
     this.modalCtrl.dismiss(data);
   }
 
@@ -137,39 +135,7 @@ export class TransactionsComponent  implements OnInit {
     return cntrb_fields.includes(parameter_code);
   }
 
-  update_cntrb(parameter_code, parameter_id){
-    let amount = 0;
-    switch(parameter_code){
-      case 'RCB':
-        amount = this.group.settings.regcontribution;
-        break;
-      case 'AID':
-        amount = this.group.settings.regsfcontribution;
-        break;
-      case 'AST':
-        amount = this.group.settings.regfacilpayment;
-        break;
-      case 'ENF':
-        amount = this.group.settings.entryfee;
-        break;
-    }
-    this.amount[parameter_id] = amount;
-  }
-
   async submit_operations(account, dismiss = true){
-    /*if(!this.amount || !this.operation){
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: !this.amount ? 'Amount cannot be zero' : 'Please select a transaction!',
-        buttons: [
-          {
-            text: 'Confirm',
-          }
-        ],
-      });
-      await alert.present();
-      return;
-    }*/
     let success = true;
     for(let operationid in this.amount){
       if(this.amount[operationid] && this.amount[operationid] > 0){

@@ -1,3 +1,61 @@
-<p>
-  maats works!
+<ion-card class="summary-card ion-margin ion-padding">
+ <div class="card-header-flex">
+    <h2 class="serif-title text-22">Maats</h2>
+    <div class="avatar-box">
+      <img src="assets/img/pot-sm.png">
+    </div>
+  </div>
+
+  <ion-grid class="ion-no-padding ion-no-margin">
+    <ion-row>
+      <ion-col size="4" class="ion-text-center">
+        <div class="stat-value">{{group?.numloans | number:'.0'}}</div>
+        <div class="stat-label ion-padding-horizontal">{{'number_of_active_maats' | translate}}</div>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <div class="stat-value">{{reimbursements | number:'.0'}}</div>
+        <div class="stat-label ion-padding-horizontal">{{'reimbursement_today' | translate}}</div>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <div class="stat-value">{{ group?.numdueloans }}</div>
+        <div class="stat-label">{{'overdue' | translate}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-card>
+
+<p class="attending-subtitle text-14 ion-no-margin ion-margin-horizontal">
+  {{ attendance }} {{'of' | translate}} {{ numberofmembers}} {{'attending' | translate}}
 </p>
+
+<div class="segment-wrapper ion-padding">
+  <ion-segment value="reimbursements" mode="ios">
+    <ion-segment-button value="reimbursements">
+      <ion-label>Reimbursements</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="new">
+      <ion-label>New maats</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</div>
+
+<ion-list lines="none" class="custom-card ion-margin">
+  @for (acc of loanAccounts; track acc.id) {
+  <ion-item>
+    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.rem > 0)">
+      <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
+    </div>
+    <ion-label class="ion-text-wrap" (click)="openAccountTransactions(acc)"><h5>{{ acc?.owner }}</h5></ion-label>
+    @if(acc?.rem > 0 || acc?.restearembourser == 0){
+      <ion-icon name="checkmark-sharp" slot="end" size="small" color="medium" class="ion-no-margin"></ion-icon>
+    }@else {
+      <ion-icon name="checkmark-circle-sharp" slot="end" size="small" color="primary" class="ion-no-margin"
+        (click)="set_default(acc)"></ion-icon>
+    }
+    <ion-input slot="end" type="number" disabled [(ngModel)]="acc.rem" [placeholder]="acc?.restearembourser" class="amount-input ion-no-padding"></ion-input>
+    <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
+      (click)="clear_amount(acc)"
+      [class.disabled]="!(acc?.rem > 0)">></ion-icon>
+  </ion-item>
+  }
+</ion-list>

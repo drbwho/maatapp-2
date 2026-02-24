@@ -13,7 +13,6 @@ import { GroupReviewComponent } from './pages/group-review/group-review.componen
 import { GroupSummaryComponent } from './pages/group-summary/group-summary.component';
 import { ContributionsComponent } from './pages/contributions/contributions.component';
 import { MaatsComponent } from './pages/maats/maats.component';
-import { MemberComponent } from './pages/member/member.component';
 import { SettlementComponent } from './pages/settlement/settlement.component';
 import { BalanceComponent } from './pages/balance/balance.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
@@ -42,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     })
   ],
   declarations: [MeetingTransactionsPage, AttendanceComponent, CloseComponent, GroupReviewComponent,
-    GroupSummaryComponent, MaatsComponent, MemberComponent, SettlementComponent, ContributionsComponent,
+    GroupSummaryComponent, MaatsComponent, SettlementComponent, ContributionsComponent,
     BalanceComponent, TransactionsComponent]
 })
 export class MeetingTransactionsPageModule {}
