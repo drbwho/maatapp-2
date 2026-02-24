@@ -1,14 +1,13 @@
-ion-card {
-  --ion-card-background: #f7f7f7; //#fef8f0;
-  ion-icon {
-    vertical-align: top;
-  }
+
+ion-list {
+  background: #F6F7F9;
+  border-radius: 20px;
+  --ion-item-background: none;
 }
 
-ion-input.quantity{
+ion-input.amount{
     max-width: 80px;
     text-align: end;
-    color: darkred;
     font-size: larger;
     font-weight: bold;
     --background: #fff;

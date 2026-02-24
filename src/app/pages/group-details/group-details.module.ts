@@ -10,7 +10,6 @@ import { GroupDetailsPage } from './group-details.page';
 import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { HistoryComponent } from '../../component/history/history.component';
-import { LoanInfoComponent } from '../../component/loan-info/loan-info.component';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -37,6 +36,6 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  declarations: [GroupDetailsPage, AccountInfoComponent, HistoryComponent, LoanInfoComponent]
+  declarations: [GroupDetailsPage, AccountInfoComponent, HistoryComponent]
 })
 export class GroupDetailsPageModule {}

@@ -28,24 +28,32 @@
   {{ attendance }} {{'of' | translate}} {{ numberofmembers}} {{'attending' | translate}}
 </p>
 
-<div class="segment-wrapper ion-padding">
-  <ion-segment value="reimbursements" mode="ios">
+<div class="segment-wrapper ion-no-padding ion-margin">
+  <ion-segment [(ngModel)]="segment" mode="ios" class="ion-no-margin">
     <ion-segment-button value="reimbursements">
-      <ion-label>Reimbursements</ion-label>
+      <ion-label>{{'reimbursements' | translate}}</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="new">
-      <ion-label>New maats</ion-label>
+    <ion-segment-button value="newmaats">
+      <ion-label>{{'new_maats' | translate}}</ion-label>
     </ion-segment-button>
   </ion-segment>
 </div>
 
+@switch (segment) {
+<!-- *** Reimbursements *** -->
+@case('reimbursements'){
 <ion-list lines="none" class="custom-card ion-margin">
   @for (acc of loanAccounts; track acc.id) {
   <ion-item>
     <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.rem > 0)">
       <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
     </div>
-    <ion-label class="ion-text-wrap" (click)="openAccountTransactions(acc)"><h5>{{ acc?.owner }}</h5></ion-label>
+    <ion-label class="owner-container ion-text-wrap" (click)="openAccountTransactions(acc)">
+      <h5>{{ acc?.owner }}</h5>
+      @if(acc.loans_expired){
+        <ion-badge class="alert text-12">{{'overdue' | translate}}</ion-badge>
+      }
+    </ion-label>
     @if(acc?.rem > 0 || acc?.restearembourser == 0){
       <ion-icon name="checkmark-sharp" slot="end" size="small" color="medium" class="ion-no-margin"></ion-icon>
     }@else {
@@ -58,4 +66,38 @@
       [class.disabled]="!(acc?.rem > 0)">></ion-icon>
   </ion-item>
   }
+  @if(!loanAccounts.length){
+    <ion-label class="ion-text-center" color="danger"><h4 color="danger">{{'no_accounts_available' | translate}}</h4></ion-label>
+  }
 </ion-list>
+}
+
+<!-- *** New Maats *** -->
+@case('newmaats'){
+<ion-list lines="none" class="custom-card ion-margin">
+  @for (acc of accounts; track acc.id) {
+  <ion-item [detail]="pf(acc.creditdisponible) > 0" (click)="pf(acc.creditdisponible) > 0 ? openNewMaat(acc) : return">
+    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.emp > 0)" [class.disabled]="!(pf(acc.creditdisponible) > 0)">
+      <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
+    </div>
+    <ion-label class="owner-container ion-text-wrap" >
+      <h5>{{ acc?.owner }}</h5>
+      @if(!pf(acc.creditdisponible) > 0){
+        <ion-badge class="alert text-12">{{'maat_unavailable' | translate}}</ion-badge>
+      }
+    </ion-label>
+    @if(pf(acc.creditdisponible) > 0 && acc?.emp > 0){
+      <ion-input slot="end" type="number" disabled [(ngModel)]="acc.emp" placeholder="0" class="amount-input ion-no-padding"></ion-input>
+      <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
+        (click)="clear_amount(acc, true)"
+        [class.disabled]="!(acc?.emp > 0)">></ion-icon>
+    }
+  </ion-item>
+  }
+  @if(!accounts.length){
+    <ion-label class="ion-text-center" color="danger"><h5>{{'no_accounts_available' | translate}}</h5></ion-label>
+  }
+</ion-list>
+}
+
+}

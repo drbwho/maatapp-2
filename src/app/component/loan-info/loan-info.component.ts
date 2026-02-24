@@ -8,35 +8,33 @@ import { ModalController } from '@ionic/angular';
     standalone: false
 })
 export class LoanInfoComponent  implements OnInit {
-  @Input() group: any;
-  @Input() loan_info: any;
-  categories: any = null;
-  quantity={};
-  notes: string;
+  @Input() account: any;
+  @Input() loan_info?: any = {};
+  notes = "";
+  amount = 0.00;
 
   constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {}
   
   ionViewWillEnter(){
-    if(this.group.loancategories){
-      this.categories = this.group.loancategories;
-    }
-    if(this.loan_info.categories){
-      this.loan_info.categories = JSON.parse(this.loan_info.categories);
-      Object.entries(this.loan_info.categories).forEach(
-        ([key, value]) => {
-          this.quantity[key]=value;
-        });
-    }
-    if(this.loan_info.notes){
-      this.notes = this.loan_info.notes;
+    if(this.loan_info){
+      if(this.loan_info.notes){
+        this.notes = this.loan_info.notes;
+      }
+      if(this.loan_info.amount){
+        this.amount = this.loan_info?.amount;
+      }
     }
   }
 
-  dismiss() {
-    this.loan_info.categories=JSON.stringify(this.quantity);
-    this.loan_info.notes=this.notes;
-    this.modalCtrl.dismiss(this.loan_info);
+  dismiss(save = false) {
+    if(save){
+      this.loan_info.notes = this.notes;
+      this.loan_info.amount = this.amount;
+      this.modalCtrl.dismiss(this.loan_info);
+    }else{
+      this.modalCtrl.dismiss();
+    }
   }
 }

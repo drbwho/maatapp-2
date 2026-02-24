@@ -51,7 +51,7 @@ export class MeetingTransactionsPage implements OnInit {
       2: {component: AttendanceComponent, button: 'contributions'},
       3: {component: ContributionsComponent, button: 'balance'},
       4: {component: BalanceComponent, button: 'proceed_to_maats'},
-      5: {component: MaatsComponent, button: 'continue'},
+      5: {component: MaatsComponent, button: 'final_settlement'},
       6: {component: SettlementComponent, button: 'our_group'},
       7: {component: GroupReviewComponent, button: 'continue'},
       8: {component: CloseComponent, button: 'close_meeting'}

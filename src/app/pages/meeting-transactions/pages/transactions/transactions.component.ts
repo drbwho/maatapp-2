@@ -23,7 +23,7 @@ export class TransactionsComponent  implements OnInit {
   contrib_params: any;
   amount: number[]=[];
   param_balance: any;
-  param_request: any;
+  param_extra: any;
   loans_expired = false;
   show_more = false;
   show_details = false;
@@ -54,7 +54,11 @@ export class TransactionsComponent  implements OnInit {
         }
       })
       this.param_balance = this.parameters.find(p => p.code == 'ECP');
-      this.param_request = this.parameters.find(p => p.code == 'DPR');
+      var code = 'DPR';
+      if(parseFloat(this.account.restearembourser) > 0){
+        code = 'REM';
+      }
+      this.param_extra = this.parameters.find(p => p.code == code);
     });
     if(this.account){
       //load account's pending operations

@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';
 import { ModalController } from '@ionic/angular';
 import { OperationTools } from '../../../../providers/operation-tools';
+import { LoanInfoComponent } from '../../../../component/loan-info/loan-info.component';
 
 @Component({
   selector: 'app-maats',
@@ -19,11 +20,15 @@ export class MaatsComponent  implements OnInit {
   @Input() meeting: any;
   allAcounts: any;
   loanAccounts: any;
+  creditAccounts: any;
   numberofmembers = 0;
   parameters: any;
   attendance = 0;
   param_rem: any;
+  param_emp: any;
+  segment = 'reimbursements';
   reimbursements = 0;
+  public pf = parseFloat;
 
   constructor(
     private dataProvider: DataProvider,
@@ -40,10 +45,12 @@ export class MaatsComponent  implements OnInit {
 
     this.allAcounts = this.accounts;
     this.loanAccounts = this.allAcounts.filter(a => parseFloat(a.restearembourser) > 0);
+    this.creditAccounts = this.allAcounts.filter(a => parseFloat(a.creditdisponible) > 0);
 
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.parameters = data;
       this.param_rem = this.parameters.find(p => p.code == 'REM');
+      this.param_emp = this.parameters.find(p => p.code == 'EMP');
       this.readTotals();
     });
   }
@@ -61,13 +68,27 @@ export class MaatsComponent  implements OnInit {
           }else{
             delete(acc.rem);
           }
+          let tremp = trns.find((s)=>
+              s.accountid == acc.id && s.meetingid == this.meeting.id && s.parameterid == this.param_emp.id);
+          if(tremp){
+            acc.emp = tremp.amount;
+          }else{
+            delete(acc.emp);
+          }
         }
       })
+      if(acc.dateecheance != null && (new Date(acc.dateecheance) < (new Date()))){
+        acc.loans_expired = true;
+      }
     });
   }
 
-  async clear_amount(account: any){
-    await this.operationTools.delOperationByParameter(account.id, this.meeting.id, this.param_rem.id);
+  async clear_amount(account: any, emp = false){
+    if(emp){
+      await this.operationTools.delOperationByParameter(account.id, this.meeting.id, this.param_emp.id);
+    }else{
+      await this.operationTools.delOperationByParameter(account.id, this.meeting.id, this.param_rem.id);  
+    }
     this.readTotals();
   }
 
@@ -76,6 +97,20 @@ export class MaatsComponent  implements OnInit {
     await this.operationTools.newOperation(
           this.meeting.id, account, this.group, this.param_rem.id, this.param_rem.name, account.restearembourser, categories, notes);
     this.readTotals();
+  }
+
+  async openNewMaat(account: any){
+    const modal = await this.modalCtrl.create({
+        component: LoanInfoComponent,
+        componentProps: {account: account },
+        initialBreakpoint: 0.3,
+        breakpoints: [0, 0.3, 0.5],
+        handle: true,
+        cssClass: 'lang-modal-sheet'
+      });
+      await modal.present();
+
+      let loan_info = (await modal.onWillDismiss()).data as string;
   }
 
   async openAccountTransactions(account: any){

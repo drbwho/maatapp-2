@@ -1,41 +1,36 @@
-<ion-header>
+<ion-header translucent>
   <ion-toolbar>
-    <ion-title>{{'loan_info' | translate}}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">{{'close' | translate}}</ion-button>
+    <ion-title class="ion-text-center"><h4>{{'new_maat' | translate}}</h4></ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  @if (categories && categories.length) {
-    <ion-card>
-      <ion-card-header>
-        {{'categories' | translate}}
-      </ion-card-header>
-      <ion-card-content>
-        <ion-list>
-          @for (category of categories; track category) {
-            <ion-item lines="none" class="ion-no-padding">
-              <ion-label class="ion-no-margin ion-text-nowrap">
-                <ion-note class="tr-label ion-margin-start" color="tertiary">{{category.title}}</ion-note>
-              </ion-label>
-              <ion-input type="number" class="ion-no-margin quantity" [(ngModel)]="quantity[category.id]" placeholder="0" [ngStyle]="{'color': quantity[category.id] ? 'darkred' : 'gray'}"></ion-input>
-            </ion-item>
-          }
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-  }
-
-  <ion-card>
-    <ion-card-header>
-      {{'notes' | translate}}
-    </ion-card-header>
-    <ion-card-content>
+  <ion-list class="ion-margin">
+    <ion-item lines="none">
+      <ion-label>
+        <h5>{{account.owner}}</h5>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list class="ion-margin">
+    <ion-item lines="none" class="ion-no-padding">
+      <ion-label class="ion-no-margin ion-text-nowrap">
+        {{'new_maat'}}
+      </ion-label>
+      <ion-input type="number" class="ion-no-margin amount" [(ngModel)]="amount" placeholder="0"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label class="ion-no-margin ion-text-nowrap">
+        {{'notes' | translate}}
+      </ion-label>
       <ion-input type="text" class="ion-no-margin" [(ngModel)]="notes"></ion-input>
-    </ion-card-content>
-  </ion-card>
-
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" color="primary" shape="round" (click)="dismiss(true)" class="ion-margin-horizontal">{{'save' | translate}}</ion-button>
 </ion-content>
 
