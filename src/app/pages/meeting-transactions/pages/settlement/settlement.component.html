@@ -40,8 +40,8 @@
       </p>
       @if(acc.show_details){
       <div class="cash-details">
-        <p class="text-12"><ion-icon name="add-circle" color="success"></ion-icon>{{'pays_cash' | translate}}: {{acc?.totals?.credit - acc?.totals?.cash | number:'.0'}} {{country.currency}}</p>
-        <p class="text-12"><ion-icon name="checkmark-circle" color="primary"></ion-icon>{{'receives_cash' | translate}}: {{acc?.totals?.cash | number:'.0'}} {{country.currency}}</p>
+        <p class="text-12"><ion-icon name="add-circle" color="success"></ion-icon>{{'pays_cash' | translate}}: {{acc?.totals?.cash | number:'.0'}} {{country.currency}}</p>
+        <p class="text-12"><ion-icon name="checkmark-circle" color="primary"></ion-icon>{{'receives_cash' | translate}}: {{acc?.totals?.credit - acc?.totals?.cash | number:'.0'}} {{country.currency}}</p>
       </div>
       }
     </ion-label>

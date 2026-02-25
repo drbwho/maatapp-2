@@ -25,9 +25,13 @@ export class SettlementComponent  implements OnInit {
     this.attendance = this.accounts.length;
     this.accounts.forEach(async acc => {
       acc.show_details = false;
-      this.operTools.estimate_meeting_totals(acc, this.meeting.id).then(data =>
+      await this.operTools.estimate_meeting_totals(acc, this.meeting.id).then(data =>{
+        acc.totals = data;
+      });
     });
-    this.group.totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);
+    this.operTools.estimate_meeting_totals(null, this.meeting.id).then(data => {
+      this.group.totals = data;
+    })
   }
 
 

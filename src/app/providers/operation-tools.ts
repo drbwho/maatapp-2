@@ -355,7 +355,7 @@ export class OperationTools {
         if(data){
           trans = data.filter(s => s.meetingid == meetingId);
           if(account){
-            trans = trans.filter(s => s.idaccount == account.id);
+            trans = trans.filter(s => s.accountid == account.id);
           }
         }
         let params = await this.storage.get(this.config.GET_FILE('params'));
@@ -385,7 +385,7 @@ export class OperationTools {
           }
           // save transactions' sums
           currenttr = totals.transactions.get(pcode) || 0.00;
-          totals.transactions.set(pcode, currenttr + parseFloat(tr.amount));console.log(totals)
+          totals.transactions.set(pcode, currenttr + parseFloat(tr.amount));
         });
         // iterate in already uploaded transactions
         let uploaded_transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
