@@ -1,6 +1,6 @@
 <ion-header translucent>
   <ion-toolbar>
-    <ion-title class="ion-text-center"><h4>{{'new_maat' | translate}}</h4></ion-title>
+    <ion-title class="ion-text-center"><h2>{{'new_maat' | translate}}</h2></ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
@@ -10,27 +10,20 @@
 </ion-header>
 
 <ion-content>
-  <ion-list class="ion-margin">
-    <ion-item lines="none">
-      <ion-label>
-        <h5>{{account.owner}}</h5>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-  <ion-list class="ion-margin">
-    <ion-item lines="none" class="ion-no-padding">
-      <ion-label class="ion-no-margin ion-text-nowrap">
-        {{'new_maat'}}
-      </ion-label>
-      <ion-input type="number" class="ion-no-margin amount" [(ngModel)]="amount" placeholder="0"></ion-input>
-    </ion-item>
-    <ion-item lines="none">
-      <ion-label class="ion-no-margin ion-text-nowrap">
-        {{'notes' | translate}}
-      </ion-label>
-      <ion-input type="text" class="ion-no-margin" [(ngModel)]="notes"></ion-input>
-    </ion-item>
-  </ion-list>
+  <div class="info-card ion-margin ion-display-flex ion-justify-content-between ion-align-items-center ion-margin-bottom">
+    <div class="user-details">
+      <h5 class="user-name ion-no-margin">{{account.owner}}</h5>
+      <p class="user-availability ion-no-margin">
+        {{'maat_available' | translate}}: {{account.creditdisponible}} {{country.currency}}
+      </p>
+    </div>
+    <div class="numeric-input-wrapper">
+      <ion-input type="number" placeholder="0" class="centered-numeric-input" [(ngModel)]="amount"></ion-input>
+    </div>
+  </div>
+  <div class="ion-margin">
+    <ion-input placeholder="{{'notes' | translate}}" class="purple-border-input" [(ngModel)]="notes"></ion-input>
+  </div>
   <ion-button expand="block" color="primary" shape="round" (click)="dismiss(true)" class="ion-margin-horizontal">{{'save' | translate}}</ion-button>
 </ion-content>
 

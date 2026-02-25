@@ -1,3 +1,51 @@
-<p>
-  settlement works!
+<ion-card class="summary-card ion-margin ion-padding">
+ <div class="card-header-flex">
+    <h2 class="serif-title text-22">{{'final_settlement' | translate}}</h2>
+    <div class="avatar-box">
+      <img src="assets/img/pot-sm.png">
+    </div>
+  </div>
+
+  <ion-grid class="ion-no-padding ion-no-margin">
+    <ion-row>
+      <ion-col size="4" class="ion-text-center">
+        <div class="stat-value">{{group?.totals.credit | number:'.0'}}</div>
+        <div class="stat-label ion-padding-horizontal">{{'total_collected' | translate}}</div>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <div class="stat-value">{{ group?.totals.cash - group?.totals.credit | number:'.0'}}</div>
+        <div class="stat-label ion-padding-horizontal">{{'total_to_payout' | translate}}</div>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <div class="stat-value">{{ group?.totals.cash | number: '.0' }}</div>
+        <div class="stat-label">{{'net_cash_change' | translate}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-card>
+
+<p class="attending-subtitle text-14 ion-no-margin ion-margin-horizontal">
+  {{ attendance }} {{'of' | translate}} {{ numberofmembers}} {{'attending' | translate}}
 </p>
+
+<ion-list lines="none" class="custom-card ion-margin">
+  @for (acc of accounts; track acc.id) {
+  <ion-item>
+    <ion-label class="owner-container ion-text-wrap">
+      <div class="title-row">
+        <h5>{{ acc?.owner }}</h5>
+      </div>
+      <p class="detail-header" (click)="acc.show_details = !acc.show_details">
+        <span>@if(acc?.totals?.cash){ + } {{acc?.totals?.cash | number:'.0'}} {{country.currency}}</span>
+      </p>
+      @if(acc.show_details){
+      <div class="cash-details">
+        <p class="text-12"><ion-icon name="add-circle" color="success"></ion-icon>{{'pays_cash' | translate}}: {{acc?.totals?.credit - acc?.totals?.cash | number:'.0'}} {{country.currency}}</p>
+        <p class="text-12"><ion-icon name="checkmark-circle" color="primary"></ion-icon>{{'receives_cash' | translate}}: {{acc?.totals?.cash | number:'.0'}} {{country.currency}}</p>
+      </div>
+      }
+    </ion-label>
+  </ion-item>
+  }
+</ion-list>
+

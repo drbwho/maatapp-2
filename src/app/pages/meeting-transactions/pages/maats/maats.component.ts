@@ -45,7 +45,6 @@ export class MaatsComponent  implements OnInit {
 
     this.allAcounts = this.accounts;
     this.loanAccounts = this.allAcounts.filter(a => parseFloat(a.restearembourser) > 0);
-    this.creditAccounts = this.allAcounts.filter(a => parseFloat(a.creditdisponible) > 0);
 
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.parameters = data;
@@ -72,8 +71,10 @@ export class MaatsComponent  implements OnInit {
               s.accountid == acc.id && s.meetingid == this.meeting.id && s.parameterid == this.param_emp.id);
           if(tremp){
             acc.emp = tremp.amount;
+            acc.emp_notes = tremp.notes;
           }else{
             delete(acc.emp);
+            delete(acc.emp_notes);
           }
         }
       })
@@ -83,12 +84,14 @@ export class MaatsComponent  implements OnInit {
     });
   }
 
-  async clear_amount(account: any, emp = false){
-    if(emp){
-      await this.operationTools.delOperationByParameter(account.id, this.meeting.id, this.param_emp.id);
-    }else{
-      await this.operationTools.delOperationByParameter(account.id, this.meeting.id, this.param_rem.id);  
-    }
+  async clear_amount(account: any){
+    await this.operationTools.delOperationByParameter(account.id, this.meeting.id, this.param_rem.id);
+    this.readTotals();
+  }
+
+  async clear_loan_amount(account: any, event: Event){
+    event.stopPropagation();
+    await this.operationTools.delOperationByParameter(account.id, this.meeting.id, this.param_emp.id);
     this.readTotals();
   }
 
@@ -100,17 +103,29 @@ export class MaatsComponent  implements OnInit {
   }
 
   async openNewMaat(account: any){
+    let loan_info: any = {};
+    if(account.emp){
+      loan_info.amount = account.emp;
+    }
+    if(account.emp_notes){
+      loan_info.notes = account.emp_notes;
+    }
     const modal = await this.modalCtrl.create({
         component: LoanInfoComponent,
-        componentProps: {account: account },
-        initialBreakpoint: 0.3,
-        breakpoints: [0, 0.3, 0.5],
+        componentProps: {account: account, country: this.country, loan_info: loan_info },
+        initialBreakpoint: 0.5,
+        breakpoints: [0, 0.5, 0.7],
         handle: true,
         cssClass: 'lang-modal-sheet'
       });
       await modal.present();
 
-      let loan_info = (await modal.onWillDismiss()).data as string;
+      loan_info = (await modal.onWillDismiss()).data as string;
+      if(loan_info){
+        await this.operationTools.newOperation(
+          this.meeting.id, account, this.group, this.param_emp.id, this.param_emp.name, loan_info.amount, "", loan_info.notes);
+        this.readTotals();
+      }
   }
 
   async openAccountTransactions(account: any){

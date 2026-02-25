@@ -1,5 +1,5 @@
 <h2 class="serif-title ion-margin">
-  {{'does_anyone_wants_to_add_balance' | translate}}.
+  {{'does_anyone_wants_to_add_balance' | translate}}
 </h2>
 
 <p class="attending-subtitle text-14 ion-no-margin ion-margin-horizontal ion-padding-top">
@@ -22,14 +22,14 @@
   @for (acc of accounts; track acc.id) {
   <ion-item>
     <div slot="start" class="avatar-icon" [class.inactive]="!(acc.ecp > 0)">
-      <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon> 
+      <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
     </div>
     <ion-label class="ion-text-wrap" (click)="openAccountTransactions(acc)"><h5>{{ acc?.owner }}</h5></ion-label>
     <ion-input slot="end" type="number" disabled [(ngModel)]="acc.ecp" placeholder="0" class="amount-input ion-no-padding"></ion-input>
     <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
       (click)="clear_amount(acc)"
       [class.disabled]="!(acc.ecp > 0)">></ion-icon>
-  </ion-item>  
+  </ion-item>
   }
 </ion-list>
 

@@ -49,10 +49,12 @@
       <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
     </div>
     <ion-label class="owner-container ion-text-wrap" (click)="openAccountTransactions(acc)">
-      <h5>{{ acc?.owner }}</h5>
-      @if(acc.loans_expired){
-        <ion-badge class="alert text-12">{{'overdue' | translate}}</ion-badge>
-      }
+      <div class="title-row">
+        <h5>{{ acc?.owner }}</h5>
+        @if(acc.loans_expired){
+          <ion-badge class="alert text-12">{{'overdue' | translate}}</ion-badge>
+        }
+      </div>
     </ion-label>
     @if(acc?.rem > 0 || acc?.restearembourser == 0){
       <ion-icon name="checkmark-sharp" slot="end" size="small" color="medium" class="ion-no-margin"></ion-icon>
@@ -81,17 +83,22 @@
       <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
     </div>
     <ion-label class="owner-container ion-text-wrap" >
-      <h5>{{ acc?.owner }}</h5>
-      @if(!pf(acc.creditdisponible) > 0){
-        <ion-badge class="alert text-12">{{'maat_unavailable' | translate}}</ion-badge>
+      <div class="title-row">
+        <h5>{{ acc?.owner }}</h5>
+        @if(!pf(acc.creditdisponible) > 0){
+          <ion-badge class="alert text-12">{{'maat_unavailable' | translate}}</ion-badge>
+        }
+      </div>
+      @if(acc.due){
+        <p class="text-12">{{'overdue_regular_contribution' | translate}}</p>
       }
     </ion-label>
     @if(pf(acc.creditdisponible) > 0 && acc?.emp > 0){
       <ion-input slot="end" type="number" disabled [(ngModel)]="acc.emp" placeholder="0" class="amount-input ion-no-padding"></ion-input>
       <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
-        (click)="clear_amount(acc, true)"
+        (click)="clear_loan_amount(acc, $event)"
         [class.disabled]="!(acc?.emp > 0)">></ion-icon>
-    }
+  }
   </ion-item>
   }
   @if(!accounts.length){

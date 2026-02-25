@@ -9,14 +9,15 @@ import { ModalController } from '@ionic/angular';
 })
 export class LoanInfoComponent  implements OnInit {
   @Input() account: any;
+  @Input() country: any;
   @Input() loan_info?: any = {};
-  notes = "";
-  amount = 0.00;
+  notes: string;
+  amount: number;
 
   constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {}
-  
+
   ionViewWillEnter(){
     if(this.loan_info){
       if(this.loan_info.notes){
