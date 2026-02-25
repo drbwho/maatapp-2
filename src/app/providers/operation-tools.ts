@@ -110,7 +110,7 @@ export class OperationTools {
   */
   delAccountOperations(account: any, meeting: any){
     return new Promise(async (resolve)=>{
-      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);    
+      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       transactions = transactions.filter(tr => !(tr.accountid === account.id && tr.meetingid === meeting.id));
       await this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
         this.events.publish('upload:updated');
@@ -341,6 +341,7 @@ export class OperationTools {
   estimate_meeting_totals (account: any, meetingId: any): Promise<any> {
     return new Promise(async (resolve)=>{
       let totals: MeetingTotals = {
+        creditdisponible: 0.00,
         credit: 0.00,
         balance: 0.00,
         cash: 0.00,
@@ -358,20 +359,22 @@ export class OperationTools {
           }
         }
         let params = await this.storage.get(this.config.GET_FILE('params'));
-        totals.credit = account?.creditdisponible ? parseFloat(account?.creditdisponible) : 0.00;
+        totals.creditdisponible = account?.creditdisponible ? parseFloat(account?.creditdisponible) : 0.00;
         totals.balance = account?.balance ? parseFloat(account?.balance) : 0.00;
+        totals.credit = 0.00;
         totals.cash = 0.00;
         totals.loans = 0.00;
         trans.forEach((tr)=>{
           let pcode = (params.find((s) => s.id == tr.parameterid)).code;
           if(this.credit_operations.includes(pcode)){
             if(pcode != 'AST'){
-              totals.credit += parseFloat(tr.amount);
+              totals.creditdisponible += parseFloat(tr.amount);
               totals.balance += parseFloat(tr.amount);
             }
+            totals.credit += parseFloat(tr.amount);
             totals.cash += parseFloat(tr.amount);
           }else if(this.debit_operations.includes(pcode)){
-            totals.credit -= parseFloat(tr.amount);
+            totals.creditdisponible -= parseFloat(tr.amount);
             if(pcode != 'CFS'){
               totals.balance -= parseFloat(tr.amount);
               totals.cash -= parseFloat(tr.amount);
@@ -382,7 +385,7 @@ export class OperationTools {
           }
           // save transactions' sums
           currenttr = totals.transactions.get(pcode) || 0.00;
-          totals.transactions.set(pcode, currenttr + parseFloat(tr.amount));
+          totals.transactions.set(pcode, currenttr + parseFloat(tr.amount));console.log(totals)
         });
         // iterate in already uploaded transactions
         let uploaded_transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
@@ -396,6 +399,7 @@ export class OperationTools {
               let pcode = (params.find((s) => s.id == tr.idparameter)).code;
               // calculate only cash from uploaded transactions
               if(this.credit_operations.includes(pcode)){
+                totals.credit += parseFloat(tr.credit ? tr.credit : tr.debit);
                 totals.cash += parseFloat(tr.credit ? tr.credit : tr.debit);
               }else if(this.debit_operations.includes(pcode)){
                 totals.cash -= parseFloat(tr.credit ? tr.credit : tr.debit);
@@ -558,7 +562,7 @@ export class OperationTools {
           if(data){
             trans = data.filter(s => s.meetingid == meetingId);
             trans.forEach(tr => {
-              if(params[tr.parameterid] !== undefined){ 
+              if(params[tr.parameterid] !== undefined){
                 totals[params[tr.parameterid]] += tr.amount;
                 total += tr.amount;
               }

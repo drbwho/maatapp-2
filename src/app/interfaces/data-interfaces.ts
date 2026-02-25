@@ -1,5 +1,6 @@
 
 export interface MeetingTotals {
+  creditdisponible?: number,
   credit?: number,
   balance?: number,
   cash?: number,

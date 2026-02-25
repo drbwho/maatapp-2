@@ -13,7 +13,7 @@
         <div class="stat-label ion-padding-horizontal">{{'total_collected' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center">
-        <div class="stat-value">{{ group?.totals.cash - group?.totals.credit | number:'.0'}}</div>
+        <div class="stat-value">{{ group?.totals.credit - group?.totals.cash | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'total_to_payout' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center">
