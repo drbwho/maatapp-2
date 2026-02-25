@@ -84,8 +84,11 @@ export class BalanceComponent  implements OnInit {
       await this.operationTools.delAccountOperations(account, this.meeting);
       for (const [parm_id, amount] of Object.entries(acc_transactions)) {
         let prm = this.parameters.find(p => p.id === parm_id);
-        await this.operationTools.newOperation(
+        let result = await this.operationTools.newOperation(
           this.meeting.id, account, this.group, parm_id, prm.name, amount, categories, notes);
+        if(result.status != 'success'){
+          this.operationTools.show_alert(account.owner + ': ' + result.message);
+        }
       }
       this.readTotals();
     }

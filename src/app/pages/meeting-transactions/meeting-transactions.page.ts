@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AttendanceComponent } from './pages/attendance/attendance.component';
-import { CloseComponent } from './pages/close/close.component';
+import { EndComponent } from './pages/end/end.component';
 import { GroupReviewComponent } from './pages/group-review/group-review.component';
 import { GroupSummaryComponent } from './pages/group-summary/group-summary.component';
 import { MaatsComponent } from './pages/maats/maats.component';
@@ -54,7 +54,7 @@ export class MeetingTransactionsPage implements OnInit {
       5: {component: MaatsComponent, button: 'final_settlement'},
       6: {component: SettlementComponent, button: 'our_group'},
       7: {component: GroupReviewComponent, button: 'continue'},
-      8: {component: CloseComponent, button: 'close_meeting'}
+      8: {component: EndComponent, button: 'close_meeting'}
     };
 
   constructor(

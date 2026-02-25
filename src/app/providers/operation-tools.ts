@@ -6,7 +6,7 @@ import { formatDate } from '@angular/common';
 import { Events } from './events';
 import { DataProvider, Current, Meeting } from './provider-data';
 import { Network } from '@capacitor/network';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserData } from './user-data';
@@ -25,6 +25,9 @@ export class OperationTools {
     'AST': 'regfacilpayment',
     'ENF': 'entryfee'
   }
+  public tr_icons = {'ECP':'wallet-plus', 'RCB':'coins', 'REM':'vase-plus','DPR':'sprout', 'SFREM':'vase-ok',
+    'FIN':'fine', 'ENF':'entry', 'PCO':'feather', 'AST':'school', 'AID':'ribbon', 'SFND':'feather',
+    'RCP':'wallet-minus', 'EMP':'feather', 'SFEMP':'vase-plus', 'AIN':'feather', 'CFS':'hand-heart'};
 
   constructor(
     private http: HttpClient,
@@ -35,6 +38,7 @@ export class OperationTools {
     private dataProvider: DataProvider,
     private toast: ToastController,
     private loadingcontroller: LoadingController,
+    private alertCtrl: AlertController,
     private user: UserData
   ) { }
 
@@ -346,6 +350,7 @@ export class OperationTools {
         balance: 0.00,
         cash: 0.00,
         loans: 0.00,
+        reimbursements: 0.00,
         transactions: new Map<string, number>()
       };
       let currenttr = 0.00;
@@ -364,13 +369,14 @@ export class OperationTools {
         totals.credit = 0.00;
         totals.cash = 0.00;
         totals.loans = 0.00;
+        totals.reimbursements = 0.00;
         trans.forEach((tr)=>{
           let pcode = (params.find((s) => s.id == tr.parameterid)).code;
           if(this.credit_operations.includes(pcode)){
-            if(pcode != 'AST'){
+            //if(pcode != 'AST'){ // In server AST payments don't contribute to Group balance etc.!
               totals.creditdisponible += parseFloat(tr.amount);
               totals.balance += parseFloat(tr.amount);
-            }
+            //}
             totals.credit += parseFloat(tr.amount);
             totals.cash += parseFloat(tr.amount);
           }else if(this.debit_operations.includes(pcode)){
@@ -382,6 +388,9 @@ export class OperationTools {
           }
           if(pcode == 'EMP'){
             totals.loans += parseFloat(tr.amount);
+          }
+          if(pcode == 'REM'){
+            totals.reimbursements += parseFloat(tr.amount);
           }
           // save transactions' sums
           currenttr = totals.transactions.get(pcode) || 0.00;
@@ -406,6 +415,9 @@ export class OperationTools {
               }
               if(pcode == 'EMP'){
                 totals.loans += parseFloat(tr.debit);
+              }
+              if(pcode == 'REM'){
+                totals.reimbursements += parseFloat(tr.amount);
               }
               // save transactions' sums
               currenttr = totals.transactions.get(pcode) || 0.00;
@@ -574,6 +586,21 @@ export class OperationTools {
           resolve(totals);
         });
       });
+    });
+  }
+
+  show_alert(message: string){
+    this.translate.get(['error','confirm']).subscribe(async (keys: any)=>{
+      const alert = await this.alertCtrl.create({
+        header: keys['error'],
+        message: message,
+          buttons: [
+          {
+            text: keys['confirm'],
+          }
+          ],
+      });
+      await alert.present();
     });
   }
 

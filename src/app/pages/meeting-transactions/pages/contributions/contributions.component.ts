@@ -65,15 +65,18 @@ export class ContributionsComponent  implements OnInit {
     let amount = 0;
     let categories=""; let notes="";
     this.resetTotals();
-
+    let result;
     // use for() with awaits!!!!
     for (const prm of params){
       amount = parseFloat(this.group.settings[this.operationTools.map_default_to_settings[prm.code]]);
       if(account){
         // treat specific account
         if(account.selected){
-          await this.operationTools.newOperation(
+          result = await this.operationTools.newOperation(
               this.meeting.id, account, this.group, prm.id, prm.name, amount, categories, notes);
+          if(result.status != 'success'){
+            this.operationTools.show_alert(account.owner +': '+ result.message);
+          }
         }else{
           await this.operationTools.delOperationByParameter(account.id, this.meeting.id, prm.id);
         }
@@ -81,8 +84,11 @@ export class ContributionsComponent  implements OnInit {
         for (const acc of this.accounts){
           if(acc.selected){
             // add contributions for selected accounts
-            await this.operationTools.newOperation(
+            result = await this.operationTools.newOperation(
                 this.meeting.id, acc, this.group, prm.id, prm.name, amount, categories, notes);
+            if(result.status != 'success'){
+              this.operationTools.show_alert(acc.owner +': '+ result.message);
+            }
           }else{
             // remove from the rest
             await this.operationTools.delOperationByParameter(acc.id, this.meeting.id, prm.id);
@@ -110,8 +116,11 @@ export class ContributionsComponent  implements OnInit {
       await this.operationTools.delAccountOperations(account, this.meeting);
       for (const [parm_id, amount] of Object.entries(acc_transactions)) {
         let prm = this.parameters.find(p => p.id === parm_id);
-        await this.operationTools.newOperation(
-          this.meeting.id, account, this.group, parm_id, prm.name, amount, categories, notes);  
+        let result = await this.operationTools.newOperation(
+          this.meeting.id, account, this.group, parm_id, prm.name, amount, categories, notes);
+        if(result.status != 'success'){
+          this.operationTools.show_alert(account.owner +': '+ result.message);
+        }
       }
       this.readTotals();
     }

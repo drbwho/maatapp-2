@@ -5,6 +5,7 @@ export interface MeetingTotals {
   balance?: number,
   cash?: number,
   loans?: number,
+  reimbursements?: number,
   transactions?: any
 };
 

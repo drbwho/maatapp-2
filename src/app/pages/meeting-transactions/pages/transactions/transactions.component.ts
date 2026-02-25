@@ -12,9 +12,6 @@ import { OperationTools } from '../../../../providers/operation-tools';
   standalone: false
 })
 export class TransactionsComponent  implements OnInit {
-  tr_icons = {'ECP':'wallet-plus', 'RCB':'coins', 'REM':'vase-plus','DPR':'sprout', 'SFREM':'vase-ok',
-    'FIN':'fine', 'ENF':'entry', 'PCO':'feather', 'AST':'school', 'AID':'ribbon', 'SFND':'feather',
-    'RCP':'wallet-minus', 'EMP':'feather', 'SFEMP':'vase-plus', 'AIN':'feather', 'CFS':'hand-heart'};
   @Input() account: any;
   @Input() meeting: any;
   @Input() country: any;
@@ -27,6 +24,7 @@ export class TransactionsComponent  implements OnInit {
   loans_expired = false;
   show_more = false;
   show_details = false;
+  tr_icons: any;
   public pf = parseFloat;
 
   constructor(
@@ -38,6 +36,7 @@ export class TransactionsComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.tr_icons = this.operTools.tr_icons;
     var account_type = this.account.type;
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.parameters = data.filter((s) => (account_type == 1 ? s.type == 1 : s.type == 2)); //paysants/group operations

@@ -1,3 +1,78 @@
-<p>
-  group-review works!
+<h2 class="serif-title ion-margin">
+  {{'what_are_we_doing_as_a_group_today' | translate}}
+</h2>
+
+<ion-card class="summary-card ion-margin ion-padding">
+ <div class="card-header-flex">
+    <h2 class="serif-title text-22">{{'final_settlement' | translate}}</h2>
+    <div class="avatar-box">
+      <img src="assets/img/pot-sm.png">
+    </div>
+  </div>
+
+  <ion-grid class="ion-no-padding ion-no-margin">
+    <ion-row>
+      <ion-col size="4" class="ion-text-center">
+        <div class="stat-value">{{group?.totals.balance | number:'.0'}}</div>
+        <div class="stat-label ion-padding-horizontal">{{'balance' | translate}}</div>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <div class="stat-value">{{ group?.totals.creditdisponible | number:'.0'}}</div>
+        <div class="stat-label ion-padding-horizontal">{{'maat_available' | translate}}</div>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <div class="stat-value">{{ current_maats | number: '.0' }}</div>
+        <div class="stat-label">{{'maats_currents' | translate}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-card>
+
+<p class="attending-subtitle text-14 ion-no-margin ion-margin-horizontal">
+  {{ attendance }} {{'of' | translate}} {{ numberofmembers}} {{'attending' | translate}}
 </p>
+
+<ion-list class="ion-no-padding">
+  <ion-item lines="none" class="fund-item dashboard-item ion-margin ion-border-rounded-20">
+    <ion-label>
+      <p class="dashboard-label text-22">{{'Available for group investment' | translate}}</p>
+      <div class="amount-container">
+        <span class="amount">{{ group?.totals.creditdisponible | number:'.0'}}</span>
+        <span class="currency">{{country?.currency}}</span>
+      </div>
+    </ion-label>
+  </ion-item>
+</ion-list>
+
+<!-- GROUP Operations -->
+<ion-list lines="none" class="custom-card ion-margin">
+  @for (parameter of parameters; track parameter.id) {
+    <ng-container 
+      *ngTemplateOutlet="transactionItem; context: { 
+        parameter: parameter, amount: amount }">
+    </ng-container>
+  }
+</ion-list>
+
+
+<!-- *** Item Component *** -->
+<ng-template #transactionItem 
+  let-parameter="parameter" 
+  let-amount="amount">
+  
+  <ion-item>
+    <ion-icon slot="start" 
+      [src]="'assets/img/icons/transactions/'+ tr_icons[parameter?.code] +'.svg'" 
+      [class]="amount[parameter?.id]>0 ? 'filled-icon' : 'empty-icon'">
+    </ion-icon>
+    <ion-label class="ion-text-wrap">
+      <h5>{{ parameter?.name }}</h5>
+    </ion-label>
+    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]" 
+      placeholder="0" 
+      class="amount-input ion-no-padding"></ion-input>
+    <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
+      (click)="clear_amount(parameter?.id)"
+      [class.disabled]="!(amount?.[parameter?.id] > 0)">></ion-icon>
+  </ion-item>  
+</ng-template>

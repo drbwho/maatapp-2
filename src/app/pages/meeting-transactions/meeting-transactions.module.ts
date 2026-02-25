@@ -8,7 +8,7 @@ import { MeetingTransactionsPageRoutingModule } from './meeting-transactions-rou
 
 import { MeetingTransactionsPage } from './meeting-transactions.page';
 import { AttendanceComponent } from './pages/attendance/attendance.component';
-import { CloseComponent } from './pages/close/close.component';
+import { EndComponent } from './pages/end/end.component';
 import { GroupReviewComponent } from './pages/group-review/group-review.component';
 import { GroupSummaryComponent } from './pages/group-summary/group-summary.component';
 import { ContributionsComponent } from './pages/contributions/contributions.component';
@@ -41,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  declarations: [MeetingTransactionsPage, AttendanceComponent, CloseComponent, GroupReviewComponent,
+  declarations: [MeetingTransactionsPage, AttendanceComponent, EndComponent, GroupReviewComponent,
     GroupSummaryComponent, MaatsComponent, SettlementComponent, ContributionsComponent,
     BalanceComponent, TransactionsComponent, LoanInfoComponent]
 })

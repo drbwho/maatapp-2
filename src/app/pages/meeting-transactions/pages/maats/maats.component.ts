@@ -3,9 +3,10 @@ import { TransactionsComponent } from '../transactions/transactions.component';
 import { DataProvider } from '../../../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { LoanInfoComponent } from '../../../../component/loan-info/loan-info.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-maats',
@@ -35,6 +36,8 @@ export class MaatsComponent  implements OnInit {
     private storage: Storage,
     private config: ConfigData,
     private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private translate: TranslateService,
     private operationTools: OperationTools
   ) { }
 
@@ -98,10 +101,14 @@ export class MaatsComponent  implements OnInit {
   async set_default(account: any){
     let categories="", notes="";
     await this.operationTools.newOperation(
-          this.meeting.id, account, this.group, this.param_rem.id, this.param_rem.name, account.restearembourser, categories, notes);
+      this.meeting.id, account, this.group, this.param_rem.id, this.param_rem.name, account.restearembourser, categories, notes);
     this.readTotals();
   }
 
+  /*
+  * Register new loan
+  *
+  */
   async openNewMaat(account: any){
     let loan_info: any = {};
     if(account.emp){
@@ -122,8 +129,11 @@ export class MaatsComponent  implements OnInit {
 
       loan_info = (await modal.onWillDismiss()).data as string;
       if(loan_info){
-        await this.operationTools.newOperation(
+        let result = await this.operationTools.newOperation(
           this.meeting.id, account, this.group, this.param_emp.id, this.param_emp.name, loan_info.amount, "", loan_info.notes);
+        if(result.status != 'success'){
+          this.operationTools.show_alert(result.message);
+        }
         this.readTotals();
       }
   }
@@ -145,8 +155,11 @@ export class MaatsComponent  implements OnInit {
       await this.operationTools.delAccountOperations(account, this.meeting);
       for (const [parm_id, amount] of Object.entries(acc_transactions)) {
         let prm = this.parameters.find(p => p.id === parm_id);
-        await this.operationTools.newOperation(
+        let result = await this.operationTools.newOperation(
           this.meeting.id, account, this.group, parm_id, prm.name, amount, categories, notes);
+        if(result.status != 'success'){
+          this.operationTools.show_alert(result.message);
+        }
       }
       this.readTotals();
     }
