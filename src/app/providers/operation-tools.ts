@@ -26,8 +26,8 @@ export class OperationTools {
     'ENF': 'entryfee'
   }
   public tr_icons = {'ECP':'wallet-plus', 'RCB':'coins', 'REM':'vase-plus','DPR':'sprout', 'SFREM':'vase-ok',
-    'FIN':'fine', 'ENF':'entry', 'PCO':'feather', 'AST':'school', 'AID':'ribbon', 'SFND':'feather',
-    'RCP':'wallet-minus', 'EMP':'feather', 'SFEMP':'vase-plus', 'AIN':'feather', 'CFS':'hand-heart'};
+    'FIN':'fine', 'ENF':'entry', 'PCO':'pouch-plus', 'AST':'school', 'AID':'ribbon', 'SFND':'pouch-plus',
+    'RCP':'wallet-minus', 'EMP':'feather', 'SFEMP':'vase-plus', 'AIN':'pouch-minus', 'CFS':'hand-heart'};
 
   constructor(
     private http: HttpClient,

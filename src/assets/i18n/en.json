@@ -155,6 +155,8 @@
   "tap_to_view_history": "Tap to view transaction history",
   "meeting_in_progress": "Meeting in progress",
   "continue_meeting": "Continue Meeting",
+  "continue": "Continue",
+  "close_meeting": "Close meeting",
   "upload_data": "Upload data",
   "view_transactions": "View transactions history",
   "missing_regular_contribs": "Missing: Regular",

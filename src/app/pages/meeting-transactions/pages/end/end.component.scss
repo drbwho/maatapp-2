@@ -1,0 +1,48 @@
+
+.custom-card {
+    border-radius: 16px;
+    box-shadow: none;
+    height: 100%;
+  }
+
+  .card-label {
+    font-family: "Inter";
+    font-size: 18px;
+    color: #546e7a;
+    margin-bottom: 20px;
+  }
+
+  .card-value {
+    font-family: "Inter";
+    font-size: 38px !important;
+    font-weight: 400;
+    color: #2d2d2d;
+    margin: 0;
+  }
+
+  .currency {
+    font-family: "Inter";
+    font-size: 18px;
+    font-weight: 500;
+    color: #546e7a;
+  }
+
+  /* Color Variants */
+  .card-green { --background: #e0f2f1; }
+  .card-yellow { --background: #f9fbe7; }
+  .card-light-blue { --background: #e1f5fe; }
+  .card-purple { 
+    background-color: #E9E6F3 !important;
+    --background: url('/assets/img/intro/feather-white.png') no-repeat right 10px center / contain;
+  }
+
+  /* Button Styling */
+  .check-btn {
+    --background: #ede7f6;
+    --color: #5c61ad;
+    --border-radius: 12px;
+    font-weight: 600;
+    text-transform: none;
+    margin-top: 32px;
+    height: 50px;
+  }
