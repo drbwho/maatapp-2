@@ -17,11 +17,11 @@ export class GroupReviewComponent  implements OnInit {
   @Input() meeting: any;
   attendance = 0;
   numberofmembers = 0;
-  group_account:any;
   parameters: any;
   tr_icons: any;
   amount: number[]=[];
   current_maats = 0;
+  show_details = false;
 
   constructor(
     private dataProvider: DataProvider,
@@ -36,20 +36,17 @@ export class GroupReviewComponent  implements OnInit {
     this.attendance = this.accounts.length;
     this.tr_icons = this.operTools.tr_icons;
     
-    this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
-      this.group_account = data.find((s)=> s.idowner == this.group.id);
-      this.current_maats = this.group_account.restearembourser - this.group.totals.loans + this.group.totals.reimbursements;
+    this.current_maats = this.group.account.restearembourser - this.group.totals.loans + this.group.totals.reimbursements;
       
-      this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
-        if(trns){
-          let transactions = trns.filter((s)=>s.accountid == this.group_account.id && s.meetingid == this.meeting.id);
-          if(transactions){
-            transactions.forEach((tr)=>{
-              this.amount[tr.parameterid] = tr.amount;
-            })
-          }
+    this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
+      if(trns){
+        let transactions = trns.filter((s)=>s.accountid == this.group.account.id && s.meetingid == this.meeting.id);
+        if(transactions){
+          transactions.forEach((tr)=>{
+            this.amount[tr.parameterid] = tr.amount;
+          })
         }
-      })
+      }
     });
 
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {

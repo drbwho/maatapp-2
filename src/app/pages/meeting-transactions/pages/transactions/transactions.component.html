@@ -83,8 +83,7 @@
 
     <div class="ion-text-center ion-margin-top">
       <ion-button fill="clear" class="review-btn" (click)="show_details = !show_details">
-        @if(show_details){ {{'hide' | translate}} }
-        @else{ {{'review_details' | translate}} }
+        {{ (show_details ? 'hide' : 'review_details') | translate}}
       </ion-button>
     </div>
   </ion-card>

@@ -4,7 +4,7 @@
 
 <ion-card class="summary-card ion-margin ion-padding">
  <div class="card-header-flex">
-    <h2 class="serif-title text-22">{{'final_settlement' | translate}}</h2>
+    <h2 class="serif-title text-22">{{'group_review' | translate}}</h2>
     <div class="avatar-box">
       <img src="assets/img/pot-sm.png">
     </div>
@@ -22,10 +22,41 @@
       </ion-col>
       <ion-col size="4" class="ion-text-center">
         <div class="stat-value">{{ current_maats | number: '.0' }}</div>
-        <div class="stat-label">{{'maats_currents' | translate}}</div>
+        <div class="stat-label">{{'maats_current' | translate}}</div>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  @if(show_details){
+    <div class="details-container ion-padding-top">
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'maats_received_total' | translate}}</span>
+        <span class="value">{{account?.emprunts}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'maats_repayments_total' | translate}}</span>
+        <span class="value">{{account?.rembousements}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'solidarity_contributed_total' | translate}}</span>
+        <span class="value">{{account?.sfcontribution}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'solidarity_received_total' | translate}}</span>
+        <span class="value">{{account?.sfemprunts}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'facilitator_payments_total' | translate}}</span>
+        <span class="value">{{account?.facilitatorpayments}} {{country?.currency}}</span>
+      </div>
+    </div>
+  }  
+
+  <div class="ion-text-center ion-margin-top">
+    <ion-button fill="clear" class="review-btn" (click)="show_details = !show_details">
+      {{(show_details ? 'hide' : 'review_details') | translate}}
+    </ion-button>
+  </div>
 </ion-card>
 
 <p class="attending-subtitle text-14 ion-no-margin ion-margin-horizontal">
@@ -37,7 +68,7 @@
     <ion-label>
       <p class="dashboard-label text-22">{{'Available for group investment' | translate}}</p>
       <div class="amount-container">
-        <span class="amount">{{ group?.totals.creditdisponible | number:'.0'}}</span>
+        <span class="amount">{{ group?.totals.balance - group?.persontotal | number:'.0'}}</span>
         <span class="currency">{{country?.currency}}</span>
       </div>
     </ion-label>

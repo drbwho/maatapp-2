@@ -79,10 +79,11 @@ export class MeetingTransactionsPage implements OnInit {
     this.groupid = this.group.id;
     this.country = this.dataProvider.current.country;
     this.num_ECP = await this.operTools.get_num_of_ECP(this.meeting, this.country.id);
-    this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);
 
     this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
       this.accounts = data.filter((s)=> s.statut == 0 && s.type == 1); //active accounts & member acounts
+      this.group.account = data.find((s)=> s.idowner == this.group.id);
+      this.new_totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id);
       this.nextPage();
     });
   }

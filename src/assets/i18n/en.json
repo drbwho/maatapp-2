@@ -168,9 +168,12 @@
   "not_eligible_for_maat": "Not eligible for maat!",
   "maats_received_total":"Maats received total",
   "maats_repayments_total":"Maats repayments total",
+  "maats_current": "Maats current",
+  "group_review": "Group review",
   "solidarity_contributed_total":"Solidarity contributed total",
   "solidarity_received_total":"Solidarity received total",
   "facilitator_payments_total":"Facilitator payments total",
+  "well_done": "Well done",
   "days_left": "days left",
   "overdue": "Overdue",
   "attended": "Attended",
@@ -280,6 +283,9 @@
         "heading": "Your group needs attention",
         "description": "Several payments or maats are overdue and should be addressed before the next meeting."
       }
+    },
+    "groups": {
+      "message_1": "The group is growing steadily. All transactions have been recorded"
     }
   }
 

@@ -359,7 +359,7 @@ export class OperationTools {
       this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
         if(data){
           trans = data.filter(s => s.meetingid == meetingId);
-          if(account){
+          if(account && account.type == 1){ // member account?
             trans = trans.filter(s => s.accountid == account.id);
           }
         }
@@ -400,7 +400,7 @@ export class OperationTools {
         let uploaded_transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
         if(uploaded_transactions && uploaded_transactions.length){
           uploaded_transactions = uploaded_transactions.filter(s => s.idmeeting == meetingId);
-           if(account){
+          if(account && account.type == 1){ // member account?
             uploaded_transactions = uploaded_transactions.filter(s => s.idaccount == account.id);
           }
           if(uploaded_transactions.length){

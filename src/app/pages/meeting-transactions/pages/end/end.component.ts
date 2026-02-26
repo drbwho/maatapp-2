@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-end',
@@ -7,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
   standalone: false
 })
 export class EndComponent  implements OnInit {
+  @Input() group: any;
+  @Input() accounts: any;
+  @Input() country: any;
+  @Input() meeting: any;
+
 
   constructor() { }
 
