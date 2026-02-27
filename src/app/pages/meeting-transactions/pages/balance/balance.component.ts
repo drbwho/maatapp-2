@@ -50,7 +50,7 @@ export class BalanceComponent  implements OnInit {
       this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
         if(trns){
           let trbalance = trns.find((s)=>
-              s.accountid == acc.id && s.meetingid == this.meeting.id && s.parameterid == this.param_balance.id);
+              s.idaccount == acc.id && s.idmeeting == this.meeting.id && s.idparameter == this.param_balance.id);
           if(trbalance){
             acc.ecp = trbalance.amount;
             this.meetingBalance += trbalance.amount;

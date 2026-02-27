@@ -122,6 +122,7 @@ export class NewMeetingPage implements OnInit {
               componentProps: {
                 title: 'Group: ' + this.group.name,
                 subtitle: this.country.name + ' · ' + this.group.ville,
+                image: '/assets/img/action-views/new-meeting.png',
                 heading: keys['messages.meetings.new-meeting.heading'],
                 description: keys['messages.meetings.new-meeting.description'],
                 buttons: [
@@ -132,7 +133,7 @@ export class NewMeetingPage implements OnInit {
             });
             await modal.present();
             await modal.onWillDismiss().then(()=>{
-              this.router.navigate(['/meeting-history'], {state: {direction: 'forward'}}); return;
+              this.router.navigate(['/meeting-transactions'], {state: {direction: 'root'}}); return;
             });
           }
           return;

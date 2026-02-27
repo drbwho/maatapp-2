@@ -152,10 +152,10 @@ export class DataProvider {
 
   // Save locally new Meeting
   async newMeeting(groupid: any, place: any, startdate: any){
-    var meetingid = uuidv4(); // create new uuid
+    var idmeeting = uuidv4(); // create new uuid
     let user = await this.user.getUser();
     var meet: Meeting = {
-      id: meetingid,
+      id: idmeeting,
       idgroup: groupid,
       place: place,
       startedat: startdate,

@@ -31,23 +31,23 @@
     <div class="details-container ion-padding-top">
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'maats_received_total' | translate}}</span>
-        <span class="value">{{account?.emprunts}} {{country?.currency}}</span>
+        <span class="value">{{details?.emp}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'maats_repayments_total' | translate}}</span>
-        <span class="value">{{account?.rembousements}} {{country?.currency}}</span>
+        <span class="value">{{details?.rem}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'solidarity_contributed_total' | translate}}</span>
-        <span class="value">{{account?.sfcontribution}} {{country?.currency}}</span>
+        <span class="value">{{details?.sfloan}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'solidarity_received_total' | translate}}</span>
-        <span class="value">{{account?.sfemprunts}} {{country?.currency}}</span>
+        <span class="value">{{details?.sfrem}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'facilitator_payments_total' | translate}}</span>
-        <span class="value">{{account?.facilitatorpayments}} {{country?.currency}}</span>
+        <span class="value">{{details?.fcp}} {{country?.currency}}</span>
       </div>
     </div>
   }  

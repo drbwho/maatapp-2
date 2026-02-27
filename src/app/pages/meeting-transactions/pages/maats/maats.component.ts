@@ -63,7 +63,7 @@ export class MaatsComponent  implements OnInit {
       this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
         if(trns){
           let trrem = trns.find((s)=>
-              s.accountid == acc.id && s.meetingid == this.meeting.id && s.parameterid == this.param_rem.id);
+              s.idaccount == acc.id && s.idmeeting == this.meeting.id && s.idparameter == this.param_rem.id);
           if(trrem){
             acc.rem = trrem.amount;
             this.reimbursements++;
@@ -71,7 +71,7 @@ export class MaatsComponent  implements OnInit {
             delete(acc.rem);
           }
           let tremp = trns.find((s)=>
-              s.accountid == acc.id && s.meetingid == this.meeting.id && s.parameterid == this.param_emp.id);
+              s.idaccount == acc.id && s.idmeeting == this.meeting.id && s.idparameter == this.param_emp.id);
           if(tremp){
             acc.emp = tremp.amount;
             acc.emp_notes = tremp.notes;

@@ -66,10 +66,10 @@ export class TransactionsComponent  implements OnInit {
       //load account's pending operations
       this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
         if(trns){
-          let transactions = trns.filter((s)=>s.accountid == this.account.id && s.meetingid == this.meeting.id);
+          let transactions = trns.filter((s)=>s.idaccount == this.account.id && s.idmeeting == this.meeting.id);
           if(transactions){
             transactions.forEach((tr)=>{
-              this.amount[tr.parameterid] = tr.amount;
+              this.amount[tr.idparameter] = tr.amount;
               if(tr.categories.length){
                 this.loan_info.categories = tr.categories;
               }

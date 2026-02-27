@@ -31,8 +31,8 @@ export class GroupTools {
       meetings.forEach(async (m)=>{
         m.haspending = 0;
         this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
-          if(trns && (trns.filter(s => s.meetingid == m.id)).length){
-            m.haspending = (trns.filter(s => s.meetingid == m.id)).length;
+          if(trns && (trns.filter(s => s.idmeeting == m.id)).length){
+            m.haspending = (trns.filter(s => s.idmeeting == m.id)).length;
           }
         });
         m.collection = Math.round(m.collection); // parse collected amount as float

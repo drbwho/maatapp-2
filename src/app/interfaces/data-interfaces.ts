@@ -10,9 +10,9 @@ export interface MeetingTotals {
 };
 
 export interface Transaction {
-  meetingid: any,
-  accountid: any,
-  parameterid: any,
+  idmeeting: any,
+  idaccount: any,
+  idparameter: any,
   parametername: any,
   amount: any,
   categories?: any,

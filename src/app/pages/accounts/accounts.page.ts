@@ -89,10 +89,10 @@ export class AccountsPage implements OnInit {
       this.allaccounts.forEach(async (acc) => {
         //if(transactions){
           //append upload errors to transactions
-          /*acc.transactions = transactions.filter((s)=>s.accountid == acc.id && s.meetingid == this.meeting.id);
+          /*acc.transactions = transactions.filter((s)=>s.idaccount == acc.id && s.idmeeting == this.meeting.id);
           if(upload_errors){
             acc.transactions.forEach((tr)=>{
-              let uplerr = upload_errors.find((s)=> s.meetingid == tr.meetingid && s.accountid == tr.accountid && s.parameterid == tr.parameterid);
+              let uplerr = upload_errors.find((s)=> s.idmeeting == tr.idmeeting && s.idaccount == tr.idaccount && s.idparameter == tr.idparameter);
               if(uplerr){
                 tr.error = uplerr.message;
               }
@@ -190,7 +190,7 @@ export class AccountsPage implements OnInit {
           handler: async () => {
             /*let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
             //find index
-            let index = transactions.findIndex(s => s.accountid == tr.accountid && s.meetingid == tr.meetingid && s.parameterid == tr.parameterid && s.amount == tr.amount);
+            let index = transactions.findIndex(s => s.idaccount == tr.idaccount && s.idmeeting == tr.idmeeting && s.idparameter == tr.idparameter && s.amount == tr.amount);
             transactions.splice(index, 1);//remove element from array
             this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
               this.load_accounts();
@@ -233,7 +233,7 @@ export class AccountsPage implements OnInit {
       let trs = [];
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       if(transactions){
-        transactions = transactions.filter((s)=>s.meetingid == this.meeting.id);
+        transactions = transactions.filter((s)=>s.idmeeting == this.meeting.id);
         transactions.forEach((tr)=>{
           if(trs[tr.parametername] != undefined){
             trs[tr.parametername] += tr.amount;

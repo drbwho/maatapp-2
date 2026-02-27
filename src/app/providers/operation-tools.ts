@@ -44,11 +44,11 @@ export class OperationTools {
 
 
    // Save locally new Operation
-  newOperation(meetingid, account, group, parameterid, parametername, amount, categories="", notes=""): Promise<any>{
+  newOperation(idmeeting, account, group, idparameter, parametername, amount, categories="", notes=""): Promise<any>{
     var trn: Transaction = {
-      meetingid: meetingid,
-      accountid: account.id,
-      parameterid: parameterid,
+      idmeeting: idmeeting,
+      idaccount: account.id,
+      idparameter: idparameter,
       parametername: parametername,
       amount: amount,
       categories: categories,
@@ -69,7 +69,7 @@ export class OperationTools {
          trns = res;
         }
         //Insert or update transaction
-        let index = trns.findIndex((s)=> s.meetingid == meetingid && s.accountid == account.id && s.parameterid == parameterid);
+        let index = trns.findIndex((s)=> s.idmeeting == idmeeting && s.idaccount == account.id && s.idparameter == idparameter);
         if(index >= 0){
           trns[index] = trn;
         }else{
@@ -88,7 +88,7 @@ export class OperationTools {
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       //find index
-      let index = transactions.findIndex(s => s.accountid == tr.accountid && s.meetingid == tr.meetingid && s.parameterid == tr.parameterid && s.amount == tr.amount);
+      let index = transactions.findIndex(s => s.idaccount == tr.idaccount && s.idmeeting == tr.idmeeting && s.idparameter == tr.idparameter && s.amount == tr.amount);
       transactions.splice(index, 1);//remove element from array
       this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
         this.events.publish('upload:updated');
@@ -100,7 +100,7 @@ export class OperationTools {
   delOperationByParameter(accountId: any, meetingId: any, parameterId: any){
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      transactions = transactions.filter(s => !(s.accountid == accountId && s.meetingid == meetingId && s.parameterid == parameterId));
+      transactions = transactions.filter(s => !(s.idaccount == accountId && s.idmeeting == meetingId && s.idparameter == parameterId));
       await this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
         this.events.publish('upload:updated');
         resolve(true);
@@ -115,7 +115,7 @@ export class OperationTools {
   delAccountOperations(account: any, meeting: any){
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      transactions = transactions.filter(tr => !(tr.accountid === account.id && tr.meetingid === meeting.id));
+      transactions = transactions.filter(tr => !(tr.idaccount === account.id && tr.idmeeting === meeting.id));
       await this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
         this.events.publish('upload:updated');
         resolve(true);
@@ -131,7 +131,7 @@ export class OperationTools {
     }
     let old_history = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
     if(old_history && old_history.length){
-      old_history = old_history.filter(s => s.meetingid == meetingId);
+      old_history = old_history.filter(s => s.idmeeting == meetingId);
       history = [...old_history, ...history];
     }
     this.storage.set(this.config.HISTORY_TRANSACTIONS_FILE, history);
@@ -151,9 +151,9 @@ export class OperationTools {
 
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      transactions = transactions.filter(s => s.meetingid != meeting.id);
+      transactions = transactions.filter(s => s.idmeeting != meeting.id);
       //find index
-      /*let index = transactions.findIndex(s => s.meetingid == meeting.id);
+      /*let index = transactions.findIndex(s => s.idmeeting == meeting.id);
       transactions.splice(index, 1);//remove element from array*/
       this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
         this.events.publish('upload:updated');
@@ -246,13 +246,13 @@ export class OperationTools {
         resolve({'status': 'success'});
       })
     }
-    transactions = transactions.filter(s=>s.meetingid == meeting.id);
+    transactions = transactions.filter(s=>s.idmeeting == meeting.id);
     return new Promise(async (resolve)=>{
       var res: any = {status: 'success', message: ''};
       //Clear previous uploading errors
       var upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
       if(upload_errors) {
-        upload_errors = upload_errors.filter((s)=>s.meetingid != meeting.id);
+        upload_errors = upload_errors.filter((s)=>s.idmeeting != meeting.id);
       }else{
         upload_errors = [];
       }
@@ -263,9 +263,9 @@ export class OperationTools {
         if(res.status.toLowerCase() == 'error'){
           // return name of account
           let accounts = await this.storage.get(this.config.GET_FILE('accounts'));
-          let account = accounts.find(s => s.id == tr.accountid);
+          let account = accounts.find(s => s.id == tr.idaccount);
           res.name = account.owner;
-          upload_errors.push({meetingid: tr.meetingid, accountid: tr.accountid, parameterid: tr.parameterid, message: res.message});
+          upload_errors.push({idmeeting: tr.idmeeting, idaccount: tr.idaccount, idparameter: tr.idparameter, message: res.message});
           found_errors = true;
           //resolve(res);
           //break;
@@ -299,7 +299,7 @@ export class OperationTools {
     const loading = await this.loadingcontroller.create({showBackdrop: false});
     loading.present();
 
-    let apiurl = this.config.GET_API_URL('operations', tr.meetingid);
+    let apiurl = this.config.GET_API_URL('operations', tr.idmeeting);
 
     const user = await this.user.getUser();
     const headers =  new HttpHeaders({
@@ -311,8 +311,8 @@ export class OperationTools {
       this.http
         .post(apiurl,
           {
-            parameter: tr.parameterid,
-            accountid: tr.accountid,
+            parameter: tr.idparameter,
+            accountid: tr.isaccount,
             amount: tr.amount,
             inputdate: tr.inputdate,
             categories: tr.categories,
@@ -358,9 +358,9 @@ export class OperationTools {
       //await this.refreshMeetingHistory(meetingId); history is already refreshed! by total_ECP
       this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
         if(data){
-          trans = data.filter(s => s.meetingid == meetingId);
+          trans = data.filter(s => s.idmeeting == meetingId);
           if(account && account.type == 1){ // member account?
-            trans = trans.filter(s => s.accountid == account.id);
+            trans = trans.filter(s => s.idaccount == account.id);
           }
         }
         let params = await this.storage.get(this.config.GET_FILE('params'));
@@ -371,7 +371,7 @@ export class OperationTools {
         totals.loans = 0.00;
         totals.reimbursements = 0.00;
         trans.forEach((tr)=>{
-          let pcode = (params.find((s) => s.id == tr.parameterid)).code;
+          let pcode = (params.find((s) => s.id == tr.idparameter)).code;
           if(this.credit_operations.includes(pcode)){
             //if(pcode != 'AST'){ // In server AST payments don't contribute to Group balance etc.!
               totals.creditdisponible += parseFloat(tr.amount);
@@ -437,14 +437,14 @@ export class OperationTools {
   check_operation(account, group, transaction){
     return new Promise(async (resolve)=>{
       let params = await this.storage.get(this.config.GET_FILE('params'));
-      let pcode = (params.find((s) => s.id == transaction.parameterid)).code;
+      let pcode = (params.find((s) => s.id == transaction.idparameter)).code;
       let group_account = await this.storage.get(this.config.GET_FILE('accounts'));
       if(account.type == 2){
         group_account = account;
       }else{
         group_account = group_account.find((s)=>s.idowner == group.id);
       }
-      let group_totals = await this.estimate_meeting_totals(group_account, transaction.meetingid);
+      let group_totals = await this.estimate_meeting_totals(group_account, transaction.idmeeting);
       switch(pcode){
         case 'EMP':
           if(transaction.amount > account.creditdisponible && group.settings.credit_borrow_multiplier >= 0){
@@ -539,7 +539,7 @@ export class OperationTools {
           let trans = [];
           this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
             if(data && data.length){
-              trans = data.filter(s=>s.meetingid == meeting.id && s.parameterid == param.id && !s.is_cancelled);
+              trans = data.filter(s=>s.idmeeting == meeting.id && s.idparameter == param.id && !s.is_cancelled);
             }
             // iterate in already uploaded transactions
             this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE).then((data)=>{
@@ -572,10 +572,10 @@ export class OperationTools {
         let trans: Transaction[] = [];
         this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
           if(data){
-            trans = data.filter(s => s.meetingid == meetingId);
-            trans.forEach(tr => {
-              if(params[tr.parameterid] !== undefined){
-                totals[params[tr.parameterid]] += tr.amount;
+            trans = data.filter(s => s.idmeeting == meetingId);
+            trans.forEach((tr: Transaction) => {
+              if(params[tr.idparameter] !== undefined){
+                totals[params[tr.idparameter]] += tr.amount;
                 total += tr.amount;
               }
             });
