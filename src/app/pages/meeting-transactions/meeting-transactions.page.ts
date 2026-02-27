@@ -81,7 +81,7 @@ export class MeetingTransactionsPage implements OnInit {
     this.num_ECP = await this.operTools.get_num_of_ECP(this.meeting, this.country.id);
 
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
-      this.country.parameters = data
+      this.country.parameters = data;
     });
 
     this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {

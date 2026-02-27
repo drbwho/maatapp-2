@@ -29,10 +29,10 @@ export class EndComponent  implements OnInit {
     let param  = this.country.parameters.find(p => p.code == 'REM');
     const today = new Date();
     this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
-      if(trns && (trns.filter(s => s.meetingid == this.meeting.id)).length){
+      if(trns && (trns.filter(s => s.idmeeting == this.meeting.id)).length){
         this.accounts.forEach(acc => {
           // cals loans completed
-          let reimbursement = trns.find(tr => tr.parameterid == param.id && tr.accountid == acc.id);
+          let reimbursement = trns.find(tr => tr.idparameter == param.id && tr.idaccount == acc.id);
           if(reimbursement && parseFloat(reimbursement.amount) == parseFloat(acc.restearembourser)){
             this.loans_completed++;
           }
