@@ -29,7 +29,7 @@ export class AccountsPage implements OnInit {
   fullDate: string;
   num_ECP = 0;
   new_totals: MeetingTotals = {
-    cash: 0.00,
+    debit: 0.00,
     balance: 0.00,
     credit: 0.00,
     loans: 0.00
@@ -298,7 +298,7 @@ export class AccountsPage implements OnInit {
         if(group_health == 'great' || group_health == 'well'){
           info = "<h1 class='emphassis'>"+ this.group.totals.balance +"</h1> \
             <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
-          badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']} 
+          badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']}
         }else if(group_health == 'stable'){
            info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
             <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";

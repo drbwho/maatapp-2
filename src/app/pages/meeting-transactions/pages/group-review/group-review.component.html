@@ -35,7 +35,7 @@
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'maats_repayments_total' | translate}}</span>
-        <span class="value">{{account?.rembousements}} {{country?.currency}}</span>
+        <span class="value">{{account?.remboursements}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'solidarity_contributed_total' | translate}}</span>
@@ -50,7 +50,7 @@
         <span class="value">{{account?.facilitatorpayments}} {{country?.currency}}</span>
       </div>
     </div>
-  }  
+  }
 
   <div class="ion-text-center ion-margin-top">
     <ion-button fill="clear" class="review-btn" (click)="show_details = !show_details">
@@ -78,8 +78,8 @@
 <!-- GROUP Operations -->
 <ion-list lines="none" class="custom-card ion-margin">
   @for (parameter of parameters; track parameter.id) {
-    <ng-container 
-      *ngTemplateOutlet="transactionItem; context: { 
+    <ng-container
+      *ngTemplateOutlet="transactionItem; context: {
         parameter: parameter, amount: amount }">
     </ng-container>
   }
@@ -87,23 +87,23 @@
 
 
 <!-- *** Item Component *** -->
-<ng-template #transactionItem 
-  let-parameter="parameter" 
+<ng-template #transactionItem
+  let-parameter="parameter"
   let-amount="amount">
-  
+
   <ion-item>
-    <ion-icon slot="start" 
-      [src]="'assets/img/icons/transactions/'+ tr_icons[parameter?.code] +'.svg'" 
+    <ion-icon slot="start"
+      [src]="'assets/img/icons/transactions/'+ tr_icons[parameter?.code] +'.svg'"
       [class]="amount[parameter?.id]>0 ? 'filled-icon' : 'empty-icon'">
     </ion-icon>
     <ion-label class="ion-text-wrap">
       <h5>{{ parameter?.name }}</h5>
     </ion-label>
-    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]" 
-      placeholder="0" 
+    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]"
+      placeholder="0"
       class="amount-input ion-no-padding"></ion-input>
     <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
       (click)="clear_amount(parameter?.id)"
       [class.disabled]="!(amount?.[parameter?.id] > 0)">></ion-icon>
-  </ion-item>  
+  </ion-item>
 </ng-template>

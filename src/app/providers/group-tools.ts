@@ -83,7 +83,7 @@ export class GroupTools {
     // get collection from pending transactions
     if(last.haspending || last.pending){
       let totals: any = await this.operTools.estimate_meeting_totals(null, last.id);
-      last.collection = totals.cash;
+      last.collection = totals.credit - totals.debit;
     }
     return last;
   }

@@ -35,9 +35,9 @@ export class GroupReviewComponent  implements OnInit {
     this.accounts = this.accounts.filter(m => m.isPresent);
     this.attendance = this.accounts.length;
     this.tr_icons = this.operTools.tr_icons;
-    
-    this.current_maats = this.group.account.restearembourser - this.group.totals.loans + this.group.totals.reimbursements;
-      
+
+    this.current_maats = this.group.account.restearembourser - this.meeting.totals.loans + this.meeting.totals.reimbursements;
+
     this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
       if(trns){
         let transactions = trns.filter((s)=>s.accountid == this.group.account.id && s.meetingid == this.meeting.id);
