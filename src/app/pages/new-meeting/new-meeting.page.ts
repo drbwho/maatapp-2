@@ -116,7 +116,6 @@ export class NewMeetingPage implements OnInit {
         this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any)=>{
           if(data.meeting){
             this.dataProvider.current.meeting = data.meeting;
-            //this.navCtrl.navigateForward('/meeting-history/');
             const modal = await this.modalCtrl.create({
               component: ActionViewComponent,
               componentProps: {

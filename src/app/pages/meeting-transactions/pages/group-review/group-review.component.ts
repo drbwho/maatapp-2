@@ -37,14 +37,15 @@ export class GroupReviewComponent  implements OnInit {
     this.attendance = this.accounts.length;
     this.tr_icons = this.operTools.tr_icons;
     
-    this.current_maats = this.group.account.restearembourser - this.group.totals.loans + this.group.totals.reimbursements;
-      
+    this.current_maats = parseFloat(this.group.account.restearembourser) - parseFloat(this.meeting.totals.loans)
+                         + parseFloat(this.meeting.totals.reimbursements);
+ 
     let paramloan = this.country.parameters.find(p => p.code == 'EMP');
     let paramrem = this.country.parameters.find(p => p.code == 'REM');
-    let paramsfloan = this.country.parameters.find(p => p.code == 'SFEMP');
+    let paramsfcontrib = this.country.parameters.find(p => p.code == 'AID');
     let paramsfrem = this.country.parameters.find(p => p.code == 'SFREM');
     let paramfcp = this.country.parameters.find(p => p.code == 'AST');
-    this.details = {loan: 0.00, rem: 0.00, sfloan: 0.00, sfrem: 0.00, fcp: 0.00};
+    this.details = {loan: 0.00, rem: 0.00, sfcontrib: 0.00, sfrem: 0.00, fcp: 0.00};
     
     this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
       let membertransactions = trns.filter(s => s.idaccount != this.group.account.id && s.idmeeting == this.meeting.id)
@@ -53,19 +54,19 @@ export class GroupReviewComponent  implements OnInit {
         membertransactions.forEach(tr => {
           switch(tr.idparameter){
             case(paramloan.id):
-              this.details.loan++;
+              this.details.loan += parseFloat(tr.amount);
               break;
             case(paramrem.id):
-              this.details.rem++;
+              this.details.rem += parseFloat(tr.amount);
               break;
-            case(paramsfloan.id):
-              this.details.sfloan++;
+            case(paramsfcontrib.id):
+              this.details.sfcontrib += parseFloat(tr.amount);
               break;
             case(paramsfrem.id):
-              this.details.sfrem++;
+              this.details.sfrem += parseFloat(tr.amount);
               break;
             case(paramfcp.id):
-              this.details.fcp++;
+              this.details.fcp += parseFloat(tr.amount);
               break;            
           }
         });

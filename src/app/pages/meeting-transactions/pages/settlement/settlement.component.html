@@ -9,15 +9,15 @@
   <ion-grid class="ion-no-padding ion-no-margin">
     <ion-row>
       <ion-col size="4" class="ion-text-center">
-        <div class="stat-value">{{group?.totals.credit | number:'.0'}}</div>
+        <div class="stat-value">{{meeting?.totals?.credit | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'total_collected' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center">
-        <div class="stat-value">{{ group?.totals.debit | number:'.0'}}</div>
+        <div class="stat-value">{{ meeting?.totals?.debit | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'total_to_payout' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center">
-        <div class="stat-value">{{ (group?.totals.credit -  group?.totals.debit) | number: '.0' }}</div>
+        <div class="stat-value">{{ (meeting?.totals?.credit -  meeting?.totals?.debit) | number: '.0' }}</div>
         <div class="stat-label">{{'net_cash_change' | translate}}</div>
       </ion-col>
     </ion-row>
