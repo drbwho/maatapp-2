@@ -1,8 +1,8 @@
 
-<div class="ion-text-center ion-margin-bottom">
+<div class="ion-text-center ion-margin-bottom ion-padding-top">
   <img src="assets/img/action-views/great-group.png" alt="Well done">
-  <h2 class="ion-no-margin ion-text-bold">{{'well_done' | translate}}!</h2>
-  <p class="ion-no-margin ion-padding-top">
+  <h2 class="ion-no-margin ion-padding-top ion-text-bold">{{'well_done' | translate}}!</h2>
+  <p class="ion-margin ion-padding-bottom">
     {{'messages.groups.message_1' | translate}}
   </p>
 </div>
@@ -13,7 +13,7 @@
     <ion-card class="ion-no-margin custom-card card-green">
       <ion-card-content>
         <p class="card-label">{{'total_collected' | translate}}</p>
-        <h3 class="card-value">{{meeting?.totals?.credit}} <span class="currency">{{country.currency}}</span></h3>
+        <h3 class="card-value">{{(meeting?.totals?.credit - meeting?.totals?.debit) | number: '.0'}} <span class="currency">{{country.currency}}</span></h3>
       </ion-card-content>
     </ion-card>
   </ion-col>
@@ -32,7 +32,7 @@
     <ion-card class="ion-no-margin custom-card card-light-blue">
       <ion-card-content>
         <p class="card-label">{{'due_next_week' | translate}}</p>
-        <h3 class="card-value">3</h3>
+        <h3 class="card-value">{{loans_to_due}}</h3>
       </ion-card-content>
     </ion-card>
   </ion-col>
@@ -40,7 +40,7 @@
     <ion-card class="ion-no-margin custom-card card-purple">
       <ion-card-content>
         <p class="card-label">{{'maats_completed' | translate}}</p>
-        <h3 class="card-value">1</h3>
+        <h3 class="card-value">{{loans_completed}}</h3>
       </ion-card-content>
     </ion-card>
   </ion-col>

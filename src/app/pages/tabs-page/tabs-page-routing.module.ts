@@ -45,6 +45,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'meetings/close',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../meetings/meetings.module').then(m => m.MeetingsPageModule)
+          },
+        ]
+      },
+      {
         path: 'accounts',
         children: [
           {

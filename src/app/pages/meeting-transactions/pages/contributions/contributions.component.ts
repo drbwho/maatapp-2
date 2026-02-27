@@ -21,6 +21,7 @@ export class ContributionsComponent  implements OnInit {
   totals:any = {};
   meetingTotals: any = {};
   selectAll = false;
+  contribsExist = false;
 
   constructor(
     private modalCtrl: ModalController,
@@ -57,6 +58,7 @@ export class ContributionsComponent  implements OnInit {
   async readTotals(){
     this.totals = await this.operationTools.get_contribution_totals(this.meeting.id);
     this.meetingTotals = await this.operationTools.estimate_meeting_totals(null, this.meeting.id);
+    this.contribsExist = this.totals['ALL'] > 0 ? true : false;
   }
 
   async submit_contrib_operations(account:any = null){
@@ -107,7 +109,7 @@ export class ContributionsComponent  implements OnInit {
       componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country}
     });
     modal.present();
-    
+
     let acc_transactions = (await modal.onWillDismiss() as any).data;
 
     // save transactions

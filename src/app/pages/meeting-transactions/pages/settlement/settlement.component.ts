@@ -30,7 +30,7 @@ export class SettlementComponent  implements OnInit {
       });
     });
     this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id).then(data => {
-      this.group.totals = data;
+      this.meeting.totals = data;
     })
   }
 

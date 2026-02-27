@@ -352,7 +352,7 @@ export class DataProvider {
     });
   }
 
-  setCurrent(current: Current): Promise<boolean> {console.log(current)
+  setCurrent(current: Current): Promise<boolean> {
     return this.storage.set(this.config.CURRENT_FILE, current).then((value) => {
       this.current = current;
       return true;

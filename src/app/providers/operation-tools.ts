@@ -347,8 +347,8 @@ export class OperationTools {
       let totals: MeetingTotals = {
         creditdisponible: 0.00,
         credit: 0.00,
+        debit: 0.00,
         balance: 0.00,
-        cash: 0.00,
         loans: 0.00,
         reimbursements: 0.00,
         transactions: new Map<string, number>()
@@ -367,7 +367,7 @@ export class OperationTools {
         totals.creditdisponible = account?.creditdisponible ? parseFloat(account?.creditdisponible) : 0.00;
         totals.balance = account?.balance ? parseFloat(account?.balance) : 0.00;
         totals.credit = 0.00;
-        totals.cash = 0.00;
+        totals.debit = 0.00;
         totals.loans = 0.00;
         totals.reimbursements = 0.00;
         trans.forEach((tr)=>{
@@ -378,12 +378,11 @@ export class OperationTools {
               totals.balance += parseFloat(tr.amount);
             //}
             totals.credit += parseFloat(tr.amount);
-            totals.cash += parseFloat(tr.amount);
           }else if(this.debit_operations.includes(pcode)){
             totals.creditdisponible -= parseFloat(tr.amount);
             if(pcode != 'CFS'){
               totals.balance -= parseFloat(tr.amount);
-              totals.cash -= parseFloat(tr.amount);
+              totals.debit += parseFloat(tr.amount);
             }
           }
           if(pcode == 'EMP'){
@@ -409,9 +408,8 @@ export class OperationTools {
               // calculate only cash from uploaded transactions
               if(this.credit_operations.includes(pcode)){
                 totals.credit += parseFloat(tr.credit ? tr.credit : tr.debit);
-                totals.cash += parseFloat(tr.credit ? tr.credit : tr.debit);
               }else if(this.debit_operations.includes(pcode)){
-                totals.cash -= parseFloat(tr.credit ? tr.credit : tr.debit);
+                totals.debit += parseFloat(tr.credit ? tr.credit : tr.debit);
               }
               if(pcode == 'EMP'){
                 totals.loans += parseFloat(tr.debit);
