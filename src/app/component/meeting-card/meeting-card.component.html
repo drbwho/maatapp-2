@@ -7,10 +7,10 @@
           {{ meeting$()?.place }} · <span class="date-label">{{ fullDate() | date: 'MMM d'}}</span>
           <ion-icon name="chevron-forward-outline" class="title-chevron"></ion-icon>
         </h4>
-        @if(status() == 'progress'){
+        @if(status() == 'progress' || status() == 'progress-sync'){
         <div class="status-indicator text-12">
           <span class="dot">●</span>
-          <span class="status-text">{{'in_progres_sync' | translate}}</span>
+          <span class="status-text">{{(status() == 'progress' ? 'in_progress' : 'in_progress_sync') | translate}}</span>
         </div>
         }
         @if(status() == 'closed'){
@@ -31,7 +31,7 @@
       <ion-col>
         <div class="stats-info">
           <div class="stats-numbers">
-            {{ attendance }} / {{group?.numberofmembers}}
+            {{ meeting$()?.attendance }} / {{group?.numberofmembers}}
           </div>
           <div class="stats-sub-label text-12">{{'attended' | translate}}</div>
         </div>

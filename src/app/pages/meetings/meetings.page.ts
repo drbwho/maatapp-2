@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataProvider } from '../../providers/provider-data';
+import { DataProvider, Meeting } from '../../providers/provider-data';
 import { AlertController, NavController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,6 +7,8 @@ import { ActionSheetController, ModalController } from '@ionic/angular';
 import { ActionViewComponent } from '../../component/action-view/action-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OperationTools } from '../../providers/operation-tools';
+import { MeetingsActionViews } from './meetings.action-views';
+
 
 @Component({
   selector: 'app-meetings',
@@ -15,11 +17,11 @@ import { OperationTools } from '../../providers/operation-tools';
   standalone: false
 })
 export class MeetingsPage implements OnInit {
-  group = {id:"", name:"", ville:""}
+  group = {id:"", name:"", ville:"", numberofmembers: 0}
   country = {id:"", name:"", currency:"", flagcode:"gb"};
   lastmeeting: any = {};
   meeting_status = "";
-  meetings = [];
+  meetings: Meeting[] = [];
   show_all = false;
 
   constructor(
@@ -32,7 +34,8 @@ export class MeetingsPage implements OnInit {
     private route: ActivatedRoute,
     private operationTools: OperationTools,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    private meetActionViews: MeetingsActionViews
   ) { }
 
   ngOnInit() {
@@ -45,7 +48,7 @@ export class MeetingsPage implements OnInit {
         .map(v => v.url.map(segment => segment.path).join('/'))
         .join('/');
       if (path.includes('close')) {
-        this.sync_meeting();
+        this.show_action_view(null, 'upload-close');
       }
     });
   }
@@ -62,11 +65,14 @@ export class MeetingsPage implements OnInit {
       this.meetings = await this.groupTools.get_meetings(this.group);
       this.lastmeeting = await this.groupTools.get_last_meeting(this.meetings);
       this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group.id);
+      this.meetings.forEach(m =>{
+        m.attendance = this.group.numberofmembers - (m.absences ? m.absences.length : 0);
+      })
     }
   }
 
   async openOptions(meeting) {
-    this.translate.get(['upload_data','view_transactions', 'cancel']).subscribe(async (keys: any)=>{
+    this.translate.get(['upload_data','close_meeting', 'view_transactions', 'cancel']).subscribe(async (keys: any)=>{
       let buttons = [];
       if(meeting.pending || meeting.haspending){
         buttons.push({
@@ -74,7 +80,16 @@ export class MeetingsPage implements OnInit {
           icon: 'cloud-upload',
           cssClass:'action-sheet-primary',
           handler: () => {
-
+            this.show_action_view(meeting, 'upload-close');
+          },
+        });
+      }
+      if(!meeting.endedat){
+        buttons.push({
+          text: keys['close_meeting'],
+          icon: 'pause',
+          handler: () => {
+            this.show_action_view(meeting, 'upload-close');
           },
         });
       }
@@ -175,85 +190,92 @@ export class MeetingsPage implements OnInit {
   }
 
 
-  /*
-  * Upload or Close meeting
-  *
-  */
-  async sync_meeting(){
-    let meeting = this.dataProvider.current.meeting;
+  async show_action_view(meeting: any, action: string){
     if(!meeting){
-      return;
+      meeting = this.dataProvider.current.meeting;
     }
-    let keys = ['messages.meetings.upload-close.heading', 'messages.meetings.upload-close.description' , 'messages.meetings.upload-close.button', 'messages.meetings.upload-close.button_1'];
-
-    this.translate.get(keys).subscribe(async (keys)=>{
-      const modal = await this.modalCtrl.create({
-        component: ActionViewComponent,
-        componentProps: {
-          alttitle: meeting.place,
-          heading: keys['messages.meetings.upload-close.heading'],
-          description: keys['messages.meetings.upload-close.description'],
-          image: 'assets/img/action-views/upload-close-meeting.png',
-          hasBackButton: true,
-          buttons: [
-             {text: keys['messages.meetings.upload-close.button'], color: 'primary', action:'upload'},
-             {text: keys['messages.meetings.upload-close.button_1'], color: 'light', action:'close'},
-          ]
-        },
-        cssClass: ''
-      });
-      await modal.present();
-      await modal.onWillDismiss().then((data: any)=>{
-        // ********* Upload function
-        if(data.data =='upload'){
-          this.translate.get(['data_uploaded','success','error']).subscribe(async (keys: any)=>{;
-            this.operationTools.uploadOperations(meeting).then(async (res:any) => {
-              let header="";
-              let message="";
-              if(res.status.toLowerCase() == 'error'){
-                header = keys['error'];
-                message = res.message;
-              }else{
-                header = keys['success'];
-                message = keys['data_uploaded'];
-                //refresh meetings
-                this.meetings = await this.groupTools.get_meetings(this.group);
-              }
-              const alert = await this.alertCtrl.create({
-                header: header,
-                message: message,
-                buttons: [
-                  {
-                  text: 'Ok',
-                  },
-                ],
-              });
-              await alert.present();
-            });
-          })
-        }
-        if(data.data =='close'){
-          this.dataProvider.closeMeeting(meeting).then(async (res: any)=>{
-            if(res.status != undefined && res.status == 'error'){
-              const alert = await this.alertCtrl.create({
-                header: keys['error'],
-                message: res.message,
-                buttons: [
-                  {
-                    text: 'Ok',
-                  },
-                ],
-              });
-              await alert.present();
-              return;
-            }
-          })
-        }
-      });
-      this.router.navigate(['/app/tabs/meetings'], { replaceUrl: true });
-      return;
-    });
+    switch(action){
+      case 'upload-close':
+        this.meetActionViews.show_action_upload_close(meeting).then(async res=>{
+          if(!res){
+            this.meetActionViews.show_action_upload_success(meeting);
+          }else{
+            this.meetings = await this.groupTools.get_meetings(this.group);
+          }
+        });
+        break;
+      case 'suspend':
+        break;
+    }
 
   }
+
+
+  /*
+  * Upload or Close meeting View
+  *
+  */
+  /*show_action_upload_close(meeting: any){
+    return new Promise((resolve)=>{
+      if(!meeting){
+        resolve(false);
+        return;
+      }
+      let keys = ['messages.meetings.upload-close.heading', 'messages.meetings.upload-close.description',
+        'messages.meetings.upload-close.button', 'messages.meetings.upload-close.button_1',
+        'data_uploaded','success','error'];
+
+      this.translate.get(keys).subscribe(async (keys)=>{
+        const modal = await this.modalCtrl.create({
+          component: ActionViewComponent,
+          componentProps: {
+            alttitle: meeting.place,
+            heading: keys['messages.meetings.upload-close.heading'],
+            description: keys['messages.meetings.upload-close.description'],
+            image: 'assets/img/action-views/upload-close-meeting.png',
+            hasBackButton: true,
+            buttons: [
+              {text: keys['messages.meetings.upload-close.button'], color: 'primary', action:'upload'},
+              {text: keys['messages.meetings.upload-close.button_1'], color: 'light', action:'close'},
+            ]
+          },
+          cssClass: ''
+        });
+        await modal.present();
+        await modal.onWillDismiss().then(async (data: any)=>{
+          if(data.data =='upload'){
+            resolve(await this.upload_meeting(meeting)); 
+          }
+          if(data.data =='close'){
+            resolve(await this.close_meeting(meeting));  
+          }
+        });
+      });
+    });
+  }
+
+  upload_meeting(meeting: any){
+    return new Promise((resolve)=>{
+      this.operationTools.uploadOperations(meeting).then(async (res:any) => {
+        if(res.status.toLowerCase() == 'error'){
+          resolve(false);
+        }else{
+          resolve(true);
+        }
+      });
+    });
+  }
+
+  close_meeting(meeting: any){
+    return new Promise((resolve)=>{
+      this.dataProvider.closeMeeting(meeting).then(async (res: any)=>{
+        if(res.status != undefined && res.status == 'error'){
+          resolve(false);
+        }else{
+          resolve(true);
+        }
+      })
+    })
+  }*/
 
 }

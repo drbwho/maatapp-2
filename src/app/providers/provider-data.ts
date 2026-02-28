@@ -28,7 +28,8 @@ export interface Meeting {
   has_transactions?: any,
   haspending?: any,
   absences?: any,
-  pending?: any
+  pending?: any,
+  attendance?: number
 }
 
 @Injectable({

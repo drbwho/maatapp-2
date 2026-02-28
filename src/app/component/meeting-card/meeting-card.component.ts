@@ -18,13 +18,9 @@ export class MeetingCardComponent  implements OnInit {
 
   status = computed(() => { 
       if(this.meeting$()?.endedat){
-        if(this.meeting$()?.haspending){
-          return 'closed-pending';
-        }else{
-          return 'closed';
-        }
+        return 'closed' + (this.meeting$()?.haspending ? '-pending' : '');
       }
-      return  'progress';
+      return  'progress' + (this.meeting$()?.haspending ? '-pending' : '');
     });
   fullDate = computed(() => this.meeting$()?.endedat ? this.meeting$()?.endedat : this.meeting$()?.startedat);
 
