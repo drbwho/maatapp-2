@@ -312,7 +312,7 @@ export class OperationTools {
         .post(apiurl,
           {
             parameter: tr.idparameter,
-            accountid: tr.isaccount,
+            accountid: tr.idaccount,
             amount: tr.amount,
             inputdate: tr.inputdate,
             categories: tr.categories,

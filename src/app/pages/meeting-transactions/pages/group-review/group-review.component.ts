@@ -25,7 +25,6 @@ export class GroupReviewComponent  implements OnInit {
   show_details = false;
 
   constructor(
-    private dataProvider: DataProvider,
     private operTools: OperationTools,
     private storage: Storage,
     private config: ConfigData

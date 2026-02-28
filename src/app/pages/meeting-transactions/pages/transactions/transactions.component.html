@@ -145,9 +145,12 @@
   </ion-list>
   }
   
-  <ion-button class="ion-margin" expand="block" color="medium" fill="clear" (click)="show_more = !show_more">{{show_more ? 'hide' : 'see_more' | translate}}</ion-button>
-  <ion-button class="ion-margin" expand="block" shape="round" (click)="dismiss(true)">{{'save' | translate}}</ion-button>
+  <ion-button class="ion-margin" expand="block" color="medium" fill="clear" (click)="show_more = !show_more">{{(show_more ? 'hide' : 'see_more') | translate}}</ion-button>
 </ion-content>
+
+<ion-footer>
+  <ion-button class="ion-margin" expand="block" shape="round" (click)="dismiss(true)">{{'save' | translate}}</ion-button>
+</ion-footer>
 
 <!-- *** Item Component *** -->
 <ng-template #transactionItem 

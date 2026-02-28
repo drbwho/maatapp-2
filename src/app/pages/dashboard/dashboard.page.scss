@@ -37,16 +37,40 @@
   }
 }
 
-// MEETING STATUS
+// MEETING STATUS BLOCK
 ion-item.meeting-status-item {
   --background: url('/assets/img/intro/group-image.png') no-repeat right bottom / 50% auto;
   background-color: #E7EFEA;
   --min-height: 130px;
-  
   ion-label {
     color: #757575 !important;
     flex: 0 0 51% !important; 
     overflow: hidden;
+  }
+  &.in-progress {
+    background-color: #E4F4F0;
+    ion-label {
+      color: #517873 !important;
+    }
+  }
+  &.no-meetings,
+  &.no-active {
+    background-color: #F3F1EC;
+    ion-label {
+      color: #645E4C !important;
+    }
+  }
+  &.saved-local {
+    background-color: #E9E6F3;
+    ion-label {
+      color: #706398 !important;
+    }
+  }
+  &.saved-offline {
+    background-color: #F8F3DE;
+    ion-label {
+      color: #786F4A !important;
+    }
   }
 }
 

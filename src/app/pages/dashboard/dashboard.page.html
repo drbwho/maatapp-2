@@ -18,7 +18,8 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-item lines="none" class="meeting-status-item ion-margin-horizontal ion-border-rounded-20">
+    <ion-item lines="none" class="meeting-status-item ion-margin-horizontal ion-border-rounded-20" 
+        [class]="meeting_status">
       <ion-label>
         <h4>{{'meeting-card.' + meeting_status + '.title' | translate}}</h4>
         <p>{{'meeting-card.' + meeting_status + '.message' | translate}}</p>
@@ -26,16 +27,18 @@
     </ion-item>
   </ion-list>
 
-  <ion-button class="ion-margin-horizontal ion-margin-bottom" routerLink="/new-meeting" routerDirection="forward" expand="block" shape="round" [disabled]="meeting_status != 'no-active'">{{'start_new_meeting' | translate}}</ion-button>
-  @if(meeting_status != 'no-active' ){
-  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round"
-   (click)="open_details()">{{'continue_meeting' | translate}}</ion-button>
+  @if(meeting_status == 'no-active' || meeting_status == 'no-meetings'){
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" routerLink="/new-meeting" routerDirection="forward" expand="block" shape="round">{{'start_new_meeting' | translate}}</ion-button>
+  }
+  @if(meeting_status != 'no-active' && meeting_status != 'no-meetings'){
+    <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round"
+      (click)="open_details()">{{'continue_meeting' | translate}}</ion-button>
   }
   @if(meeting_status == 'saved_local'){
-   <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
+    <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
   }
   @if(meeting_status == 'saved_offline'){
-   <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-disabled" disabled>{{'upload_data' | translate}}</ion-button>
+    <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-disabled" disabled>{{'upload_data' | translate}}</ion-button>
   }
 
   <ion-list>
