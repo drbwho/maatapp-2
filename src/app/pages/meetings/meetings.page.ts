@@ -45,7 +45,7 @@ export class MeetingsPage implements OnInit {
         .map(v => v.url.map(segment => segment.path).join('/'))
         .join('/');
       if (path.includes('close')) {
-        this.close_meeting();
+        this.sync_meeting();
       }
     });
   }
@@ -179,9 +179,9 @@ export class MeetingsPage implements OnInit {
   * Upload or Close meeting
   *
   */
-  async close_meeting(){
+  async sync_meeting(){
     let meeting = this.dataProvider.current.meeting;
-    if(!meeting || (!meeting.pending && !meeting.haspending)){
+    if(!meeting){
       return;
     }
     let keys = ['messages.meetings.upload-close.heading', 'messages.meetings.upload-close.description' , 'messages.meetings.upload-close.button', 'messages.meetings.upload-close.button_1'];
@@ -230,6 +230,23 @@ export class MeetingsPage implements OnInit {
               });
               await alert.present();
             });
+          })
+        }
+        if(data.data =='close'){
+          this.dataProvider.closeMeeting(meeting).then(async (res: any)=>{
+            if(res.status != undefined && res.status == 'error'){
+              const alert = await this.alertCtrl.create({
+                header: keys['error'],
+                message: res.message,
+                buttons: [
+                  {
+                    text: 'Ok',
+                  },
+                ],
+              });
+              await alert.present();
+              return;
+            }
           })
         }
       });

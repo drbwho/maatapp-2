@@ -10,7 +10,13 @@
         @if(status() == 'progress'){
         <div class="status-indicator text-12">
           <span class="dot">●</span>
-          <span class="status-text">In progress/Sync</span>
+          <span class="status-text">{{'in_progres_sync' | translate}}</span>
+        </div>
+        }
+        @if(status() == 'closed'){
+        <div class="status-indicator text-12">
+          <span class="dot-grey">●</span>
+          <span class="status-text">{{'closed' | translate}}</span>
         </div>
         }
       </ion-col>

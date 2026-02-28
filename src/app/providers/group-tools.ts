@@ -36,6 +36,11 @@ export class GroupTools {
           }
         });
         m.collection = Math.round(m.collection); // parse collected amount as float
+
+        //convert absences json from API to array
+        if (m.absences && typeof m.absences === 'string') {
+          m.absences = JSON.parse(m.absences);
+        }
       })
       return meetings;
     });

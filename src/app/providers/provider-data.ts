@@ -27,6 +27,7 @@ export interface Meeting {
   iduser: any,
   has_transactions?: any,
   haspending?: any,
+  absences?: any,
   pending?: any
 }
 
@@ -162,6 +163,7 @@ export class DataProvider {
       endedat: null,
       iduser: user.id,
       has_transactions: 0,
+      absences: null,
       haspending: 0,
       pending: true
     };
@@ -206,7 +208,8 @@ export class DataProvider {
           endedat: null,
           place: meeting.place,
           iduser: meeting.iduser,
-          cancelled: meeting.cancelled
+          cancelled: meeting.cancelled,
+          absences: meeting.absences
         },
         {headers})
       .subscribe({
@@ -214,7 +217,7 @@ export class DataProvider {
           resolve({status: 'success', message: ''});
         },
         error: async (error) => {
-          resolve({status: 'error', message: error.error});
+          resolve({status: 'error', message: error.message});
         }
       });
     });

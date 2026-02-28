@@ -267,8 +267,6 @@ export class OperationTools {
           res.name = account.owner;
           upload_errors.push({idmeeting: tr.idmeeting, idaccount: tr.idaccount, idparameter: tr.idparameter, message: res.message});
           found_errors = true;
-          //resolve(res);
-          //break;
         }else{
           //success
           //delete pending operation
