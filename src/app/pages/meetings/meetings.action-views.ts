@@ -53,10 +53,10 @@ export class MeetingsActionViews {
         await modal.present();
         await modal.onWillDismiss().then(async (data: any)=>{
           if(data.data =='upload'){
-            resolve(await this.upload_meeting(meeting)); 
+            resolve({success: await this.upload_meeting(meeting), action: 'upload'}); 
           }
           if(data.data =='close'){
-            resolve(await this.close_meeting(meeting));  
+            resolve({success: await this.close_meeting(meeting), action: 'close'});  
           }
         });
       });
@@ -121,10 +121,10 @@ export class MeetingsActionViews {
         await modal.present();
         await modal.onWillDismiss().then(async (data: any)=>{
           if(data.data =='close'){
-            resolve(await this.close_meeting(meeting)); 
+            resolve({success: await this.close_meeting(meeting), action: 'close'}); 
           }
           if(data.data =='history'){
-            resolve('history');  
+            resolve({action: 'history'});  
           }
         });
       });
@@ -159,7 +159,7 @@ export class MeetingsActionViews {
         });
         await modal.present();
         await modal.onWillDismiss().then(async (data: any)=>{
-          resolve(data.data);
+          resolve({action: data.data});
         });
       });
     });
@@ -199,14 +199,14 @@ export class MeetingsActionViews {
               if(res){
                 // clear meeting
                 this.operationTools.clearPendingOperations(meeting, true).then((res)=>{
-                  resolve(res);
+                  resolve({success: res});
                 })
               }else{
-                resolve(false);
+                resolve({success: false});
               }
             })
           }else{
-            resolve(false);
+            resolve({success: false});
           }
         });
       });

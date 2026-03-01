@@ -46,7 +46,7 @@ export class GroupTools {
     });
   }
 
-  async has_to_upload (groupId){
+  async has_to_upload (groupId: string){
     var res = await this.storage.get(this.config.TRANSACTIONS_FILE);
     if(res){
       res = res.filter((a)=> a.idgroup == groupId);
@@ -61,7 +61,7 @@ export class GroupTools {
     return false;
   }
 
-  async get_meeting_status(meetings, groupId){
+  async get_meeting_status(meetings, groupId: string){
     var upload_status = await this.has_to_upload(groupId);
     if(!meetings.length || !meetings){
       return "no-meetings";

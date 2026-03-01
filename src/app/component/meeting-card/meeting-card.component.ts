@@ -16,12 +16,12 @@ export class MeetingCardComponent  implements OnInit {
   }
   public meeting$ = signal<any>(null);
 
-  status = computed(() => { 
-      if(this.meeting$()?.endedat){
-        return 'closed' + (this.meeting$()?.haspending ? '-pending' : '');
-      }
-      return  'progress' + (this.meeting$()?.haspending ? '-pending' : '');
-    });
+  status = computed(() => {
+    if(this.meeting$()?.endedat){
+      return 'closed' + (this.meeting$()?.haspending || this.meeting$()?.pending ? '-pending' : '');
+    }
+    return  'progress' + (this.meeting$()?.haspending || this.meeting$()?.pending ? '-pending' : '');
+  });
   fullDate = computed(() => this.meeting$()?.endedat ? this.meeting$()?.endedat : this.meeting$()?.startedat);
 
   constructor(

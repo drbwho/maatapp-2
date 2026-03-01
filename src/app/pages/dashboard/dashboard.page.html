@@ -21,16 +21,17 @@
     <ion-item lines="none" class="meeting-status-item ion-margin-horizontal ion-border-rounded-20" 
         [class]="meeting_status">
       <ion-label>
-        <h4>{{'meeting-card.' + meeting_status + '.title' | translate}}</h4>
-        <p>{{'meeting-card.' + meeting_status + '.message' | translate}}</p>
+        <h4>{{'meeting-card.' + (meeting_status ? meeting_status : 'no-active') + '.title' | translate}}</h4>
+        <p>{{'meeting-card.' +  (meeting_status ? meeting_status : 'no-active') + '.message' | translate}}</p>
       </ion-label>
     </ion-item>
   </ion-list>
 
-  @if(meeting_status == 'no-active' || meeting_status == 'no-meetings'){
-  <ion-button class="ion-margin-horizontal ion-margin-bottom" routerLink="/new-meeting" routerDirection="forward" expand="block" shape="round">{{'start_new_meeting' | translate}}</ion-button>
+  @if(!meeting_status || meeting_status == 'no-active' || meeting_status == 'no-meetings'){
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" routerLink="/new-meeting" routerDirection="forward" expand="block" shape="round"
+    [disabled]="meeting_status != 'no-active'">{{'start_new_meeting' | translate}}</ion-button>
   }
-  @if(meeting_status != 'no-active' && meeting_status != 'no-meetings'){
+  @if(meeting_status && meeting_status != 'no-active' && meeting_status != 'no-meetings'){
     <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round"
       (click)="open_details()">{{'continue_meeting' | translate}}</ion-button>
   }

@@ -25,7 +25,10 @@ export class AttendanceComponent  implements OnInit {
     //load attendance
     if(this.meeting.absences != undefined){
       this.accounts.map(a => { if(this.meeting.absences.includes(a.id)){ a.isPresent = false; }else{ a.isPresent = true} });
+    }else{
+      this.accounts.map(a => a.isPresent = true);
     }
+    this.calcAttendance();
   }
 
   togglePresence(account: any) {
@@ -37,7 +40,7 @@ export class AttendanceComponent  implements OnInit {
     this.calcAttendance();
   }
 
-  calcAttendance(){
+  async calcAttendance(){
     this.attendance = this.accounts?.filter(m => m.isPresent).length;
     this.accountids = this.accounts?.filter(m => !m.isPresent)
       .reduce((a, {id})=>{
@@ -46,7 +49,7 @@ export class AttendanceComponent  implements OnInit {
       },[]);
     this.meeting.absences = this.accountids;
     this.providerData.current.meeting = this.meeting;
-    this.providerData.updatePendingMeeting(this.meeting); //update meeting in storage
+    await this.providerData.updatePendingMeeting(this.meeting); //update meeting in storage
   }
 
 }

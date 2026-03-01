@@ -104,7 +104,7 @@ export class MeetingsPage implements OnInit {
         text: keys['view_transactions'],
         icon: 'stats-chart',
         handler: () => {
-          this.open_details(meeting);
+          this.open_transactions(meeting);
         },
       });
       if(meeting.pending){
@@ -156,7 +156,7 @@ export class MeetingsPage implements OnInit {
     this.show_all = true;
   }
 
-  async open_details(meeting: any){
+  async open_transactions(meeting: any){
     this.dataProvider.current.meeting = meeting;
     let meet_status = '';
     if(meeting.pending || meeting.haspending){
@@ -165,7 +165,9 @@ export class MeetingsPage implements OnInit {
       meet_status = 'great';
     }
 
-    let keys = ['messages.meetings.'+ meet_status +'.heading', 'messages.meetings.'+ meet_status +'.description', 'messages.meetings.'+ meet_status +'.button'];
+    let keys = ['messages.meetings.'+ meet_status +'.heading', 'messages.meetings.'+ meet_status +'.description', 'messages.meetings.'+ meet_status +'.button',
+                'continue'];
+
     if(meet_status == 'upload-close'){
       keys.push('messages.meetings.'+ meet_status +'.button_1');
     }
@@ -173,11 +175,11 @@ export class MeetingsPage implements OnInit {
       let buttons = [];
       switch(meet_status){
         case 'upload-close':
-          buttons.push(
-            {text: keys['messages.meetings.'+ meet_status +'.button'], color: 'primary', action:'upload'});
+          buttons.push({text: keys['messages.meetings.'+ meet_status +'.button'], color: 'primary', action:'upload'});
           if(!meeting.endedat){
             buttons.push({text: keys['messages.meetings.'+ meet_status +'.button_1'], color: 'light', action:'close'});
           }
+          buttons.push({text: keys['continue'], color: 'light', action:'view'});
           break;
         default:
            buttons.push({text: keys['messages.meetings.'+ meet_status +'.button'], color: 'primary', action:'view'});
@@ -197,7 +199,6 @@ export class MeetingsPage implements OnInit {
       });
       await modal.present();
       await modal.onWillDismiss().then((data)=>{
-        //this.router.navigate(['/meeting-history'], {state: {direction: 'forward'}}); return;
         if(data.data!='close'){
           this.navCtrl.navigateForward('/meeting-history');
         }
@@ -216,21 +217,23 @@ export class MeetingsPage implements OnInit {
     }
     switch(action){
       case 'upload-close':
-        if(meeting.haspending){
-            this.meetActionViews.show_action_upload_close(meeting).then(async res=>{
-            if(res){
-              // upload succeed
-              this.meetActionViews.show_action_upload_success(meeting).then(res=>{
-                if(res == 'history'){
-                  this.navCtrl.navigateForward('/meeting-history');
-                }
-              });
+        if(meeting.pending || meeting.haspending){
+            this.meetActionViews.show_action_upload_close(meeting).then(async (res: any)=>{
+            if(res.success){
+              if(res.action == 'upload'){ // return from uploading
+                // upload succeed
+                this.meetActionViews.show_action_upload_success(meeting).then((res: any)=>{
+                  if(res.action == 'history'){
+                    this.navCtrl.navigateForward('/meeting-history');
+                  }
+                });
+              }
               this.load_currents();
               this.navCtrl.navigateRoot('/app/tabs/meetings');
             }else{
               // upload failed
-              this.meetActionViews.show_action_upload_failed(meeting).then(async res =>{
-                if(res == 'tryagain'){
+              this.meetActionViews.show_action_upload_failed(meeting).then(async (res: any) =>{
+                if(res.action == 'tryagain'){
                   this.navCtrl.navigateRoot('/app/tabs/meetings/close');
                 }else{
                   this.navCtrl.navigateRoot('/app/tabs/meetings');
@@ -239,8 +242,8 @@ export class MeetingsPage implements OnInit {
             }
           });
         }else{
-          this.meetActionViews.show_action_upload_success(meeting).then(async res=>{
-            if(res == 'history'){
+          this.meetActionViews.show_action_upload_success(meeting).then(async (res: any)=>{
+            if(res.action == 'history'){
               this.navCtrl.navigateForward('/meeting-history');
             }
             this.load_currents();
@@ -249,8 +252,8 @@ export class MeetingsPage implements OnInit {
         }
         break;
       case 'cancel':
-          this.meetActionViews.show_action_cancel(meeting).then(async res=>{
-            if(res){
+          this.meetActionViews.show_action_cancel(meeting).then(async (res: any)=>{
+            if(res.success){
               this.load_currents();
               this.navCtrl.navigateRoot('/app/tabs/meetings');
             }

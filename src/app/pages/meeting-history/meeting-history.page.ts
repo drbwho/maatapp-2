@@ -81,7 +81,7 @@ export class MeetingHistoryPage implements OnInit {
     this.fullDate = this.meeting.endedat ? this.meeting.endedat : this.meeting.startedat;
   }
 
-  async load_accounts(){console.log('load accounts')
+  async load_accounts(){
     let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
     let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
 

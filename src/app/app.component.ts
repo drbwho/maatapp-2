@@ -68,13 +68,12 @@ export class AppComponent implements OnInit {
 
     this.checkLoginStatus();
     this.listenForLoginEvents();
-    //this.check_new_jsonfile();
     this.userData.loadFavorites();
-
     this.listenNetworkConnectionEvents();
+    this.listenForMeetingTransactions();
 
      // Set default Language or load setting from database
-     this.translate.setDefaultLang('en');
+     this.translate.setFallbackLang('en');
      this.storage.get(this.config.APPLICATION_LANGUAGE).then( (lang) => {
        if(lang){
          this.translate.use(lang);
@@ -165,22 +164,23 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // select current meeting
- /* get_current_meeting(force?:boolean) {
-    this.storage.get(this.config.CUR_MEETING).then(async (data)=>{
-      if(data && !force){
-        return;
-      }
-      const modal = await this.modalCtrl.create({
-        component: SelectMeetingPage,
-        componentProps: { }
+  // Update Meeting info
+  listenForMeetingTransactions(){
+     this.events.subscribe('upload:updated', async () => {
+      var trans = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      var meetings = await this.storage.get(this.config.GET_FILE('meetings'));
+      var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+      let mt = null;
+      trans.forEach(tr => {
+        if(mt = meetings.find(m => m.id == tr.idmeeting)){
+          mt.haspending++;
+        }
+        if(mt = newmeetings.find(m => m.id == tr.idmeeting)){
+          mt.haspending++;
+        }
       });
-      await modal.present();
-      await modal.onWillDismiss();
-      //reload conference data
-      //this.check_new_jsonfile();
-    })
-  }*/
+    });
+  }
 
   listenNetworkConnectionEvents() {
     // Check on init

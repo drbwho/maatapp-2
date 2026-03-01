@@ -7,16 +7,16 @@
           {{ meeting$()?.place }} · <span class="date-label">{{ fullDate() | date: 'MMM d'}}</span>
           <ion-icon name="chevron-forward-outline" class="title-chevron"></ion-icon>
         </h4>
-        @if(status() == 'progress' || status() == 'progress-sync'){
+        @if(status() == 'progress' || status() == 'progress-pending'){
         <div class="status-indicator text-12">
           <span class="dot">●</span>
           <span class="status-text">{{(status() == 'progress' ? 'in_progress' : 'in_progress_sync') | translate}}</span>
         </div>
         }
-        @if(status() == 'closed'){
+        @if(status() == 'closed' || status() == 'closed-pending'){
         <div class="status-indicator text-12">
-          <span class="dot-grey">●</span>
-          <span class="status-text">{{'closed' | translate}}</span>
+          <span [class]="status() == 'closed' ? 'dot-grey' : 'dot-orange'">●</span>
+          <span class="status-text">{{(status() == 'closed' ? 'closed' : 'closed_sync') | translate}}</span>
         </div>
         }
       </ion-col>

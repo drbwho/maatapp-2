@@ -159,6 +159,7 @@
   "meeting_in_progress": "Meeting in progress",
   "in_progress": "In progress",
   "in_progress_sync": "In progress/Sync",
+  "closed_sync": "Closed/Sync",
   "continue_meeting": "Continue Meeting",
   "continue": "Continue",
   "close_meeting": "Close meeting",
