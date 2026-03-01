@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 import { ActionViewComponent } from '../../component/action-view/action-view.component';
 import { ModalController } from '@ionic/angular';
 import { OperationTools } from '../../providers/operation-tools';
+import { formatDate } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -80,6 +81,7 @@ export class MeetingsActionViews {
         if(res.status != undefined && res.status == 'error'){
           resolve(false);
         }else{
+          meeting.endedat = formatDate(new Date(), 'Y-MM-dd', ɵDEFAULT_LOCALE_ID);
           resolve(true);
         }
       })
@@ -88,6 +90,78 @@ export class MeetingsActionViews {
 
 
   show_action_upload_success(meeting: any){
+    return new Promise((resolve)=>{
+      if(!meeting){
+        resolve(false);
+        return;
+      }
+      let keys = ['messages.meetings.upload-success.heading', 'messages.meetings.upload-success.description',
+        'messages.meetings.upload-success.button', 'messages.meetings.upload-success.button_1',
+        'data_uploaded','success','error'];
 
+      this.translate.get(keys).subscribe(async (keys)=>{
+        let buttons = [];
+        if(!meeting.endedat){
+          buttons.push({text: keys['messages.meetings.upload-success.button'], color: 'primary', action:'close'});
+        }
+        buttons.push({text: keys['messages.meetings.upload-success.button_1'], color: 'light', action:'history'});
+
+        const modal = await this.modalCtrl.create({
+          component: ActionViewComponent,
+          componentProps: {
+            alttitle: meeting.place,
+            heading: keys['messages.meetings.upload-success.heading'],
+            description: keys['messages.meetings.upload-success.description'],
+            image: 'assets/img/action-views/upload-success-meeting.png',
+            hasBackButton: true,
+            buttons: buttons
+          },
+          cssClass: ''
+        });
+        await modal.present();
+        await modal.onWillDismiss().then(async (data: any)=>{
+          if(data.data =='close'){
+            resolve(await this.close_meeting(meeting)); 
+          }
+          if(data.data =='history'){
+            resolve('history');  
+          }
+        });
+      });
+    });
+  }
+
+  show_action_upload_failed(meeting: any){
+    return new Promise((resolve)=>{
+      if(!meeting){
+        resolve(false);
+        return;
+      }
+      let keys = ['messages.meetings.upload-failed.heading', 'messages.meetings.upload-failed.description',
+        'messages.meetings.upload-failed.button', 'messages.meetings.upload-failed.button_1',
+        'data_uploaded','success','error'];
+
+      this.translate.get(keys).subscribe(async (keys)=>{
+        const modal = await this.modalCtrl.create({
+          component: ActionViewComponent,
+          componentProps: {
+            alttitle: meeting.place,
+            heading: keys['messages.meetings.upload-failed.heading'],
+            description: keys['messages.meetings.upload-failed.description'],
+            image: 'assets/img/action-views/upload-success-meeting.png',
+            hasBackButton: true,
+            buttons: [
+              {text: keys['messages.meetings.upload-failed.button'], color: 'primary', action:'tryagain'},
+              {text: keys['messages.meetings.upload-failed.button_1'], color: 'light', action:'continue'}
+            ]
+          },
+          cssClass: ''
+        });
+        await modal.present();
+        await modal.onWillDismiss().then(async (data: any)=>{
+          resolve(data.data);
+        });
+      });
+    });
   }
 }

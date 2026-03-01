@@ -9,7 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OperationTools } from '../../providers/operation-tools';
 import { MeetingsActionViews } from './meetings.action-views';
 
-
 @Component({
   selector: 'app-meetings',
   templateUrl: './meetings.page.html',
@@ -32,9 +31,6 @@ export class MeetingsPage implements OnInit {
     private actionSheetCtrl: ActionSheetController,
     private modalCtrl: ModalController,
     private route: ActivatedRoute,
-    private operationTools: OperationTools,
-    private alertCtrl: AlertController,
-    private router: Router,
     private meetActionViews: MeetingsActionViews
   ) { }
 
@@ -72,13 +68,24 @@ export class MeetingsPage implements OnInit {
   }
 
   async openOptions(meeting) {
-    this.translate.get(['upload_data','close_meeting', 'view_transactions', 'cancel']).subscribe(async (keys: any)=>{
+    this.translate.get(['continue_meeting','upload_data','close_meeting', 'view_transactions', 'cancel']).subscribe(async (keys: any)=>{
       let buttons = [];
+      if(!meeting.endedat){
+        buttons.push({
+          text: keys['continue_meeting'],
+          icon: 'caret-forward-outline',
+          cssClass:'action-sheet-primary',
+          handler: () => {
+            this.dataProvider.current.meeting = meeting;
+            this.navCtrl.navigateForward('/meeting-transactions');
+          },
+        });
+      }
       if(meeting.pending || meeting.haspending){
         buttons.push({
           text: keys['upload_data'],
           icon: 'cloud-upload',
-          cssClass:'action-sheet-primary',
+          cssClass: meeting.endedat ? 'action-sheet-primary' : '',
           handler: () => {
             this.show_action_view(meeting, 'upload-close');
           },
@@ -189,93 +196,52 @@ export class MeetingsPage implements OnInit {
     });
   }
 
-
+  /*
+  * Show Meetings Action Views
+  *
+  */
   async show_action_view(meeting: any, action: string){
     if(!meeting){
       meeting = this.dataProvider.current.meeting;
     }
     switch(action){
       case 'upload-close':
-        this.meetActionViews.show_action_upload_close(meeting).then(async res=>{
-          if(!res){
-            this.meetActionViews.show_action_upload_success(meeting);
-          }else{
-            this.meetings = await this.groupTools.get_meetings(this.group);
-          }
-        });
+        if(meeting.haspending){
+            this.meetActionViews.show_action_upload_close(meeting).then(async res=>{
+            if(res){
+              // upload succeed
+              this.meetActionViews.show_action_upload_success(meeting).then(res=>{
+                if(res == 'history'){
+                  this.navCtrl.navigateForward('/meeting-history');
+                }
+              });
+              this.load_currents();
+              this.navCtrl.navigateRoot('/app/tabs/meetings');
+            }else{
+              // upload failed
+              this.meetActionViews.show_action_upload_failed(meeting).then(async res =>{
+                if(res == 'tryagain'){
+                  this.navCtrl.navigateRoot('/app/tabs/meetings/close');
+                }else{
+                  this.navCtrl.navigateRoot('/app/tabs/meetings');
+                }
+              })
+            }
+          });
+        }else{
+          this.meetActionViews.show_action_upload_success(meeting).then(async res=>{
+            if(res == 'history'){
+              this.navCtrl.navigateForward('/meeting-history');
+            }
+            this.load_currents();
+            this.navCtrl.navigateRoot('/app/tabs/meetings');
+          });
+        }
         break;
       case 'suspend':
         break;
     }
 
   }
-
-
-  /*
-  * Upload or Close meeting View
-  *
-  */
-  /*show_action_upload_close(meeting: any){
-    return new Promise((resolve)=>{
-      if(!meeting){
-        resolve(false);
-        return;
-      }
-      let keys = ['messages.meetings.upload-close.heading', 'messages.meetings.upload-close.description',
-        'messages.meetings.upload-close.button', 'messages.meetings.upload-close.button_1',
-        'data_uploaded','success','error'];
-
-      this.translate.get(keys).subscribe(async (keys)=>{
-        const modal = await this.modalCtrl.create({
-          component: ActionViewComponent,
-          componentProps: {
-            alttitle: meeting.place,
-            heading: keys['messages.meetings.upload-close.heading'],
-            description: keys['messages.meetings.upload-close.description'],
-            image: 'assets/img/action-views/upload-close-meeting.png',
-            hasBackButton: true,
-            buttons: [
-              {text: keys['messages.meetings.upload-close.button'], color: 'primary', action:'upload'},
-              {text: keys['messages.meetings.upload-close.button_1'], color: 'light', action:'close'},
-            ]
-          },
-          cssClass: ''
-        });
-        await modal.present();
-        await modal.onWillDismiss().then(async (data: any)=>{
-          if(data.data =='upload'){
-            resolve(await this.upload_meeting(meeting)); 
-          }
-          if(data.data =='close'){
-            resolve(await this.close_meeting(meeting));  
-          }
-        });
-      });
-    });
-  }
-
-  upload_meeting(meeting: any){
-    return new Promise((resolve)=>{
-      this.operationTools.uploadOperations(meeting).then(async (res:any) => {
-        if(res.status.toLowerCase() == 'error'){
-          resolve(false);
-        }else{
-          resolve(true);
-        }
-      });
-    });
-  }
-
-  close_meeting(meeting: any){
-    return new Promise((resolve)=>{
-      this.dataProvider.closeMeeting(meeting).then(async (res: any)=>{
-        if(res.status != undefined && res.status == 'error'){
-          resolve(false);
-        }else{
-          resolve(true);
-        }
-      })
-    })
-  }*/
 
 }

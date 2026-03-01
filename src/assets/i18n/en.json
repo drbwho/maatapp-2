@@ -268,6 +268,18 @@
         "heading": "Stable meeting",
         "description": "The group is steady, with a few things to improve.",
         "button": "View meeting details"
+      },
+      "upload-success": {
+        "heading": "Data upload successfully",
+        "description": "All meeting data is safely stored and synced. You can now close the meeting or continue working.",
+        "button": "Close meeting",
+        "button_1": "View transaction history"
+      },
+      "upload-failed": {
+        "heading": "Upload failed",
+        "description": "We couldn’t upload the data due to a weak or unstable internet connection. Your data is still safe on this device.",
+        "button": "Try again",
+        "button_1": "Continue offline"
       }
     },
     "accounts":{
