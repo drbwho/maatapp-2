@@ -163,6 +163,7 @@
   "continue": "Continue",
   "close_meeting": "Close meeting",
   "upload_data": "Upload data",
+  "cancel_meeting": "Cancel meeting",
   "view_transactions": "View transactions history",
   "missing_regular_contribs": "Missing: Regular",
   "missing_sf_contribs": "Missing: Solidarity",
@@ -187,6 +188,7 @@
   "opened": "Opened",
   "see_more": "Show more",
   "hide": "Hide",
+  "return": "Return",
   "intro": {
     "page-1": {
       "title": "Welcome to MA'AT",
@@ -280,6 +282,12 @@
         "description": "We couldn’t upload the data due to a weak or unstable internet connection. Your data is still safe on this device.",
         "button": "Try again",
         "button_1": "Continue offline"
+      },
+      "cancel": {
+        "heading": "Cancel and Suspend the meeting records",
+        "description": "This meeting will be cancelled and any data that hasn't been uploaded yet will be lost. This action can't be undone..",
+        "button": "Cancel/Suspend records",
+        "button_1": "Keep meeting"
       }
     },
     "accounts":{

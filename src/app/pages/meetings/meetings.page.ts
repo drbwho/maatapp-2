@@ -68,7 +68,7 @@ export class MeetingsPage implements OnInit {
   }
 
   async openOptions(meeting) {
-    this.translate.get(['continue_meeting','upload_data','close_meeting', 'view_transactions', 'cancel']).subscribe(async (keys: any)=>{
+    this.translate.get(['continue_meeting','upload_data','close_meeting', 'view_transactions', 'cancel_meeting', 'return']).subscribe(async (keys: any)=>{
       let buttons = [];
       if(!meeting.endedat){
         buttons.push({
@@ -101,17 +101,27 @@ export class MeetingsPage implements OnInit {
         });
       }
       buttons.push({
-          text: keys['view_transactions'],
-          icon: 'stats-chart',
-          handler: () => {
-            this.open_details(meeting);
-          },
+        text: keys['view_transactions'],
+        icon: 'stats-chart',
+        handler: () => {
+          this.open_details(meeting);
         },
-        {
-          text: keys['cancel'],
-          role: 'cancel',
-          icon: 'close-outline'
+      });
+      if(meeting.pending){
+        buttons.push({
+          text: keys['cancel_meeting'],
+          icon: 'close-circle',
+          role: 'destructive',
+          handler: () => {
+            this.show_action_view(meeting, 'cancel');
+          }
         });
+      }
+      buttons.push({
+        text: keys['return'],
+        role: 'cancel',
+        icon: 'chevron-back'
+      });
 
       const actionSheet = await this.actionSheetCtrl.create({
         header: meeting.place,
@@ -238,8 +248,14 @@ export class MeetingsPage implements OnInit {
           });
         }
         break;
-      case 'suspend':
-        break;
+      case 'cancel':
+          this.meetActionViews.show_action_cancel(meeting).then(async res=>{
+            if(res){
+              this.load_currents();
+              this.navCtrl.navigateRoot('/app/tabs/meetings');
+            }
+          });
+          break;
     }
 
   }

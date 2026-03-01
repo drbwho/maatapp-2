@@ -164,4 +164,52 @@ export class MeetingsActionViews {
       });
     });
   }
+
+  show_action_cancel(meeting: any){
+    return new Promise((resolve)=>{
+      if(!meeting){
+        resolve(false);
+        return;
+      }
+      let keys = ['messages.meetings.cancel.heading', 'messages.meetings.cancel.description',
+        'messages.meetings.cancel.button', 'messages.meetings.cancel.button_1',
+        'success','error'];
+
+      this.translate.get(keys).subscribe(async (keys)=>{
+        const modal = await this.modalCtrl.create({
+          component: ActionViewComponent,
+          componentProps: {
+            alttitle: meeting.place,
+            heading: keys['messages.meetings.cancel.heading'],
+            description: keys['messages.meetings.cancel.description'],
+            image: 'assets/img/action-views/cancel-meeting.png',
+            hasBackButton: true,
+            buttons: [
+              {text: keys['messages.meetings.cancel.button'], color: 'primary', action:'cancel'},
+              {text: keys['messages.meetings.cancel.button_1'], color: 'light', action:'keep'}
+            ]
+          },
+          cssClass: ''
+        });
+        await modal.present();
+        await modal.onWillDismiss().then(async (data: any)=>{
+          if(data.data == 'cancel'){
+            // clear transactions
+            this.operationTools.clearPendingOperations(meeting).then((res)=>{
+              if(res){
+                // clear meeting
+                this.operationTools.clearPendingOperations(meeting, true).then((res)=>{
+                  resolve(res);
+                })
+              }else{
+                resolve(false);
+              }
+            })
+          }else{
+            resolve(false);
+          }
+        });
+      });
+    });    
+  }
 }

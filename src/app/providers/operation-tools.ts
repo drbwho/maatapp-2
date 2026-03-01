@@ -141,24 +141,32 @@ export class OperationTools {
     if(clearMeeting){
       return new Promise(async (resolve)=>{
         let newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
-        newmeetings = newmeetings.filter(s => s.id != meeting.id);
-        this.storage.set(this.config.NEWMEETINS_FILE, newmeetings).then(()=>{
-          this.events.publish('upload:updated');
-          resolve(true);
-        });
+        if(newmeetings){
+          newmeetings = newmeetings.filter(s => s.id != meeting.id);
+          this.storage.set(this.config.NEWMEETINS_FILE, newmeetings).then(()=>{
+            this.events.publish('upload:updated');
+            resolve(true);
+          });
+        }else{
+          resolve(false);
+        }
       })
     }
 
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      transactions = transactions.filter(s => s.idmeeting != meeting.id);
-      //find index
-      /*let index = transactions.findIndex(s => s.idmeeting == meeting.id);
-      transactions.splice(index, 1);//remove element from array*/
-      this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
-        this.events.publish('upload:updated');
+      if(transactions){
+        transactions = transactions.filter(s => s.idmeeting != meeting.id);
+        //find index
+        /*let index = transactions.findIndex(s => s.idmeeting == meeting.id);
+        transactions.splice(index, 1);//remove element from array*/
+        this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
+          this.events.publish('upload:updated');
+          resolve(true);
+        });
+      }else{
         resolve(true);
-      });
+      }
     })
   }
 
