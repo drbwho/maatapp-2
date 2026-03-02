@@ -8,6 +8,8 @@ import { ConfigData } from '../../providers/config-data';
 import { ToastController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { SelectLangComponent } from '../../component/select-lang/select-lang.component';
+import { DataProvider } from '../../providers/provider-data';
+import { GroupTools } from '../../providers/group-tools';
 
 @Component({
     templateUrl: 'tabs-page.html',
@@ -22,7 +24,9 @@ export class TabsPage {
     private storage: Storage,
     private config: ConfigData,
     private toast: ToastController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private groupTools: GroupTools,
+    private dataProvider: DataProvider
   ){}
 
   async openProfile(){
@@ -62,7 +66,14 @@ export class TabsPage {
     await modal.present();
   }
 
-  newMeeting(){
+  async newMeeting(){
+    //check
+    let group = this.dataProvider.current.group;
+    let meetings = await this.groupTools.get_meetings(group)
+    let meeting_status = await this.groupTools.get_meeting_status(meetings, group.id);
+    if(meeting_status != 'no-active' && meeting_status != 'no-meetings'){
+      return;
+    }
     this.navCtrl.navigateForward('/new-meeting');
   }
 

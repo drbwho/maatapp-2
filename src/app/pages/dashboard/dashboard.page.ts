@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { GroupTools } from '../../providers/group-tools';
 import { OperationTools } from '../../providers/operation-tools';
+import { UserData } from '../../providers/user-data';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class DashboardPage implements OnInit {
     private dataProvider: DataProvider,
     private navCtrl: NavController,
     private route: ActivatedRoute,
+    private userData: UserData,
     private groupTools: GroupTools,
     private operationTools: OperationTools
   ) {}
@@ -37,6 +39,9 @@ export class DashboardPage implements OnInit {
     this.route.url.subscribe(() => {
       this.load_currents(); // Hack to force refreshing page in every visit!
     });
+
+    // disable introduction
+    this.userData.shownIntro(true);
    }
 
   async load_currents(){
@@ -50,10 +55,15 @@ export class DashboardPage implements OnInit {
       this.group = current.group;
       this.meetings = await this.groupTools.get_meetings(this.group)
       this.totals = current.group.totals;
-      this.lastmeeting = await this.groupTools.get_last_meeting(this.meetings);
-      this.last_attendance = this.lastmeeting.absences ? this.group.numberofmembers - this.lastmeeting.absences.length : 0;
       this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group.id);
-      this.num_ECP = await this.operationTools.get_num_of_ECP(this.lastmeeting, this.country.id);
+      this.lastmeeting = await this.groupTools.get_last_meeting(this.meetings);
+      if(this.lastmeeting){
+        this.last_attendance = this.lastmeeting.absences ? this.group.numberofmembers - this.lastmeeting.absences.length : 0;
+        this.num_ECP = await this.operationTools.get_num_of_ECP(this.lastmeeting, this.country.id);
+      }else{
+        this.last_attendance = 0;
+        this.num_ECP = 0;
+      }
     }
   }
 

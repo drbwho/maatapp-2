@@ -23,7 +23,11 @@
           <ion-text>
             <h5 class="ion-flex ion-align-items-center">
               {{group.name}} · {{group.ville}}
-              <ion-badge color="danger" class="ion-margin-start text-14">{{'no_active' | translate}}</ion-badge>
+              @if(group?.active){
+                <ion-badge color="success" class="ion-margin-start text-14 active">{{'active' | translate}}</ion-badge>
+              }@else{
+                <ion-badge color="danger" class="ion-margin-start text-14">{{'no_active' | translate}}</ion-badge>
+              }
             </h5>
           </ion-text>
           <p class="text-12">{{group.numberofmembers}} {{'members' | translate}}</p>

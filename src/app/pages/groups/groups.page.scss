@@ -8,6 +8,10 @@ ion-badge {
     background-color: #ECECFF;
     color: #8655A4;
     vertical-align: bottom;
+    &.active {
+      background-color: #E4F4F0F1;
+      color: #517873;
+    }
 }
 
 ion-list {

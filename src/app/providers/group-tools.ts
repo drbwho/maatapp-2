@@ -82,6 +82,9 @@ export class GroupTools {
   }
 
   async get_last_meeting(meetings){
+    if(!meetings || !meetings.length){
+      return null;
+    }
     let last = meetings.reduce((prev, current) => {
       return (prev.startedat > current.startedat) ? prev : current;
     });

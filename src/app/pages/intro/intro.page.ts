@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { UserData } from '../../providers/user-data';
 import { Platform } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
@@ -35,20 +33,12 @@ export class IntroPage implements OnInit {
   };
 
   constructor(
-    private router: Router,
     private plt: Platform,
-    private translateService: TranslateService,
     private userData: UserData,
     private route: ActivatedRoute
     ) { }
 
   async ngOnInit() {
-    this.userData.isLoggedIn().then((value)=>{
-        if(!value){       
-          this.router.navigate(['/login'], {state: {updateInfos: true}});
-        }
-    });
-
     if (this.plt.width() > 500) {
       //this.backimage = '/assets/img/Start_BG_screen_without_logo_flat.jpg';
     } else {
@@ -61,10 +51,11 @@ export class IntroPage implements OnInit {
         this.pageId = curId;
         this.nextPage = curId + 1;
       }
-      if(this.pageId > 7){
-         this.router.navigate(['/app/tabs/dashboard'], {state: {updateInfos: true}});
+      if(this.pageId >= 7){
+        this.userData.shownIntro(true);
       }
       this.introPageComponent = this.componentMap[this.pageId];
     });
+    
   }
 }

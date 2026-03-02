@@ -286,11 +286,8 @@ export class AccountsPage implements OnInit {
         group_health = 'attention';
       }
 
-      let lastcollection = this.group.lastmeeting.collection;
-
-      let keys = ['messages.accounts.'+ group_health +'.heading', 'messages.accounts.'+ group_health +'.description',
-        'messages.accounts.view_members_details', 'total_outstanding_maats', "since_last_meeting", "overdue",
-        "members_have_pending_payments"];
+      let lastcollection = this.group.lastmeeting ? this.group.lastmeeting.collection : 0;
+      let keys = ["total_outstanding_maats", "since_last_meeting", "overdue", "members_have_pending_payments"];
 
       this.translate.get(keys).subscribe(async (keys)=>{
         let info: string;
@@ -311,13 +308,13 @@ export class AccountsPage implements OnInit {
           component: ActionViewComponent,
           componentProps: {
             alttitle: this.group.name,
-            heading: keys['messages.accounts.'+ group_health +'.heading'],
-            description: keys['messages.accounts.'+ group_health +'.description'],
+            heading: 'messages.accounts.'+ group_health +'.heading',
+            description: 'messages.accounts.'+ group_health +'.description',
             information: info,
             badge: badge,
             image: 'assets/img/action-views/'+ group_health +'-group.png',
             hasBackButton: true,
-            buttons: [{text: keys['messages.accounts.view_members_details'], color: 'primary'}]
+            buttons: [{text: 'messages.accounts.view_members_details', color: 'primary'}]
           },
           cssClass: ''
         });

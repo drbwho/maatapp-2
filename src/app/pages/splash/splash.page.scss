@@ -1,0 +1,105 @@
+.splash-content {
+  --background: #ffffff; 
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+  }
+
+  .center-content-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .logo-state {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+
+      .logo {
+        max-width: 85%;
+        height: auto;
+        display: block;
+      }
+    }
+
+    .welcome-content {
+      position: relative; 
+      width: 100%;
+      max-width: 400px;
+      z-index: 1;
+      padding: 10px;
+      margin-top: 150px;
+
+      animation: fadeInText 0.8s ease-out forwards;
+      &::before {
+        content: "";
+        position: absolute;
+        left: -60px; 
+        top: -10px;
+        transform: translateY(-70%);
+        width: 170px; 
+        height: 120px;
+        background: url('../../../assets/img/feather-col.png') no-repeat center;
+        background-size: contain;
+        opacity: 0; 
+        z-index: -1;
+        animation: fadeInFeather 1.2s ease-out forwards;
+        animation-delay: 0.2s; 
+      }
+
+      .welcome-title {
+        font-weight: 400;
+        color: #0d0d0d;
+        margin: 0 0 10px 0;
+        line-height: 1.1;
+      }
+
+      .welcome-text {
+        font-size: 1rem;
+        color: #4a4a4a;
+        line-height: 1.5;
+        margin: 0;
+      }
+    }
+  }
+
+  .footer-image-container {
+    width: 100%;
+    line-height: 0; 
+    .people-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+  }
+}
+
+
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInFeather {
+  from {
+    opacity: 0;
+    left: -60px;
+  }
+  to {
+    opacity: 0.9;
+    left: -30px;
+  }
+}

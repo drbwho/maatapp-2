@@ -112,31 +112,29 @@ export class NewMeetingPage implements OnInit {
         await alert.present();
       });
     }else{
-      this.translate.get(['messages.meetings.new-meeting.heading', 'messages.meetings.new-meeting.description', 'messages.meetings.new-meeting.button']).subscribe((keys)=>{
-        this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any)=>{
-          if(data.meeting){
-            this.dataProvider.current.meeting = data.meeting;
-            const modal = await this.modalCtrl.create({
-              component: ActionViewComponent,
-              componentProps: {
-                title: 'Group: ' + this.group.name,
-                subtitle: this.country.name + ' · ' + this.group.ville,
-                image: '/assets/img/action-views/new-meeting.png',
-                heading: keys['messages.meetings.new-meeting.heading'],
-                description: keys['messages.meetings.new-meeting.description'],
-                buttons: [
-                  {text: keys['messages.meetings.new-meeting.button'], color: 'primary', action:'close'}
-                ]
-              },
-              cssClass: ''
-            });
-            await modal.present();
-            await modal.onWillDismiss().then(()=>{
-              this.router.navigate(['/meeting-transactions'], {state: {direction: 'root'}}); return;
-            });
-          }
-          return;
-        });
+      this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any)=>{
+        if(data.meeting){
+          this.dataProvider.current.meeting = data.meeting;
+          const modal = await this.modalCtrl.create({
+            component: ActionViewComponent,
+            componentProps: {
+              title: 'Group: ' + this.group.name,
+              subtitle: this.country.name + ' · ' + this.group.ville,
+              image: '/assets/img/action-views/new-meeting.png',
+              heading: 'messages.meetings.new-meeting.heading',
+              description: 'messages.meetings.new-meeting.description',
+              buttons: [
+                {text: 'messages.meetings.new-meeting.button', color: 'primary', action:'close'}
+              ]
+            },
+            cssClass: ''
+          });
+          await modal.present();
+          await modal.onWillDismiss().then(()=>{
+            this.router.navigate(['/meeting-transactions'], {state: {direction: 'root'}}); return;
+          });
+        }
+        return;
       });
     }
   }

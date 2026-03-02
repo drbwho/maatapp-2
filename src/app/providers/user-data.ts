@@ -12,6 +12,7 @@ export class UserData {
   FAVOURITES_FILE = 'FAVOURITES_FILE';
   USER_FILE = 'USER_FILE';
   HAS_LOGGED_IN = 'hasLoggedIn';
+  SHOW_INTRO = 'showIntroduction';
   user: any;
 
   constructor(
@@ -118,6 +119,17 @@ export class UserData {
     return this.storage.get(this.HAS_LOGGED_IN).then((value) => {
       return value === true;
     });
+  }
+
+  shownIntro(set = false): Promise<any> {
+    if(!set){
+      return this.storage.get(this.SHOW_INTRO).then((value) => {
+        return value === true;
+      });
+    }else{
+      this.storage.set(this.SHOW_INTRO, set);
+      return;
+    }
   }
 
 }

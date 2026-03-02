@@ -36,13 +36,23 @@ export class GroupsPage implements OnInit {
   async ionViewWillEnter() {
     const countryId = this.route.snapshot.paramMap.get('countryId');
 
-    this.dataProvider.fetch_data('countries', null, false, true).then((data: any) =>{
+    this.dataProvider.fetch_data('countries', null, false, true).then(async (data: any) =>{
       this.country = data.find((s) => s.id == countryId);
       this.groups = this.country.groups;
       this.countryname = this.country.name;
       //Load Country's parameters
       this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
         this.storage.set(this.config.GET_FILE('params'), data);
+      });
+      let newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+      this.groups.forEach(g => {
+        g.active = true;
+        if((g.lastmeeting && g.lastmeeting.endedat) || !g.lastmeeting){
+          g.active = false;
+        }
+        if(newmeetings && newmeetings.find(m => m.idgroup == g.id)){
+          g.active = true;
+        }
       });
     });
 

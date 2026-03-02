@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/intro',
+    redirectTo: '/splash',
     pathMatch: 'full'
   },
   {
@@ -73,7 +73,12 @@ const routes: Routes = [
   {
     path: 'meeting-transactions',
     loadChildren: () => import('./pages/meeting-transactions/meeting-transactions.module').then( m => m.MeetingTransactionsPageModule)
+  },
+  {
+    path: 'splash',
+    loadChildren: () => import('./pages/splash/splash.module').then( m => m.SplashPageModule)
   }
+
 
 
 
