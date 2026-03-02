@@ -22,8 +22,8 @@
     </div>
 
     <div class="text-wrapper">
-      <h4 class="serif-title">{{ heading }}</h4>
-      <p class="description text-14">{{ description }}</p>
+      <h4 class="serif-title">{{ heading | translate}}</h4>
+      <p class="description text-14">{{ description | translate}}</p>
     </div>
 
     <div class="text-wrapper ion-margin-top">
@@ -37,7 +37,7 @@
   <div class="button-group">
     @for(button of buttons; track button){
     <ion-button expand="block" class="primary-action" shape="round" (click)="click(button.action)" [color]="button.color">
-      {{ button.text }}
+      {{ button.text | translate}}
     </ion-button>
     }
   </div>
