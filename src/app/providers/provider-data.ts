@@ -29,7 +29,8 @@ export interface Meeting {
   haspending?: any,
   absences?: any,
   pending?: any,
-  attendance?: number
+  attendance?: number,
+  collection?: number
 }
 
 @Injectable({
@@ -56,7 +57,6 @@ export class DataProvider {
     public loadingcontroller: LoadingController,
     private translate: TranslateService
   ) {}
-
 
   // Clear loaded data
   clear(){
@@ -183,8 +183,6 @@ export class DataProvider {
       })
     });
   }
-
-
 
   /*
   * Sync meeting to Server

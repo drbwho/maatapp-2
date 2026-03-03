@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from './config-data';
-import { DataProvider } from './provider-data';
+import { DataProvider, Meeting } from './provider-data';
 import { OperationTools } from './operation-tools';
 
 @Injectable({
@@ -16,11 +16,11 @@ export class GroupTools {
     private operTools: OperationTools
   ){}
 
-  get_meetings(group: any){
+  get_meetings(group: any){ 
     return this.dataProvider.fetch_data('meetings', group.id, true, true).then(async (data: any)=> {
       // merge with local stored new meetings
       var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
-      let meetings = [];
+      let meetings:Meeting[] = [];
       if(newmeetings != null && newmeetings.length){
         newmeetings = newmeetings.filter(s => s.idgroup == group.id);
         meetings = [...newmeetings, ...data];
@@ -28,20 +28,21 @@ export class GroupTools {
         meetings = data;
       }
       // check if meeting has pending transactions to upload
-      meetings.forEach(async (m)=>{
+      for(const m of meetings){
         m.haspending = 0;
-        this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
-          if(trns && (trns.filter(s => s.idmeeting == m.id)).length){
-            m.haspending = (trns.filter(s => s.idmeeting == m.id)).length;
-          }
-        });
-        m.collection = Math.round(m.collection); // parse collected amount as float
-
+        let trns = await this.storage.get(this.config.TRANSACTIONS_FILE);
+        if(trns && (trns.filter(s => s.idmeeting == m.id)).length){
+          m.haspending = (trns.filter(s => s.idmeeting == m.id)).length;
+          let totals: any = await this.operTools.estimate_meeting_totals(null, m.id);
+          m.collection = totals.credit - totals.debit;
+        }else{
+          m.collection = Math.round(m.collection); // parse collected amount as float
+        }
         //convert absences json from API to array
         if (m.absences && typeof m.absences === 'string') {
           m.absences = JSON.parse(m.absences);
         }
-      })
+      }
       return meetings;
     });
   }
@@ -88,11 +89,6 @@ export class GroupTools {
     let last = meetings.reduce((prev, current) => {
       return (prev.startedat > current.startedat) ? prev : current;
     });
-    // get collection from pending transactions
-    /*if(last.haspending || last.pending){
-      let totals: any = await this.operTools.estimate_meeting_totals(null, last.id);
-      last.collection = totals.credit - totals.debit;
-    }*/
     return last;
   }
 }

@@ -4,7 +4,7 @@
     <ion-row class="ion-align-items-center ion-margin-bottom">
       <ion-col size="12" class="header-container">
         <h4 class="title-serif ion-no-margin" [class]="status()">
-          {{ meeting$()?.place }} · <span class="date-label">{{ fullDate() | date: 'MMM d'}}</span>
+          {{ meeting?.place }} · <span class="date-label">{{ fullDate() | date: 'MMM d'}}</span>
           <ion-icon name="chevron-forward-outline" class="title-chevron"></ion-icon>
         </h4>
         @if(status() == 'progress' || status() == 'progress-pending'){
@@ -31,13 +31,13 @@
       <ion-col>
         <div class="stats-info">
           <div class="stats-numbers">
-            {{ meeting$()?.attendance }} / {{group?.numberofmembers}}
+            {{ meeting?.attendance }} / {{group?.numberofmembers}}
           </div>
           <div class="stats-sub-label text-12">{{'attended' | translate}}</div>
         </div>
       </ion-col>
 
-      @if (status() === 'closed' && meeting$()?.collection) {
+      @if (status() === 'closed' && meeting?.collection) {
       <ion-col size="auto" class="ion-no-padding">
         <div class="avatar-circle">
           <img src="assets/img/pot-sm.png" alt="pot" />
@@ -46,7 +46,7 @@
       <ion-col>
         <div class="stats-info">
           <div class="stats-numbers">
-            {{ meeting$()?.collection | number:'.0'}}
+            {{ meeting?.collection | number:'.0'}}
           </div>
           <div class="stats-sub-label text-12">{{'collected' | translate}}</div>
         </div>

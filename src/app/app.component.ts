@@ -66,9 +66,8 @@ export class AppComponent implements OnInit {
 
     this.checkLoginStatus();
     this.listenForLoginEvents();
-    this.userData.loadFavorites();
     this.listenNetworkConnectionEvents();
-    this.listenForMeetingTransactions();
+    this.userData.loadFavorites();
 
      // Set default Language or load setting from database
      this.translate.setFallbackLang('en');
@@ -162,12 +161,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // Update Meeting info
-  listenForMeetingTransactions(){
-    this.events.subscribe('upload:updated', async (idmeeting) => {
-      this.operTools.updateMeetingInfo(idmeeting);
-    });
-  }
 
   listenNetworkConnectionEvents() {
     // Check on init

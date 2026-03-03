@@ -4,7 +4,7 @@ import { ConfigData } from './config-data';
 import { TranslateService } from '@ngx-translate/core';
 import { formatDate } from '@angular/common';
 import { Events } from './events';
-import { DataProvider, Current, Meeting } from './provider-data';
+import { DataProvider } from './provider-data';
 import { Network } from '@capacitor/network';
 import { AlertController, ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
@@ -41,43 +41,6 @@ export class OperationTools {
     private alertCtrl: AlertController,
     private user: UserData
   ) { }
-
-
-  /*
-  * Update meeting info in every operation registration
-  * subscribed in app.component to published events
-  *
-  */
-  async updateMeetingInfo(idmeeting: string){
-    var trans = await this.storage.get(this.config.TRANSACTIONS_FILE);
-    var meetings = await this.storage.get(this.config.GET_FILE('meetings'));
-    var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
-    let mt = null;
-    trans = trans.filter(tr => tr.idmeeting == idmeeting);
-    // update pending counter
-    let numberofpending = trans.filter(tr => tr.idmeeting == idmeeting).length;
-    if(mt = meetings.find(m => m.id == idmeeting)){
-      mt.haspending = numberofpending;
-    }
-    if(mt = newmeetings.find(m => m.id == idmeeting)){
-      mt.haspending = numberofpending;
-    }
-    // update collection and meeting to storage
-    let totals: any = null;
-    mt = meetings.find(m => m.id == idmeeting);
-    if(mt){
-      totals = await this.estimate_meeting_totals(null, mt.id);
-      mt.collection = totals.credit - totals.debit;
-      await this.storage.set(this.config.GET_FILE('meetings'), meetings);
-    }
-    mt = newmeetings.find(m => m.id == idmeeting);
-    if(mt){
-      totals = await this.estimate_meeting_totals(null, mt.id);
-      mt.collection = totals.credit - totals.debit;
-      await this.storage.set(this.config.NEWMEETINS_FILE, newmeetings);
-    }
-
-  }
 
   // Save locally new Operation
   newOperation(idmeeting, account, group, idparameter, parametername, amount, categories="", notes=""): Promise<any>{
@@ -681,6 +644,16 @@ export class OperationTools {
           resolve(totals);
         });
       });
+    });
+  }
+
+  async has_pending_transactions(idmeeting: string){
+    let numpending = 0;
+    await this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
+      if(trns && (trns.filter(s => s.idmeeting == idmeeting)).length){
+        numpending = (trns.filter(s => s.idmeeting == idmeeting)).length;
+      }
+      return numpending;
     });
   }
 

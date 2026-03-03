@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, computed, signal, input } from '@angular/core';
-import { DataProvider } from '../../providers/provider-data';
+import { Component, Input, OnInit, computed, signal, input, effect } from '@angular/core';
+import { DataProvider, Meeting } from '../../providers/provider-data';
 
 @Component({
   selector: 'app-meeting-card',
@@ -8,27 +8,25 @@ import { DataProvider } from '../../providers/provider-data';
   standalone: false
 })
 export class MeetingCardComponent  implements OnInit {
-  //Use Setter and signal to compute values
   @Input() attendance: string = '';
   @Input() group?: any = null;
-  @Input() set meeting(value: any) {
-    this.meeting$.set(value);
-  }
-  public meeting$ = signal<any>(null);
-
-  status = computed(() => {
-    if(this.meeting$()?.endedat){
-      return 'closed' + ((this.meeting$()?.haspending || this.meeting$()?.pending) ? '-pending' : '');
-    }
-    return  'progress' + ((this.meeting$().haspending || this.meeting$().pending) ? '-pending' : '');
-  });
-  fullDate = computed(() => this.meeting$()?.endedat ? this.meeting$()?.endedat : this.meeting$()?.startedat);
-
+  @Input() meeting?: any = null;
+ 
   constructor(
   ) {}
 
   ngOnInit() {
   }
 
+  status(){
+    if(this.meeting.endedat){ 
+      return 'closed' + ((this.meeting.haspending || this.meeting.pending) ? '-pending' : '');
+    }
+    return  'progress' + ((this.meeting.haspending || this.meeting.pending) ? '-pending' : '');
+  }
+
+  fullDate(){
+    return this.meeting?.endedat ? this.meeting?.endedat : this.meeting?.startedat;
+  }
 }
 
