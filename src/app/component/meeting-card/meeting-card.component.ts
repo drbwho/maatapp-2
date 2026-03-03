@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, computed, signal } from '@angular/core';
+import { Component, Input, OnInit, computed, signal, input } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 
 @Component({
@@ -18,9 +18,9 @@ export class MeetingCardComponent  implements OnInit {
 
   status = computed(() => {
     if(this.meeting$()?.endedat){
-      return 'closed' + (this.meeting$()?.haspending || this.meeting$()?.pending ? '-pending' : '');
+      return 'closed' + ((this.meeting$()?.haspending || this.meeting$()?.pending) ? '-pending' : '');
     }
-    return  'progress' + (this.meeting$()?.haspending || this.meeting$()?.pending ? '-pending' : '');
+    return  'progress' + ((this.meeting$().haspending || this.meeting$().pending) ? '-pending' : '');
   });
   fullDate = computed(() => this.meeting$()?.endedat ? this.meeting$()?.endedat : this.meeting$()?.startedat);
 

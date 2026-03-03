@@ -10,27 +10,62 @@ import { formatDate } from '@angular/common';
   providedIn: 'root',
 })
 export class MeetingsActionViews {
-  
+
   constructor(
     private modalCtrl: ModalController,
-    private translate: TranslateService,
     private dataProvider: DataProvider,
     private operationTools: OperationTools
-  ){
+  ){}
 
+
+  /*
+  * View transactions
+  *
+  */
+  async show_action_view_transactions(meeting: Meeting, meeting_status: string){
+    return new Promise(async (resolve)=>{
+      let buttons = [];
+      switch(meeting_status){
+        case 'upload-close':
+          buttons.push({text: 'messages.meetings.'+ meeting_status +'.button', color: 'primary', action:'upload'});
+          if(!meeting.endedat){
+            buttons.push({text: 'messages.meetings.'+ meeting_status +'.button_1', color: 'light', action:'close'});
+          }
+          buttons.push({text: 'continue', color: 'light', action:'view'});
+          break;
+        default:
+           buttons.push({text: 'messages.meetings.'+ meeting_status +'.button', color: 'primary', action:'view'});
+           break;
+      }
+      const modal = await this.modalCtrl.create({
+        component: ActionViewComponent,
+        componentProps: {
+          alttitle: meeting.place,
+          heading: 'messages.meetings.'+ meeting_status +'.heading',
+          description: 'messages.meetings.'+ meeting_status +'.description',
+          image: 'assets/img/action-views/'+ meeting_status +'-meeting.png',
+          hasBackButton: true,
+          buttons: buttons
+        },
+        cssClass: ''
+      });
+      await modal.present();
+      await modal.onWillDismiss().then((data)=>{
+        resolve(data.data);
+      });
+    });
   }
 
   /*
   * Upload or Close meeting View
   *
   */
-  show_action_upload_close(meeting: any){
+  show_action_upload_close(meeting: Meeting){
     return new Promise(async (resolve)=>{
       if(!meeting){
         resolve(false);
         return;
       }
- 
       const modal = await this.modalCtrl.create({
         component: ActionViewComponent,
         componentProps: {
@@ -49,16 +84,16 @@ export class MeetingsActionViews {
       await modal.present();
       await modal.onWillDismiss().then(async (data: any)=>{
         if(data.data =='upload'){
-          resolve({success: await this.upload_meeting(meeting), action: 'upload'}); 
+          resolve({success: await this.upload_meeting(meeting), action: 'upload'});
         }
         if(data.data =='close'){
-          resolve({success: await this.close_meeting(meeting), action: 'close'});  
+          resolve({success: await this.close_meeting(meeting), action: 'close'});
         }
       });
     });
   }
 
-  upload_meeting(meeting: any){
+  upload_meeting(meeting: Meeting){
     return new Promise((resolve)=>{
       this.operationTools.uploadOperations(meeting).then(async (res:any) => {
         if(res.status.toLowerCase() == 'error'){
@@ -70,7 +105,7 @@ export class MeetingsActionViews {
     });
   }
 
-  close_meeting(meeting: any){
+  close_meeting(meeting: Meeting){
     return new Promise((resolve)=>{
       this.dataProvider.closeMeeting(meeting).then(async (res: any)=>{
         if(res.status != undefined && res.status == 'error'){
@@ -83,8 +118,11 @@ export class MeetingsActionViews {
     })
   }
 
-
-  show_action_upload_success(meeting: any){
+  /*
+  * Upload success view
+  *
+  */
+  show_action_upload_success(meeting: Meeting){
     return new Promise(async (resolve)=>{
       if(!meeting){
         resolve(false);
@@ -112,16 +150,20 @@ export class MeetingsActionViews {
       await modal.present();
       await modal.onWillDismiss().then(async (data: any)=>{
         if(data.data =='close'){
-          resolve({success: await this.close_meeting(meeting), action: 'close'}); 
+          resolve({success: await this.close_meeting(meeting), action: 'close'});
         }
         if(data.data =='history'){
-          resolve({action: 'history'});  
+          resolve({action: 'history'});
         }
       });
     });
   }
 
-  show_action_upload_failed(meeting: any){
+  /*
+  * Upload failed View
+  *
+  */
+  show_action_upload_failed(meeting: Meeting){
     return new Promise(async (resolve)=>{
       if(!meeting){
         resolve(false);
@@ -149,7 +191,12 @@ export class MeetingsActionViews {
     });
   }
 
-  show_action_cancel(meeting: any){
+  /*
+  * Cancel/suspend meeting View
+  *
+  */
+
+  show_action_cancel(meeting: Meeting){
     return new Promise(async (resolve)=>{
       if(!meeting){
         resolve(false);
@@ -188,6 +235,7 @@ export class MeetingsActionViews {
           resolve({success: false});
         }
       });
-    });   
+    });
   }
+
 }

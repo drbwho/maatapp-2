@@ -5,10 +5,9 @@ import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { SplashScreen } from '@capacitor/splash-screen';
 
-import { MenuController, Platform, ToastController, AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { Platform, ToastController, AlertController, LoadingController, ModalController } from '@ionic/angular';
 
 import { Storage } from '@ionic/storage';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Network } from '@capacitor/network';
 import { register } from 'swiper/element/bundle';
 
@@ -16,6 +15,7 @@ import { Events } from './providers/events';
 import { UserData } from './providers/user-data';
 import { Browser } from '@capacitor/browser';
 import { TranslateService } from '@ngx-translate/core';
+import { OperationTools } from './providers/operation-tools';
 
 register();
 
@@ -34,11 +34,9 @@ export class AppComponent implements OnInit {
 
   constructor(
     private events: Events,
-    private menu: MenuController,
     private platform: Platform,
     private router: Router,
     private storage: Storage,
-    private http: HttpClient,
     public alertController: AlertController,
     public loadingcontroller: LoadingController,
     private userData: UserData,
@@ -47,8 +45,8 @@ export class AppComponent implements OnInit {
     private dataprovider: DataProvider,
     private config: ConfigData,
     private toast: ToastController,
-    private modalCtrl: ModalController,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private operTools: OperationTools
   ) {
     this.initializeApp();
   }
@@ -166,19 +164,8 @@ export class AppComponent implements OnInit {
 
   // Update Meeting info
   listenForMeetingTransactions(){
-     this.events.subscribe('upload:updated', async () => {
-      var trans = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      var meetings = await this.storage.get(this.config.GET_FILE('meetings'));
-      var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
-      let mt = null;
-      trans.forEach(tr => {
-        if(mt = meetings.find(m => m.id == tr.idmeeting)){
-          mt.haspending++;
-        }
-        if(mt = newmeetings.find(m => m.id == tr.idmeeting)){
-          mt.haspending++;
-        }
-      });
+    this.events.subscribe('upload:updated', async (idmeeting) => {
+      this.operTools.updateMeetingInfo(idmeeting);
     });
   }
 

@@ -61,7 +61,7 @@ export class GroupTools {
     return false;
   }
 
-  async get_meeting_status(meetings, groupId: string){
+  async get_group_meeting_status(meetings, groupId: string){
     var upload_status = await this.has_to_upload(groupId);
     if(!meetings.length || !meetings){
       return "no-meetings";
@@ -89,10 +89,10 @@ export class GroupTools {
       return (prev.startedat > current.startedat) ? prev : current;
     });
     // get collection from pending transactions
-    if(last.haspending || last.pending){
+    /*if(last.haspending || last.pending){
       let totals: any = await this.operTools.estimate_meeting_totals(null, last.id);
       last.collection = totals.credit - totals.debit;
-    }
+    }*/
     return last;
   }
 }

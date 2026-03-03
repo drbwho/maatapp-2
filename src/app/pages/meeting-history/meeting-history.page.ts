@@ -16,13 +16,8 @@ import { MeetingTotals } from '../../interfaces/data-interfaces';
     standalone: false
 })
 export class MeetingHistoryPage implements OnInit {
-  meetingplace: string;
-  meetingdate: string;
-  groupname: string;
-  currency: string;
   country: any = {flagcode: 'gb'};
   group: any;
-  groupid: string;
   meeting: any;
   allaccounts: any;
   accounts: any;
@@ -35,6 +30,7 @@ export class MeetingHistoryPage implements OnInit {
     credit: 0.00,
     loans: 0.00
   }
+  attendance = 0;
   selectedAll: boolean = false;
   selectedAccounts = 0;
   public pf = parseFloat;
@@ -54,15 +50,12 @@ export class MeetingHistoryPage implements OnInit {
 
   async ionViewWillEnter() {
     this.meeting = this.dataProvider.current.meeting;
-    this.meetingplace = this.meeting.place;
-    this.meetingdate = this.meeting.startedat;
     this.group = this.dataProvider.current.group;
-    this.groupname = this.group.name;
-    this.groupid = this.group.id;
     this.country = this.dataProvider.current.country;
-    this.currency = this.country.currency;
     this.num_ECP = await this.operTools.get_num_of_ECP(this.meeting, this.country.id);
     this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);
+
+    this.attendance = this.meeting.absences ? this.group.numberofmembers - this.meeting.absences.length : this.group.numberofmembers;
 
     this.calc_status();
     await this.load_accounts();
@@ -184,7 +177,7 @@ export class MeetingHistoryPage implements OnInit {
             this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
               this.load_accounts();
             })*/
-          this.operTools.delOperation(tr).then(() => this.load_accounts());
+            this.operTools.delOperation(tr).then(() => this.load_accounts());
           },
         },
         ],
@@ -235,7 +228,7 @@ export class MeetingHistoryPage implements OnInit {
     }
     const modal = await this.modalCtrl.create({
       component: AccountInfoComponent,
-      componentProps: {'account': account, 'currency': this.currency, 'show_transactions': false, 'group_totals': group_totals}
+      componentProps: {'account': account, 'currency': this.country.currency, 'show_transactions': false, 'group_totals': group_totals}
     });
     modal.present();
 

@@ -40,14 +40,14 @@
       <ion-row>
         <ion-col class="ion-text-center text-dark">
           <h1 class="stat-value ion-no-margin">@if(meeting?.collection > 0){ {{ meeting?.collection | number:'.0'}} }@else{ 0 }</h1>
-          <p class="stat-label text-12">{{currency}} {{'collected' | translate}}</p>
+          <p class="stat-label text-12">{{country?.currency}} {{'collected' | translate}}</p>
         </ion-col>
         <ion-col class="ion-text-center text-grey">
           <h1 class="stat-value ion-no-margin">{{ new_totals?.loans }}</h1>
           <p class="stat-label text-12">Maats {{'issued' | translate}}</p>
         </ion-col>
         <ion-col class="ion-text-center text-grey">
-          <h1 class="stat-value ion-no-margin">{{num_ECP}}</h1>
+          <h1 class="stat-value ion-no-margin">{{attendance}}</h1>
           <p class="stat-label text-12">{{'attended' | translate}}</p>
         </ion-col>
       </ion-row>
@@ -97,26 +97,26 @@
                   @if(account?.missing_rcb){
                   <p class="warning-text">
                     <ion-icon [name]="account?.icon || 'close'" color="danger"></ion-icon>
-                    {{ 'missing_regular_contribs' | translate }} {{account?.missing_rcb}} {{currency}}
+                    {{ 'missing_regular_contribs' | translate }} {{account?.missing_rcb}} {{country?.currency}}
                   </p>
                   }
                   @if(account?.missing_sfcb){
                   <p class="warning-text">
                     <ion-icon [name]="account?.icon || 'close'" color="danger"></ion-icon>
-                    {{ 'missing_sf_contribs' | translate }} {{account?.missing_sfcb}} {{currency}}
+                    {{ 'missing_sf_contribs' | translate }} {{account?.missing_sfcb}} {{country?.currency}}
                   </p>
                   }
                   @if(account?.missing_fcp){
                   <p class="warning-text">
                     <ion-icon [name]="account?.icon || 'close'" color="danger"></ion-icon>
-                    {{ 'missing_facp_contribs' | translate }} {{account?.missing_fcp}} {{currency}}
+                    {{ 'missing_facp_contribs' | translate }} {{account?.missing_fcp}} {{country?.currency}}
                   </p>
                   }
                 }
                 @if(pf(account?.appliedfines) > 0){
                 <p class="warning-text">
                   <ion-icon [name]="account?.icon || 'warning-outline'" color="warning"></ion-icon>
-                  {{ 'fine_applied' | translate }} {{account?.appliedfines}} {{currency}}
+                  {{ 'fine_applied' | translate }} {{account?.appliedfines}} {{country?.currency}}
                 </p>
                 }
               </div>

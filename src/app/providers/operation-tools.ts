@@ -43,7 +43,43 @@ export class OperationTools {
   ) { }
 
 
-   // Save locally new Operation
+  /*
+  * Update meeting info in every operation registration
+  * subscribed in app.component to published events
+  *
+  */
+  async updateMeetingInfo(idmeeting: string){
+    var trans = await this.storage.get(this.config.TRANSACTIONS_FILE);
+    var meetings = await this.storage.get(this.config.GET_FILE('meetings'));
+    var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
+    let mt = null;
+    trans = trans.filter(tr => tr.idmeeting == idmeeting);
+    // update pending counter
+    let numberofpending = trans.filter(tr => tr.idmeeting == idmeeting).length;
+    if(mt = meetings.find(m => m.id == idmeeting)){
+      mt.haspending = numberofpending;
+    }
+    if(mt = newmeetings.find(m => m.id == idmeeting)){
+      mt.haspending = numberofpending;
+    }
+    // update collection and meeting to storage
+    let totals: any = null;
+    mt = meetings.find(m => m.id == idmeeting);
+    if(mt){
+      totals = await this.estimate_meeting_totals(null, mt.id);
+      mt.collection = totals.credit - totals.debit;
+      await this.storage.set(this.config.GET_FILE('meetings'), meetings);
+    }
+    mt = newmeetings.find(m => m.id == idmeeting);
+    if(mt){
+      totals = await this.estimate_meeting_totals(null, mt.id);
+      mt.collection = totals.credit - totals.debit;
+      await this.storage.set(this.config.NEWMEETINS_FILE, newmeetings);
+    }
+
+  }
+
+  // Save locally new Operation
   newOperation(idmeeting, account, group, idparameter, parametername, amount, categories="", notes=""): Promise<any>{
     var trn: Transaction = {
       idmeeting: idmeeting,
@@ -76,7 +112,7 @@ export class OperationTools {
           trns.push(trn);
         }
         await this.storage.set(this.config.TRANSACTIONS_FILE, trns).then((res)=>{
-          this.events.publish('upload:updated');
+          this.events.publish('upload:updated', idmeeting);
           resolve({'status': 'success'});
           return;
         })
@@ -91,7 +127,7 @@ export class OperationTools {
       let index = transactions.findIndex(s => s.idaccount == tr.idaccount && s.idmeeting == tr.idmeeting && s.idparameter == tr.idparameter && s.amount == tr.amount);
       transactions.splice(index, 1);//remove element from array
       this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
-        this.events.publish('upload:updated');
+        this.events.publish('upload:updated', tr.idmeeting);
         resolve(true);
       });
     })
@@ -102,7 +138,7 @@ export class OperationTools {
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       transactions = transactions.filter(s => !(s.idaccount == accountId && s.idmeeting == meetingId && s.idparameter == parameterId));
       await this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
-        this.events.publish('upload:updated');
+        this.events.publish('upload:updated', meetingId);
         resolve(true);
       });
     })
@@ -117,7 +153,7 @@ export class OperationTools {
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       transactions = transactions.filter(tr => !(tr.idaccount === account.id && tr.idmeeting === meeting.id));
       await this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
-        this.events.publish('upload:updated');
+        this.events.publish('upload:updated', meeting.id);
         resolve(true);
       });
     })
@@ -144,7 +180,7 @@ export class OperationTools {
         if(newmeetings){
           newmeetings = newmeetings.filter(s => s.id != meeting.id);
           this.storage.set(this.config.NEWMEETINS_FILE, newmeetings).then(()=>{
-            this.events.publish('upload:updated');
+            this.events.publish('upload:updated', meeting.id);
             resolve(true);
           });
         }else{
@@ -161,7 +197,7 @@ export class OperationTools {
         /*let index = transactions.findIndex(s => s.idmeeting == meeting.id);
         transactions.splice(index, 1);//remove element from array*/
         this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
-          this.events.publish('upload:updated');
+          this.events.publish('upload:updated', meeting.id);
           resolve(true);
         });
       }else{
@@ -228,7 +264,7 @@ export class OperationTools {
   *
   */
   async uploadOperations(meeting){
-    // First sync new meeting
+    // Firstly sync new meeting
     if(meeting.pending){
       let newmeet: any = await this.dataProvider.syncMeeting(meeting);
       if(newmeet.status != "success"){
@@ -265,22 +301,24 @@ export class OperationTools {
         upload_errors = [];
       }
       var found_errors = false;
-      for(let tr of transactions){
-        res = await this.syncOperation(tr);
-        //if error stop uploading and return
-        if(res.status.toLowerCase() == 'error'){
-          // return name of account
-          let accounts = await this.storage.get(this.config.GET_FILE('accounts'));
-          let account = accounts.find(s => s.id == tr.idaccount);
+      res = await this.bulkSyncOperations(transactions, meeting.id);
+      //if error stop uploading and return
+      if(res.status.toLowerCase() == 'error'){
+        // return name of account
+        let accounts = await this.storage.get(this.config.GET_FILE('accounts'));
+        // iterate errors
+        for (const err of res.errors){
+          let account = accounts.find(s => s.id == err.idaccount);
           res.name = account.owner;
-          upload_errors.push({idmeeting: tr.idmeeting, idaccount: tr.idaccount, idparameter: tr.idparameter, message: res.message});
+          upload_errors.push({idmeeting: err.idmeeting, idaccount: err.idaccount, idparameter: err.idparameter, message: res.message});
           found_errors = true;
-        }else{
-          //success
-          //delete pending operation
-          this.delOperation(tr);
-        }
+        };
+      }else{
+        //success
+        //clear uploaded pending operations
+        this.clearPendingOperations(meeting);
       }
+
       this.storage.set(this.config.UPLOAD_ERRORS_FILE, upload_errors);
       if(found_errors){
         this.translate.get('uploading_with_errors').subscribe((key)=>{
@@ -325,6 +363,59 @@ export class OperationTools {
             notes: tr.notes,
             type: '',
             usetimezone: 0
+          },
+          {headers})
+        .subscribe({
+          next: (data: any) => {
+            console.log(data);
+            loading.dismiss().then(()=>{
+              resolve(data);
+            });
+          },
+          error: async (error) => {
+            loading.dismiss().then(()=>{
+              resolve({status: 'error', message: 'Network error'});
+            });
+          }
+        });
+    });
+  }
+
+  /*
+  * Sync operations to Server
+  *
+  */
+  async bulkSyncOperations(trs: Transaction[], idmeeting: string){
+    const loading = await this.loadingcontroller.create({showBackdrop: false});
+    loading.present();
+
+    let apiurl = this.config.GET_API_URL('bulk_operations', idmeeting);
+
+    const user = await this.user.getUser();
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    let load = [];
+    trs.forEach(tr => {
+      load.push({
+        parameter: tr.idparameter,
+        accountid: tr.idaccount,
+        amount: tr.amount,
+        inputdate: tr.inputdate,
+        categories: tr.categories,
+        notes: tr.notes,
+        type: '',
+        usetimezone: 0
+      })
+    })
+
+    return new Promise((resolve)=>{
+      this.http
+        .post(apiurl,
+          {
+            operations: load
           },
           {headers})
         .subscribe({

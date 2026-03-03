@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
-import { AlertController, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
 import { TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
-import { ActionViewComponent } from '../../component/action-view/action-view.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { OperationTools } from '../../providers/operation-tools';
+import { ActionSheetController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 import { MeetingsActionViews } from './meetings.action-views';
-
 @Component({
   selector: 'app-meetings',
   templateUrl: './meetings.page.html',
@@ -29,7 +26,6 @@ export class MeetingsPage implements OnInit {
     private groupTools: GroupTools,
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
-    private modalCtrl: ModalController,
     private route: ActivatedRoute,
     private meetActionViews: MeetingsActionViews
   ) { }
@@ -59,15 +55,20 @@ export class MeetingsPage implements OnInit {
       this.country = current.country;
       this.group = current.group;
       this.meetings = await this.groupTools.get_meetings(this.group);
+      this.meetings = [...this.meetings];
       this.lastmeeting = await this.groupTools.get_last_meeting(this.meetings);
-      this.meeting_status = await this.groupTools.get_meeting_status(this.meetings, this.group.id);
+      this.meeting_status = await this.groupTools.get_group_meeting_status(this.meetings, this.group.id);
       this.meetings.forEach(m =>{
         m.attendance = this.group.numberofmembers - (m.absences ? m.absences.length : 0);
       })
     }
   }
 
-  async openOptions(meeting) {
+  /*
+  * Options Action Sheet
+  *
+  */
+  async openOptions(meeting: Meeting) {
     this.translate.get(['continue_meeting','upload_data','close_meeting', 'view_transactions', 'cancel_meeting', 'return']).subscribe(async (keys: any)=>{
       let buttons = [];
       if(!meeting.endedat){
@@ -104,7 +105,7 @@ export class MeetingsPage implements OnInit {
         text: keys['view_transactions'],
         icon: 'stats-chart',
         handler: () => {
-          this.open_transactions(meeting);
+          this.show_action_view(meeting, 'view-transactions');
         },
       });
       if(meeting.pending){
@@ -156,66 +157,17 @@ export class MeetingsPage implements OnInit {
     this.show_all = true;
   }
 
-  async open_transactions(meeting: any){
-    this.dataProvider.current.meeting = meeting;
-    let meet_status = '';
-    if(meeting.pending || meeting.haspending){
-      meet_status = 'upload-close';
-    }else{
-      meet_status = 'great';
-    }
-
-    let keys = ['messages.meetings.'+ meet_status +'.heading', 'messages.meetings.'+ meet_status +'.description', 'messages.meetings.'+ meet_status +'.button',
-                'continue'];
-
-    if(meet_status == 'upload-close'){
-      keys.push('messages.meetings.'+ meet_status +'.button_1');
-    }
-    this.translate.get(keys).subscribe(async (keys)=>{
-      let buttons = [];
-      switch(meet_status){
-        case 'upload-close':
-          buttons.push({text: keys['messages.meetings.'+ meet_status +'.button'], color: 'primary', action:'upload'});
-          if(!meeting.endedat){
-            buttons.push({text: keys['messages.meetings.'+ meet_status +'.button_1'], color: 'light', action:'close'});
-          }
-          buttons.push({text: keys['continue'], color: 'light', action:'view'});
-          break;
-        default:
-           buttons.push({text: keys['messages.meetings.'+ meet_status +'.button'], color: 'primary', action:'view'});
-           break;
-      }
-      const modal = await this.modalCtrl.create({
-        component: ActionViewComponent,
-        componentProps: {
-          alttitle: meeting.place,
-          heading: keys['messages.meetings.'+ meet_status +'.heading'],
-          description: keys['messages.meetings.'+ meet_status +'.description'],
-          image: 'assets/img/action-views/'+ meet_status +'-meeting.png',
-          hasBackButton: true,
-          buttons: buttons
-        },
-        cssClass: ''
-      });
-      await modal.present();
-      await modal.onWillDismiss().then((data)=>{
-        if(data.data!='close'){
-          this.navCtrl.navigateForward('/meeting-history');
-        }
-      });
-      return;
-    });
-  }
 
   /*
   * Show Meetings Action Views
   *
   */
-  async show_action_view(meeting: any, action: string){
+  async show_action_view(meeting: Meeting, action: string){
     if(!meeting){
       meeting = this.dataProvider.current.meeting;
     }
     switch(action){
+      //--- upload or close meeting
       case 'upload-close':
         if(meeting.pending || meeting.haspending){
             this.meetActionViews.show_action_upload_close(meeting).then(async (res: any)=>{
@@ -224,6 +176,7 @@ export class MeetingsPage implements OnInit {
                 // upload succeed
                 this.meetActionViews.show_action_upload_success(meeting).then((res: any)=>{
                   if(res.action == 'history'){
+                    this.dataProvider.current.meeting = meeting;
                     this.navCtrl.navigateForward('/meeting-history');
                   }
                 });
@@ -244,6 +197,7 @@ export class MeetingsPage implements OnInit {
         }else{
           this.meetActionViews.show_action_upload_success(meeting).then(async (res: any)=>{
             if(res.action == 'history'){
+              this.dataProvider.current.meeting = meeting;
               this.navCtrl.navigateForward('/meeting-history');
             }
             this.load_currents();
@@ -251,14 +205,30 @@ export class MeetingsPage implements OnInit {
           });
         }
         break;
+      //--- View meeting's transactions
+      case 'view-transactions':
+        let meet_status = '';
+        if(meeting.pending || meeting.haspending){
+          meet_status = 'upload-close';
+        }else{
+          meet_status = 'great';
+        }
+        this.meetActionViews.show_action_view_transactions(meeting, meet_status).then(data =>{
+          if(data!='close'){
+            this.dataProvider.current.meeting = meeting;
+            this.navCtrl.navigateForward('/meeting-history');
+          }
+        });
+        break;
+      //--- cancel/suspend meeting
       case 'cancel':
-          this.meetActionViews.show_action_cancel(meeting).then(async (res: any)=>{
-            if(res.success){
-              this.load_currents();
-              this.navCtrl.navigateRoot('/app/tabs/meetings');
-            }
-          });
-          break;
+        this.meetActionViews.show_action_cancel(meeting).then(async (res: any)=>{
+          if(res.success){
+            this.load_currents();
+            this.navCtrl.navigateRoot('/app/tabs/meetings');
+          }
+        });
+        break;
     }
 
   }

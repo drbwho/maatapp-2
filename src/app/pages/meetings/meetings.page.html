@@ -33,7 +33,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round" 
+  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round"
     [disabled]="meeting_status != 'no-active' && meeting_status != 'no-meetings'"
     routerLink="/new-meeting" routerDirection="forward">{{'start_new_meeting' | translate}}</ion-button>
   @if(meeting_status == 'saved_local'){
@@ -45,10 +45,10 @@
 
   @if(lastmeeting && !show_all){
   <ion-list>
-    <app-meeting-card 
+    <app-meeting-card
       [meeting]="lastmeeting"
       [group]="group"
-      attendance="0" 
+      attendance="0"
       (click)="openOptions(lastmeeting)">
     </app-meeting-card>
   </ion-list>
@@ -63,7 +63,7 @@
   @if(show_all){
   <ion-list>
     @for (meeting of meetings; track meeting) {
-     <app-meeting-card 
+     <app-meeting-card
       [meeting]="meeting"
       [group]="group"
       attendance="0"

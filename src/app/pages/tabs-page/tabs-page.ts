@@ -70,7 +70,7 @@ export class TabsPage {
     //check
     let group = this.dataProvider.current.group;
     let meetings = await this.groupTools.get_meetings(group)
-    let meeting_status = await this.groupTools.get_meeting_status(meetings, group.id);
+    let meeting_status = await this.groupTools.get_group_meeting_status(meetings, group.id);
     if(meeting_status != 'no-active' && meeting_status != 'no-meetings'){
       return;
     }
