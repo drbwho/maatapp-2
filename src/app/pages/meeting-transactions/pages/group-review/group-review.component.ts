@@ -70,8 +70,8 @@ export class GroupReviewComponent  implements OnInit {
           }
         });
 
-        // Group Transactions
-        let transactions = trns.filter((s)=>s.idaccount == this.group.account.id && s.idmeeting == this.meeting.id);
+        // Group Transactions // TODO check if group transactions!!!!
+        let transactions = trns.filter((s)=> s.idaccount == this.group.account.id && s.idmeeting == this.meeting.id);
         if(transactions){
           transactions.forEach((tr)=>{
             this.amount[tr.idparameter] = tr.amount;

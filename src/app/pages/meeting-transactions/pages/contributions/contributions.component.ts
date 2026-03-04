@@ -56,10 +56,13 @@ export class ContributionsComponent  implements OnInit {
   }
 
   async readTotals(){
-    this.totals = await this.operationTools.get_contribution_totals(this.meeting.id);
     this.meetingTotals = await this.operationTools.estimate_meeting_totals(null, this.meeting.id);
-    this.contribsExist = this.totals['ALL'] > 0 ? true : false;
+    this.contribsExist = 
+      this.meetingTotals.transactions.get('RCB') 
+      + this.meetingTotals.transactions.get('AID')
+      + this.meetingTotals.transactions.get('AST') > 0 ? true : false;
   }
+
 
   async submit_contrib_operations(account:any = null){
     let contribs = this.operationTools.contrib_operations;

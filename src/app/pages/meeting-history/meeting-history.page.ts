@@ -84,7 +84,7 @@ export class MeetingHistoryPage implements OnInit {
       this.allaccounts.forEach(async (acc) => {
         if(transactions){
           //append upload errors to transactions
-          acc.transactions = transactions.filter((s)=>s.idaccount == acc.id && s.idmeeting == this.meeting.id);
+          acc.transactions = transactions.filter((s)=> s.idaccount == acc.id  && s.idmeeting == this.meeting.id);
           if(upload_errors){
             acc.transactions.forEach((tr)=>{
               let uplerr = upload_errors.find((s)=> s.idmeeting == tr.idmeeting && s.idaccount == tr.idaccount && s.idparameter == tr.idparameter);
@@ -106,9 +106,10 @@ export class MeetingHistoryPage implements OnInit {
         if( acc.sfdateecheance != null && (new Date(acc.sfdateecheance) < (new Date())) && parseFloat(acc.sfrestearembourser) > 0){
           acc.sfloans_expired = true;
         }
-        // Calc meeting dues
-        acc.missing_contribs = false;
+        // Calc meeting totals
         let account_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
+        
+        acc.missing_contribs = false;
         if(!account_totals.transactions.get('RCB') && parseFloat(this.group.settings.regcontribution) > 0){
           acc.missing_rcb = this.group.settings.regcontribution;
           acc.missing_contribs = true;

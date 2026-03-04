@@ -62,16 +62,14 @@ export class MaatsComponent  implements OnInit {
     this.accounts.forEach(acc => {
       this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
         if(trns){
-          let trrem = trns.find((s)=>
-              s.idaccount == acc.id && s.idmeeting == this.meeting.id && s.idparameter == this.param_rem.id);
+          let trrem = trns.find((s)=> s.idaccount == acc.id && s.idmeeting == this.meeting.id && s.idparameter == this.param_rem.id);
           if(trrem){
             acc.rem = trrem.amount;
             this.reimbursements++;
           }else{
             delete(acc.rem);
           }
-          let tremp = trns.find((s)=>
-              s.idaccount == acc.id && s.idmeeting == this.meeting.id && s.idparameter == this.param_emp.id);
+          let tremp = trns.find((s)=> s.idaccount == acc.id && s.idmeeting == this.meeting.id && s.idparameter == this.param_emp.id);
           if(tremp){
             acc.emp = tremp.amount;
             acc.emp_notes = tremp.notes;

@@ -7,7 +7,7 @@
       </div>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button color="dark" class="close-btn">
+      <ion-button color="dark" class="close-btn" (click)="dismiss()">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -161,7 +161,7 @@
   
   <ion-item>
     <ion-icon slot="start" 
-      [src]="'assets/img/icons/transactions/'+ tr_icons[parameter?.code] +'.svg'" 
+      [src]="tr_icons[parameter?.code] ? 'assets/img/icons/transactions/'+ tr_icons[parameter?.code] +'.svg' : ''" 
       [class]="amount[parameter?.id]>0 ? 'filled-icon' : 'empty-icon'">
     </ion-icon>
     <ion-label class="ion-text-wrap">

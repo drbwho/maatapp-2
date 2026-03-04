@@ -114,6 +114,10 @@ export class OperationTools {
   delAccountOperations(account: any, meeting: any){
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+      if(!transactions){
+        resolve(true);
+        return;
+      }
       transactions = transactions.filter(tr => !(tr.idaccount === account.id && tr.idmeeting === meeting.id));
       await this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
         this.events.publish('upload:updated', meeting.id);
@@ -130,13 +134,13 @@ export class OperationTools {
     }
     let old_history = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
     if(old_history && old_history.length){
-      old_history = old_history.filter(s => s.idmeeting == meetingId);
+      old_history = old_history.filter(s => s.idmeeting != meetingId);
       history = [...old_history, ...history];
     }
     this.storage.set(this.config.HISTORY_TRANSACTIONS_FILE, history);
   }
 
-  clearPendingOperations(meeting: any, clearMeeting = false){
+  clearPendingOperations(meeting: any, clearMeeting = false, upload_errors = null){
     if(clearMeeting){
       return new Promise(async (resolve)=>{
         let newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
@@ -155,7 +159,15 @@ export class OperationTools {
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
       if(transactions){
-        transactions = transactions.filter(s => s.idmeeting != meeting.id);
+        if(!upload_errors){
+          transactions = transactions.filter(s => s.idmeeting != meeting.id);
+        }else{
+          transactions = transactions.filter(s =>{
+            return (s.idmeeting != meeting.id && 
+                    !upload_errors.find(u => u.idmeeting == s.idmeeting 
+                                            && u.idccount == s.idaccount 
+                                            && u.idparameter == s.idparameter))});
+        }
         //find index
         /*let index = transactions.findIndex(s => s.idmeeting == meeting.id);
         transactions.splice(index, 1);//remove element from array*/
@@ -227,7 +239,7 @@ export class OperationTools {
   *
   */
   async uploadOperations(meeting){
-    // Firstly sync new meeting
+    // First sync new meeting
     if(meeting.pending){
       let newmeet: any = await this.dataProvider.syncMeeting(meeting);
       if(newmeet.status != "success"){
@@ -269,17 +281,18 @@ export class OperationTools {
       if(res.status.toLowerCase() == 'error'){
         // return name of account
         let accounts = await this.storage.get(this.config.GET_FILE('accounts'));
-        // iterate errors
+        // iterate through errors
         for (const err of res.errors){
           let account = accounts.find(s => s.id == err.idaccount);
           let owner = account.owner;
           upload_errors.push({idmeeting: err.idmeeting, idaccount: err.idaccount, owner: owner, idparameter: err.idparameter, message: err.message});
           found_errors = true;
         };
-        this.clearPendingOperations(meeting)
+        //clear uploaded successfully pending operations
+        this.clearPendingOperations(meeting, false, upload_errors)
       }else{
         //success
-        //clear uploaded pending operations
+        //clear all uploaded pending operations
         this.clearPendingOperations(meeting);
       }
 
@@ -457,17 +470,18 @@ export class OperationTools {
           currenttr = totals.transactions.get(pcode) || 0.00;
           totals.transactions.set(pcode, currenttr + parseFloat(tr.amount));
         });
-        // iterate in already uploaded transactions
+
+        // iterate through uploaded transactions
         let uploaded_transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
         if(uploaded_transactions && uploaded_transactions.length){
           uploaded_transactions = uploaded_transactions.filter(s => s.idmeeting == meetingId);
           if(account && account.type == 1){ // member account?
-            uploaded_transactions = uploaded_transactions.filter(s => s.idaccount == account.id);
+            uploaded_transactions = uploaded_transactions.filter(s => s.idaccount == account.id || s.idorigin == account.id);
           }
           if(uploaded_transactions.length){
             uploaded_transactions.forEach((tr)=>{
               let pcode = (params.find((s) => s.id == tr.idparameter)).code;
-              // calculate only cash from uploaded transactions
+              // calculate cash only from uploaded transactions
               if(this.credit_operations.includes(pcode)){
                 totals.credit += parseFloat(tr.credit ? tr.credit : tr.debit);
               }else if(this.debit_operations.includes(pcode)){
@@ -601,7 +615,7 @@ export class OperationTools {
             if(data && data.length){
               trans = data.filter(s=>s.idmeeting == meeting.id && s.idparameter == param.id && !s.is_cancelled);
             }
-            // iterate in already uploaded transactions
+            // iterate through uploaded transactions
             this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE).then((data)=>{
               if(data && data.length){
                 let uptrans = data.filter(s=>s.idmeeting == meeting.id && s.idparameter == param.id && s.is_cancelled == false);
@@ -614,43 +628,6 @@ export class OperationTools {
         })
       })
     })
-  }
-
-  get_contribution_totals(meetingId: string, accountId = null){
-    let totals = [];
-    let total = 0.0;
-    return new Promise((resolve) => {
-      this.storage.get(this.config.GET_FILE('params')).then(async (data: any)=> {
-        let params = data
-                    .filter(p => this.contrib_operations.includes(p.code))
-                    .reduce((p, { id, code }) => {
-                      p[id] = code;
-                      return p;
-                    }, {}); // create array of ids..
-        Object.values(params).forEach((code: any) => totals[code] = 0.0);
-
-        let trans: Transaction[] = [];
-        this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
-          if(data){
-            if(accountId){
-              trans = data.filter(s => s.idmeeting == meetingId && s.idaccount == accountId);
-            }else{
-              trans = data.filter(s => s.idmeeting == meetingId);
-            }
-            trans.forEach((tr: Transaction) => {
-              if(params[tr.idparameter] !== undefined){
-                totals[params[tr.idparameter]] += tr.amount;
-                total += tr.amount;
-              }
-            });
-            totals['ALL'] = total;
-            resolve(totals);
-            return;
-          }
-          resolve(totals);
-        });
-      });
-    });
   }
 
   async has_pending_transactions(idmeeting: string){

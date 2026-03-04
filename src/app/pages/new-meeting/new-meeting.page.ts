@@ -131,7 +131,7 @@ export class NewMeetingPage implements OnInit {
           });
           await modal.present();
           await modal.onWillDismiss().then(()=>{
-            this.router.navigate(['/meeting-transactions'], {state: {direction: 'root'}}); return;
+            this.router.navigate(['/meeting-transactions'], { replaceUrl: true }); return;
           });
         }
         return;
