@@ -33,6 +33,22 @@ ion-toolbar ion-searchbar {
   --box-shadow: none !important;
 }
 
+ion-tab-button {
+  .icon-selected {
+    display: none !important;
+  }
+  &.tab-selected {
+    font-weight: 600 !important;
+    .icon-unselected {
+      display: none !important;
+    }
+    .icon-selected {
+      display: inline-block !important;
+    }
+  }
+}
+
+
 .ion-border-rounded {
   border-radius: 5px !important;
   overflow: hidden;

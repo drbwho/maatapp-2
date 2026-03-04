@@ -414,16 +414,16 @@ export class OperationTools {
 
 
   /*
-  * Estimate account/meeting totals from all transactions
+  * Estimate account/meeting totals from pending and uploaded transactions
   *
   */
   estimate_meeting_totals (account: any, meetingId: any): Promise<any> {
     return new Promise(async (resolve)=>{
       let totals: MeetingTotals = {
-        creditdisponible: 0.00,
+        newcreditdisponible: 0.00,
+        newbalance: 0.00,
         credit: 0.00,
         debit: 0.00,
-        balance: 0.00,
         loans: 0.00,
         reimbursements: 0.00,
         transactions: new Map<string, number>()
@@ -439,8 +439,8 @@ export class OperationTools {
           }
         }
         let params = await this.storage.get(this.config.GET_FILE('params'));
-        totals.creditdisponible = account?.creditdisponible ? parseFloat(account?.creditdisponible) : 0.00;
-        totals.balance = account?.balance ? parseFloat(account?.balance) : 0.00;
+        totals.newcreditdisponible = account?.creditdisponible ? parseFloat(account?.creditdisponible) : 0.00;
+        totals.newbalance = account?.balance ? parseFloat(account?.balance) : 0.00;
         totals.credit = 0.00;
         totals.debit = 0.00;
         totals.loans = 0.00;
@@ -449,14 +449,14 @@ export class OperationTools {
           let pcode = (params.find((s) => s.id == tr.idparameter)).code;
           if(this.credit_operations.includes(pcode)){
             //if(pcode != 'AST'){ // In server AST payments don't contribute to Group balance etc.!
-              totals.creditdisponible += parseFloat(tr.amount);
-              totals.balance += parseFloat(tr.amount);
+              totals.newcreditdisponible += parseFloat(tr.amount);
+              totals.newbalance += parseFloat(tr.amount);
             //}
             totals.credit += parseFloat(tr.amount);
           }else if(this.debit_operations.includes(pcode)){
-            totals.creditdisponible -= parseFloat(tr.amount);
+            totals.newcreditdisponible -= parseFloat(tr.amount);
             if(pcode != 'CFS'){
-              totals.balance -= parseFloat(tr.amount);
+              totals.newbalance -= parseFloat(tr.amount);
               totals.debit += parseFloat(tr.amount);
             }
           }

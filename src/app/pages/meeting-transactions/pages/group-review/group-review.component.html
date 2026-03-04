@@ -13,11 +13,11 @@
   <ion-grid class="ion-no-padding ion-no-margin">
     <ion-row>
       <ion-col size="4" class="ion-text-center">
-        <div class="stat-value">{{group?.totals.balance | number:'.0'}}</div>
+        <div class="stat-value">{{meeting?.totals.newbalance | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'balance' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center">
-        <div class="stat-value">{{ group?.totals.creditdisponible | number:'.0'}}</div>
+        <div class="stat-value">{{meeting?.totals.newcreditdisponible | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'maat_available' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center">
@@ -31,23 +31,23 @@
     <div class="details-container ion-padding-top">
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'maats_received_total' | translate}}</span>
-        <span class="value">{{meeting?.totals?.credit | number: '.0'}} {{country?.currency}}</span>
+        <span class="value">{{(meeting?.totals?.credit ?? 0)| number: '.1'}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'maats_repayments_total' | translate}}</span>
-        <span class="value">{{details?.rem}} {{country?.currency}}</span>
+        <span class="value">{{(meeting?.totals.transactions.get('REM') ?? 0)| number:'.1'}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'solidarity_contributed_total' | translate}}</span>
-        <span class="value">{{details?.sfcontrib}} {{country?.currency}}</span>
+        <span class="value">{{(meeting?.totals.transactions.get('AID') ?? 0)| number:'.1'}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'solidarity_received_total' | translate}}</span>
-        <span class="value">{{details?.sfrem}} {{country?.currency}}</span>
+        <span class="value">{{(meeting?.totals.transactions.get('SFREM') ?? 0)| number:'.1'}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'facilitator_payments_total' | translate}}</span>
-        <span class="value">{{details?.fcp}} {{country?.currency}}</span>
+        <span class="value">{{(meeting?.totals.transactions.get('AST') ?? 0) | number:'.1'}} {{country?.currency}}</span>
       </div>
     </div>
   }

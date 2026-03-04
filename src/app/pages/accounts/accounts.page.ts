@@ -30,7 +30,7 @@ export class AccountsPage implements OnInit {
   num_ECP = 0;
   new_totals: MeetingTotals = {
     debit: 0.00,
-    balance: 0.00,
+    newbalance: 0.00,
     credit: 0.00,
     loans: 0.00
   }

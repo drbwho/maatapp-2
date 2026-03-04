@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
-import { ConfigData } from '../../../../providers/config-data';
+import { OperationTools } from '../../../../providers/operation-tools';
 
 @Component({
   selector: 'app-end',
@@ -17,8 +16,7 @@ export class EndComponent  implements OnInit {
   loans_to_due = 0;
 
   constructor(
-    private storage: Storage,
-    private config: ConfigData
+    private operTools: OperationTools
   ) { }
 
   ngOnInit() {
@@ -26,28 +24,22 @@ export class EndComponent  implements OnInit {
   }
 
   calc_views(){
-    let param  = this.country.parameters.find(p => p.code == 'REM');
     const today = new Date();
-    this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
-      if(trns && (trns.filter(s => s.idmeeting == this.meeting.id)).length){
-        this.accounts.forEach(acc => {
-          // cals loans completed
-          let reimbursement = trns.find(tr => tr.idparameter == param.id && tr.idaccount == acc.id);
-          if(reimbursement && parseFloat(reimbursement.amount) == parseFloat(acc.restearembourser)){
-            this.loans_completed++;
-          }
-
-          //calc loans dues
-          const givenDate = new Date(acc.dateecheance);
-          const diffInMs = givenDate.getTime() - today.getTime();
-          const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-          if(diffInDays < 7){
-            this.loans_to_due++;
-          }
-        })
-       };
-    })
-
+    
+    this.accounts.forEach(async acc => {
+      // cals loans completed
+      let totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
+      if(totals.transactions.get('REM') && parseFloat(totals.transactions.get('REM')) >= parseFloat(acc.restearembourser)){
+        this.loans_completed++;
+      }
+      //calc loans dues
+      const givenDate = new Date(acc.dateecheance);
+      const diffInMs = givenDate.getTime() - today.getTime();
+      const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+      if(diffInDays < 7){
+        this.loans_to_due++;
+      }
+    });
   }
 
 }

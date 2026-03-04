@@ -1,22 +1,26 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="dashboard">
-      <ion-icon name="home-outline"></ion-icon>
+      <ion-icon name="home-outline" class="icon-unselected"></ion-icon>
+      <ion-icon name="home" class="icon-selected"></ion-icon>
       <ion-label>{{'home' | translate}}</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="meetings">
-      <ion-icon name="people-outline"></ion-icon>
+      <ion-icon name="people-outline" class="icon-unselected"></ion-icon>
+      <ion-icon name="people" class="icon-selected"></ion-icon>
       <ion-label>{{'meetings' | translate}}</ion-label>
     </ion-tab-button>
 
     <ion-tab-button (click)="newMeeting()">
-     <ion-icon name="navigate-circle-outline"></ion-icon>
+      <ion-icon name="navigate-circle-outline" class="icon-unselected"></ion-icon>
+      <ion-icon name="navigate-circle" class="icon-selected"></ion-icon>
       <ion-label>{{'new_meeting' | translate}}</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="accounts">
-      <ion-icon name="document-text-outline"></ion-icon>
+      <ion-icon name="document-text-outline" class="icon-unselected"></ion-icon>
+      <ion-icon name="document-text" class="icon-selected"></ion-icon>
       <ion-label>{{'accounts' | translate}}</ion-label>
     </ion-tab-button>
 

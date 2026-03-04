@@ -68,7 +68,7 @@ export class MeetingsPage implements OnInit {
   *
   */
   async openOptions(meeting: Meeting) {
-    this.translate.get(['continue_meeting','upload_data','close_meeting', 'view_transactions', 'cancel_meeting', 'return']).subscribe(async (keys: any)=>{
+    this.translate.get(['continue_meeting','upload_data','close_meeting', 'view_transactions', 'download_excel', 'cancel_meeting', 'return']).subscribe(async (keys: any)=>{
       let buttons = [];
       if(!meeting.endedat){
         buttons.push({
@@ -107,6 +107,15 @@ export class MeetingsPage implements OnInit {
           this.show_action_view(meeting, 'view-transactions');
         },
       });
+      if(meeting.endedat){
+        buttons.push({
+          text: keys['download_excel'],
+          icon: 'assets/img/icons/excel-icon.svg',
+          handler: () => {
+            
+          },
+        });
+      }
       if(meeting.pending){
         buttons.push({
           text: keys['cancel_meeting'],

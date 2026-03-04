@@ -1,9 +1,9 @@
 
 export interface MeetingTotals {
-  creditdisponible?: number,
+  newcreditdisponible?: number,
+  newbalance?: number,
   credit?: number,
   debit?: number,
-  balance?: number,
   loans?: number,
   reimbursements?: number,
   transactions?: any
