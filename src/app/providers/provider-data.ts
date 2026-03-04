@@ -288,7 +288,6 @@ export class DataProvider {
         {headers})
       .subscribe({
         next: (data: any) => {
-          console.log(data);
           resolve(data);
         },
         error: async (error) => {

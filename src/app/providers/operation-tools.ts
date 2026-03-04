@@ -272,10 +272,11 @@ export class OperationTools {
         // iterate errors
         for (const err of res.errors){
           let account = accounts.find(s => s.id == err.idaccount);
-          res.name = account.owner;
-          upload_errors.push({idmeeting: err.idmeeting, idaccount: err.idaccount, idparameter: err.idparameter, message: res.message});
+          let owner = account.owner;
+          upload_errors.push({idmeeting: err.idmeeting, idaccount: err.idaccount, owner: owner, idparameter: err.idparameter, message: err.message});
           found_errors = true;
         };
+        this.clearPendingOperations(meeting)
       }else{
         //success
         //clear uploaded pending operations
@@ -352,7 +353,7 @@ export class OperationTools {
     const loading = await this.loadingcontroller.create({showBackdrop: false});
     loading.present();
 
-    let apiurl = this.config.GET_API_URL('bulk_operations', idmeeting);
+    let apiurl = this.config.GET_API_URL('operations', idmeeting);
 
     const user = await this.user.getUser();
     const headers =  new HttpHeaders({
@@ -378,7 +379,8 @@ export class OperationTools {
       this.http
         .post(apiurl,
           {
-            operations: load
+            operations: load,
+            type: 'bulk'
           },
           {headers})
         .subscribe({
@@ -614,7 +616,7 @@ export class OperationTools {
     })
   }
 
-  get_contribution_totals(meetingId: string){
+  get_contribution_totals(meetingId: string, accountId = null){
     let totals = [];
     let total = 0.0;
     return new Promise((resolve) => {
@@ -630,7 +632,11 @@ export class OperationTools {
         let trans: Transaction[] = [];
         this.storage.get(this.config.TRANSACTIONS_FILE).then(async (data)=>{
           if(data){
-            trans = data.filter(s => s.idmeeting == meetingId);
+            if(accountId){
+              trans = data.filter(s => s.idmeeting == meetingId && s.idaccount == accountId);
+            }else{
+              trans = data.filter(s => s.idmeeting == meetingId);
+            }
             trans.forEach((tr: Transaction) => {
               if(params[tr.idparameter] !== undefined){
                 totals[params[tr.idparameter]] += tr.amount;

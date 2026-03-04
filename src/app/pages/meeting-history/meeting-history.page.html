@@ -74,15 +74,15 @@
             </ion-col>
             <ion-col size="5">
               <div class="badge-container">
-                @if (pf(account?.restearembourser) > 0) {
+                @if (pf(account?.loans) > 0) {
                 <div [class]="account?.loans_expired ? 'custom-badge maat-badge-due' : 'custom-badge maat-badge'" slot="end">
-                  <span class="val text-16">{{ account.restearembourser }}</span>
+                  <span class="val text-16">{{ account.loans }}</span>
                   <span class="lab text-12">Maat</span>
                 </div>
                 }
-                @if (pf(account?.balance) > 0) {
+                @if (pf(account?.meeting_balance) > 0) {
                 <div class="custom-badge balance-badge">
-                  <span class="val text-16">{{ account.balance }}</span>
+                  <span class="val text-16">{{ account.meeting_balance }}</span>
                   <span class="lab text-12">Balance</span>
                 </div>
                 }
@@ -117,6 +117,12 @@
                 <p class="warning-text">
                   <ion-icon [name]="account?.icon || 'warning-outline'" color="warning"></ion-icon>
                   {{ 'fine_applied' | translate }} {{account?.appliedfines}} {{country?.currency}}
+                </p>
+                }
+                @if(pf(account?.loans_expired) > 0 || pf(account?.sfloans_expired)){
+                <p class="warning-text">
+                  <ion-icon [name]="account?.icon || 'warning-outline'" color="warning"></ion-icon>
+                  {{ 'maats_overdue' | translate }} {{pf(account?.restearembourser) + pf(account?.sfrestearembourser)}} {{country?.currency}}
                 </p>
                 }
               </div>

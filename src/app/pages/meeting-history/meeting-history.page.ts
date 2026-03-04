@@ -100,10 +100,10 @@ export class MeetingHistoryPage implements OnInit {
           this.new_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
         }*/
         // loan overdues
-        if( acc.dateecheance != null && (new Date(acc.dateecheance) < (new Date()))){
+        if( acc.dateecheance != null && (new Date(acc.dateecheance) < (new Date())) && parseFloat(acc.restearembourser) > 0){
           acc.loans_expired = true;
         }
-        if( acc.sfdateecheance != null && (new Date(acc.sfdateecheance) < (new Date()))){
+        if( acc.sfdateecheance != null && (new Date(acc.sfdateecheance) < (new Date())) && parseFloat(acc.sfrestearembourser) > 0){
           acc.sfloans_expired = true;
         }
         // Calc meeting dues
@@ -124,8 +124,12 @@ export class MeetingHistoryPage implements OnInit {
         if(account_totals.transactions.get('FIN')){
           acc.appliedfines = account_totals.transactions.get('FIN');
         }
+        acc.meeting_balance = 0;
+        if(account_totals.transactions.get('ECP')){
+          acc.meeting_balance = account_totals.transactions.get('ECP');
+        }
 
-        // dues
+        // faces
         acc.status = "happy";
         if(acc.missing_contribs){ //acc.due
           acc.status = "neutral";

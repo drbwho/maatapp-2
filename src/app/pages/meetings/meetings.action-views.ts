@@ -175,7 +175,7 @@ export class MeetingsActionViews {
           alttitle: meeting.place,
           heading: 'messages.meetings.upload-failed.heading',
           description: 'messages.meetings.upload-failed.description',
-          image: 'assets/img/action-views/upload-success-meeting.png',
+          image: 'assets/img/action-views/upload-failed-meeting.png',
           hasBackButton: true,
           buttons: [
             {text: 'messages.meetings.upload-failed.button', color: 'primary', action:'tryagain'},
