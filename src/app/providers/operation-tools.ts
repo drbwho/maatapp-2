@@ -164,9 +164,9 @@ export class OperationTools {
           transactions = transactions.filter(s => s.idmeeting != meeting.id);
         }else{
           transactions = transactions.filter(s =>{
-            return (s.idmeeting != meeting.id &&
-                    !upload_errors.find(u => u.idmeeting == s.idmeeting
-                                            && u.idccount == s.idaccount
+            return (s.idmeeting != meeting.id || 
+                    upload_errors.find(u => u.idmeeting == s.idmeeting
+                                            && u.idaccount == s.idaccount
                                             && u.idparameter == s.idparameter))});
         }
         //find index

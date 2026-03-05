@@ -75,7 +75,15 @@ export class MeetingHistoryPage implements OnInit {
   }
 
   async load_accounts(){
+    // Merge pending and uploaded transactions
     let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+    let uploaded = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
+    if(transactions && uploaded){
+      transactions = [...transactions, ...uploaded];
+    }else if(uploaded){
+      transactions = uploaded;
+    }
+    transactions = transactions.filter(t => t.idmeeting == this.meeting.id);
     let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
 
     this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
@@ -84,10 +92,10 @@ export class MeetingHistoryPage implements OnInit {
       this.allaccounts.forEach(async (acc) => {
         if(transactions){
           //append upload errors to transactions
-          acc.transactions = transactions.filter((s)=> s.idaccount == acc.id  && s.idmeeting == this.meeting.id);
+          acc.transactions = transactions.filter((s)=> (s.idaccount == acc.id  || s.idorigin == acc.id) && s.idmeeting == this.meeting.id);
           if(upload_errors){
             acc.transactions.forEach((tr)=>{
-              let uplerr = upload_errors.find((s)=> s.idmeeting == tr.idmeeting && s.idaccount == tr.idaccount && s.idparameter == tr.idparameter);
+              var uplerr = upload_errors.find((s)=> s.idmeeting == tr.idmeeting && (s.idaccount == tr.idaccount || s.idaccount == tr.idorigin) && s.idparameter == tr.idparameter);
               if(uplerr){
                 tr.error = uplerr.message;
               }
@@ -141,6 +149,16 @@ export class MeetingHistoryPage implements OnInit {
       });
       // Show only member accounts
       this.accounts = this.allaccounts.filter((a)=> a.type == 1);
+    });
+  }
+
+  deleteErrorTransaction(tr: any){
+    this.operTools.delOperation(tr).then(async () => {
+      let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
+      upload_errors = upload_errors.filter(u=> !(u.idmeeting == tr.idmeeting && u.idaccount == tr.idaccount && u.idparameter == tr.idparameter));
+      this.storage.set(this.config.UPLOAD_ERRORS_FILE, upload_errors).then(()=>{
+        this.load_accounts();
+      });
     });
   }
 

@@ -45,7 +45,7 @@
 <ion-list lines="none" class="custom-card ion-margin">
   @for (acc of loanAccounts; track acc.id) {
   <ion-item>
-    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.rem > 0)">
+    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.totals?.reimbursements > 0)">
       <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
     </div>
     <ion-label class="owner-container ion-text-wrap" (click)="openAccountTransactions(acc)">
@@ -79,7 +79,7 @@
 <ion-list lines="none" class="custom-card ion-margin">
   @for (acc of accounts; track acc.id) {
   <ion-item [detail]="pf(acc.creditdisponible) > 0" (click)="pf(acc.creditdisponible) > 0 ? openNewMaat(acc) : return">
-    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.emp > 0)" [class.disabled]="!(pf(acc.creditdisponible) > 0)">
+    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.totals?.loans > 0)" [class.disabled]="!(pf(acc.creditdisponible) > 0)">
       <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
     </div>
     <ion-label class="owner-container ion-text-wrap" >

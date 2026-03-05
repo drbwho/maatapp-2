@@ -99,6 +99,11 @@
   &.maat-badge-due { background: #FDEEEE; color: #9C2F2F; }
 }
 
+ion-badge.upload-error {
+  --background:#9C2F2F;
+  --ion-color-contrast: #FDEEEE;
+}
+
 /* Avatars (Smiley faces) */
 ion-avatar {
   background: #7CC4AE; border-radius: 50%;

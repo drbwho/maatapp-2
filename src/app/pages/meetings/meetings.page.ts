@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
@@ -6,6 +6,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { MeetingsActionViews } from './meetings.action-views';
+import * as XLSX from 'xlsx';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { Platform } from '@ionic/angular';
+import { OperationTools } from '../../providers/operation-tools';
+import { Storage } from '@ionic/storage-angular';
+import { ConfigData } from '../../providers/config-data';
+
+
 @Component({
   selector: 'app-meetings',
   templateUrl: './meetings.page.html',
@@ -27,7 +36,11 @@ export class MeetingsPage implements OnInit {
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
     private route: ActivatedRoute,
-    private meetActionViews: MeetingsActionViews
+    private meetActionViews: MeetingsActionViews,
+    private operTools: OperationTools,
+    private storage: Storage,
+    private config: ConfigData,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -112,7 +125,7 @@ export class MeetingsPage implements OnInit {
           text: keys['download_excel'],
           icon: 'assets/img/icons/excel-icon.svg',
           handler: () => {
-            
+            this.exportToExcel(meeting);
           },
         });
       }
@@ -139,30 +152,6 @@ export class MeetingsPage implements OnInit {
       });
       await actionSheet.present();
     })
-  }
-
-  show_all_meetings(){
-    /*this.dataProvider.fetch_data('meetings', this.group.id, true, true).then(async (data: any)=> {
-      // merge with local stored new meetings
-      var newmeetings = await this.storage.get(this.config.NEWMEETINS_FILE);
-      if(newmeetings != null && newmeetings.length){
-        newmeetings = newmeetings.filter(s => s.idgroup == this.group.id);
-        this.meetings = [...newmeetings, ...data];
-      }else{
-        // filter already loaded lastmeeting
-        this.meetings = data;//.filter((a) => a.id != this.lastmeeting.id);
-      }
-      //check if meeting has pending transactions to upload
-      this.meetings.forEach((m)=>{
-        m.haspending = 0;
-        this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
-          if(trns && (trns.filter(s => s.idmeeting == m.id)).length){
-            m.haspending = (trns.filter(s => s.idmeeting == m.id)).length;
-          }
-        });
-      })
-    });*/
-    this.show_all = true;
   }
 
 
@@ -238,7 +227,58 @@ export class MeetingsPage implements OnInit {
         });
         break;
     }
+  }
 
+  async exportToExcel(meeting: any, fileName: string = 'MAAT_Export.xlsx') {
+
+    const headerInfo = [
+      ['MA\'AT - Meeting Operations'],
+      ['Country:', this.country.name, 'Group:', this.group.name],          
+      ['Meeting:', meeting.place + ' / ' + meeting.startedat],
+      [], // space
+    ];
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(headerInfo);
+
+    let accounts =  await this.dataProvider.fetch_data('accounts', this.group.id, true, true);
+    let params =  await this.dataProvider.fetch_data('params', this.country.id, true);
+    let transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
+    const data = transactions.map(tr =>({
+        'From account': (accounts.find(a => a.id == tr.idorigin)).owner,
+        'To account': (accounts.find(a => a.id == tr.idaccount)).owner,
+        'Operation': (params.find(p => p.id == tr.idparameter)).name,
+        'Amount': tr.credit ? tr.credit : tr.debit,
+        'Date': tr.operationdate,
+        'Notes': tr.notes
+      }));
+    XLSX.utils.sheet_add_json(ws, data, { origin: 'A5', skipHeader: false });
+    ws['!cols'] = [{ wch: 15 }, { wch: 15 }, { wch: 30 }, { wch: 10 }, { wch: 20 }, { wch: 10 }]; // Widths
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Transactions');
+
+    const excelBuffer: string = XLSX.write(wb, { bookType: 'xlsx', type: 'base64' });
+    try {
+      if (this.platform.is('hybrid')) { // device
+        const savedFile = await Filesystem.writeFile({
+          path: fileName,
+          data: excelBuffer,
+          directory: Directory.Documents,
+          recursive: true
+        });
+
+        await Share.share({
+          title: this.group.name + '/' + meeting.place + ':' + meeting.staertedat,
+          text: 'MAAT meeting transactions',
+          url: savedFile.uri,
+          dialogTitle: 'File open'
+        });
+
+      } else {
+        XLSX.writeFile(wb, fileName);
+      }
+    } catch (error) {
+      console.error('Error saving excel file', error);
+    }
   }
 
 }

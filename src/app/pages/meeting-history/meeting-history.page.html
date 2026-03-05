@@ -128,6 +128,18 @@
               </div>
             </ion-col>
           </ion-row>
+          <ion-row>
+            <ion-col>
+              @for(tr of account?.transactions; track tr.id){
+                @if(tr.error){
+                <ion-badge class="upload-error" (click)="deleteErrorTransaction(tr)">
+                  {{tr.parametername}}: {{tr.amount}} ({{tr.error}})
+                  <ion-icon name="close"></ion-icon>
+                </ion-badge>
+                }
+              }
+            </ion-col>
+          </ion-row>
 
         </ion-grid>
       </ion-item>
