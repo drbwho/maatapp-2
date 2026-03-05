@@ -62,7 +62,7 @@ const routes: Routes = [
           },
         ]
       },
-      {
+/*      {
         path: 'notifications/:data',
         children: [
           {
@@ -70,7 +70,7 @@ const routes: Routes = [
             loadChildren: () => import('../notifications/notifications.module').then(m => m.NotificationsPageModule)
           }
         ]
-      },
+      },*/
       {
         path: 'about',
         children: [

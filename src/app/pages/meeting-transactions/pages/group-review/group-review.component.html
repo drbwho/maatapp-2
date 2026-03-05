@@ -99,7 +99,7 @@
     <ion-label class="ion-text-wrap">
       <h5>{{ parameter?.name }}</h5>
     </ion-label>
-    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]"
+    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]" (change)="update_transaction(parameter?.id, $event)"
       placeholder="0"
       class="amount-input ion-no-padding"></ion-input>
     <ion-icon slot="end" name="close" class="close-icon ion-no-margin"

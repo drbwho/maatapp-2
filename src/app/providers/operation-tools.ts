@@ -19,6 +19,7 @@ export class OperationTools {
   public credit_operations = ['ECP', 'RCB', 'REM', 'SFREM', 'FIN', 'ENF', 'PCO', 'AST', 'AID', 'SFND'];
   public debit_operations = ['RCP', 'EMP', 'SFEMP', 'AIN', 'CFS'];
   public contrib_operations = ['RCB','AID','AST'];
+  public group_operations = ['PCO', 'AIN', 'CFS', 'SFND', 'ECPM', 'RCPM', 'REMM', 'EMPM'];
   public map_default_to_settings = {
     'RCB': 'regcontribution',
     'AID': 'regsfcontribution',
@@ -163,9 +164,9 @@ export class OperationTools {
           transactions = transactions.filter(s => s.idmeeting != meeting.id);
         }else{
           transactions = transactions.filter(s =>{
-            return (s.idmeeting != meeting.id && 
-                    !upload_errors.find(u => u.idmeeting == s.idmeeting 
-                                            && u.idccount == s.idaccount 
+            return (s.idmeeting != meeting.id &&
+                    !upload_errors.find(u => u.idmeeting == s.idmeeting
+                                            && u.idccount == s.idaccount
                                             && u.idparameter == s.idparameter))});
         }
         //find index

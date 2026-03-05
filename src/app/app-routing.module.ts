@@ -35,7 +35,7 @@ const routes: Routes = [
     path: 'app',
     loadChildren: () => import('./pages/tabs-page/tabs-page.module').then(m => m.TabsModule)
   },
-  { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule) },
+  //{ path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule) },
   { path: 'about', loadChildren: () => import('./pages/about/about.module').then(m => m.AboutPageModule) },
   { path: 'about-app', loadChildren: () => import('./pages/about-app/about-app.module').then(m => m.AboutAppPageModule) },
   {

@@ -11,7 +11,7 @@
     <ion-label>
       <p class="dashboard-label text-22">{{'total_added_to_balance_today' | translate}}</p>
       <div class="amount-container">
-        <span class="amount">{{meetingBalance | number:'.2'}}</span>
+        <span class="amount">{{(meetingBalance ?? 0)| number:'.2'}}</span>
         <span class="currency">{{country?.currency}}</span>
       </div>
     </ion-label>

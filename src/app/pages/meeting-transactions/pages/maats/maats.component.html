@@ -56,16 +56,16 @@
         }
       </div>
     </ion-label>
-    @if(acc?.rem > 0 || acc?.restearembourser == 0){
+    @if(acc?.totals?.reimbursements > 0 || acc?.restearembourser == 0){
       <ion-icon name="checkmark-sharp" slot="end" size="small" color="medium" class="ion-no-margin"></ion-icon>
     }@else {
       <ion-icon name="checkmark-circle-sharp" slot="end" size="small" color="primary" class="ion-no-margin"
         (click)="set_default(acc)"></ion-icon>
     }
-    <ion-input slot="end" type="number" disabled [(ngModel)]="acc.rem" [placeholder]="acc?.restearembourser" class="amount-input ion-no-padding"></ion-input>
+    <ion-input slot="end" type="number" disabled [value]="(acc?.totals?.reimbursements ?? 0) > 0 ? acc?.totals?.reimbursements : ''" [placeholder]="acc?.restearembourser" class="amount-input ion-no-padding"></ion-input>
     <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
       (click)="clear_amount(acc)"
-      [class.disabled]="!(acc?.rem > 0)">></ion-icon>
+      [class.disabled]="!(acc?.totals?.reimbursements > 0)">></ion-icon>
   </ion-item>
   }
   @if(!loanAccounts.length){
@@ -93,11 +93,11 @@
         <p class="text-12">{{'overdue_regular_contribution' | translate}}</p>
       }
     </ion-label>
-    @if(pf(acc.creditdisponible) > 0 && acc?.emp > 0){
-      <ion-input slot="end" type="number" disabled [(ngModel)]="acc.emp" placeholder="0" class="amount-input ion-no-padding"></ion-input>
+    @if(pf(acc.creditdisponible) > 0 && acc?.totals?.loans > 0){
+      <ion-input slot="end" type="number" disabled [(ngModel)]="acc.totals.loans" placeholder="0" class="amount-input ion-no-padding"></ion-input>
       <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
         (click)="clear_loan_amount(acc, $event)"
-        [class.disabled]="!(acc?.emp > 0)">></ion-icon>
+        [class.disabled]="!(acc?.totals?.loans > 0)">></ion-icon>
   }
   </ion-item>
   }
