@@ -129,11 +129,19 @@
         ]
       }
     },
-    "open-android": {
-      "executor": "@nxext/capacitor:cap",
-      "options": {
-        "cmd": "open android"
-      }
+"open": {
+  "executor": "nx:run-commands",
+  "options": {
+    "commands": ["npx cap open android"]
+  },
+  "configurations": {
+    "android": {
+      "commands": ["npx cap open android"]
+    },
+    "ios": {
+      "commands": ["npx cap open ios"]
     }
+  }
+}
   }
 }
