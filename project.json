@@ -142,6 +142,20 @@
           "commands": ["npx cap open ios"]
         }
       }
+    },
+    "sync": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx cap sync android"]
+      },
+      "configurations": {
+        "android": {
+          "commands": ["npx cap sync android"]
+        },
+        "ios": {
+          "commands": ["npx cap sync ios"]
+        }
+      }
     }
   }
 }
