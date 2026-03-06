@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { ConfigData } from '../../providers/config-data';
-import { OperationTools } from '../../providers/operation-tools';
 
 @Component({
     selector: 'app-history',
@@ -10,24 +8,15 @@ import { OperationTools } from '../../providers/operation-tools';
     standalone: false
 })
 export class HistoryComponent implements OnInit {
-  @Input() meeting: any;
-  operations: any;
-  meetingplace = "";
-  meetingdate = "";
+  @Input() account: any;
+  @Input() transactions: any;
+  @Input() currencty: string;
 
   constructor(
     private modalCtrl: ModalController,
-    private config: ConfigData,
-    private operationTools: OperationTools
   ) { }
 
   ngOnInit() {
-    this.meetingplace = this.meeting.place;
-    this.meetingdate = this.meeting.startedat;
-
-    this.operationTools.getHistory(this.meeting.id).then((data: any)=>{
-      this.operations = data.operations;
-    })
   }
 
   dismiss(){

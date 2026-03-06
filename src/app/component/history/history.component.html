@@ -1,59 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{'history_of_transactions' | translate}}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">{{'close' | translate}}</ion-button>
+    <ion-title class="ion-text-center"><h2>{{account.owner}}</h2></ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-list lines="none" class="info-header">
-    <ion-item>
-      <ion-label>
-        <h2>{{'meeting' | translate}}: <strong>{{meetingplace}}</strong></h2>
-      </ion-label>
-      <ion-note slot="end"><strong>{{meetingdate}}</strong></ion-note>
-    </ion-item>
-  </ion-list>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    @for (oper of operations; track oper) {
-      <ion-item>
-        <ion-label>
-          <ion-text color="secondary">
-            <ion-note class="operation-date">
-              {{oper.operationdate}}
-            </ion-note>
-          </ion-text>
-          <ion-text color="tertiary">
-            <h4>
-              {{oper.source}} <ion-icon name="arrow-forward-outline"></ion-icon> {{oper.destination}}
-            </h4>
-          </ion-text>
-          <ion-text color="primary">
-            <h3><strong>{{oper.operation}}</strong></h3>
-          </ion-text>
-          @if (oper.categories) {
-            <ion-text color="warning">
-              <h4><strong>{{oper.categories}}</strong></h4>
-            </ion-text>
-          }
-          @if (oper.notes) {
-            <ion-text color="medium">
-              <h4><strong>{{oper.notes}}</strong></h4>
-            </ion-text>
-          }
+  <ion-list class="ion-margin">
+    @for (tr of transactions; track tr.id) {
+      <ion-item lines="none" class="ion-margin-vertical ion-no-padding">
+        <ion-icon slot="start" color="primary" [src]="tr?.icon ? 'assets/img/icons/transactions/'+ tr?.icon +'.svg' : ''"></ion-icon>
+        <ion-label color="primary">
+          {{tr.name}}
         </ion-label>
-        <ion-note slot="end" [ngStyle]="{'text-decoration': oper.is_cancelled ? 'line-through' : ''}" [color]="oper.is_cancelling ? 'danger' : ''">
-          <strong>{{oper.credit | number:'.2'}}{{oper.debit | number:'.2'}}</strong>
-        </ion-note>
+        <ion-label slot="end" class="value">
+          {{tr.amount | number: '.2'}}
+        </ion-label>
       </ion-item>
     }
-    @if (!operations || operations.length == 0) {
+    @if (!transactions || transactions.length == 0) {
       <ion-row>
         <ion-col>
           <ion-note class="ion-margin-left">
-            {{'meeting_has_no_transactions' | translate}}
+            {{'account_has_no_transactions' | translate}}
           </ion-note>
         </ion-col>
       </ion-row>

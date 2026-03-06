@@ -1,17 +1,21 @@
-.info-header {
-    padding: 0 0 5px 0;
-    ion-icon {
-        color: red;
-    }
-    ion-item::part(native) {
-        min-height: 25px;
-    }
+ion-title {
+    margin-left: -50px;
 }
 
-.operation-date {
-  font-size: 11px;
+
+ion-item {
+  --background: #f4f5f8;
+  border-radius: 20px;
 }
 
 ion-icon {
-  vertical-align: text-top;
+  font-size: 48px;
+  margin: 0px;
+  margin-right: 10px;
+}
+
+ion-label.value {
+  background: white;
+  padding: 5px;
+  border-radius: 10px;
 }

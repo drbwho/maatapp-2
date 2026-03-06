@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { AccountsPageRoutingModule } from './accounts-routing.module';
+import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 
 import { AccountsPage } from './accounts.page';
 
@@ -31,6 +32,6 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  declarations: [AccountsPage]
+  declarations: [AccountsPage, AccountInfoComponent]
 })
 export class AccountsPageModule {}

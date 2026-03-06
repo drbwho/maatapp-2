@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
-import { AlertController, ModalController } from '@ionic/angular';
-import { TransactionsComponent } from '../../component/transactions/transactions.component';
+import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
-import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { OperationTools } from '../../providers/operation-tools';
-import { TranslateService } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
+import { HistoryComponent } from '../../component/history/history.component';
 
 @Component({
     selector: 'app-meeting-history',
@@ -40,9 +38,7 @@ export class MeetingHistoryPage implements OnInit {
     private modalCtrl: ModalController,
     private storage: Storage,
     private config: ConfigData,
-    private alertCtrl: AlertController,
     private operTools: OperationTools,
-    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -162,7 +158,7 @@ export class MeetingHistoryPage implements OnInit {
     });
   }
 
-  selectAll(){
+  /*selectAll(){
     this.selectedAll = this.selectedAll ? false : true;
     this.accounts.forEach(a => {
       if(a.type == 1){
@@ -200,7 +196,7 @@ export class MeetingHistoryPage implements OnInit {
             this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
               this.load_accounts();
             })*/
-            this.operTools.delOperation(tr).then(() => this.load_accounts());
+            /*this.operTools.delOperation(tr).then(() => this.load_accounts());
           },
         },
         ],
@@ -252,6 +248,33 @@ export class MeetingHistoryPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: AccountInfoComponent,
       componentProps: {'account': account, 'currency': this.country.currency, 'show_transactions': false, 'group_totals': group_totals}
+    });
+    modal.present();
+
+    await modal.onWillDismiss();
+  }*/
+
+  async showTransactions(account){
+
+    let parameters = this.country.parameters;
+    let totals = await this.operTools.estimate_meeting_totals(account, this.meeting.id);
+    let transactions: any = [];
+    totals.transactions.forEach((amount, code) => {
+      let param = parameters.find(p => p.code == code);
+      transactions.push({
+        id: param.id,
+        name: param.name,
+        code: param.code,
+        icon: this.operTools.tr_icons[param.code],
+        amount: amount
+      })
+    });
+    const modal = await this.modalCtrl.create({
+      component: HistoryComponent,
+      initialBreakpoint: 0.5,
+      breakpoints: [0, 0.5, 0.7],
+      componentProps: {account: account, transactions: transactions, currency: this.country.currency},
+      cssClass: 'lang-modal-sheet'
     });
     modal.present();
 

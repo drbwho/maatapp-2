@@ -56,7 +56,8 @@
 
   <ion-list class="ion-margin-top" lines="none">
     @for (account of accounts; track account.id) {
-      <ion-item class="member-item ion-margin-bottom ion-border-rounded-20" color="light">
+      <ion-item class="member-item ion-margin-bottom ion-border-rounded-20" 
+          color="light" (click)="showTransactions(account)">
         <ion-grid class="ion-no-padding ion-no-margin">
 
           <ion-row>
@@ -146,72 +147,3 @@
     }
   </ion-list>
 </ion-content>
-
-<!-- <ion-content [fullscreen]="false">
-  <ion-item>
-    <ion-button class="ion-float-left" [fill]="selectedAll ? 'solid' : 'outline'" color="tertiary" shape="round" (click)="selectAll()">{{'all' | translate}}</ion-button>
-    @if (selectedAccounts) {
-      <ion-text class="ion-margin-left" color="secondary">&nbsp;({{selectedAccounts}}) selected</ion-text>
-    }
-    <ion-button [disabled]="selectedAccounts ? false : true" class="ion-float-right" slot="end" size="small" color="secondary" (click)="addTransactionModal($event, null)"><ion-icon name="add"></ion-icon></ion-button>
-  </ion-item>
-  <ion-list>
-    @for (account of accounts; track account) {
-      <ion-item [ngStyle]="{'--background': account.selected ? '#f5f5f5' : '', 'border-left': account.selected ? '5px solid #8ec8c2' : ''}"
-        (click)="selectAccount(account)">
-        <ion-label>
-          <ion-text [color]="account.type == 1 ? '' : 'primary'">
-            <h2>
-              @if (account.type != 1) {
-                <ion-icon name="people"></ion-icon>
-              }
-              @if (account.type == 1) {
-                <ion-text color="primary">({{account.num}}) </ion-text>
-                }{{account.owner}}
-                <ion-note slot="end">
-                  <ion-button class="ion-float-right" size="small" color="success" (click)="showAccountInfo($event, account)">
-                    <ion-icon  name="information-outline"></ion-icon>
-                  </ion-button>
-                  <ion-button [disabled]="meeting.endedat || selectedAccounts" class="ion-float-right" size="small" color="secondary" (click)="addTransactionModal($event, account)"><ion-icon name="add"></ion-icon></ion-button>
-                </ion-note>
-              </h2>
-            </ion-text>
-            <ion-note class="sum-info">
-              <ion-icon name="arrow-redo" color="success"></ion-icon> {{account.balance | number}}
-              <ion-icon name="arrow-undo" color="danger"></ion-icon> {{account.restearembourser | number}} {{currency}}
-              @if (account.openloans) {
-                <ion-text>({{account.openloans}})</ion-text>
-              }
-            </ion-note>
-            <ion-grid class="transactions ion-no-padding">
-              <ion-row>
-                <ion-col size="5">
-                  <p>
-                    {{'credit_disp' | translate}}: <ion-text [color]="account.creditdisponible < 0 ? 'danger':''">{{account.creditdisponible | number}} {{currency}}</ion-text>
-                  </p>
-                  <p>
-                    {{'loan_req' | translate}}: {{account.besoinsliquidite | number}} {{currency}}
-                  </p>
-                </ion-col>
-                <ion-col>
-                  @for (tr of account.transactions; track tr) {
-                    <ion-item color="light">
-                      <div>
-                        @if (tr.error) {
-                          <ion-note color="danger"><ion-icon name="warning"></ion-icon> {{tr.error}}</ion-note>
-                        }
-                        <p>
-                          {{tr.parametername}}: <strong>{{tr.amount | number:'.2'}}</strong>
-                        </p>
-                      </div>
-                      <ion-button [disabled]="meeting.endedat" size="small" color="danger" slot="end" (click)="deleleTransaction($event, tr)"><ion-icon name="close"></ion-icon></ion-button>
-                    </ion-item>
-                  }
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-label>
-        </ion-item>
-      }
-    </ion-list>
-  </ion-content>-->

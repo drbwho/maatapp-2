@@ -35,7 +35,6 @@ const routes: Routes = [
     path: 'app',
     loadChildren: () => import('./pages/tabs-page/tabs-page.module').then(m => m.TabsModule)
   },
-  //{ path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule) },
   { path: 'about', loadChildren: () => import('./pages/about/about.module').then(m => m.AboutPageModule) },
   { path: 'about-app', loadChildren: () => import('./pages/about-app/about-app.module').then(m => m.AboutAppPageModule) },
   {
@@ -53,10 +52,6 @@ const routes: Routes = [
   {
     path: 'meeting-history',
     loadChildren: () => import('./pages/meeting-history/meeting-history.module').then( m => m.MeetingHistoryPageModule)
-  },
-  {
-    path: 'group-details',
-    loadChildren: () => import('./pages/group-details/group-details.module').then( m => m.GroupDetailsPageModule)
   },
   {
     path: 'settings',
@@ -78,10 +73,6 @@ const routes: Routes = [
     path: 'splash',
     loadChildren: () => import('./pages/splash/splash.module').then( m => m.SplashPageModule)
   }
-
-
-
-
 ];
 
 @NgModule({

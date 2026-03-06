@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { AlertController, ModalController } from '@ionic/angular';
-import { TransactionsComponent } from '../../component/transactions/transactions.component';
-import { Storage } from '@ionic/storage-angular';
-import { ConfigData } from '../../providers/config-data';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService } from '@ngx-translate/core';
@@ -46,7 +43,6 @@ export class AccountsPage implements OnInit {
     private alertCtrl: AlertController,
     private operTools: OperationTools,
     private translate: TranslateService,
-    private groupTools: GroupTools
   ) { }
 
   ngOnInit() {
@@ -204,7 +200,7 @@ export class AccountsPage implements OnInit {
     });
   }
 
-  async addTransactionModal(event: Event, account: any) {
+ /* async addTransactionModal(event: Event, account: any) {
     //prevent ion-item click
     event.stopPropagation();
 
@@ -221,7 +217,7 @@ export class AccountsPage implements OnInit {
       this.selectedAll = false;
       this.load_accounts();
     }
-  }
+  }*/
 
   /*async showAccountInfo(event: Event, account){
     //prevent ion-item click

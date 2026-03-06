@@ -27,15 +27,6 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'groups/:groupId',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../group-details/group-details.module').then(m => m.GroupDetailsPageModule)
-          },
-        ]
-      },
-      {
         path: 'meetings',
         children: [
           {

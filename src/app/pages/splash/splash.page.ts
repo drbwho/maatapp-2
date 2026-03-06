@@ -29,8 +29,8 @@ export class SplashPage implements OnInit {
           }else{
             this.navigateToMain();
           }
-        }, 2000);
-      }, 1000);
+        }, 2500);
+      }, 1500);
     });
   }
 

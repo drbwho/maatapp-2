@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MeetingHistoryPageRoutingModule } from './meeting-history-routing.module';
 
 import { MeetingHistoryPage } from './meeting-history.page';
-import { TransactionsComponent } from '../../component/transactions/transactions.component';
+import { HistoryComponent } from '../../component/history/history.component';
 
 // needed fot translate pipe activation
 import { HttpClient } from '@angular/common/http';
@@ -32,6 +32,6 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  declarations: [MeetingHistoryPage, TransactionsComponent]
+  declarations: [MeetingHistoryPage, HistoryComponent]
 })
 export class MeetingHistoryPageModule {}
