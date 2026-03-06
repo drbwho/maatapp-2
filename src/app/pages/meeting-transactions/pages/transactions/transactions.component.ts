@@ -4,6 +4,7 @@ import { DataProvider } from '../../../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';
 import { OperationTools } from '../../../../providers/operation-tools';
+import { Transaction } from '../../../../interfaces/data-interfaces';
 
 @Component({
   selector: 'app-transactions',
@@ -19,6 +20,7 @@ export class TransactionsComponent  implements OnInit {
   parameters: any;
   contrib_params: any;
   amount: number[]=[];
+  param_error: string[]=[];
   param_balance: any;
   param_extra: any;
   loans_expired = false;
@@ -85,7 +87,7 @@ export class TransactionsComponent  implements OnInit {
   }
 
   set_default(parameter: any){
-    if(!parameter){ return; } 
+    if(!parameter){ return; }
     if(parameter.default != undefined){
       this.amount[parameter.id] = parameter.default;
     }
@@ -95,11 +97,34 @@ export class TransactionsComponent  implements OnInit {
     delete(this.amount[parameterId]);
   }
 
-  dismiss(returndata = false){
+  async dismiss(returndata = false){
     if(returndata){
-      this.modalCtrl.dismiss(this.amount);
+      if(await this.check_operations()){
+        this.modalCtrl.dismiss(this.amount);
+      }
     }else{
       this.modalCtrl.dismiss();
     }
+  }
+
+  async check_operations(){
+    let check = true;
+    for (const [parameterId, amount] of Object.entries(this.amount)) {
+      let param = this.parameters.find(p => p.id == parameterId);
+      let tr: Transaction = {
+        idmeeting: this.meeting.id,
+        idaccount: this.account.id,
+        idparameter: param.id,
+        parametername: param.name,
+        amount: amount,
+        inputdate: new Date()
+      }
+      let result: any = await this.operTools.check_operation(this.account, this.group, tr);
+      if(result.status != 'success'){
+        this.param_error[param.id] = result.message;
+        check = false;
+      }
+    }
+    return check;
   }
 }

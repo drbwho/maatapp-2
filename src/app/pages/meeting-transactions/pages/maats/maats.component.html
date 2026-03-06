@@ -69,7 +69,7 @@
   </ion-item>
   }
   @if(!loanAccounts.length){
-    <ion-label class="ion-text-center" color="danger"><h4 color="danger">{{'no_accounts_available' | translate}}</h4></ion-label>
+    <ion-label style="display: block;" class="ion-text-center text-14" color="danger">{{'no_accounts_with_open_maats' | translate}}</ion-label>
   }
 </ion-list>
 }
@@ -102,7 +102,7 @@
   </ion-item>
   }
   @if(!accounts.length){
-    <ion-label class="ion-text-center" color="danger"><h5>{{'no_accounts_available' | translate}}</h5></ion-label>
+    <ion-label style="display: block;" class="ion-text-center text-14" color="danger">{{'no_accounts_available' | translate}}</ion-label>
   }
 </ion-list>
 }

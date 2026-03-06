@@ -87,13 +87,13 @@
       </ion-button>
     </div>
   </ion-card>
- 
+
   <!-- CONTRIBUTIONS -->
   <ion-list lines="none" class="custom-card ion-margin">
     @for (parameter of parameters; track parameter.id) {
       @if(contrib_params.includes(parameter.code)){
-      <ng-container 
-        *ngTemplateOutlet="transactionItem; context: { 
+      <ng-container
+        *ngTemplateOutlet="transactionItem; context: {
           parameter: parameter, amount: amount, placeholder: parameter.default, showdefault: true }">
       </ng-container>
       }
@@ -102,16 +102,16 @@
 
   <!-- Balance -->
   <ion-list lines="none" class="custom-card ion-margin">
-    <ng-container 
-        *ngTemplateOutlet="transactionItem; context: { 
+    <ng-container
+        *ngTemplateOutlet="transactionItem; context: {
           parameter: param_balance, amount: amount, placeholder: 0, showdefault: false }">
     </ng-container>
   </ion-list>
 
   <!-- Extra transaction to show -->
   <ion-list lines="none" class="custom-card ion-margin">
-    <ng-container 
-        *ngTemplateOutlet="transactionItem; context: { 
+    <ng-container
+        *ngTemplateOutlet="transactionItem; context: {
           parameter: param_extra, amount: amount, placeholder: 0, showdefault: false }">
     </ng-container>
   </ion-list>
@@ -120,8 +120,8 @@
   <!--@if(pf(account?.creditdisponible)){
   <ion-list lines="none" class="custom-card ion-margin">
     <ion-item button detail="true" detail-icon="chevron-forward">
-      <ion-icon slot="start" 
-          [src]="'assets/img/icons/transactions/'+ tr_icons[param_request?.code] +'.svg'" 
+      <ion-icon slot="start"
+          [src]="'assets/img/icons/transactions/'+ tr_icons[param_request?.code] +'.svg'"
           class="primary-icon">
       </ion-icon>
       <ion-label>
@@ -137,14 +137,14 @@
   <ion-list lines="none" class="custom-card ion-margin">
     @for (parameter of parameters; track parameter.id) {
       @if(!contrib_params.includes(parameter?.code)  && parameter.code != 'ECP' && parameter.code != param_extra?.code){
-      <ng-container 
+      <ng-container
         *ngTemplateOutlet="transactionItem; context: { parameter: parameter, amount: amount, placeholder: 0 }">
       </ng-container>
       }
     }
   </ion-list>
   }
-  
+
   <ion-button class="ion-margin" expand="block" color="medium" fill="clear" (click)="show_more = !show_more">{{(show_more ? 'hide' : 'see_more') | translate}}</ion-button>
 </ion-content>
 
@@ -153,15 +153,15 @@
 </ion-footer>
 
 <!-- *** Item Component *** -->
-<ng-template #transactionItem 
-  let-parameter="parameter" 
-  let-amount="amount" 
+<ng-template #transactionItem
+  let-parameter="parameter"
+  let-amount="amount"
   let-placeholder="placeholder"
   let-showdefault="showdefault">
-  
+
   <ion-item>
-    <ion-icon slot="start" 
-      [src]="tr_icons[parameter?.code] ? 'assets/img/icons/transactions/'+ tr_icons[parameter?.code] +'.svg' : ''" 
+    <ion-icon slot="start"
+      [src]="tr_icons[parameter?.code] ? 'assets/img/icons/transactions/'+ tr_icons[parameter?.code] +'.svg' : ''"
       [class]="amount[parameter?.id]>0 ? 'filled-icon' : 'empty-icon'">
     </ion-icon>
     <ion-label class="ion-text-wrap">
@@ -169,20 +169,23 @@
       @if(parameter?.code == 'EMP'){
         <p class="ion-no-margin">{{'maat_available' | translate}}: {{account?.creditdisponible | number:'.0'}} {{country.currency}}</p>
       }
+      @if(param_error[parameter?.id]){
+        <p><ion-note color="danger" class="text-12">{{'error' | translate}}: {{param_error[parameter?.id]}}</ion-note></p>
+      }
     </ion-label>
     @if(showdefault){
       @if(amount[parameter?.id] > 0){
       <ion-icon name="checkmark-sharp" slot="end" size="small" color="medium" class="ion-no-margin"></ion-icon>
       }@else {
       <ion-icon name="checkmark-circle-sharp" slot="end" size="small" color="primary" class="ion-no-margin"
-        (click)="set_default(parameter)"></ion-icon> 
+        (click)="set_default(parameter)"></ion-icon>
       }
     }
-    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]" 
-      [placeholder]="placeholder" 
+    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]"
+      [placeholder]="placeholder"
       class="amount-input ion-no-padding"></ion-input>
     <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
       (click)="clear_amount(parameter?.id)"
       [class.disabled]="!(amount?.[parameter?.id] > 0)">></ion-icon>
-  </ion-item>  
+  </ion-item>
 </ng-template>

@@ -164,7 +164,7 @@ export class OperationTools {
           transactions = transactions.filter(s => s.idmeeting != meeting.id);
         }else{
           transactions = transactions.filter(s =>{
-            return (s.idmeeting != meeting.id || 
+            return (s.idmeeting != meeting.id ||
                     upload_errors.find(u => u.idmeeting == s.idmeeting
                                             && u.idaccount == s.idaccount
                                             && u.idparameter == s.idparameter))});
@@ -489,10 +489,10 @@ export class OperationTools {
                 totals.debit += parseFloat(tr.credit ? tr.credit : tr.debit);
               }
               if(pcode == 'EMP'){
-                totals.loans += parseFloat(tr.debit);
+                totals.loans += parseFloat(tr.credit ? tr.credit : tr.debit);
               }
               if(pcode == 'REM'){
-                totals.reimbursements += parseFloat(tr.amount);
+                totals.reimbursements += parseFloat(tr.credit ? tr.credit : tr.debit);
               }
               // save transactions' sums
               currenttr = totals.transactions.get(pcode) || 0.00;

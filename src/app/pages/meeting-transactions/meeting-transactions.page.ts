@@ -71,6 +71,10 @@ export class MeetingTransactionsPage implements OnInit {
   }
 
   async ionViewWillEnter(){
+    if(this.pageIndex < 1){
+      this.pageIndex=1;
+    }
+
     this.meeting = this.dataProvider.current.meeting;
     this.meetingplace = this.meeting.place;
     this.meetingdate = this.meeting.startedat;

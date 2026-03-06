@@ -50,6 +50,7 @@
   "group_has_no_meetings":"Group has no meetings",
   "group_has_no_accounts":"Group has no accounts",
   "no_accounts_available": "No accounts available",
+  "no_accounts_with_open_maats": "No accounts with open maats",
   "account_info":"Account Info",
   "balance":"Balance",
   "cash":"Cash",
