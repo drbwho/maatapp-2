@@ -53,7 +53,7 @@
   </ion-list>
   }
 
-  @if(!show_all && meetings && meetings.length > 0){
+  @if(!show_all && meetings && meetings?.length > 0){
   <ion-text class="ion-text-center" (click)="show_all = !show_all">
     <h4>{{'show_all_meetings' | translate}}</h4>
   </ion-text>

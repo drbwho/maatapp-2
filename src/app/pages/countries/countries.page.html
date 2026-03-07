@@ -22,7 +22,7 @@
             <h5>{{country.name}}</h5>
           </ion-text>
           <p color="dark">
-            {{country.groups.length - 1}} {{'groups' | translate}}
+            {{country?.groups?.length - 1}} {{'groups' | translate}}
           </p>
         </ion-label>
         @if(country.id === currentid){

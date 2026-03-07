@@ -68,7 +68,7 @@
       [class.disabled]="!(acc?.totals?.reimbursements > 0)">></ion-icon>
   </ion-item>
   }
-  @if(!loanAccounts.length){
+  @if(!loanAccounts?.length){
     <ion-label style="display: block;" class="ion-text-center text-14" color="danger">{{'no_accounts_with_open_maats' | translate}}</ion-label>
   }
 </ion-list>
@@ -101,7 +101,7 @@
   }
   </ion-item>
   }
-  @if(!accounts.length){
+  @if(!accounts?.length){
     <ion-label style="display: block;" class="ion-text-center text-14" color="danger">{{'no_accounts_available' | translate}}</ion-label>
   }
 </ion-list>
