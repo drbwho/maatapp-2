@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OperationTools } from '../../../../providers/operation-tools';
+ import { OperationTools } from '../../../../providers/operation-tools';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';
 import { isThisMinute } from 'date-fns';

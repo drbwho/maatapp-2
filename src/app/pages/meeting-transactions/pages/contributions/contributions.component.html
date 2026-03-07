@@ -56,18 +56,24 @@
       <ion-label class="text-16" (click)="openAccountTransactions(acc)">
         {{ acc.owner }}
       </ion-label>
+      @if(acc?.totals?.transactions.get('RCB') > 0){
       <div slot="end" class="custom-badge rcb-badge">
         <span class="val text-16">{{ acc?.totals?.transactions.get('RCB') }}</span>
         <span class="lab text-12">{{ country?.currency }}</span>
       </div>
+      }
+      @if(acc?.totals?.transactions.get('AID') > 0){
       <div slot="end" class="custom-badge aid-badge">
         <span class="val text-16">{{ acc?.totals?.transactions.get('AID') }}</span>
         <span class="lab text-12">{{ country?.currency }}</span>
       </div>
+      }
+      @if(acc?.totals?.transactions.get('AST') > 0){
       <div slot="end" class="custom-badge ast-badge">
         <span class="val text-16">{{ acc?.totals?.transactions.get('AST') }}</span>
         <span class="lab text-12">{{ country?.currency }}</span>
       </div>
+      }
     </ion-item>
   }
 </ion-list>
