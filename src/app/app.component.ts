@@ -46,7 +46,6 @@ export class AppComponent implements OnInit {
     private config: ConfigData,
     private toast: ToastController,
     private translate: TranslateService,
-    private operTools: OperationTools
   ) {
     this.initializeApp();
   }
@@ -78,7 +77,7 @@ export class AppComponent implements OnInit {
      });
 
     // PWA updates
-    if(this.swUpdate.isEnabled){
+    /*if(this.swUpdate.isEnabled){
       this.swUpdate.checkForUpdate().then(async res => {
         const toast = await this.toastCtrl.create({
           message: 'Update available!',
@@ -93,7 +92,7 @@ export class AppComponent implements OnInit {
       });
     }else{
       console.log('Service workers disabled')
-    }
+    }*/
   }
 
   checkLoginStatus() {

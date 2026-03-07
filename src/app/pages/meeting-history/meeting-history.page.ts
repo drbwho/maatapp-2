@@ -52,6 +52,10 @@ export class MeetingHistoryPage implements OnInit {
     this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);
 
     this.attendance = this.meeting.absences ? this.group.numberofmembers - this.meeting.absences.length : this.group.numberofmembers;
+    
+    this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
+      this.country.parameters = data;
+    });
 
     this.calc_status();
     await this.load_accounts();

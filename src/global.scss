@@ -49,6 +49,11 @@
   display: none !important;
 }
 
+// add space not to overlap with system toolbar
+ion-footer {
+  padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
 h1,h2,h3,h4 {
   font-family: var(--app-font-serif);
 }

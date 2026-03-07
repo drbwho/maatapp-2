@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { AlertController, ModalController } from '@ionic/angular';
-import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
-import { GroupTools } from '../../providers/group-tools';
 import { ActionViewComponent } from '../../component/action-view/action-view.component';
 
 @Component({

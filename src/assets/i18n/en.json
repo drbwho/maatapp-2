@@ -74,6 +74,7 @@
   "current_meeting_pending_transactions":"Current Meeting Pending Transactions",
   "history_of_transactions":"History of Transactions",
   "meeting_has_no_transactions":"Meeting has no transactions",
+  "account_has_no_transactions" : "Account has no transactions",
   "place_cannot_be_empty":"Place cannot be empty",
   "there_is_already_a_meeting":"There is already a meeting in this day!",
   "there_is_open_meeting":"There is already an open meeting!",
