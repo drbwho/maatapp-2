@@ -145,5 +145,14 @@
         </ion-grid>
       </ion-item>
     }
+    @if(accounts || accounts.length == 0){
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-note color="danger">
+          {{'meeting_has_no_transactions' | translate}}
+        </ion-note>
+      </ion-col>
+    </ion-row>
+  }
   </ion-list>
 </ion-content>

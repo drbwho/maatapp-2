@@ -85,6 +85,7 @@
   "are_you_sure_to_clear_meeting":"Are you sure to clear pending meeting?",
   "are_you_sure_to_clear_transactions":"Are you sure to clear pending transactions?",
   "no_network":"There is no network connection!<br/>Please try again later",
+  "go_to_dashboard": "Go to dashboard",
   "network_error_no_updates":"Network error! Cannot check for updates...",
   "data_uploaded":"Data uploaded successfully",
   "support_request_sent":"Your support request has been sent.",
