@@ -29,7 +29,7 @@ export class SplashPage implements OnInit {
           }else{
             this.navigateToMain();
           }
-        }, 2500);
+        }, 3000);
       }, 2000);
     });
   }
