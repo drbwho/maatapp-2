@@ -208,10 +208,10 @@ export class MeetingsPage implements OnInit {
         if(meeting.pending || meeting.haspending){
           meet_status = 'upload-close';
         }else{
-          meet_status = 'great';
+          meet_status = await this.groupTools.get_meeting_health(meeting, this.group);
         }
-        this.meetActionViews.show_action_view_transactions(meeting, meet_status).then(data =>{
-          if(data!='close'){
+        this.meetActionViews.show_action_view_transactions(meeting, meet_status, this.country.currency).then(data =>{
+          if(data!='close' && data!='return'){
             this.dataProvider.current.meeting = meeting;
             this.navCtrl.navigateForward('/meeting-history');
           }

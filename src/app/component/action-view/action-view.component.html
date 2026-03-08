@@ -28,6 +28,9 @@
 
     <div class="text-wrapper ion-margin-top">
       <div [innerHTML]="information" class="ion-margin-top"></div>
+      @if(subinformation){
+        <p class="ion-no-margin">{{subinformation | translate}}</p>
+      }
       <ion-badge [class]="badge?.class">{{badge?.information}}</ion-badge>
     </div>
   </div>

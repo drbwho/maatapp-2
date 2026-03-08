@@ -22,9 +22,11 @@ export class MeetingsActionViews {
   * View transactions
   *
   */
-  async show_action_view_transactions(meeting: Meeting, meeting_status: string){
+  async show_action_view_transactions(meeting: Meeting, meeting_status: string, currency = null){
     return new Promise(async (resolve)=>{
       let buttons = [];
+      let information = null;
+      let subinformation = null;
       switch(meeting_status){
         case 'upload-close':
           buttons.push({text: 'messages.meetings.'+ meeting_status +'.button', color: 'primary', action:'upload'});
@@ -34,8 +36,10 @@ export class MeetingsActionViews {
           buttons.push({text: 'continue', color: 'light', action:'view'});
           break;
         default:
-           buttons.push({text: 'messages.meetings.'+ meeting_status +'.button', color: 'primary', action:'view'});
-           break;
+          information = "<h1>"+ (meeting.collection > 0 ? "+" : "-") + meeting.collection.toLocaleString(ɵDEFAULT_LOCALE_ID) +"</h1>";
+          subinformation = "messages.meetings.added_since_the_meeting";
+          buttons.push({text: 'messages.meetings.'+ meeting_status +'.button', color: 'primary', action:'view'});
+          break;
       }
       const modal = await this.modalCtrl.create({
         component: ActionViewComponent,
@@ -44,6 +48,8 @@ export class MeetingsActionViews {
           heading: 'messages.meetings.'+ meeting_status +'.heading',
           description: 'messages.meetings.'+ meeting_status +'.description',
           image: 'assets/img/action-views/'+ meeting_status +'-meeting.png',
+          information: information,
+          subinformation: subinformation,
           hasBackButton: true,
           buttons: buttons
         },

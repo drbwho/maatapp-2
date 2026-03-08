@@ -82,12 +82,45 @@ export class GroupTools {
     return null;
   }
 
+  async get_meeting_health(meeting: any, group: any){
+    let totals = await this.operTools.estimate_meeting_totals(null, meeting.id);
+    let trans = new Map(
+      [...totals.transactions].filter(([key, value]) => this.operTools.contrib_operations.includes(key))
+    );
+    
+    let paid_contribs = 0.0;
+    let expected_contribs = 0.0;
+    for (const [code, value] of trans) {
+      paid_contribs += value as number;
+    }
+    for (const code of this.operTools.contrib_operations) {
+      expected_contribs += parseFloat(group.settings[this.operTools.map_default_to_settings[code]]);
+    }
+    expected_contribs *= group.numberofmembers;
+
+    let has_ECP = totals.transactions.get('ECP') ? true : false;
+    let percentage = 0.0;
+    if(trans){
+      percentage = paid_contribs / expected_contribs;
+    }
+    if(percentage < 0.5){
+      return 'action';
+    }
+    if(percentage <= 0.8){
+      return 'stable';
+    }
+    if(percentage < 0.9){
+      return 'good';
+    }
+    return 'great';
+  }
+
   async get_last_meeting(meetings){
     if(!meetings || !meetings.length){
       return null;
     }
     let last = meetings.reduce((prev, current) => {
-      return (prev.startedat > current.startedat) ? prev : current;
+      return (prev.startedat >= current.startedat) ? prev : current;
     });
     return last;
   }
