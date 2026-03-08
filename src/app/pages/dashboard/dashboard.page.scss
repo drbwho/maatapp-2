@@ -39,7 +39,6 @@
 
 // MEETING STATUS BLOCK
 ion-item.meeting-status-item {
-  --background: url('/assets/img/intro/group-image.png') no-repeat right bottom / 50% auto;
   background-color: #E7EFEA;
   --min-height: 130px;
   ion-label {
@@ -48,6 +47,7 @@ ion-item.meeting-status-item {
     overflow: hidden;
   }
   &.in-progress {
+    --background: url('/assets/img/intro/group-image.png') no-repeat right bottom / 50% auto;
     background-color: #E4F4F0;
     ion-label {
       color: #517873 !important;
@@ -55,18 +55,21 @@ ion-item.meeting-status-item {
   }
   &.no-meetings,
   &.no-active {
+    --background: url('/assets/img/intro/group-no-active.png') no-repeat right bottom / 50% auto;
     background-color: #F3F1EC;
     ion-label {
       color: #645E4C !important;
     }
   }
   &.saved-local {
+    --background: url('/assets/img/intro/group-saved-online.png') no-repeat right bottom / 50% auto;
     background-color: #E9E6F3;
     ion-label {
       color: #706398 !important;
     }
   }
   &.saved-offline {
+    --background: url('/assets/img/intro/group-saved-offline.png') no-repeat right bottom / 50% auto;
     background-color: #F8F3DE;
     ion-label {
       color: #786F4A !important;
