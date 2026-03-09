@@ -137,5 +137,8 @@
         </ion-grid>
       </ion-item>
     }
+    @if(!accounts?.length){
+      <ion-label style="display: block;" class="ion-text-center text-14" color="danger">{{'no_accounts_available' | translate}}</ion-label>
+    }
   </ion-list>
 </ion-content>

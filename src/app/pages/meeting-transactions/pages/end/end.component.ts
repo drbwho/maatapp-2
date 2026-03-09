@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OperationTools } from '../../../../providers/operation-tools';
+import { GroupTools } from '../../../../providers/group-tools';
 
 @Component({
   selector: 'app-end',
@@ -14,16 +15,20 @@ export class EndComponent  implements OnInit {
   @Input() meeting: any;
   loans_completed = 0;
   loans_to_due = 0;
+  show_max = false;
+  max_loans = 0;
+  max_collection = 0;
 
   constructor(
-    private operTools: OperationTools
+    private operTools: OperationTools,
+    private groupTools: GroupTools
   ) { }
 
   ngOnInit() {
     this.calc_views();
   }
 
-  calc_views(){
+  async calc_views(){
     const today = new Date();
     
     this.accounts.forEach(async acc => {
@@ -40,6 +45,11 @@ export class EndComponent  implements OnInit {
         this.loans_to_due++;
       }
     });
+
+    let meetings: any = await this.groupTools.get_meetings(this.group);
+    meetings = meetings.filter(m => m.id != this.meeting.id);
+    this.max_loans = Math.max(...meetings.map(meeting => meeting.loans));
+    this.max_collection = Math.max(...meetings.map(meeting => meeting.collection));
   }
 
 }

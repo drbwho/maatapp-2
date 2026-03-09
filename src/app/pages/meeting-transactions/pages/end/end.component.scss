@@ -35,3 +35,22 @@
     background-color: #E9E6F3 !important;
     --background: url('/assets/img/intro/feather-white.png') no-repeat right 10px center / contain;
   }
+
+  .max-values {
+    margin-top: 10px;
+    p {
+      margin:0 !important
+    }
+    .max-label {
+      font-size: 12px !important;
+      text-transform: uppercase;
+    }
+    .max-amount {
+      font-size: 18px !important;
+      font-weight: 500;
+    }
+    .currency {
+      font-size: 12px !important;
+      font-weight: 500;
+    }
+  }
