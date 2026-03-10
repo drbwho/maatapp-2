@@ -16,6 +16,7 @@ import { UserData } from './providers/user-data';
 import { Browser } from '@capacitor/browser';
 import { TranslateService } from '@ngx-translate/core';
 import { OperationTools } from './providers/operation-tools';
+import { ProfilePage } from './pages/profile/profile.page';
 
 register();
 
@@ -46,6 +47,7 @@ export class AppComponent implements OnInit {
     private config: ConfigData,
     private toast: ToastController,
     private translate: TranslateService,
+    private modalCtrl: ModalController
   ) {
     this.initializeApp();
   }
@@ -221,6 +223,15 @@ export class AppComponent implements OnInit {
       });
       await alert.present();
     });
+  }
+
+  async openProfile(){
+    const modal = await this.modalCtrl.create({
+        component: ProfilePage,
+        componentProps: { }
+      });
+      await modal.present();
+      await modal.onWillDismiss();
   }
 
   // Create a unique device id
