@@ -426,6 +426,7 @@ export class OperationTools {
         credit: 0.00,
         debit: 0.00,
         loans: 0.00,
+        loan_notes: null,
         reimbursements: 0.00,
         transactions: new Map<string, number>()
       };
@@ -463,6 +464,7 @@ export class OperationTools {
           }
           if(pcode == 'EMP'){
             totals.loans += parseFloat(tr.amount);
+            totals.loan_notes = tr.notes;
           }
           if(pcode == 'REM'){
             totals.reimbursements += parseFloat(tr.amount);
@@ -490,6 +492,7 @@ export class OperationTools {
               }
               if(pcode == 'EMP'){
                 totals.loans += parseFloat(tr.credit ? tr.credit : tr.debit);
+                totals.loan_notes = tr.notes;
               }
               if(pcode == 'REM'){
                 totals.reimbursements += parseFloat(tr.credit ? tr.credit : tr.debit);
@@ -527,7 +530,7 @@ export class OperationTools {
               resolve({'status': 'error', 'message': key})
             });
           }
-          if(transaction.amount > group_totals.credit){
+          if(transaction.amount > group_account.creditdisponible){ //group_totals.newcreditdisponible){ ?? new credit or no?
             this.translate.get('loan_exceeds_group_credit_available').subscribe((key)=>{
               resolve({'status': 'error', 'message': key})
             });

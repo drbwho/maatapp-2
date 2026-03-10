@@ -78,8 +78,8 @@
 @case('newmaats'){
 <ion-list lines="none" class="custom-card ion-margin">
   @for (acc of accounts; track acc.id) {
-  <ion-item [detail]="pf(acc.creditdisponible) > 0" (click)="pf(acc.creditdisponible) > 0 ? openNewMaat(acc) : return">
-    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.totals?.loans > 0)" [class.disabled]="!(pf(acc.creditdisponible) > 0)">
+  <ion-item [detail]="pf(acc.creditdisponible) > 0 && acc?.openloans < maxnumopenloans " (click)="(pf(acc.creditdisponible) > 0 && acc?.openloans < maxnumopenloans) ? openNewMaat(acc) : return">
+    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.totals?.loans > 0)" [class.disabled]="!(pf(acc.creditdisponible) > 0 && acc?.openloans < maxnumopenloans)">
       <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
     </div>
     <ion-label class="owner-container ion-text-wrap" >
@@ -98,7 +98,7 @@
       <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
         (click)="clear_loan_amount(acc, $event)"
         [class.disabled]="!(acc?.totals?.loans > 0)">></ion-icon>
-  }
+    }
   </ion-item>
   }
   @if(!accounts?.length){

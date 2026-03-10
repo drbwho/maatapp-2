@@ -5,6 +5,7 @@ export interface MeetingTotals {
   credit?: number,
   debit?: number,
   loans?: number,
+  loan_notes?: string,
   reimbursements?: number,
   transactions?: any
 };

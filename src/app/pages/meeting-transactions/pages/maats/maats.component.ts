@@ -19,6 +19,7 @@ export class MaatsComponent  implements OnInit {
   loanAccounts: any;
   creditAccounts: any;
   numberofmembers = 0;
+  maxopenloans = 0;
   parameters: any;
   attendance = 0;
   param_rem: any;
@@ -43,6 +44,7 @@ export class MaatsComponent  implements OnInit {
     this.parameters = this.country.parameters;
     this.param_rem = this.parameters.find(p => p.code == 'REM'); // Reimbursement parameter
     this.param_emp = this.parameters.find(p => p.code == 'EMP'); // Loan parameter
+    this.maxopenloans = this.group.settings.maxnumopenloans;console.log(this.maxopenloans)
     this.readTotals();
   }
 
@@ -83,11 +85,9 @@ export class MaatsComponent  implements OnInit {
   */
   async openNewMaat(account: any){
     let loan_info: any = {};
-    if(account.emp){
-      loan_info.amount = account.emp;
-    }
-    if(account.emp_notes){
-      loan_info.notes = account.emp_notes;
+    if(account.totals){
+      loan_info.amount = account.totals.transactions.get('EMP');
+      loan_info.notes = account.totals.loan_notes;
     }
     const modal = await this.modalCtrl.create({
         component: LoanInfoComponent,
