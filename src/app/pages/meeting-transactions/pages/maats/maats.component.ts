@@ -3,6 +3,8 @@ import { TransactionsComponent } from '../transactions/transactions.component';
 import { ModalController } from '@ionic/angular';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { LoanInfoComponent } from '../../../../component/loan-info/loan-info.component';
+import { Storage } from '@ionic/storage-angular';
+import { ConfigData } from '../../../../providers/config-data';
 
 @Component({
   selector: 'app-maats',
@@ -30,7 +32,9 @@ export class MaatsComponent  implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private operationTools: OperationTools
+    private operationTools: OperationTools,
+    private storage: Storage,
+    private config: ConfigData
   ) { }
 
   ngOnInit() {
@@ -44,7 +48,7 @@ export class MaatsComponent  implements OnInit {
     this.parameters = this.country.parameters;
     this.param_rem = this.parameters.find(p => p.code == 'REM'); // Reimbursement parameter
     this.param_emp = this.parameters.find(p => p.code == 'EMP'); // Loan parameter
-    this.maxopenloans = this.group.settings.maxnumopenloans;console.log(this.maxopenloans)
+    this.maxopenloans = this.group.settings.maxnumopenloans;
     this.readTotals();
   }
 
@@ -85,10 +89,15 @@ export class MaatsComponent  implements OnInit {
   */
   async openNewMaat(account: any){
     let loan_info: any = {};
-    if(account.totals){
-      loan_info.amount = account.totals.transactions.get('EMP');
-      loan_info.notes = account.totals.loan_notes;
+    let trns = await this.storage.get(this.config.TRANSACTIONS_FILE);
+    if(trns){
+      let tr = trns.find((s)=> s.idaccount == account.id && s.idmeeting == this.meeting.id && s.idparameter == this.param_emp.id);
+      if(tr){
+        loan_info.amount = tr.amount
+        loan_info.notes = tr.notes;
+      }
     }
+
     const modal = await this.modalCtrl.create({
         component: LoanInfoComponent,
         componentProps: {account: account, country: this.country, loan_info: loan_info },
