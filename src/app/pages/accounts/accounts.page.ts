@@ -52,54 +52,19 @@ export class AccountsPage implements OnInit {
     this.groupid = this.group?.id;
     this.country = this.dataProvider.current.country;
     this.currency = this.country?.currency;
-    //this.num_ECP = await this.operTools.get_num_of_ECP(this.meeting, this.country.id);
-    //this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);
 
-    //this.calc_status();
     await this.load_accounts();
     this.show_progress();
   }
 
-  /*calc_status(){
-    if(this.meeting.endedat){
-      if(this.meeting.haspending){
-        this.status ='closed-pending';
-      }else{
-        this.status = 'closed';
-      }
-    }else{
-      this.status = 'progress';
-    }
-    this.fullDate = this.meeting.endedat ? this.meeting.endedat : this.meeting.startedat;
-  }*/
 
   load_accounts(){
     this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
       this.allaccounts = data.filter((s)=> s.statut == 0 && s.type == 1); //active accounts & member acounts
-      //let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      //let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
 
       // load pending transactions for each account
       this.allaccounts.forEach(async (acc) => {
-        //if(transactions){
-          //append upload errors to transactions
-          /*acc.transactions = transactions.filter((s)=>s.idaccount == acc.id && s.idmeeting == this.meeting.id);
-          if(upload_errors){
-            acc.transactions.forEach((tr)=>{
-              let uplerr = upload_errors.find((s)=> s.idmeeting == tr.idmeeting && s.idaccount == tr.idaccount && s.idparameter == tr.idparameter);
-              if(uplerr){
-                tr.error = uplerr.message;
-              }
-            });
-          }
-        }*/
-        /*if(acc.type == 2){
-          // get meeting history from api
-          await this.operTools.refreshMeetingHistory(this.meeting.id);
-          this.new_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
-        }*/
         // loan overdues
-
         if( acc.dateecheance != null && (new Date(acc.dateecheance) < (new Date()))){
           acc.loans_expired = true;
         }else{
@@ -182,14 +147,7 @@ export class AccountsPage implements OnInit {
         {
           text: keys['yes'],
           handler: async () => {
-            /*let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-            //find index
-            let index = transactions.findIndex(s => s.idaccount == tr.idaccount && s.idmeeting == tr.idmeeting && s.idparameter == tr.idparameter && s.amount == tr.amount);
-            transactions.splice(index, 1);//remove element from array
-            this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
-              this.load_accounts();
-            })*/
-          this.operTools.delOperation(tr).then(() => this.load_accounts());
+            this.operTools.delOperation(tr).then(() => this.load_accounts());
           },
         },
         ],
@@ -198,24 +156,6 @@ export class AccountsPage implements OnInit {
     });
   }
 
- /* async addTransactionModal(event: Event, account: any) {
-    //prevent ion-item click
-    event.stopPropagation();
-
-    const modal = await this.modalCtrl.create({
-      component: TransactionsComponent,
-      componentProps: {account: account, accounts: this.accounts}
-    });
-    await modal.present();
-
-    const { data } = await modal.onWillDismiss();
-    if (data) {
-      // refresh accounts totals
-      this.selectedAccounts = 0;
-      this.selectedAll = false;
-      this.load_accounts();
-    }
-  }*/
 
   /*async showAccountInfo(event: Event, account){
     //prevent ion-item click
@@ -293,7 +233,7 @@ export class AccountsPage implements OnInit {
         }else if(group_health == 'stable'){
            info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
             <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
-        }else if(group_health == 'attention'){
+        }else if(group_health == 'attention' && this.group.numdueloans > 0){
           info = "<h1 class='ion-no-margin'>"+ this.group.totals.restearembourser +"</h1>\
             <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>";
           badge = {class: 'danger', information: this.group.numdueloans + " "+ keys['overdue']} }

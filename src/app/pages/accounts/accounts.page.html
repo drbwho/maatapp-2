@@ -70,7 +70,7 @@
               </ion-label>
               <p class="warning-text">
               @if(pf(account?.creditdisponible) > 0){
-                {{ 'eligible_for_maat' | translate }}: {{account?.creditdisponible}} {{currency}}
+                {{ 'eligible_for_maat' | translate }}: {{account?.creditdisponible | number:'.0'}} {{currency}}
               }@else{
                  {{ 'not_eligible_for_maat' | translate }}
               }

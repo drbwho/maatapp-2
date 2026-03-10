@@ -29,12 +29,12 @@ export class ContributionsComponent  implements OnInit {
     private operationTools: OperationTools
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.numberofmembers = this.group.numberofmembers;
     this.accounts = this.accounts.filter(m => m.isPresent);
     this.attendance = this.accounts.length;
     this.resetTotals();
-    this.readTotals();
+    await this.readTotals();
 
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.parameters = data;
