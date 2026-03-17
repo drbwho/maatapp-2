@@ -115,7 +115,7 @@ export class NewMeetingPage implements OnInit {
       this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any)=>{
         if(data.meeting){
           this.dataProvider.current.meeting = data.meeting;
-          const modal = await this.modalCtrl.create({
+          /*const modal = await this.modalCtrl.create({
             component: ActionViewComponent,
             componentProps: {
               title: 'Group: ' + this.group.name,
@@ -130,9 +130,9 @@ export class NewMeetingPage implements OnInit {
             cssClass: ''
           });
           await modal.present();
-          await modal.onWillDismiss().then(()=>{
+          await modal.onWillDismiss().then(()=>{*/
             this.router.navigate(['/meeting-transactions'], { replaceUrl: true }); return;
-          });
+          //});
         }
         return;
       });

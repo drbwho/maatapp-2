@@ -183,7 +183,7 @@ $text-muted: #8a8a8a;
   --border-radius: 12px;
   --placeholder-color: grey;
   margin-inline-start: 5px !important;
-  width: 55px !important;
+  min-width: 55px !important;
   height: 40px;
   font-weight: 600;
   text-align: center;

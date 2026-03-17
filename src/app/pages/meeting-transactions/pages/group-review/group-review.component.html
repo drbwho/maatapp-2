@@ -101,7 +101,9 @@
     </ion-label>
     <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]" (change)="update_transaction(parameter?.id, $event)"
       placeholder="0"
-      class="amount-input ion-no-padding"></ion-input>
+      class="amount-input ion-no-padding"
+      [style.width.ch]="amount[parameter?.id]?.toString().length > 2 ? amount[parameter?.id].toString().length + 3 : 5">
+    </ion-input>
     <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
       (click)="clear_amount(parameter?.id)"
       [class.disabled]="!(amount?.[parameter?.id] > 0)">></ion-icon>
