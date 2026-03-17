@@ -17,6 +17,7 @@ import { Browser } from '@capacitor/browser';
 import { TranslateService } from '@ngx-translate/core';
 import { OperationTools } from './providers/operation-tools';
 import { ProfilePage } from './pages/profile/profile.page';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 register();
 
@@ -54,7 +55,9 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      //this.statusBar.styleDefault();
+      StatusBar.setOverlaysWebView({ overlay: false });
+      StatusBar.setStyle({ style: Style.Light });
+      StatusBar.setBackgroundColor({ color: '#ebebe0' });
       SplashScreen.hide();
     });
   }

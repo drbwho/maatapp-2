@@ -34,12 +34,12 @@ const config: CapacitorConfig = {
     CapacitorHttp: {
       enabled: true
     },
-    /*StatusBar: {
+    StatusBar: {
       overlaysWebView: false,
       style: "LIGHT",
       backgroundColor: "#ebebe0"
     },
-    EdgeToEdge: {
+    /*EdgeToEdge: {
       "backgroundColor": "#ebebe0"
     }*/
   },
