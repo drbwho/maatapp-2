@@ -37,5 +37,6 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/**/*.spec.[jt]s"
     ]
-  }
+  },
+  "analytics": false
 }

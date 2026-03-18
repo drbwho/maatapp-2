@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { App } from '@capacitor/app';
 
-import { AlertController } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 
 import { UserData } from '../../providers/user-data';
 import { TranslateService } from '@ngx-translate/core';
@@ -28,17 +29,22 @@ export class ProfilePage implements OnInit {
       photo: null
     };
   role = "";
+  appinfo = null;
 
   constructor(
     public alertCtrl: AlertController,
     public router: Router,
     public userData: UserData,
     private translate: TranslateService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private platform: Platform
   ) { }
 
   async ngOnInit() {
     await this.getUser();
+     if (this.platform.is('hybrid')) { // device
+      this.appinfo = await App.getInfo();
+     }
   }
 
   updatePicture() {
