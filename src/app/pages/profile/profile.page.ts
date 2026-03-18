@@ -145,6 +145,7 @@ export class ProfilePage implements OnInit {
   }
 
   openSupport(){
+    this.dismiss();
     this.router.navigateByUrl('/support');
   }
 

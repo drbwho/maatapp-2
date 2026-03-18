@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/app/tabs/dashboard">
+    </ion-back-button>
     </ion-buttons>
     <ion-title>{{'support' | translate}}</ion-title>
   </ion-toolbar>
@@ -17,7 +18,7 @@
     <ion-list lines="none">
       <ion-item>
         <ion-label position="stacked" color="primary">{{'enter_support_message' | translate}}</ion-label>
-        <ion-textarea [(ngModel)]="supportMessage" name="supportQuestion" #supportQuestion="ngModel" rows="6" required></ion-textarea>
+        <ion-textarea  class="ion-margin-top" [(ngModel)]="supportMessage" name="supportQuestion" #supportQuestion="ngModel" rows="6" required></ion-textarea>
       </ion-item>
     </ion-list>
 
@@ -28,11 +29,11 @@
     </ion-text>
 
     <div class="ion-padding">
-      <ion-button expand="block" type="submit">{{'submit' | translate}}</ion-button>
+      <ion-button expand="block" type="submit" shape="round">{{'submit' | translate}}</ion-button>
     </div>
   </form>
 
-  <ion-list>
+  <ion-list class="ion-margin-horizontal">
     @for (ticket of tickets; track ticket) {
       <ion-item lines="none">
         <ion-grid>

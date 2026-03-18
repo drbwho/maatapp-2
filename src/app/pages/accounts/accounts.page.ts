@@ -247,7 +247,7 @@ export class AccountsPage implements OnInit {
             information: info,
             badge: badge,
             image: 'assets/img/action-views/'+ group_health +'-group.png',
-            hasBackButton: true,
+            hasBackButton: false,
             buttons: [{text: 'messages.accounts.view_members_details', color: 'primary'}]
           },
           cssClass: ''

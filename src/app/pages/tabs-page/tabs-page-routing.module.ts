@@ -53,15 +53,6 @@ const routes: Routes = [
           },
         ]
       },
-/*      {
-        path: 'notifications/:data',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('../notifications/notifications.module').then(m => m.NotificationsPageModule)
-          }
-        ]
-      },*/
       {
         path: 'about',
         children: [
