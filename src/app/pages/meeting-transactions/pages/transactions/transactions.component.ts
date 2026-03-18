@@ -39,23 +39,21 @@ export class TransactionsComponent  implements OnInit {
   ngOnInit() {
     this.tr_icons = this.operTools.tr_icons;
     var account_type = this.account.type;
-    this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
-      this.parameters = data.filter((s) => (account_type == 1 ? s.type == 1 : s.type == 2)); //paysants/group operations
-      //this.fsparameters = data.filter((s) => s.type == 3); //solidarity operations
-      // default contribs
-      this.parameters.forEach(p => {
-        p.showdefault = false;
-        if(this.operTools.contrib_operations.includes(p.code)){
-          let amount = parseFloat(this.group.settings[this.operTools.map_default_to_settings[p.code]]);
-          if(amount){
-            p.default = amount;
-          }else{
-            p.default = 0;
-          }
-          p.showdefault = true;
+    this.parameters = this.country.parameters.filter((s) => (account_type == 1 ? s.type == 1 : s.type == 2)); //paysants/group operations
+     //this.fsparameters = data.filter((s) => s.type == 3); //solidarity operations
+    // default contribs
+    this.parameters.forEach(p => {
+      p.showdefault = false;
+      if(this.operTools.contrib_operations.includes(p.code)){
+        let amount = parseFloat(this.group.settings[this.operTools.map_default_to_settings[p.code]]);
+        if(amount){
+          p.default = amount;
+        }else{
+          p.default = 0;
         }
-      })
-    });
+        p.showdefault = true;
+      }
+    })
     if(this.account){
       //load account's pending operations
       this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
@@ -78,7 +76,6 @@ export class TransactionsComponent  implements OnInit {
         this.loans_expired = true;
       }
     }
-    this.contrib_params = this.operTools.contrib_operations;
   }
 
   set_default(parameter: any){
