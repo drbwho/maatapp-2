@@ -61,7 +61,7 @@ export class BalanceComponent  implements OnInit {
 
     const modal = await this.modalCtrl.create({
       component: TransactionsComponent,
-      componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country}
+      componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country, visible_params: ['ECP']}
     });
     modal.present();
 

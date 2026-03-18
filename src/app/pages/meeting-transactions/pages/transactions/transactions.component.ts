@@ -17,12 +17,11 @@ export class TransactionsComponent  implements OnInit {
   @Input() meeting: any;
   @Input() country: any;
   @Input() group: any;
+  @Input() visible_params?: any;
   parameters: any;
   contrib_params: any;
   amount: number[]=[];
   param_error: string[]=[];
-  param_balance: any;
-  param_extra: any;
   loans_expired = false;
   show_more = false;
   show_details = false;
@@ -45,6 +44,7 @@ export class TransactionsComponent  implements OnInit {
       //this.fsparameters = data.filter((s) => s.type == 3); //solidarity operations
       // default contribs
       this.parameters.forEach(p => {
+        p.showdefault = false;
         if(this.operTools.contrib_operations.includes(p.code)){
           let amount = parseFloat(this.group.settings[this.operTools.map_default_to_settings[p.code]]);
           if(amount){
@@ -52,14 +52,9 @@ export class TransactionsComponent  implements OnInit {
           }else{
             p.default = 0;
           }
+          p.showdefault = true;
         }
       })
-      this.param_balance = this.parameters.find(p => p.code == 'ECP');
-      var code = 'DPR';
-      if(parseFloat(this.account.restearembourser) > 0){
-        code = 'REM';
-      }
-      this.param_extra = this.parameters.find(p => p.code == code);
     });
     if(this.account){
       //load account's pending operations

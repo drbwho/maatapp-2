@@ -111,9 +111,11 @@ export class ContributionsComponent  implements OnInit {
   async openAccountTransactions(account: any){
     let categories=""; let notes="";
 
+    let visible_params = this.operationTools.contrib_operations;
+
     const modal = await this.modalCtrl.create({
       component: TransactionsComponent,
-      componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country}
+      componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country, visible_params: visible_params}
     });
     modal.present();
 

@@ -124,7 +124,7 @@ export class MaatsComponent  implements OnInit {
 
     const modal = await this.modalCtrl.create({
       component: TransactionsComponent,
-      componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country}
+      componentProps: {group: this.group, account: account, meeting: this.meeting, country: this.country, visible_params: ['REM']}
     });
     modal.present();
 

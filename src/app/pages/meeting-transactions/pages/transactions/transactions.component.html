@@ -88,55 +88,24 @@
     </div>
   </ion-card>
 
-  <!-- CONTRIBUTIONS -->
+
+  <!-- VISIBLE TRANSACTIONS -->
   <ion-list lines="none" class="custom-card ion-margin">
     @for (parameter of parameters; track parameter.id) {
-      @if(contrib_params.includes(parameter.code)){
+      @if(visible_params.includes(parameter.code)){
       <ng-container
         *ngTemplateOutlet="transactionItem; context: {
-          parameter: parameter, amount: amount, placeholder: parameter.default, showdefault: true }">
+          parameter: parameter, amount: amount, placeholder: parameter.default ?? 0, showdefault: parameter.showdefault }">
       </ng-container>
       }
     }
   </ion-list>
 
-  <!-- Balance -->
-  <ion-list lines="none" class="custom-card ion-margin">
-    <ng-container
-        *ngTemplateOutlet="transactionItem; context: {
-          parameter: param_balance, amount: amount, placeholder: 0, showdefault: false }">
-    </ng-container>
-  </ion-list>
-
-  <!-- Extra transaction to show -->
-  <ion-list lines="none" class="custom-card ion-margin">
-    <ng-container
-        *ngTemplateOutlet="transactionItem; context: {
-          parameter: param_extra, amount: amount, placeholder: 0, showdefault: false }">
-    </ng-container>
-  </ion-list>
-
-  <!-- Maat request-->
-  <!--@if(pf(account?.creditdisponible)){
-  <ion-list lines="none" class="custom-card ion-margin">
-    <ion-item button detail="true" detail-icon="chevron-forward">
-      <ion-icon slot="start"
-          [src]="'assets/img/icons/transactions/'+ tr_icons[param_request?.code] +'.svg'"
-          class="primary-icon">
-      </ion-icon>
-      <ion-label>
-        <h5 class="ion-no-margin">{{ param_request?.name }}</h5>
-        <p class="ion-no-margin">{{'maats_available' | translate}}: {{account?.creditdisponible | number:'.0'}} {{country.currency}}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-  }-->
-
   <!-- More... -->
   @if(show_more){
   <ion-list lines="none" class="custom-card ion-margin">
     @for (parameter of parameters; track parameter.id) {
-      @if(!contrib_params.includes(parameter?.code)  && parameter.code != 'ECP' && parameter.code != param_extra?.code){
+      @if(!visible_params.includes(parameter.code)){
       <ng-container
         *ngTemplateOutlet="transactionItem; context: { parameter: parameter, amount: amount, placeholder: 0 }">
       </ng-container>
@@ -152,7 +121,7 @@
   <ion-button class="ion-margin" expand="block" shape="round" (click)="dismiss(true)">{{'save' | translate}}</ion-button>
 </ion-footer>
 
-<!-- *** Item Component *** -->
+<!-- ***************************** Item Component ************************** -->
 <ng-template #transactionItem
   let-parameter="parameter"
   let-amount="amount"
