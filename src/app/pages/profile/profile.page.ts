@@ -110,7 +110,8 @@ export class ProfilePage implements OnInit {
             text: keys['yes'],
             handler: async () => {
               this.userData.logout().then(() => {
-                return this.router.navigateByUrl('/login');
+                this.modalCtrl.dismiss();
+                return this.router.navigateByUrl('/', { replaceUrl: true});
               });
             },
           },

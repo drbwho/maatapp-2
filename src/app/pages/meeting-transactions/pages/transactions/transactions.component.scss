@@ -39,13 +39,13 @@ $text-muted: #8a8a8a;
 }
 
 .owner-container {
-  display: flex;      
+  display: flex;
   align-items: center;
   flex-wrap: wrap;
   margin-top: 20px;
 
   h2 {
-    margin: 0;         
+    margin: 0;
     margin-inline-start: 10px;
     margin-inline-end: 12px;
   }
@@ -131,7 +131,7 @@ $text-muted: #8a8a8a;
 .details-row {
   display: flex;
   color: #55747C;
-  font-size: 14px; 
+  font-size: 14px;
   font-weight: 400;
   .value {
     text-align: right;
@@ -144,12 +144,12 @@ $text-muted: #8a8a8a;
   background: #f4f5f7;
   border-radius: 24px;
   padding: 8px 4px;
-  
+
   ion-item {
     --background: transparent;
     --min-height: 65px;
     --padding-start: 10px !important;
-    
+
     ion-label {
       font-weight: 500;
       color: rgba(22, 21, 20, 1);
@@ -167,12 +167,12 @@ $text-muted: #8a8a8a;
   --border-radius: 12px;
   --placeholder-color: grey;
   margin-inline-start: 5px !important;
-  width: 55px !important;
+  min-width: 55px !important;
   height: 40px;
   font-weight: 600;
   text-align: center;
   margin-right: 8px;
-  
+
   --highlight-height: 0;
   --inner-padding-end: 0;
 

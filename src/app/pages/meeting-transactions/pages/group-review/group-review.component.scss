@@ -73,7 +73,7 @@ $text-muted: #8a8a8a;
 }
 
 .stat-value {
-  font-size: 42px;
+  font-size: 38px;
   font-weight: 400;
   color: $text-muted;
 }
@@ -144,7 +144,7 @@ $text-muted: #8a8a8a;
 .details-row {
   display: flex;
   color: #6E6E6E;
-  font-size: 14px; 
+  font-size: 14px;
   font-weight: 400;
   .value {
     text-align: right;
@@ -160,12 +160,12 @@ $text-muted: #8a8a8a;
   background: #f4f5f7;
   border-radius: 24px;
   padding: 8px 4px;
-  
+
   ion-item {
     --background: transparent;
     --min-height: 65px;
     --padding-start: 10px !important;
-    
+
     ion-label {
       font-weight: 500;
       color: rgba(22, 21, 20, 1);
@@ -188,7 +188,7 @@ $text-muted: #8a8a8a;
   font-weight: 600;
   text-align: center;
   margin-right: 8px;
-  
+
   --highlight-height: 0;
   --inner-padding-end: 0;
 

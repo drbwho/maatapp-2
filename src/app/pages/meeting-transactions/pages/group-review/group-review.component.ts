@@ -45,8 +45,8 @@ export class GroupReviewComponent  implements OnInit {
     // set meeting.totals and account.totals
     this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
       // Group Transactions // TODO check if group transactions!!!!
-      let transactions = trns.filter((s)=> s.idaccount == this.group.account.id && s.idmeeting == this.meeting.id);
-      if(transactions){
+      if(trns){
+        let transactions = trns.filter((s)=> s.idaccount == this.group.account.id && s.idmeeting == this.meeting.id);
         transactions.forEach((tr)=>{
           this.amount[tr.idparameter] = tr.amount;
         })

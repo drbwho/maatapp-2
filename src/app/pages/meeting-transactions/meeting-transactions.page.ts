@@ -14,6 +14,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ContributionsComponent } from './pages/contributions/contributions.component';
 import { BalanceComponent } from './pages/balance/balance.component';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-meeting-transactions',
@@ -22,6 +24,7 @@ import { Router } from '@angular/router';
   standalone: false
 })
 export class MeetingTransactionsPage implements OnInit {
+  private backButtonSubscription: Subscription;
   transactionsPageComponent = null;
   meetingplace: string;
   meetingdate: string;
@@ -61,13 +64,18 @@ export class MeetingTransactionsPage implements OnInit {
     private dataProvider: DataProvider,
     private operTools: OperationTools,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private platform: Platform
   ) {
     const navigation = this.router.currentNavigation();
     this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString();
   }
 
+  //Override device back button
   ngOnInit() {
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(99, () => {
+      this.previousPage();
+    });
   }
 
   async ionViewWillEnter(){

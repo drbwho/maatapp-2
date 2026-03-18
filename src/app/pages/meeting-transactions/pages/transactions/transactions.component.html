@@ -183,6 +183,7 @@
     }
     <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]"
       [placeholder]="placeholder"
+      [style.width.ch]="amount[parameter?.id]?.toString().length > 2 ? amount[parameter?.id].toString().length + 3 : 5"
       class="amount-input ion-no-padding"></ion-input>
     <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
       (click)="clear_amount(parameter?.id)"

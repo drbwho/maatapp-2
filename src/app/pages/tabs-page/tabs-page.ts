@@ -78,7 +78,7 @@ export class TabsPage {
   }
 
   async openSettings() {
-    this.translate.get(['settings','language','account','clear_cache', 'cancel']).subscribe(async (keys: any)=>{
+    this.translate.get(['settings','language','account','clear_cache', 'cancel', 'introduction']).subscribe(async (keys: any)=>{
       const actionSheet = await this.actionSheetCtrl.create({
         header: keys['settings'],
         cssClass: 'settings-action-sheet',
@@ -95,6 +95,13 @@ export class TabsPage {
           icon: 'person-circle-outline',
           handler: () => {
            this.openProfile();
+          },
+        },
+        {
+          text: keys['introduction'],
+          icon: 'sparkles-outline',
+          handler: () => {
+            this.navCtrl.navigateForward('/intro');
           },
         },
         {

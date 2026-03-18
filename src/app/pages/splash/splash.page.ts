@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Animation, createAnimation, NavController } from '@ionic/angular';
 import { UserData } from '../../providers/user-data';
 
 @Component({
@@ -13,7 +14,8 @@ export class SplashPage implements OnInit {
 
   constructor(
     private router: Router,
-    private userData: UserData
+    private userData: UserData,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
@@ -23,23 +25,41 @@ export class SplashPage implements OnInit {
     this.userData.isLoggedIn().then((value)=>{
       setTimeout(() => {
         this.showWelcome = true;
-        setTimeout(() => {   
-          if(!value){    
-            this.router.navigate(['/login'], {state: {updateInfos: true}});
+        setTimeout(() => {
+          if(!value){
+            this.navCtrl.navigateRoot('/login',
+          {animated: true, animation: this.fadeAnimation});
           }else{
             this.navigateToMain();
           }
-        }, 3000);
+        }, 4000);
       }, 2000);
     });
   }
 
   async navigateToMain() {
     // show introduction?
-    if(!await this.userData.shownIntro()){   
-      this.router.navigate(['/intro'], { replaceUrl: true });
+    if(!await this.userData.shownIntro()){
+      this.navCtrl.navigateRoot('/intro',
+          {animated: true, animation: this.fadeAnimation});
     }else{
-      this.router.navigate(['/app/tabs/dashboard'], { replaceUrl: true });
+      this.navCtrl.navigateRoot('/app/tabs/dashboard',
+          {animated: true, animation: this.fadeAnimation});
     }
   }
+
+  fadeAnimation = (baseEl: HTMLElement, opts?: any): Animation => {
+    const enteringAnimation = createAnimation()
+      .addElement(opts.enteringEl)
+      .fromTo('opacity', 0, 1)
+      .duration(2000);
+
+    const leavingAnimation = createAnimation()
+      .addElement(opts.leavingEl)
+      .fromTo('opacity', 1, 0)
+      .duration(2000);
+
+    return createAnimation()
+      .addAnimation([enteringAnimation, leavingAnimation]);
+  };
 }
