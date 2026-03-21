@@ -33,14 +33,16 @@
     </ion-item>
   </ion-list>
 
-  <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round"
-    [disabled]="meeting_status != 'no-active' && meeting_status != 'no-meetings'"
-    routerLink="/new-meeting" routerDirection="forward">{{'start_new_meeting' | translate}}</ion-button>
-  @if(meeting_status == 'saved_local'){
-   <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
-  }
-  @if(meeting_status == 'saved_offline'){
-   <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-disabled" disabled>{{'upload_data' | translate}}</ion-button>
+  @if(user?.role > 1){
+    <ion-button class="ion-margin-horizontal ion-margin-bottom" expand="block" shape="round"
+      [disabled]="meeting_status != 'no-active' && meeting_status != 'no-meetings'"
+      routerLink="/new-meeting" routerDirection="forward">{{'start_new_meeting' | translate}}</ion-button>
+    @if(meeting_status == 'saved_local'){
+    <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-secondary">{{'upload_data' | translate}}</ion-button>
+    }
+    @if(meeting_status == 'saved_offline'){
+    <ion-button class="ion-margin-horizontal" expand="block" shape="round" color="maat-disabled" disabled>{{'upload_data' | translate}}</ion-button>
+    }
   }
 
   @if(lastmeeting && !show_all){

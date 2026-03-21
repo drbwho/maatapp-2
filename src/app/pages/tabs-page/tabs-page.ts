@@ -10,6 +10,7 @@ import { NavController } from '@ionic/angular';
 import { SelectLangComponent } from '../../component/select-lang/select-lang.component';
 import { DataProvider } from '../../providers/provider-data';
 import { GroupTools } from '../../providers/group-tools';
+import { UserData } from '../../providers/user-data';
 
 @Component({
     templateUrl: 'tabs-page.html',
@@ -26,7 +27,8 @@ export class TabsPage {
     private toast: ToastController,
     private navCtrl: NavController,
     private groupTools: GroupTools,
-    private dataProvider: DataProvider
+    private dataProvider: DataProvider,
+    private userData: UserData
   ){}
 
   async openProfile(){
@@ -67,6 +69,10 @@ export class TabsPage {
   }
 
   async newMeeting(){
+    let user = await this.userData.getUser();
+    if(user.role < 2){
+      return;
+    }
     //check
     let group = this.dataProvider.current.group;
     let meetings = await this.groupTools.get_meetings(group)

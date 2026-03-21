@@ -14,6 +14,7 @@ import { UserData } from '../../providers/user-data';
   standalone: false
 })
 export class DashboardPage implements OnInit {
+  user: any = null;
   group: any = null;
   country: any = null;
   meetings: any = {};
@@ -65,6 +66,7 @@ export class DashboardPage implements OnInit {
         this.num_ECP = 0;
       }
     }
+    this.user = await this.userData.getUser();
   }
 
   navToGroups(){

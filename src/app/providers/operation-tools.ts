@@ -607,7 +607,7 @@ export class OperationTools {
     return new Promise((resolve) => {
       this.storage.get(this.config.GET_FILE('params')).then(async (data: any)=> {
         let param = null;
-        if(data.length){
+        if(data && data.length){
           param = (data.filter((a)=> a.code === 'ECP'))[0];
         }
         this.refreshMeetingHistory(meeting.id).then(()=>{

@@ -73,16 +73,16 @@ $text-muted: #8a8a8a;
 }
 
 .stat-value {
-  font-size: 38px;
+  font-size: 34px;
   font-weight: 400;
   color: $text-muted;
 }
 
-@media (max-width: 380px) {
+/*@media (max-width: 380px) {
   .stat-value {
     font-size: 36px;
   }
-}
+}*/
 
 .stat-label {
   font-size: 12px;

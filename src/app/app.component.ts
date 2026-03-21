@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
         try{
           const res = await this.userData.checkAuth();
           if(res){
-           // this.connectToChatService();
+            this.checkCountryPermissions();
           }
           this.updateLoggedInStatus(res as boolean);
         }catch(e){
@@ -130,6 +130,7 @@ export class AppComponent implements OnInit {
   listenForLoginEvents() {
     this.events.subscribe('user:login', () => {
       this.updateLoggedInStatus(true);
+      this.checkCountryPermissions();
     });
 
     this.events.subscribe('user:signup', () => {
@@ -165,6 +166,25 @@ export class AppComponent implements OnInit {
     });
   }
 
+  async checkCountryPermissions(){
+    var current = await this.dataprovider.getCurrent();
+    if(!current || current.country == undefined){
+      this.dataprovider.fetch_data('countries', null, false, true).then((data: any)=> {
+        if(data && data.length == 1){       
+          current.country = data[0];
+          let groups = current.country.groups.filter(g => g.type == 1);
+          if(groups.length == 1){
+            current.group = groups[0];
+          }
+          this.dataprovider.setCurrent(current);
+          //load country parameters
+          this.dataprovider.fetch_data('params', current.country.id, true).then((data: any)=> {
+            this.storage.set(this.config.GET_FILE('params'), data);
+          });
+        }
+      });
+    }
+  }
 
   listenNetworkConnectionEvents() {
     // Check on init

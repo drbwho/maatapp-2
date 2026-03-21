@@ -13,6 +13,7 @@ import { Platform } from '@ionic/angular';
 import { OperationTools } from '../../providers/operation-tools';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
+import { UserData } from '../../providers/user-data';
 
 
 @Component({
@@ -22,6 +23,7 @@ import { ConfigData } from '../../providers/config-data';
   standalone: false
 })
 export class MeetingsPage implements OnInit {
+  user: any = null;
   group = {id:"", name:"", ville:"", numberofmembers: 0}
   country = {id:"", name:"", currency:"", flagcode:"gb"};
   lastmeeting: any = {};
@@ -37,13 +39,14 @@ export class MeetingsPage implements OnInit {
     private actionSheetCtrl: ActionSheetController,
     private route: ActivatedRoute,
     private meetActionViews: MeetingsActionViews,
-    private operTools: OperationTools,
+    private userData: UserData,
     private storage: Storage,
     private config: ConfigData,
     private platform: Platform
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.user = await this.userData.getUser();
   }
 
   ionViewWillEnter(){
@@ -83,35 +86,38 @@ export class MeetingsPage implements OnInit {
   async openOptions(meeting: Meeting) {
     this.translate.get(['continue_meeting','upload_data','close_meeting', 'view_transactions', 'download_excel', 'cancel_meeting', 'return']).subscribe(async (keys: any)=>{
       let buttons = [];
-      if(!meeting.endedat){
-        buttons.push({
-          text: keys['continue_meeting'],
-          icon: 'caret-forward-outline',
-          cssClass:'action-sheet-primary',
-          handler: () => {
-            this.dataProvider.current.meeting = meeting;
-            this.navCtrl.navigateForward('/meeting-transactions');
-          },
-        });
-      }
-      if(meeting.pending || meeting.haspending){
-        buttons.push({
-          text: keys['upload_data'],
-          icon: 'cloud-upload',
-          cssClass: meeting.endedat ? 'action-sheet-primary' : '',
-          handler: () => {
-            this.show_action_view(meeting, 'upload-close');
-          },
-        });
-      }
-      if(!meeting.endedat){
-        buttons.push({
-          text: keys['close_meeting'],
-          icon: 'pause',
-          handler: () => {
-            this.show_action_view(meeting, 'upload-close');
-          },
-        });
+
+      if(this.user.role > 1){
+        if(!meeting.endedat){
+          buttons.push({
+            text: keys['continue_meeting'],
+            icon: 'caret-forward-outline',
+            cssClass:'action-sheet-primary',
+            handler: () => {
+              this.dataProvider.current.meeting = meeting;
+              this.navCtrl.navigateForward('/meeting-transactions');
+            },
+          });
+        }
+        if(meeting.pending || meeting.haspending){
+          buttons.push({
+            text: keys['upload_data'],
+            icon: 'cloud-upload',
+            cssClass: meeting.endedat ? 'action-sheet-primary' : '',
+            handler: () => {
+              this.show_action_view(meeting, 'upload-close');
+            },
+          });
+        }
+        if(!meeting.endedat){
+          buttons.push({
+            text: keys['close_meeting'],
+            icon: 'pause',
+            handler: () => {
+              this.show_action_view(meeting, 'upload-close');
+            },
+          });
+        }
       }
       buttons.push({
         text: keys['view_transactions'],
@@ -129,15 +135,17 @@ export class MeetingsPage implements OnInit {
           },
         });
       }
-      if(meeting.pending){
-        buttons.push({
-          text: keys['cancel_meeting'],
-          icon: 'close-circle',
-          role: 'destructive',
-          handler: () => {
-            this.show_action_view(meeting, 'cancel');
-          }
-        });
+      if(this.user.role > 1){
+        if(meeting.pending){
+          buttons.push({
+            text: keys['cancel_meeting'],
+            icon: 'close-circle',
+            role: 'destructive',
+            handler: () => {
+              this.show_action_view(meeting, 'cancel');
+            }
+          });
+        }
       }
       buttons.push({
         text: keys['return'],

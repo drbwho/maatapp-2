@@ -38,7 +38,7 @@ export class GroupsPage implements OnInit {
 
     this.dataProvider.fetch_data('countries', null, false, true).then(async (data: any) =>{
       this.country = data.find((s) => s.id == countryId);
-      this.groups = this.country.groups;
+      this.groups = this.country.groups.filter(g => g.type == 1); //filter Direction Groups
       this.countryname = this.country.name;
       //Load Country's parameters
       this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
