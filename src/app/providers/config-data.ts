@@ -36,6 +36,9 @@ export class ConfigData {
       case 'tickets':
           return  this.API_URL + `/v1/tickets`;
           break;
+      case 'userphoto':
+          return  this.API_URL + `/v1/user/photo`;
+          break;
     }
   }
 

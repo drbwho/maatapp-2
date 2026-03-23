@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ActionSheetController, LoadingController } from '@ionic/angular';
 
 import { AlertController, Platform } from '@ionic/angular';
 
 import { UserData } from '../../providers/user-data';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
     selector: 'app-profile',
@@ -37,7 +40,10 @@ export class ProfilePage implements OnInit {
     public userData: UserData,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private platform: Platform
+    private platform: Platform,
+    private actionSheetCtrl: ActionSheetController,
+    private storage: Storage,
+    private loadingcontroller: LoadingController
   ) { }
 
   async ngOnInit() {
@@ -45,10 +51,6 @@ export class ProfilePage implements OnInit {
      if (this.platform.is('hybrid')) { // device
       this.appinfo = await App.getInfo();
      }
-  }
-
-  updatePicture() {
-    console.log('Clicked to update picture');
   }
 
   // Present an alert with the current username populated
@@ -153,4 +155,65 @@ export class ProfilePage implements OnInit {
     this.dismiss();
     this.router.navigateByUrl('/about');
   }
+
+
+  async changePhoto(){
+    this.translate.get(['select_profile_picture','camera','photo_collection','cancel']).subscribe(async (keys: any)=>{
+      const actionSheet = await this.actionSheetCtrl.create({
+        header: keys['select_profile_picture'],
+        buttons: [
+        {
+          text: keys['camera'],
+          icon: 'camera-outline',
+          handler: () => {
+            this.takePicture(CameraSource.Camera);
+          }
+        },
+        {
+          text: keys['photo_collection'],
+          icon: 'image-outline',
+          handler: () => {
+            this.takePicture(CameraSource.Photos);
+          }
+        },
+        {
+          text: keys['cancel'],
+          icon: 'close',
+          role: 'cancel'
+        }
+        ]
+      });
+      await actionSheet.present();
+    })
+  }
+
+  async takePicture(source: CameraSource) {
+    let loading = await this.loadingcontroller.create({showBackdrop: false});
+    try {
+      const image = await Camera.getPhoto({
+        quality: 80,
+        width: 800,  // Resize
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: source
+      });
+
+      loading.present();
+
+      // Convert to file
+      const response = await fetch(image.webPath!);
+      const blob = await response.blob();
+      let imageFile = new File([blob], `profile_${Date.now()}.jpg`, { type: 'image/jpeg' });
+
+      this.userData.updateProfilePhoto(imageFile).then((res: any) => {
+        this.user.photo = res.url;
+        this.storage.set(this.userData.USER_FILE, this.user);
+        loading.dismiss();
+      })
+    } catch (error) {
+      console.error('cancelled:', error);
+      loading.dismiss();
+    }
+  }
+
 }

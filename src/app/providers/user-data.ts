@@ -3,6 +3,7 @@ import { Events } from './events';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConfigData } from './config-data';
+import { Network } from '@capacitor/network';
 
 @Injectable({
   providedIn: 'root'
@@ -130,6 +131,41 @@ export class UserData {
       this.storage.set(this.SHOW_INTRO, set);
       return;
     }
+  }
+
+  async updateProfilePhoto(imagefile){
+    let status = await Network.getStatus();
+    if(!status.connected){
+      return new Promise((resolve)=>{
+        resolve({status: 'error', message: 'There is no network connection to perform this action!'});
+      })
+    }
+
+    const user = await this.getUser();
+    let apiurl = this.config.GET_API_URL('userphoto');
+
+    const formData = new FormData();
+    formData.append('image', imagefile);
+
+    const headers =  new HttpHeaders({
+      'Authorization': 'Bearer ' + user.token,
+      'Accept': 'application/json'
+    });
+
+    return new Promise((resolve)=>{
+      this.http
+      .post(apiurl,
+        formData,
+        {headers})
+      .subscribe({
+        next: (data: any) => {
+          resolve(data);
+        },
+        error: async (error) => {
+          resolve({status: 'error', message: 'Sync error'});
+        }
+      });
+   });
   }
 
 }
