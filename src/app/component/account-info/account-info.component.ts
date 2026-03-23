@@ -10,9 +10,7 @@ import { IonicModule } from '@ionic/angular';
 })
 export class AccountInfoComponent  implements OnInit {
   @Input() account: any;
-  @Input() currency: any;
-  @Input() show_transactions: any;
-  @Input() group_totals: any;
+  @Input() country: any;
 
   loans_expired = false;
   sfloans_expired = false;

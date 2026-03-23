@@ -51,7 +51,8 @@
 
   <ion-list class="ion-margin" lines="none">
     @for (account of accounts; track account.id) {
-      <ion-item class="member-item ion-margin-bottom ion-border-rounded-20" color="light">
+      <ion-item class="member-item ion-margin-bottom ion-border-rounded-20" color="light" detail 
+          (click)="showAccountInfo($event, account)">
         <ion-grid class="ion-no-padding ion-no-margin">
 
           <ion-row>
@@ -81,19 +82,19 @@
                 @if (pf(account?.restearembourser) > 0) {
                   @if(account?.loans_to_be_expired){
                     <div class="custom-badge maat-badge-to-due">
-                      <span class="val text-16">{{ account.restearembourser }}</span>
-                      <span class="lab text-12">Maat</span>
+                      <span class="val text-16">{{ account.restearembourser | number:'.0' }}</span>
+                      <span class="lab text-12">Maats</span>
                     </div>
                   }@else{
                     <div [class]="account?.loans_expired ? 'custom-badge maat-badge-due' : 'custom-badge maat-badge'">
-                      <span class="val text-16">{{ account.restearembourser }}</span>
-                      <span class="lab text-12">Maat</span>
+                      <span class="val text-16">{{ account.restearembourser | number:'.0' }}</span>
+                      <span class="lab text-12">Maats</span>
                     </div>
                   }
                 }
                 @if (pf(account?.balance) > 0) {
                 <div class="custom-badge balance-badge">
-                  <span class="val text-16">{{ account.balance }}</span>
+                  <span class="val text-16">{{ account.balance | number:'.0' }}</span>
                   <span class="lab text-12">Balance</span>
                 </div>
                 }

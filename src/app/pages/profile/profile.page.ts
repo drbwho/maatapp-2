@@ -10,6 +10,7 @@ import { UserData } from '../../providers/user-data';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
+import { ConfigData } from '../../providers/config-data';
 
 @Component({
     selector: 'app-profile',
@@ -33,6 +34,7 @@ export class ProfilePage implements OnInit {
     };
   role = "";
   appinfo = null;
+  http_host = null;
 
   constructor(
     public alertCtrl: AlertController,
@@ -43,14 +45,15 @@ export class ProfilePage implements OnInit {
     private platform: Platform,
     private actionSheetCtrl: ActionSheetController,
     private storage: Storage,
-    private loadingcontroller: LoadingController
+    private loadingcontroller: LoadingController,
+    private config: ConfigData
   ) { }
 
   async ngOnInit() {
     await this.getUser();
-     if (this.platform.is('hybrid')) { // device
+    if (this.platform.is('hybrid')) { // device
       this.appinfo = await App.getInfo();
-     }
+    }
   }
 
   // Present an alert with the current username populated

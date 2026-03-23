@@ -1,3 +1,10 @@
+ion-title {
+  margin-left: -50px;
+  h2 {
+    margin: 0 !important;
+  }
+}
+
 .account-type {
   vertical-align: bottom;
   color: grey;
@@ -6,8 +13,39 @@
 }
 
 ion-card {
-  --ion-card-background: #f7f7f7; //#fef8f0;
+  --ion-card-background: #f4f5f8;
+  border-radius: 20px;
+  ion-card-content {
+    padding: 5px !important;
+    color: var(--ion-color-primary) !important;
+    ion-text {
+      background-color: white;
+      padding: 5px;
+      border-radius: 10px;
+    }
+    ion-row {
+      align-items: center;
+      padding: 0px !important;
+      ion-col {
+        padding: 0px;
+        padding-top: 3px;
+      }
+    }
+  }
   ion-icon {
-    vertical-align: top;
+    font-size: 44px;
+    vertical-align: middle;
+    margin-left: -10px;
+  }
+  &.balance-card {
+    padding-bottom: 15px;
+    --background: url(/assets/img/intro/feather-white.png) no-repeat right 10px center / contain;
+    background-color: #e9f5f2;
+    ion-card-content {
+      ion-text {
+        font-size: 18px;
+        background-color: transparent;
+      }
+    }
   }
 }

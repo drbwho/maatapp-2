@@ -5,6 +5,9 @@ import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
 import { ActionViewComponent } from '../../component/action-view/action-view.component';
+import { AccountInfoComponent } from '../../component/account-info/account-info.component';
+import { Storage } from '@ionic/storage-angular';
+import { ConfigData } from '../../providers/config-data';
 
 @Component({
     selector: 'app-accounts',
@@ -14,7 +17,6 @@ import { ActionViewComponent } from '../../component/action-view/action-view.com
 })
 export class AccountsPage implements OnInit {
   groupname: string;
-  currency: string;
   country: any = {flagcode: 'gb'};
   group: any;
   groupid: string;
@@ -40,7 +42,7 @@ export class AccountsPage implements OnInit {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private operTools: OperationTools,
-    private translate: TranslateService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -51,7 +53,6 @@ export class AccountsPage implements OnInit {
     this.groupname = this.group?.name;
     this.groupid = this.group?.id;
     this.country = this.dataProvider.current.country;
-    this.currency = this.country?.currency;
 
     await this.load_accounts();
     this.show_progress();
@@ -157,35 +158,19 @@ export class AccountsPage implements OnInit {
   }
 
 
-  /*async showAccountInfo(event: Event, account){
+  async showAccountInfo(event: Event, account){
     //prevent ion-item click
-    event.stopPropagation();
+    //event.stopPropagation();
 
-    let group_totals = null;
-
-    if(account.type == 2){
-      let trs = [];
-      let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      if(transactions){
-        transactions = transactions.filter((s)=>s.idmeeting == this.meeting.id);
-        transactions.forEach((tr)=>{
-          if(trs[tr.parametername] != undefined){
-            trs[tr.parametername] += tr.amount;
-          }else{
-            trs[tr.parametername] = tr.amount;
-          }
-        })
-      }
-      group_totals = {'transactions': trs}
-    }
     const modal = await this.modalCtrl.create({
       component: AccountInfoComponent,
-      componentProps: {'account': account, 'currency': this.currency, 'show_transactions': false, 'group_totals': group_totals}
+      componentProps: {'account': account, 'currency': this.country.currency},
+      //cssClass: 'lang-modal-sheet'
     });
     modal.present();
 
     await modal.onWillDismiss();
-  }*/
+  }
 
   search_accounts(){
     if(this.queryText == ''){

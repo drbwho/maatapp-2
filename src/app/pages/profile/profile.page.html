@@ -11,12 +11,7 @@
 <ion-content class="ion-padding">
   <div class="profile-header ion-text-center">
     <div class="avatar-container">
-      @if (!user.photo) {
-        <img [src]="user.photo || 'assets/img/avatar.png'" alt="avatar">
-      }
-      @if (user.photo) {
-        <img [src]="user.photo" alt="avatar">
-      }
+      <img [src]="user.photo ? user.photo : 'assets/img/avatar.png'" alt="avatar">
     </div>
     <ion-button fill="clear" size="small" class="change-photo-btn" (click)="changePhoto()">
       {{'change_profile_photo' | translate}}

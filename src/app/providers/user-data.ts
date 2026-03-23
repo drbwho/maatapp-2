@@ -107,6 +107,9 @@ export class UserData {
 
   setUsername(user: any): Promise<any> {
     user.lastlogin = new Date();
+    if(user.photo){
+      user.photo = this.config.HTTP_HOST + '/storage/' + user.photo;
+    }
     return this.storage.set(this.USER_FILE, user);
   }
 
