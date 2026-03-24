@@ -56,9 +56,9 @@
   <ion-card>
     <ion-card-content>
       <ion-grid>
-        <ion-row>
+        <!--<ion-row>
           <ion-col size="8"><ion-icon src="assets/img/icons/transactions/ribbon.svg" color="primary"></ion-icon> <strong>SF {{'contributions' | translate}}:</strong></ion-col><ion-col class="ion-text-end"><strong>{{account.sfcontribution | number:'.2'}}</strong></ion-col>
-        </ion-row>
+        </ion-row>-->
         <ion-row>
           <ion-col size="8"><ion-icon src="assets/img/icons/transactions/vase-plus.svg" color="primary"></ion-icon> <strong>SF {{'loans' | translate}}:</strong></ion-col><ion-col class="ion-text-end"><ion-text>{{account.sfemprunts | number:'.2'}}</ion-text></ion-col>
         </ion-row>
@@ -90,6 +90,13 @@
     </ion-card-content>
   </ion-card>
 
+  <div class="ion-text-center">
+    <ion-button fill="clear" class="review-btn" (click)="show_details = !show_details">
+      {{(show_details ? 'hide' : 'review_details') | translate}}
+    </ion-button>
+  </div>
+
+  @if(show_details){
   <ion-text color="secondary">
     <ion-label>
       <ion-icon name="swap-horizontal-outline" class="account-type"></ion-icon>
@@ -108,6 +115,7 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
+  }
 
 </ion-content>
 

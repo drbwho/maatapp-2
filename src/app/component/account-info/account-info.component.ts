@@ -12,6 +12,7 @@ export class AccountInfoComponent  implements OnInit {
   @Input() account: any;
   @Input() country: any;
 
+  show_details = false;
   loans_expired = false;
   sfloans_expired = false;
 
