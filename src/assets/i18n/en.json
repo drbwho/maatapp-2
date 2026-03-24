@@ -200,6 +200,9 @@
   "see_more": "Show more",
   "hide": "Hide",
   "return": "Return",
+  "select_profile_picture": "Select profile picture",
+  "camera": "From camera",
+  "photo_collection": "From photo collection",
   "intro": {
     "page-1": {
       "title": "Welcome to MA'AT",

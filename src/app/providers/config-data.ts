@@ -7,9 +7,9 @@ export class ConfigData {
 
   ENABLE_PUSH_NOTIFICATIONS = false;
 
-  API_URL = 'https://maatpeasant.com/api';
-  API_CSRF_URL = 'https://maatpeasant.com/sanctum/csrf-cookie';
   HTTP_HOST = "https://maatpeasant.com";
+  API_URL = this.HTTP_HOST + '/api';
+  API_CSRF_URL = this.HTTP_HOST + '/sanctum/csrf-cookie';
 
   API_LOGIN_URL = this.API_URL + '/login';
   API_GETAUTH_URL = this.API_URL + '/get-auth';
