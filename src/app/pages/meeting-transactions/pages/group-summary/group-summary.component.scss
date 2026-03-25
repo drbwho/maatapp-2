@@ -66,10 +66,21 @@ $text-muted: #8a8a8a;
 
 
 //----------------------
+.stat-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding: 0 5px; 
+  text-align: center;
+}
+
 .stat-value {
   font-size: 42px;
   font-weight: 400;
   color: #1a1a1a;
+  white-space: nowrap !important;
+  overflow: hidden;
+  width: 100%;
   &.secondary { color: $text-muted; }
 }
 

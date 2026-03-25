@@ -41,16 +41,16 @@
 
     <ion-grid class="ion-no-padding ion-no-margin">
       <ion-row>
-        <ion-col size="4" class="ion-text-center">
-          <div class="stat-value">{{account?.balance | number:'.0'}}</div>
+        <ion-col size="4" class="ion-text-center stat-col">
+          <div appAutofitText autofitGroup="summaryRowTransactions" class="stat-value">{{account?.balance | number:'.0'}}</div>
           <div class="stat-label primary ion-padding-horizontal">{{'balance' | translate}}</div>
         </ion-col>
-        <ion-col size="4" class="ion-text-center">
-          <div class="stat-value secondary">{{account?.openloans | number:'.0'}}</div>
+        <ion-col size="4" class="ion-text-center stat-col">
+          <div appAutofitText autofitGroup="summaryRowTransactions" class="stat-value secondary">{{account?.openloans | number:'.0'}}</div>
           <div class="stat-label ion-padding-horizontal">{{'active_maats' | translate}}</div>
         </ion-col>
-        <ion-col size="4" class="ion-text-center">
-          <div class="stat-value secondary">{{loans_expired ? (account?.restearembourser | number:'.0') : 0}}</div>
+        <ion-col size="4" class="ion-text-center stat-col">
+          <div appAutofitText autofitGroup="summaryRowTransactions" class="stat-value secondary">{{loans_expired ? (account?.restearembourser | number:'.0') : 0}}</div>
           <div class="stat-label">{{'overdue_amount' | translate}}</div>
         </ion-col>
       </ion-row>

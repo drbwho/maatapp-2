@@ -77,7 +77,7 @@ export class NewMeetingPage implements OnInit {
     // Check if meeting exists the same date
     let day_exists = false;
     this.meetings.forEach(async (m)=>{
-      if((m.startedat == date || m.endedat == date || !m.endedat) && !m.cancelled ){
+      if((m.startedat == date || !m.endedat) && !m.cancelled ){
         day_exists = true;
       }
     })

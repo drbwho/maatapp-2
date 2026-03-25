@@ -16,6 +16,7 @@ import { BalanceComponent } from './pages/balance/balance.component';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { AutofitService } from '../../directives/auto-fit-text.service';
 
 @Component({
   selector: 'app-meeting-transactions',
@@ -65,7 +66,8 @@ export class MeetingTransactionsPage implements OnInit {
     private operTools: OperationTools,
     private translate: TranslateService,
     private router: Router,
-    private platform: Platform
+    private platform: Platform,
+    private autoFit: AutofitService
   ) {
     const navigation = this.router.currentNavigation();
     this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString();
@@ -79,8 +81,8 @@ export class MeetingTransactionsPage implements OnInit {
   }
 
   async ionViewWillEnter(){
-    if(this.pageIndex < 1){
-      this.pageIndex=1;
+    if(this.pageIndex < 0){
+      this.pageIndex=0;
     }
 
     this.meeting = this.dataProvider.current.meeting;
@@ -123,6 +125,9 @@ export class MeetingTransactionsPage implements OnInit {
   }
 
   gotoPage(){
+    // Reset autofit text service for amount views
+    this.autoFit.resetGroups();
+
     if(this.pageIndex > 2 && this.componentMap[this.pageIndex-1].action != undefined){
       this.dataProvider.current.meeting = this.meeting;
       this.dataProvider.setCurrent(this.dataProvider.current).then(()=>{
