@@ -10,11 +10,9 @@ import * as XLSX from 'xlsx';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { Platform } from '@ionic/angular';
-import { OperationTools } from '../../providers/operation-tools';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { UserData } from '../../providers/user-data';
-
 
 @Component({
   selector: 'app-meetings',

@@ -117,7 +117,7 @@ export class MeetingTransactionsPage implements OnInit {
 
   previousPage(){
     this.pageIndex--;
-    if(this.pageIndex < 1){
+    if(this.pageIndex < 1){console.log(this.previousUrl)
       this.router.navigate([this.previousUrl], {state: {direction: 'forward'}});
       return;
     }

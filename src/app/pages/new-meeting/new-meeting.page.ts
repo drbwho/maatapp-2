@@ -1,7 +1,7 @@
 import { Component, OnInit, ɵDEFAULT_LOCALE_ID } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
-import { formatDate } from '@angular/common';
+import { formatDate, Location } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
 import { enUS } from 'date-fns/locale';
@@ -9,8 +9,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { NewMeetingFormComponent } from '../../component/new-meeting-form/new-meeting-form.component';
 import { AlertController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
-import { Router } from '@angular/router';
-import { ActionViewComponent } from '../../component/action-view/action-view.component';
 
 @Component({
   selector: 'app-new-meeting',
@@ -32,7 +30,7 @@ export class NewMeetingPage implements OnInit {
     private translate: TranslateService,
     private alertCtrl: AlertController,
     private groupTools: GroupTools,
-    private router: Router
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -131,7 +129,8 @@ export class NewMeetingPage implements OnInit {
           });
           await modal.present();
           await modal.onWillDismiss().then(()=>{*/
-            this.router.navigate(['/meeting-transactions'], { replaceUrl: true }); return;
+            this.location.replaceState('/meeting-transactions');
+            this.navCtrl.navigateRoot('/meeting-transactions', { animated: true });
           //});
         }
         return;
