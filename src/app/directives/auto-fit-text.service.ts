@@ -20,7 +20,7 @@ export class AutofitService {
     this.ensureGroupExists(groupName, newSize);
 
     const currentMin = this.groups[groupName].value;
-    
+
     if (newSize < currentMin) {
       this.groups[groupName].next(newSize);
     }
@@ -29,4 +29,10 @@ export class AutofitService {
   resetGroups() {
     this.groups = {};
   }
+
+  resetGroup(groupName: string) {
+  if (this.groups[groupName]) {
+    this.groups[groupName].next(40);
+  }
+}
 }

@@ -1,37 +1,55 @@
 import { Directive, ElementRef, AfterViewInit, Renderer2, Input } from '@angular/core';
 import { AutofitService } from './auto-fit-text.service';
 
-@Directive({ 
+@Directive({
     selector: '[appAutofitText]',
     standalone: false
 })
 
 export class AutofitTextDirective implements AfterViewInit {
   @Input() autofitGroup: string = 'default';
-  private observer: ResizeObserver
+  private resizeObserver: ResizeObserver;
+  private mutationObserver: MutationObserver;
 
   constructor(
-    private el: ElementRef, 
+    private el: ElementRef,
     private renderer: Renderer2,
     private autofitService: AutofitService
   ) {}
 
+
   ngAfterViewInit() {
     const el = this.el.nativeElement;
-    this.observer = new ResizeObserver(entries => {
+
+    // 1. ResizeObserver: Observe changes in Width/View
+    this.resizeObserver = new ResizeObserver(entries => {
       for (let entry of entries) {
         if (entry.contentRect.width > 0) {
           this.syncFontSize();
-          // this.observer.disconnect(); 
         }
       }
     });
-    this.observer.observe(el);
+    this.resizeObserver.observe(el);
+
+    // 2. MutationObserver: Observe changes in content
+    this.mutationObserver = new MutationObserver(() => {
+      this.autofitService.resetGroup(this.autofitGroup);
+      this.syncFontSize();
+    });
+
+    this.mutationObserver.observe(el, {
+      characterData: true,
+      childList: true,
+      subtree: true
+    });
   }
 
   ngOnDestroy() {
-    if (this.observer) {
-      this.observer.disconnect();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+    if (this.mutationObserver) {
+      this.mutationObserver.disconnect();
     }
   }
 
@@ -55,4 +73,5 @@ export class AutofitTextDirective implements AfterViewInit {
       });
     }, 100);
   }
+
 }
