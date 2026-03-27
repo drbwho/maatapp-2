@@ -235,11 +235,12 @@ export class MeetingsPage implements OnInit {
     }
   }
 
-  async exportToExcel(meeting: any, fileName: string = 'MAAT_Export.xlsx') {
+  async exportToExcel(meeting: any) {
+    let fileName: string = 'MAAT_' + meeting.place + '_'+ meeting.startedat + '.xlsx';
 
     const headerInfo = [
       ['MA\'AT - Meeting Operations'],
-      ['Country:', this.country.name, 'Group:', this.group.name],          
+      ['Country:', this.country.name, 'Group:', this.group.name],
       ['Meeting:', meeting.place + ' / ' + meeting.startedat],
       [], // space
     ];

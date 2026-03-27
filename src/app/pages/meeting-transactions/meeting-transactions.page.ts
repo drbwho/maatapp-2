@@ -117,8 +117,12 @@ export class MeetingTransactionsPage implements OnInit {
 
   previousPage(){
     this.pageIndex--;
-    if(this.pageIndex < 1){console.log(this.previousUrl)
-      this.router.navigate([this.previousUrl], {state: {direction: 'forward'}});
+    if(this.pageIndex < 1){
+      if(this.previousUrl == '/new-meeting'){ //prevent of going back to new-meeting page
+        this.router.navigate(['/app/tabs/dashboard'], {state: {direction: 'forward'}});
+      }else{
+        this.router.navigate([this.previousUrl], {state: {direction: 'forward'}});
+      }
       return;
     }
     this.gotoPage();
