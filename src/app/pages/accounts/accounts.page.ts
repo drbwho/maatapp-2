@@ -6,8 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
 import { ActionViewComponent } from '../../component/action-view/action-view.component';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
-import { Storage } from '@ionic/storage-angular';
-import { ConfigData } from '../../providers/config-data';
 
 @Component({
     selector: 'app-accounts',
@@ -165,7 +163,7 @@ export class AccountsPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: AccountInfoComponent,
       componentProps: {'account': account, 'currency': this.country.currency},
-      //cssClass: 'lang-modal-sheet'
+      //cssClass: 'action-modal-sheet'
     });
     modal.present();
 

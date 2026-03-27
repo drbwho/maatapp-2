@@ -41,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    AutoFitTextModule
+    AutoFitTextModule,
   ],
   declarations: [MeetingTransactionsPage, AttendanceComponent, EndComponent, GroupReviewComponent,
     GroupSummaryComponent, MaatsComponent, SettlementComponent, ContributionsComponent,

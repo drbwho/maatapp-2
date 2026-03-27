@@ -44,29 +44,36 @@
 @case('reimbursements'){
 <ion-list lines="none" class="custom-card ion-margin">
   @for (acc of loanAccounts; track acc.id) {
-  <ion-item>
-    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.totals?.reimbursements > 0)">
-      <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
-    </div>
-    <ion-label class="owner-container ion-text-wrap" (click)="openAccountTransactions(acc)">
-      <div class="title-row">
-        <h5>{{ acc?.owner }}</h5>
-        @if(acc.loans_expired){
-          <ion-badge class="alert text-12">{{'overdue' | translate}}</ion-badge>
-        }
+  <ion-item-sliding #slideItem>
+    <ion-item>
+      <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.totals?.reimbursements > 0)">
+        <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
       </div>
-    </ion-label>
-    @if(acc?.totals?.reimbursements > 0 || acc?.restearembourser == 0){
-      <ion-icon name="checkmark-sharp" slot="end" size="small" color="medium" class="ion-no-margin"></ion-icon>
-    }@else {
-      <ion-icon name="checkmark-circle-sharp" slot="end" size="small" color="primary" class="ion-no-margin"
-        (click)="set_default(acc)"></ion-icon>
-    }
-    <ion-input slot="end" type="number" disabled [value]="(acc?.totals?.reimbursements ?? 0) > 0 ? acc?.totals?.reimbursements : ''" [placeholder]="acc?.restearembourser" class="amount-input ion-no-padding"></ion-input>
-    <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
-      (click)="clear_amount(acc)"
-      [class.disabled]="!(acc?.totals?.reimbursements > 0)">></ion-icon>
-  </ion-item>
+      <ion-label class="owner-container ion-text-wrap" (click)="openAccountTransactions(acc)">
+        <div class="title-row">
+          <h5>{{ acc?.owner }}</h5>
+          @if(acc.loans_expired){
+            <ion-badge class="alert text-12">{{'overdue' | translate}}</ion-badge>
+          }
+        </div>
+      </ion-label>
+      @if(acc?.totals?.reimbursements > 0 || acc?.restearembourser == 0){
+        <ion-icon name="checkmark-sharp" slot="end" size="small" color="medium" class="ion-no-margin"></ion-icon>
+      }@else {
+        <ion-icon name="checkmark-circle-sharp" slot="end" size="small" color="primary" class="ion-no-margin"
+          (click)="set_default(acc)"></ion-icon>
+      }
+      <ion-input slot="end" type="number" disabled [value]="(acc?.totals?.reimbursements ?? 0) > 0 ? acc?.totals?.reimbursements : ''" [placeholder]="acc?.restearembourser" class="amount-input ion-no-padding"></ion-input>
+      <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
+        (click)="clear_amount(acc)"
+        [class.disabled]="!(acc?.totals?.reimbursements > 0)">></ion-icon>
+    </ion-item>
+    <ion-item-options side="start">
+      <ion-item-option (click)="showAccountInfo(acc, slideItem)">
+        <ion-icon slot="icon-only" name="information-circle" size="large"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
   }
   @if(!loanAccounts?.length){
     <ion-label style="display: block;" class="ion-text-center text-14" color="danger">{{'no_accounts_with_open_maats' | translate}}</ion-label>
@@ -78,28 +85,35 @@
 @case('newmaats'){
 <ion-list lines="none" class="custom-card ion-margin">
   @for (acc of accounts; track acc.id) {
-  <ion-item [detail]="pf(acc.creditdisponible) > 0 && acc?.openloans < maxopenloans " (click)="(pf(acc.creditdisponible) > 0 && acc?.openloans < maxopenloans) ? openNewMaat(acc) : return">
-    <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.totals?.loans > 0)" [class.disabled]="!(pf(acc.creditdisponible) > 0 && acc?.openloans < maxopenloans)">
-      <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
-    </div>
-    <ion-label class="owner-container ion-text-wrap" >
-      <div class="title-row">
-        <h5>{{ acc?.owner }}</h5>
-        @if(!pf(acc.creditdisponible) > 0){
-          <ion-badge class="alert text-12">{{'maat_unavailable' | translate}}</ion-badge>
-        }
+  <ion-item-sliding #slideItem>
+    <ion-item [detail]="pf(acc.creditdisponible) > 0 && acc?.openloans < maxopenloans " (click)="(pf(acc.creditdisponible) > 0 && acc?.openloans < maxopenloans) ? openNewMaat(acc) : return">
+      <div slot="start" class="avatar-icon" [class.inactive]="!(acc?.totals?.loans > 0)" [class.disabled]="!(pf(acc.creditdisponible) > 0 && acc?.openloans < maxopenloans)">
+        <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
       </div>
-      @if(acc.due){
-        <p class="text-12">{{'overdue_regular_contribution' | translate}}</p>
+      <ion-label class="owner-container ion-text-wrap" >
+        <div class="title-row">
+          <h5>{{ acc?.owner }}</h5>
+          @if(!pf(acc.creditdisponible) > 0){
+            <ion-badge class="alert text-12">{{'maat_unavailable' | translate}}</ion-badge>
+          }
+        </div>
+        @if(acc.due){
+          <p class="text-12">{{'overdue_regular_contribution' | translate}}</p>
+        }
+      </ion-label>
+      @if(pf(acc.creditdisponible) > 0 && acc?.totals?.loans > 0){
+        <ion-input slot="end" type="number" disabled [(ngModel)]="acc.totals.loans" placeholder="0" class="amount-input ion-no-padding"></ion-input>
+        <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
+          (click)="clear_loan_amount(acc, $event)"
+          [class.disabled]="!(acc?.totals?.loans > 0)">></ion-icon>
       }
-    </ion-label>
-    @if(pf(acc.creditdisponible) > 0 && acc?.totals?.loans > 0){
-      <ion-input slot="end" type="number" disabled [(ngModel)]="acc.totals.loans" placeholder="0" class="amount-input ion-no-padding"></ion-input>
-      <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
-        (click)="clear_loan_amount(acc, $event)"
-        [class.disabled]="!(acc?.totals?.loans > 0)">></ion-icon>
-    }
-  </ion-item>
+    </ion-item>
+    <ion-item-options side="start">
+      <ion-item-option (click)="showAccountInfo(acc, slideItem)">
+        <ion-icon slot="icon-only" name="information-circle" size="large"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
   }
   @if(!accounts?.length){
     <ion-label style="display: block;" class="ion-text-center text-14" color="danger">{{'no_accounts_available' | translate}}</ion-label>

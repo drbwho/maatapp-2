@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { TransactionsComponent } from '../transactions/transactions.component';
+import { AccountInfoComponent } from '../../../../component/account-info/account-info.component';
 
 @Component({
   selector: 'app-balance',
@@ -80,6 +81,20 @@ export class BalanceComponent  implements OnInit {
       }
       this.readTotals(account);
     }
+  }
+
+  async showAccountInfo(account, slideitem){
+    slideitem.close();
+    const modal = await this.modalCtrl.create({
+      component: AccountInfoComponent,
+      initialBreakpoint: 0.7,
+      breakpoints: [0, 0.7, 1],
+      componentProps: {'account': account, 'currency': this.country.currency},
+      cssClass: 'action-modal-sheet'
+    });
+    modal.present();
+
+    await modal.onWillDismiss();
   }
 
 }

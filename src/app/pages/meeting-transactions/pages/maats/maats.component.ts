@@ -5,6 +5,7 @@ import { OperationTools } from '../../../../providers/operation-tools';
 import { LoanInfoComponent } from '../../../../component/loan-info/loan-info.component';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';
+import { AccountInfoComponent } from '../../../../component/account-info/account-info.component';
 
 @Component({
   selector: 'app-maats',
@@ -104,7 +105,7 @@ export class MaatsComponent  implements OnInit {
         initialBreakpoint: 0.5,
         breakpoints: [0, 0.5, 0.7],
         handle: true,
-        cssClass: 'lang-modal-sheet'
+        cssClass: 'action-modal-sheet'
       });
       await modal.present();
 
@@ -144,6 +145,20 @@ export class MaatsComponent  implements OnInit {
       }
       this.readTotals();
     }
+  }
+
+  async showAccountInfo(account, slideitem){
+    slideitem.close();
+    const modal = await this.modalCtrl.create({
+      component: AccountInfoComponent,
+      initialBreakpoint: 0.7,
+      breakpoints: [0, 0.7, 1],
+      componentProps: {'account': account, 'currency': this.country.currency},
+      cssClass: 'action-modal-sheet'
+    });
+    modal.present();
+
+    await modal.onWillDismiss();
   }
 
 }

@@ -32,9 +32,34 @@
     <p><strong>{{completing}}</strong> {{'maats_completing' | translate}}</p>
   </div>
 
+ @if(show_details){
+    <div class="details-container ion-padding-top">
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'maats_received_total' | translate}}</span>
+        <span class="value">{{(group?.account?.balance ?? 0)| number: '.1'}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'maats_repayments_total' | translate}}</span>
+        <span class="value">{{(group?.account?.rembousements ?? 0)| number:'.1'}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'solidarity_contributed_total' | translate}}</span>
+        <span class="value">{{(group?.account?.sfcontribution ?? 0)| number:'.1'}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'solidarity_received_total' | translate}}</span>
+        <span class="value">{{(group?.account?.sfrembousements ?? 0)| number:'.1'}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'facilitator_payments_total' | translate}}</span>
+        <span class="value">{{(group?.account?.facilitatorpayments) | number:'.1'}} {{country?.currency}}</span>
+      </div>
+    </div>
+  }
+
   <div class="ion-text-center ion-margin-top">
-    <ion-button fill="clear" class="review-btn" routerLink="app">
-      {{'review_details' | translate}}
+    <ion-button fill="clear" class="review-btn" (click)="show_details = !show_details">
+      {{(show_details ? 'hide' : 'review_details') | translate}}
     </ion-button>
   </div>
 </ion-card>

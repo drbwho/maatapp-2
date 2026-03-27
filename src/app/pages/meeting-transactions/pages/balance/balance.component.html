@@ -20,16 +20,23 @@
 
 <ion-list lines="none" class="custom-card ion-margin">
   @for (acc of accounts; track acc.id) {
-  <ion-item>
-    <div slot="start" class="avatar-icon" [class.inactive]="!(acc.ecp > 0)">
-      <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
-    </div>
-    <ion-label class="ion-text-wrap" (click)="openAccountTransactions(acc)"><h5>{{ acc?.owner }}</h5></ion-label>
-    <ion-input slot="end" type="number" disabled [(ngModel)]="acc.ecp" placeholder="0" class="amount-input ion-no-padding"></ion-input>
-    <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
-      (click)="clear_amount(acc)"
-      [class.disabled]="!(acc.ecp > 0)">></ion-icon>
-  </ion-item>
+  <ion-item-sliding #slideItem>
+    <ion-item>
+      <div slot="start" class="avatar-icon" [class.inactive]="!(acc.ecp > 0)">
+        <ion-icon slot="start" src="assets/img/icons/feather.svg"></ion-icon>
+      </div>
+      <ion-label class="ion-text-wrap" (click)="openAccountTransactions(acc)"><h5>{{ acc?.owner }}</h5></ion-label>
+      <ion-input slot="end" type="number" disabled [(ngModel)]="acc.ecp" placeholder="0" class="amount-input ion-no-padding"></ion-input>
+      <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
+        (click)="clear_amount(acc)"
+        [class.disabled]="!(acc.ecp > 0)">></ion-icon>
+    </ion-item>
+    <ion-item-options side="start">
+      <ion-item-option (click)="showAccountInfo(acc, slideItem)">
+        <ion-icon slot="icon-only" name="information-circle" size="large"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
   }
   @if(!accounts?.length){
     <ion-label style="display: block;" class="ion-text-center text-14" color="danger">{{'no_accounts_available' | translate}}</ion-label>

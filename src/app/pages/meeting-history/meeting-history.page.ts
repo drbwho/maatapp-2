@@ -52,7 +52,7 @@ export class MeetingHistoryPage implements OnInit {
     this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);
 
     this.attendance = this.meeting.absences ? this.group.numberofmembers - this.meeting.absences.length : this.group.numberofmembers;
-    
+
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.country.parameters = data;
     });
@@ -116,7 +116,7 @@ export class MeetingHistoryPage implements OnInit {
         }
         // Calc meeting totals
         let account_totals = await this.operTools.estimate_meeting_totals(acc, this.meeting.id);
-        
+
         acc.missing_contribs = false;
         if(!account_totals.transactions.get('RCB') && parseFloat(this.group.settings.regcontribution) > 0){
           acc.missing_rcb = this.group.settings.regcontribution;
@@ -278,7 +278,7 @@ export class MeetingHistoryPage implements OnInit {
       initialBreakpoint: 0.5,
       breakpoints: [0, 0.5, 0.7],
       componentProps: {account: account, transactions: transactions, currency: this.country.currency},
-      cssClass: 'lang-modal-sheet'
+      cssClass: 'action-modal-sheet'
     });
     modal.present();
 

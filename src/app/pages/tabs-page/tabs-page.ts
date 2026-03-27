@@ -63,7 +63,7 @@ export class TabsPage {
       initialBreakpoint: 0.5,
       breakpoints: [0, 0.5, 0.6],
       handle: true,
-      cssClass: 'lang-modal-sheet'
+      cssClass: 'action-modal-sheet'
     });
     await modal.present();
   }

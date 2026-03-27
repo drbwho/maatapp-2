@@ -12,6 +12,7 @@ export class GroupSummaryComponent  implements OnInit {
   duetoday = 0;
   pending = 0;
   completing = 0;
+  show_details = false;
 
   constructor() { }
 

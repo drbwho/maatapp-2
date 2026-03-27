@@ -62,7 +62,7 @@ export class NewMeetingPage implements OnInit {
         initialBreakpoint: 0.3,
         breakpoints: [0, 0.3, 0.5],
         handle: true,
-        cssClass: 'lang-modal-sheet'
+        cssClass: 'action-modal-sheet'
       });
       await modal.present();
 
