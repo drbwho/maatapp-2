@@ -44,6 +44,7 @@ export class DataProvider {
   accounts: [];
   current: Current = {};
   networkStatus = false;
+  pageAction = null; // Pass parameters between pages
 
   constructor(
     public http: HttpClient,

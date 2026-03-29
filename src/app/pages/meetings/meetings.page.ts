@@ -13,6 +13,7 @@ import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { UserData } from '../../providers/user-data';
+import { Events } from '../../providers/events';
 
 @Component({
   selector: 'app-meetings',
@@ -40,23 +41,23 @@ export class MeetingsPage implements OnInit {
     private userData: UserData,
     private storage: Storage,
     private config: ConfigData,
-    private platform: Platform
+    private platform: Platform,
+    private events: Events
   ) { }
 
   async ngOnInit() {
     this.user = await this.userData.getUser();
+    // callback from meeting-transactions
+    this.events.subscribe('page:load', ()=>{
+      if(this.dataProvider.pageAction == 'close-meeting'){
+        this.dataProvider.pageAction = null;
+        this.show_action_view(null, 'upload-close');
+      }
+    })
   }
 
   ionViewWillEnter(){
-    this.load_currents().then(()=>{
-      // has action?
-      const path = this.route.snapshot.pathFromRoot
-        .map(v => v.url.map(segment => segment.path).join('/'))
-        .join('/');
-      if (path.includes('close')) {
-        this.show_action_view(null, 'upload-close');
-      }
-    });
+    this.load_currents();
   }
 
   async load_currents(){

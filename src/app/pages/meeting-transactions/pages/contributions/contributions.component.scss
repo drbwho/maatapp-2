@@ -191,9 +191,14 @@ ion-toggle {
   --background-checked: #7378c5;
 }
 
+.custom-badge-container {
+  min-width: 55px;
+  margin-inline-start: 5px;
+}
+
 .custom-badge {
   display: flex; flex-direction: column; align-items: center;
-  justify-content: center; border-radius: 12px; padding: 4px 12px; min-width: 60px;
+  justify-content: center; border-radius: 12px; padding: 4px 10px; min-width: 55px;
 
   .val { font-weight: 500; }
   .lab { font-weight: 500; }

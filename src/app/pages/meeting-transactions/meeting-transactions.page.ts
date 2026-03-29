@@ -14,9 +14,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ContributionsComponent } from './pages/contributions/contributions.component';
 import { BalanceComponent } from './pages/balance/balance.component';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AutofitService } from '../../directives/auto-fit-text.service';
+import { Events } from '../../providers/events';
 
 @Component({
   selector: 'app-meeting-transactions',
@@ -58,7 +59,7 @@ export class MeetingTransactionsPage implements OnInit {
       5: {component: MaatsComponent, button: 'final_settlement'},
       6: {component: SettlementComponent, button: 'our_group'},
       7: {component: GroupReviewComponent, button: 'continue'},
-      8: {component: EndComponent, button: 'close_meeting', action: '/app/tabs/meetings/close'}
+      8: {component: EndComponent, button: 'close_meeting', action: '/app/tabs/meetings', load: 'close-meeting'}
     };
 
   constructor(
@@ -67,7 +68,8 @@ export class MeetingTransactionsPage implements OnInit {
     private translate: TranslateService,
     private router: Router,
     private platform: Platform,
-    private autoFit: AutofitService
+    private autoFit: AutofitService,
+    private events: Events
   ) {
     const navigation = this.router.currentNavigation();
     this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString();
@@ -78,6 +80,10 @@ export class MeetingTransactionsPage implements OnInit {
     this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(99, () => {
       this.previousPage();
     });
+  }
+
+  ionViewWillLeave(){
+    this.resetPageIndex();
   }
 
   async ionViewWillEnter(){
@@ -110,6 +116,12 @@ export class MeetingTransactionsPage implements OnInit {
     this.router.navigate(['/app/tabs/dashboard'], {state: {direction: 'root'}});
   }
 
+  // reset page index on exit and load first action component for future views
+  resetPageIndex(){
+    this.pageIndex=0; 
+    this.transactionsPageComponent = this.componentMap[1].component;
+  }
+
   nextPage(){
     this.pageIndex++;
     this.gotoPage();
@@ -135,7 +147,12 @@ export class MeetingTransactionsPage implements OnInit {
     if(this.pageIndex > 2 && this.componentMap[this.pageIndex-1].action != undefined){
       this.dataProvider.current.meeting = this.meeting;
       this.dataProvider.setCurrent(this.dataProvider.current).then(()=>{
+        if(this.componentMap[this.pageIndex-1].load){
+          this.events.publish('page:load', true); //trigger target page for changes
+          this.dataProvider.pageAction = this.componentMap[this.pageIndex-1].load;
+        }
         this.router.navigate([this.componentMap[this.pageIndex-1].action], {state: {direction: 'root'}});
+        this.resetPageIndex();
       });
       return;
     }
