@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
@@ -13,7 +13,6 @@ import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { UserData } from '../../providers/user-data';
-import { Events } from '../../providers/events';
 
 @Component({
   selector: 'app-meetings',
@@ -41,19 +40,18 @@ export class MeetingsPage implements OnInit {
     private userData: UserData,
     private storage: Storage,
     private config: ConfigData,
-    private platform: Platform,
-    private events: Events
+    private platform: Platform
   ) { }
 
   async ngOnInit() {
     this.user = await this.userData.getUser();
-    // callback from meeting-transactions
-    this.events.subscribe('page:load', ()=>{
+
+    this.route.url.subscribe(() => {
       if(this.dataProvider.pageAction == 'close-meeting'){
         this.dataProvider.pageAction = null;
         this.show_action_view(null, 'upload-close');
       }
-    })
+    });
   }
 
   ionViewWillEnter(){

@@ -17,7 +17,6 @@ import { Router } from '@angular/router';
 import { NavController, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AutofitService } from '../../directives/auto-fit-text.service';
-import { Events } from '../../providers/events';
 
 @Component({
   selector: 'app-meeting-transactions',
@@ -59,7 +58,7 @@ export class MeetingTransactionsPage implements OnInit {
       5: {component: MaatsComponent, button: 'final_settlement'},
       6: {component: SettlementComponent, button: 'our_group'},
       7: {component: GroupReviewComponent, button: 'continue'},
-      8: {component: EndComponent, button: 'close_meeting', action: '/app/tabs/meetings', load: 'close-meeting'}
+      8: {component: EndComponent, button: 'continue', action: '/app/tabs/meetings', load: 'close-meeting'}
     };
 
   constructor(
@@ -68,8 +67,7 @@ export class MeetingTransactionsPage implements OnInit {
     private translate: TranslateService,
     private router: Router,
     private platform: Platform,
-    private autoFit: AutofitService,
-    private events: Events
+    private autoFit: AutofitService
   ) {
     const navigation = this.router.currentNavigation();
     this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString();
@@ -148,7 +146,6 @@ export class MeetingTransactionsPage implements OnInit {
       this.dataProvider.current.meeting = this.meeting;
       this.dataProvider.setCurrent(this.dataProvider.current).then(()=>{
         if(this.componentMap[this.pageIndex-1].load){
-          this.events.publish('page:load', true); //trigger target page for changes
           this.dataProvider.pageAction = this.componentMap[this.pageIndex-1].load;
         }
         this.router.navigate([this.componentMap[this.pageIndex-1].action], {state: {direction: 'root'}});
