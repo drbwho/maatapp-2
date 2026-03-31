@@ -511,6 +511,11 @@ export class OperationTools {
   */
   check_operation(account, group, transaction){
     return new Promise(async (resolve)=>{
+      if(transaction.amount < 0){
+        this.translate.get('amounts_cannot_be_negative').subscribe((key)=>{
+          resolve({'status': 'error', 'message': key})
+        })
+      }
       let params = await this.storage.get(this.config.GET_FILE('params'));
       let pcode = (params.find((s) => s.id == transaction.idparameter)).code;
       let group_account = await this.storage.get(this.config.GET_FILE('accounts'));

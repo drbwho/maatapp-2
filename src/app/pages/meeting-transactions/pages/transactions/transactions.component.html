@@ -139,7 +139,7 @@
         <p class="ion-no-margin">{{'maat_available' | translate}}: {{account?.creditdisponible | number:'.0'}} {{country.currency}}</p>
       }
       @if(param_error[parameter?.id]){
-        <p><ion-note color="danger" class="text-12">{{'error' | translate}}: {{param_error[parameter?.id]}}</ion-note></p>
+        <p class="error-note"><ion-note color="danger" class="text-12">{{'error' | translate}}: {{param_error[parameter?.id]}}</ion-note></p>
       }
     </ion-label>
     @if(showdefault){

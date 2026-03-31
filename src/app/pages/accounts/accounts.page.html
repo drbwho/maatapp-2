@@ -28,17 +28,20 @@
 
 <ion-content class="">
 
-  <div class="summary-card ion-padding ion-margin">
-    <h3 class="serif-text ion-no-margin">{{'group_summary' | translate}}</h3>
+  <div class="summary-card ion-padding ion-margin" (click)="showAccountInfo($event, group?.account)">
+    <h3 class="serif-text ion-no-margin">
+      {{'group_summary' | translate}}
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </h3>
 
     <ion-grid class="ion-no-padding ion-margin-top">
       <ion-row>
         <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">{{ pf(group?.totals.balance) | number:'.0'}}</h1>
+          <h1 class="stat-value ion-no-margin">{{ pf(group?.account?.balance) | number:'.0'}}</h1>
           <p class="stat-label text-12">{{'total_group_fund' | translate}}</p>
         </ion-col>
         <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">{{ group?.totals.restearembourser | number:'.0' }}</h1>
+          <h1 class="stat-value ion-no-margin">{{ group?.account?.restearembourser | number:'.0' }}</h1>
           <p class="stat-label text-12">{{'total_outstanding_maats' | translate}}</p>
         </ion-col>
         <ion-col class="ion-text-center">

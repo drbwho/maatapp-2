@@ -53,6 +53,8 @@ $text-muted: #8a8a8a;
       font-size: 20px;
       font-weight: 400;
       flex: 1;
+      display: flex;
+      align-items: center;
     }
     .avatar-box {
       flex-shrink: 0;

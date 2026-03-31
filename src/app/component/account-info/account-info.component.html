@@ -28,17 +28,21 @@
         <ion-row>
           <ion-col size="8"><ion-icon src="assets/img/icons/transactions/feather.svg" color="primary"></ion-icon><strong> {{'loans' | translate}}:</strong></ion-col><ion-col class="ion-text-end"><ion-text>{{account.emprunts | number:'.2'}}</ion-text></ion-col>
         </ion-row>
+        @if(account.type == 1){
         <ion-row>
           <ion-col size="8">{{'open_loans' | translate}}:</ion-col>
           <ion-col class="ion-text-end"><ion-text [color]="account.openloans > 0 ? 'danger' : ''"><strong>{{account.openloans}}</strong></ion-text></ion-col>
-        </ion-row>   
+        </ion-row>
+        }
         @if (account.restearembourser > 0) {
           <ion-row>
-            <ion-col size="6" class="ion-padding-start">-- {{'due_date' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''">{{account.dateecheance}}</ion-text></ion-col>
+            @if(account.type == 1){
+              <ion-col size="6" class="ion-padding-start">-- {{'due_date' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''">{{account.dateecheance}}</ion-text></ion-col>
+            }
             <ion-col size="8" class="ion-padding-start">-- {{'still_to_be_paid_today' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="loans_expired ? 'danger': ''"><strong>{{account.restearembourser | number:'.2'}}</strong></ion-text></ion-col>
           </ion-row>
         }
-        @if (account.restearembourser > 0 && !loans_expired) {
+        @if (account.restearembourser > 0 && !loans_expired && account.type == 1) {
           <ion-row>
             <ion-col size="8" class="ion-padding-start">-- {{'still_to_be_paid_due_date' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="primary"><strong>{{account.finalrefund | number:'.2'}}</strong></ion-text></ion-col>
           </ion-row>
@@ -66,17 +70,23 @@
         </ion-row>
           @if (account.sfemprunts > 0) {
           <ion-row>
-            <ion-col size="6" class="ion-padding-start">-- {{'due_date' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="sfloans_expired ? 'danger': ''">{{account.sfdateecheance}}</ion-text></ion-col>
+            @if(account.type == 1){
+              <ion-col size="6" class="ion-padding-start">-- {{'due_date' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="sfloans_expired ? 'danger': ''">{{account.sfdateecheance}}</ion-text></ion-col>
+            }
             <ion-col size="8" class="ion-padding-start">-- SF {{'still_to_be_paid' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="sfloans_expired ? 'danger': ''"><strong>{{account.sfrestearembourser | number:'.2'}}</strong></ion-text></ion-col>
           </ion-row>
           }
+          @if(account.type == 1){
           <ion-row>
             <ion-col size="8">{{'open_SF_loans' | translate}}:</ion-col>
             <ion-col class="ion-text-end"><ion-text [color]="account.sfopenloans > 0 ? 'danger' : ''"><strong>{{account.sfopenloans}}</strong></ion-text></ion-col>
           </ion-row>
+          }
         </ion-grid>
     </ion-card-content>
   </ion-card>
+
+  @if(account.type == 1){
   <ion-card>
     <ion-card-content>
       <ion-grid>
@@ -92,7 +102,8 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
-
+  }
+  
   <div class="ion-text-center">
     <ion-button fill="clear" class="review-btn" (click)="show_details = !show_details">
       {{(show_details ? 'hide' : 'review_details') | translate}}

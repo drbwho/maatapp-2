@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
  import { OperationTools } from '../../../../providers/operation-tools';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';
+import { ModalController } from '@ionic/angular';
+import { AccountInfoComponent } from '../../../../component/account-info/account-info.component';
 
 @Component({
   selector: 'app-group-review',
@@ -26,7 +28,8 @@ export class GroupReviewComponent  implements OnInit {
   constructor(
     private operTools: OperationTools,
     private storage: Storage,
-    private config: ConfigData
+    private config: ConfigData,
+    private modalCtrl: ModalController
   ) { }
 
   async ngOnInit() {
@@ -65,5 +68,18 @@ export class GroupReviewComponent  implements OnInit {
       this.meeting.id, this.group.account, this.group, parameterId, paramname, this.amount[parameterId], "", "");
     this.meeting.totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id)
   }
+
+  async showAccountInfo(){
+    const modal = await this.modalCtrl.create({
+      component: AccountInfoComponent,
+      initialBreakpoint: 0.7,
+      breakpoints: [0, 0.7, 1],
+      componentProps: {'account': this.group.account, 'currency': this.country.currency},
+      cssClass: 'action-modal-sheet'
+    });
+    modal.present();
+
+    await modal.onWillDismiss();
+  }  
 
 }

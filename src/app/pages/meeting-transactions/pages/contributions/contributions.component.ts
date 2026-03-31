@@ -82,6 +82,7 @@ export class ContributionsComponent  implements OnInit {
       if(account){
         // treat specific account
         if(account.selected){
+          amount += this.has_contributions_dues(account, prm);
           result = await this.operationTools.newOperation(
               this.meeting.id, account, this.group, prm.id, prm.name, amount, categories, notes);
           if(result.status != 'success'){
@@ -94,8 +95,9 @@ export class ContributionsComponent  implements OnInit {
         for (const acc of this.accounts){
           if(acc.selected){
             // add contributions for selected accounts
+            let amnt = amount + this.has_contributions_dues(acc, prm);
             result = await this.operationTools.newOperation(
-                this.meeting.id, acc, this.group, prm.id, prm.name, amount, categories, notes);
+                this.meeting.id, acc, this.group, prm.id, prm.name, amnt, categories, notes);
             if(result.status != 'success'){
               this.operationTools.show_alert(acc.owner +': '+ result.message);
             }
@@ -107,6 +109,17 @@ export class ContributionsComponent  implements OnInit {
       };
     }
     this.readTotals();
+  }
+
+  has_contributions_dues(account, prm):any {
+    if(account.due_reg && prm.code == 'RCB'){
+      return parseFloat(account.due_reg);
+    }else if(account.due_sf && prm.code == 'AID'){
+      return parseFloat(account.due_sf);
+    }else if(account.due_facp && prm.code == 'AST'){
+      return parseFloat(account.due_facp);
+    }
+    return 0;
   }
 
   async openAccountTransactions(account: any){

@@ -47,7 +47,7 @@ export class TransactionsComponent  implements OnInit {
       if(this.operTools.contrib_operations.includes(p.code)){
         let amount = parseFloat(this.group.settings[this.operTools.map_default_to_settings[p.code]]);
         if(amount){
-          p.default = amount;
+          p.default = amount + this.has_contributions_dues(this.account, p);
         }else{
           p.default = 0;
         }
@@ -85,8 +85,20 @@ export class TransactionsComponent  implements OnInit {
     }
   }
 
+  has_contributions_dues(account, prm):any {
+    if(account.due_reg && prm.code == 'RCB'){
+      return parseFloat(account.due_reg);
+    }else if(account.due_sf && prm.code == 'AID'){
+      return parseFloat(account.due_sf);
+    }else if(account.due_facp && prm.code == 'AST'){
+      return parseFloat(account.due_facp);
+    }
+    return 0;
+  }
+
   clear_amount(parameterId: string){
     delete(this.amount[parameterId]);
+    delete(this.param_error[parameterId]);
   }
 
   async dismiss(returndata = false){

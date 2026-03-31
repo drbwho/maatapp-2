@@ -56,10 +56,10 @@ export class AccountsPage implements OnInit {
     this.show_progress();
   }
 
-
   load_accounts(){
     this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
       this.allaccounts = data.filter((s)=> s.statut == 0 && s.type == 1); //active accounts & member acounts
+      this.group.account = data.find((s)=> s.idowner == this.group.id);
 
       // load pending transactions for each account
       this.allaccounts.forEach(async (acc) => {
@@ -154,7 +154,6 @@ export class AccountsPage implements OnInit {
       await alert.present();
     });
   }
-
 
   async showAccountInfo(event: Event, account){
     //prevent ion-item click
