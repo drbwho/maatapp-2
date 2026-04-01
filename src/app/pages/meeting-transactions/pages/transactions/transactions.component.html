@@ -26,9 +26,9 @@
   <div class="owner-container">
     <h2 class="ion-margin-start">{{account?.owner}}</h2>
     @if(pf(account?.creditdisponible)){
-    <ion-badge class="success text-12">{{'maat_available' | translate}}</ion-badge>
+    <ion-badge class="success text-12">{{'maats_available' | translate}}</ion-badge>
     }@else{
-    <ion-badge class="alert text-12">{{'maat_unavailable' | translate}}</ion-badge>
+    <ion-badge class="alert text-12">{{'maats_unavailable' | translate}}</ion-badge>
     }
   </div>
   <ion-card class="summary-card ion-margin ion-padding">
@@ -136,7 +136,7 @@
     <ion-label class="ion-text-wrap">
       <h5>{{ parameter?.name }}</h5>
       @if(parameter?.code == 'EMP'){
-        <p class="ion-no-margin">{{'maat_available' | translate}}: {{account?.creditdisponible | number:'.0'}} {{country.currency}}</p>
+        <p class="ion-no-margin">{{'maats_available' | translate}}: {{account?.creditdisponible | number:'.0'}} {{country.currency}}</p>
       }
       @if(param_error[parameter?.id]){
         <p class="error-note"><ion-note color="danger" class="text-12">{{'error' | translate}}: {{param_error[parameter?.id]}}</ion-note></p>
