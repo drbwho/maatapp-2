@@ -10,11 +10,11 @@
     <ion-row>
       <ion-col size="4" class="ion-text-center stat-col">
         <div appAutofitText autofitGroup="summaryRowSummary" class="stat-value">{{group?.totals?.balance | number:'.0'}}</div>
-        <div class="stat-label primary ion-padding-horizontal">{{'total_group_fund' | translate}}</div>
+        <div class="stat-label primary">{{'total_group_fund' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center stat-col">
         <div appAutofitText autofitGroup="summaryRowSummary" class="stat-value secondary">{{group?.totals?.restearembourser | number:'.0'}}</div>
-        <div class="stat-label ion-padding-horizontal">{{'amount_active_maats' | translate}}</div>
+        <div class="stat-label">{{'amount_active_maats' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center stat-col">
         <div appAutofitText autofitGroup="summaryRowSummary" class="stat-value secondary">{{ group?.numloans }}</div>
@@ -41,6 +41,10 @@
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'maats_repayments_total' | translate}}</span>
         <span class="value">{{(group?.account?.rembousements ?? 0)| number:'.1'}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'maats_requests' | translate}}</span>
+        <span class="value">{{(group?.account?.besoinsliquidite) | number:'.1'}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'solidarity_contributed_total' | translate}}</span>

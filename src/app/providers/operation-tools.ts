@@ -20,7 +20,7 @@ export class OperationTools {
   public debit_operations = ['RCP', 'EMP', 'SFEMP', 'AIN', 'CFS'];
   public contrib_operations = ['RCB','AID','AST'];
   public group_operations = ['PCO', 'AIN', 'CFS', 'SFND', 'ECPM', 'RCPM', 'REMM', 'EMPM'];
-  public map_default_to_settings = {
+  public map_default_to_settings: Record<string, string> = {
     'RCB': 'regcontribution',
     'AID': 'regsfcontribution',
     'AST': 'regfacilpayment',
@@ -255,6 +255,7 @@ export class OperationTools {
           let index = newmeetings.findIndex(s => s.id == meeting.id);
           newmeetings.splice(index, 1);//remove element from array
           this.storage.set(this.config.NEWMEETINS_FILE, newmeetings);
+          meeting.pending = false; //update meeting pending status
         })
       }
     }
@@ -305,7 +306,6 @@ export class OperationTools {
       }
       //Close meeting after succesfully uploading transactions
       if(meeting.endedat){
-        meeting.pending = false;
         await this.dataProvider.closeMeeting(meeting);
       }
       resolve(res);

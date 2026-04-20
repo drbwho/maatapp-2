@@ -1,5 +1,6 @@
 import { Directive, ElementRef, AfterViewInit, Renderer2, Input } from '@angular/core';
 import { AutofitService } from './auto-fit-text.service';
+import { RendererStyleFlags2 } from '@angular/core';
 
 @Directive({
     selector: '[appAutofitText]',
@@ -63,13 +64,13 @@ export class AutofitTextDirective implements AfterViewInit {
 
       while (el.scrollWidth > el.offsetWidth && fontSize > 8) {
         fontSize -= 0.5;
-        this.renderer.setStyle(el, 'font-size', `${fontSize}px`);
+        this.renderer.setStyle(el, 'font-size', `${fontSize}px`, RendererStyleFlags2.Important);
       }
 
       this.autofitService.updateMinSize(this.autofitGroup, fontSize);
 
       this.autofitService.getGroup(this.autofitGroup, initialSize).subscribe(minSize => {
-        this.renderer.setStyle(el, 'font-size', `${minSize}px`);
+        this.renderer.setStyle(el, 'font-size', `${minSize}px`, RendererStyleFlags2.Important);
       });
     }, 100);
   }

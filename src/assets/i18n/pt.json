@@ -25,6 +25,8 @@
   "cancel": "Cancelar",
   "meeting": "Reunião",
   "meetings": "Reuniões",
+  "introduction": "Introdução",
+  "change_profile_photo": "Alterar foto do perfil",
   "info": "Informação",
   "confirmation": "Confirmação",
   "confirm": "Confirmar",
@@ -127,6 +129,7 @@
   "final_settlement": "Liquidação final",
   "total_to_payout": "Total a pagar",
   "net_cash_change": "Mudança líquida de dinheiro",
+  "amount_active_maats": "Valor dos maats ativos",
   "last_activity": "Última atividade",
   "maats_given": "Maats dados",
   "due_next_week": "Vencimento na próxima semana",
@@ -134,7 +137,7 @@
   "our_group": "Nosso Grupo",
   "active_maats": "Maats ativos",
   "overdue_amount": "Valor em atraso",
-  "overdue_regular_contribution": "Contribuição regular em atraso",
+  "overdue_contributions": "Contribuições em atraso",
   "reimbursement_today": "Reembolso hoje",
   "new_maat": "Novo Maat",
   "maats_available": "Maats disponível",
@@ -197,6 +200,9 @@
   "see_more": "Ver mais",
   "hide": "Ocultar",
   "return": "Voltar",
+  "select_profile_picture": "Selecionar foto do perfil",
+  "camera": "Da câmera",
+  "photo_collection": "Da coleção de fotos",
   "intro": {
     "page-1": {
       "title": "Bem-vindo ao MA'AT",
@@ -253,7 +259,7 @@
     "meetings": {
       "intro": "Este espaço ajuda você a revisar as contas dos membros. As transações são registradas juntas durante as reuniões de grupo.",
       "new-meeting-intro": "Restam apenas algumas etapas finais. Defina o local e as datas da reunião para avançar.",
-      "added_since_the_meeting": "adicionado desde a reunião",
+      "added_at_the_meeting": "adicionado na reunião",
       "new-meeting": {
         "heading": "Bem-vindo à reunião de hoje",
         "description": "Você revisará as contribuições e transações juntos com o grupo.",

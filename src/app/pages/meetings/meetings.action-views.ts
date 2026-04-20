@@ -1,5 +1,4 @@
 import { Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 import { ActionViewComponent } from '../../component/action-view/action-view.component';
 import { ModalController } from '@ionic/angular';

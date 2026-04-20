@@ -56,7 +56,7 @@
       </div>
       <ion-label class="text-16" (click)="openAccountTransactions(acc)">
         {{ acc.owner }}
-        @if(acc.due){
+        @if(acc.due > 0){
           <p class="error-note text-12">{{'overdue_contributions' | translate}}</p>
         }
       </ion-label>

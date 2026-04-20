@@ -32,7 +32,7 @@ export class ContributionsComponent  implements OnInit {
 
   async ngOnInit() {
     this.numberofmembers = this.group.numberofmembers;
-    this.accounts = this.accounts.filter(m => m.isPresent);
+    this.accounts = this.accounts.filter((m:any) => m.isPresent);
     this.attendance = this.accounts.length;
     this.resetTotals();
     await this.readTotals();
@@ -43,7 +43,7 @@ export class ContributionsComponent  implements OnInit {
   }
 
   onSelectAllChange() {
-    this.accounts.forEach(acc => acc.selected = this.selectAll);
+    this.accounts.forEach((acc:any) => acc.selected = this.selectAll);
     this.submit_contrib_operations();
   }
 
@@ -63,7 +63,7 @@ export class ContributionsComponent  implements OnInit {
       + this.meetingTotals.transactions.get('AID')
       + this.meetingTotals.transactions.get('AST') > 0 ? true : false;
 
-    this.accounts.forEach(async acc => {
+    this.accounts.forEach(async (acc:any) => {
       acc.totals = await this.operationTools.estimate_meeting_totals(acc, this.meeting.id);
     });
   }
@@ -71,7 +71,7 @@ export class ContributionsComponent  implements OnInit {
 
   async submit_contrib_operations(account:any = null){
     let contribs = this.operationTools.contrib_operations;
-    let params = this.parameters.filter(p => contribs.includes(p.code));
+    let params = this.parameters.filter((p: any) => contribs.includes(p.code));
     let amount = 0;
     let categories=""; let notes="";
     this.resetTotals();
@@ -83,6 +83,7 @@ export class ContributionsComponent  implements OnInit {
         // treat specific account
         if(account.selected){
           amount += this.has_contributions_dues(account, prm);
+          amount < 0 ? amount = 0 : null;
           result = await this.operationTools.newOperation(
               this.meeting.id, account, this.group, prm.id, prm.name, amount, categories, notes);
           if(result.status != 'success'){
@@ -96,6 +97,7 @@ export class ContributionsComponent  implements OnInit {
           if(acc.selected){
             // add contributions for selected accounts
             let amnt = amount + this.has_contributions_dues(acc, prm);
+            amnt < 0 ? amnt = 0 : null;
             result = await this.operationTools.newOperation(
                 this.meeting.id, acc, this.group, prm.id, prm.name, amnt, categories, notes);
             if(result.status != 'success'){
@@ -111,7 +113,7 @@ export class ContributionsComponent  implements OnInit {
     this.readTotals();
   }
 
-  has_contributions_dues(account, prm):any {
+  has_contributions_dues(account: any, prm: any):any {
     if(account.due_reg && prm.code == 'RCB'){
       return parseFloat(account.due_reg);
     }else if(account.due_sf && prm.code == 'AID'){

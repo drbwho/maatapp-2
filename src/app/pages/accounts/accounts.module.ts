@@ -12,6 +12,7 @@ import { AccountsPage } from './accounts.page';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { AutoFitTextModule } from '../../directives/auto-fit-text.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader();
@@ -29,7 +30,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    AutoFitTextModule
   ],
   declarations: [AccountsPage]
 })

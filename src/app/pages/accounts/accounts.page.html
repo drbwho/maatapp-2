@@ -36,16 +36,16 @@
 
     <ion-grid class="ion-no-padding ion-margin-top">
       <ion-row>
-        <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">{{ pf(group?.account?.balance) | number:'.0'}}</h1>
+        <ion-col size="4" class="ion-text-center stat-col">
+          <h1 appAutofitText autofitGroup="accountGroupTotals" class="stat-value ion-no-margin">{{ pf(group?.account?.balance) | number:'.0'}}</h1>
           <p class="stat-label text-12">{{'total_group_fund' | translate}}</p>
         </ion-col>
-        <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">{{ group?.account?.restearembourser | number:'.0' }}</h1>
+        <ion-col size="4" class="ion-text-center stat-col">
+          <h1 appAutofitText autofitGroup="accountGroupTotals" class="stat-value ion-no-margin">{{ group?.account?.restearembourser | number:'.0' }}</h1>
           <p class="stat-label text-12">{{'total_outstanding_maats' | translate}}</p>
         </ion-col>
-        <ion-col class="ion-text-center">
-          <h1 class="stat-value ion-no-margin">{{ group?.numloans }}</h1>
+        <ion-col size="4" class="ion-text-center stat-col">
+          <h1 appAutofitText autofitGroup="accountGroupTotals" class="stat-value ion-no-margin">{{ group?.numloans }}</h1>
           <p class="stat-label text-12">{{'number_of_active_maats' | translate}}</p>
         </ion-col>
       </ion-row>
@@ -98,7 +98,7 @@
                 @if (pf(account?.balance) > 0) {
                 <div class="custom-badge balance-badge">
                   <span class="val text-16">{{ account.balance | number:'.0' }}</span>
-                  <span class="lab text-12">Balance</span>
+                  <span class="lab text-12">{{'balance' | translate}}</span>
                 </div>
                 }
               </div>

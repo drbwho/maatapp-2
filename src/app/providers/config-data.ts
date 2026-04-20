@@ -91,6 +91,11 @@ export class ConfigData {
      code: "pt",
      title: "Português",
      iso_code: "pt-PT"
+    },
+    {
+     code: "zh",
+     title: "中国人",
+     iso_code: "zh-CN"
     }
   ];
 

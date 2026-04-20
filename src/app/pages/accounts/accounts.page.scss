@@ -71,6 +71,23 @@
   }
 }
 
+//----------------------
+.stat-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 5px;
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  white-space: nowrap !important;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 10px;
+}
+
 /* Member Item Styling */
 .member-item {
   --padding-start: 12px;
@@ -97,7 +114,7 @@
       padding: 3px 10px 3px 7px;
       border-radius: 10px;
     }
-}
+  }
 
   .warning-text {
     font-size: 11px !important; display: flex; align-items: normal; gap: 4px;

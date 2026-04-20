@@ -111,7 +111,9 @@ export class MeetingsPage implements OnInit {
             text: keys['close_meeting'],
             icon: 'pause',
             handler: () => {
-              this.show_action_view(meeting, 'upload-close');
+              this.show_action_view(meeting, 'upload-close').then(()=>{
+                this.load_currents();
+              });
             },
           });
         }

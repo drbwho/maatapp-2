@@ -143,7 +143,7 @@
       }
     </ion-label>
     @if(showdefault){
-      @if(amount[parameter?.id] > 0){
+      @if(amount[parameter?.id] > 0 || placeholder == 0){
       <ion-icon name="checkmark-sharp" slot="end" size="small" color="medium" class="ion-no-margin"></ion-icon>
       }@else {
       <ion-icon name="checkmark-circle-sharp" slot="end" size="small" color="primary" class="ion-no-margin"

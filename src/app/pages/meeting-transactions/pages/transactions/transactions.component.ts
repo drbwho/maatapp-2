@@ -30,7 +30,6 @@ export class TransactionsComponent  implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private dataProvider: DataProvider,
     private operTools: OperationTools,
     private storage: Storage,
     private config: ConfigData
@@ -39,15 +38,16 @@ export class TransactionsComponent  implements OnInit {
   ngOnInit() {
     this.tr_icons = this.operTools.tr_icons;
     var account_type = this.account.type;
-    this.parameters = this.country.parameters.filter((s) => (account_type == 1 ? s.type == 1 : s.type == 2)); //paysants/group operations
+    this.parameters = this.country.parameters.filter((s:any) => (account_type == 1 ? s.type == 1 : s.type == 2)); //paysants/group operations
      //this.fsparameters = data.filter((s) => s.type == 3); //solidarity operations
     // default contribs
-    this.parameters.forEach(p => {
+    this.parameters.forEach((p:any) => {
       p.showdefault = false;
       if(this.operTools.contrib_operations.includes(p.code)){
         let amount = parseFloat(this.group.settings[this.operTools.map_default_to_settings[p.code]]);
         if(amount){
           p.default = amount + this.has_contributions_dues(this.account, p);
+          p.default < 0 ? p.default = 0 : null; // value cannot be negative
         }else{
           p.default = 0;
         }
@@ -58,9 +58,9 @@ export class TransactionsComponent  implements OnInit {
       //load account's pending operations
       this.storage.get(this.config.TRANSACTIONS_FILE).then((trns)=>{
         if(trns){
-          let transactions = trns.filter((s)=> s.idaccount == this.account.id && s.idmeeting == this.meeting.id);
+          let transactions = trns.filter((s:any)=> s.idaccount == this.account.id && s.idmeeting == this.meeting.id);
           if(transactions){
-            transactions.forEach((tr)=>{
+            transactions.forEach((tr:any)=>{
               this.amount[tr.idparameter] = tr.amount;
               //if(tr.categories.length){
               //  this.loan_info.categories = tr.categories;
@@ -85,7 +85,7 @@ export class TransactionsComponent  implements OnInit {
     }
   }
 
-  has_contributions_dues(account, prm):any {
+  has_contributions_dues(account:any, prm:any):any {
     if(account.due_reg && prm.code == 'RCB'){
       return parseFloat(account.due_reg);
     }else if(account.due_sf && prm.code == 'AID'){
@@ -97,8 +97,8 @@ export class TransactionsComponent  implements OnInit {
   }
 
   clear_amount(parameterId: string){
-    delete(this.amount[parameterId]);
-    delete(this.param_error[parameterId]);
+    delete(this.amount[parameterId as keyof typeof this.amount]);
+    delete(this.param_error[parameterId as keyof typeof this.param_error]);
   }
 
   async dismiss(returndata = false){
@@ -114,7 +114,7 @@ export class TransactionsComponent  implements OnInit {
   async check_operations(){
     let check = true;
     for (const [parameterId, amount] of Object.entries(this.amount)) {
-      let param = this.parameters.find(p => p.id == parameterId);
+      let param = this.parameters.find((p:any) => p.id == parameterId);
       let tr: Transaction = {
         idmeeting: this.meeting.id,
         idaccount: this.account.id,

@@ -12,5 +12,9 @@
     "target": "ES2022",
     "useDefineForClassFields": false,
     "skipLibCheck": true,
+    //Disable errors in editor
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "strict": false
   }
 }
