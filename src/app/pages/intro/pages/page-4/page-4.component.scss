@@ -1,13 +1,13 @@
 ion-text {
     h2 {
         font-weight: 400;
-        margin-top: 130px;
+        margin-top: 260px;
     }
 }
 
 .arrow {
   height: 116px;
-  margin-left: 140px;
+  margin-left: 160px;
   margin-bottom: -60px;
   position: relative;
   z-index: 1000;
@@ -15,7 +15,7 @@ ion-text {
 
 .fund-item {
   --background: url('/assets/img/intro/feather-white.png') no-repeat right 10px center / contain;
-  background-color: #e9f5f2; 
+  background-color: #F3EFE9; 
   --min-height: 110px;
 
   ion-label {
@@ -25,7 +25,7 @@ ion-text {
   }
 
   .fund-label {
-    color: #3b5a54; 
+    color: #6B4B1B; 
     margin-bottom: 40px;
     font-family: var(--app-font-serif); 
   }
@@ -37,14 +37,14 @@ ion-text {
   }
 
   .amount {
-    color: #1a746b; 
+    color: #6B4B1B; 
     font-size: 2.8rem;
     font-weight: 500;
     line-height: 1;
   }
 
   .currency {
-    color: #1a746b;
+    color: #6B4B1B;
     font-size: 1rem;
     font-weight: 600;
     padding-bottom: 6px;
