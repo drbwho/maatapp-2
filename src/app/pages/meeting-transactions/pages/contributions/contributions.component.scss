@@ -211,3 +211,31 @@ ion-toggle {
 .error-note {
   line-height: 1em;
 }
+
+.pulse-item {
+  --background: transparent !important;
+  --background-focused: transparent !important;
+  --background-hover: transparent !important;
+  --background-activated: transparent !important;
+  
+  border-radius: 20px;
+}
+
+.pulse-item::part(native) {
+  border-radius: 20px !important;
+  overflow: hidden;
+  
+  animation: softGrayPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes softGrayPulse {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #c6c9fd; 
+  }
+  100% {
+    background-color: transparent;
+  }
+}

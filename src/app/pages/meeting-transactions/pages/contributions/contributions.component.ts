@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { IonItemSliding, ModalController } from '@ionic/angular';
+
 import { DataProvider } from '../../../../providers/provider-data';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { TransactionsComponent } from '../transactions/transactions.component';
@@ -12,6 +13,7 @@ import { AccountInfoComponent } from '../../../../component/account-info/account
   standalone: false
 })
 export class ContributionsComponent  implements OnInit {
+  @ViewChild('slideItem') firstSlideItem: IonItemSliding;
   @Input() group: any;
   @Input() accounts: any;
   @Input() country: any;
@@ -23,11 +25,13 @@ export class ContributionsComponent  implements OnInit {
   meetingTotals: any = {};
   selectAll = false;
   contribsExist = false;
+  isHinting = false;
 
   constructor(
     private modalCtrl: ModalController,
     private dataProvider: DataProvider,
-    private operationTools: OperationTools
+    private operationTools: OperationTools,
+    private el: ElementRef
   ) { }
 
   async ngOnInit() {
@@ -40,6 +44,17 @@ export class ContributionsComponent  implements OnInit {
     this.dataProvider.fetch_data('params', this.country.id, true).then((data: any)=> {
       this.parameters = data;
     });
+  }
+
+  ngAfterViewInit() {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        this.playSlidingHint();
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(this.el.nativeElement);
   }
 
   onSelectAllChange() {
@@ -165,6 +180,24 @@ export class ContributionsComponent  implements OnInit {
     modal.present();
 
     await modal.onWillDismiss();
+  }
+
+  // Animation Hint
+  playSlidingHint() {
+    const hasSeenHint = localStorage.getItem('sliding_hint_done');
+   //if (hasSeenHint) return;
+
+    setTimeout(async () => {
+      if (this.firstSlideItem) {
+        await this.firstSlideItem.open('start');
+        this.isHinting = true;
+        setTimeout(async () => {
+          await this.firstSlideItem.close();
+          this.isHinting = false;
+          localStorage.setItem('sliding_hint_done', 'true');
+        }, 1500);
+      }
+    }, 800); // Delay
   }
 
 }

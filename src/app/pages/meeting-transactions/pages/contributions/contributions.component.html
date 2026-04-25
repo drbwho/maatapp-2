@@ -48,9 +48,9 @@
 </div>
 
 <ion-list lines="none" class="transparent-list ion-margin">
-  @for (acc of accounts; track acc.id) {
+  @for (acc of accounts; track acc.id; let i = $index) {
   <ion-item-sliding #slideItem>
-    <ion-item class="account-item">
+    <ion-item class="account-item" [class.pulse-item]="isHinting && i == 0">
       <div slot="start" class="avatar-icon" (click)="toggleAccount(acc)" [class.inactive]="!acc.selected">
         <ion-icon src="assets/img/icons/feather.svg" class="custom-icon"></ion-icon>
       </div>
@@ -87,7 +87,7 @@
     </ion-item>
     <ion-item-options side="start">
       <ion-item-option (click)="showAccountInfo(acc, slideItem)" class="ion-padding-bottom">
-        <ion-icon slot="icon-only" name="information-circle" size="large"></ion-icon>
+        <ion-icon class="ion-no-margin" slot="icon-only" name="information-circle" size="large"></ion-icon>
       </ion-item-option>
     </ion-item-options>
   </ion-item-sliding>

@@ -22,6 +22,7 @@ export class DashboardPage implements OnInit {
   last_attendance = 0;
   totals: any = {};
   meeting_status = "";
+  show_meeting_detail = false;
   upload_status = false;
   network_status = false;
   num_ECP = 0;
