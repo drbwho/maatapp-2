@@ -1,8 +1,7 @@
-ion-item {
-  --background: url('/assets/img/intro/group-image.png') no-repeat right bottom / 50% auto;
-  background-color: #E7EFEA;
-  --min-height: 130px;
-  margin-top: 60px;
+.action-image {
+  margin-top: 100px;
+  margin-bottom: 30px;
+  padding: 10px;
 }
 
 ion-label {
@@ -13,10 +12,4 @@ ion-label {
 
 ion-text {
   color: #757575;
-}
-
-.arrow {
-  height: 116px;
-  margin-left: 190px;
-  margin-bottom: -25px;
 }

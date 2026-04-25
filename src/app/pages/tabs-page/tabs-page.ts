@@ -45,6 +45,7 @@ export class TabsPage {
     this.storage.remove(this.config.HISTORY_TRANSACTIONS_FILE);
     this.storage.remove(this.config.UPLOAD_ERRORS_FILE);
     this.storage.remove(this.config.NEWMEETINS_FILE);
+    this.storage.remove(this.config.CURRENT_FILE);
     this.storage.remove(this.config.GET_FILE('countries'));
     this.storage.remove(this.config.GET_FILE('meetings'));
     this.storage.remove(this.config.GET_FILE('accounts'));

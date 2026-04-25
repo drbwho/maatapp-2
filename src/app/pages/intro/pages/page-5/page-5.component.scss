@@ -1,18 +1,21 @@
 ion-item {
-  --background: url('/assets/img/feather-mono.png') no-repeat left 0px / contain;
+  --background: url('/assets/img/intro/group-image.png') no-repeat right bottom / 50% auto;
+  background-color: #E7EFEA;
+  --min-height: 130px;
+  margin-top: 60px;
 }
 
 ion-label {
-  padding: 10px 0 0 25px;
-  margin: 0;
-  h2 {
-    padding: 0;
-    margin: 0;
-    line-height: 1.5rem;
-  }
+  color: #757575 !important;
+  flex: 0 0 51% !important; 
+  overflow: hidden;
+}
+
+ion-text {
+  color: #757575;
 }
 
 .arrow {
   height: 116px;
-  margin: 10px 0 0 80px;
+  margin-left: 270px;
 }

@@ -1,7 +1,7 @@
 .arrow {
   height: 116px;
-  margin-left:100px;
-  margin-top: 50px;
+  margin-left:280px;
+  margin-top: 0px;
   margin-bottom: -25px;
   position: relative;
   z-index: 1000;
@@ -10,13 +10,13 @@
 ion-text {
     h2 {
         font-weight: 400;
-        margin-top: 60px;
     }
 }
 
 .meeting-item {
   --padding-start: 16px;
   --inner-padding-end: 8px;
+  margin-top: 260px;
 
   .header-row {
     display: flex;

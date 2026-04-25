@@ -6,10 +6,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Page1Component } from './pages/page-1/page-1.component';
 import { Page2Component } from './pages/page-2/page-2.component';
 import { Page3Component } from './pages/page-3/page-3.component';
-import { Page4Component } from './pages/page-3/page-3.component';
+import { Page4Component } from './pages/page-4/page-4.component';
 import { Page5Component } from './pages/page-5/page-5.component';
 import { Page6Component } from './pages/page-6/page-6.component';
 import { Page7Component } from './pages/page-7/page-7.component';
+import { Page8Component } from './pages/page-8/page-8.component';
 
 @Component({
   selector: 'app-intro',
@@ -30,6 +31,7 @@ export class IntroPage implements OnInit {
     5: Page5Component,
     6: Page6Component,
     7: Page7Component,
+    8: Page8Component,
   };
 
   constructor(
@@ -51,7 +53,7 @@ export class IntroPage implements OnInit {
         this.pageId = curId;
         this.nextPage = curId + 1;
       }
-      if(this.pageId >= 7){
+      if(this.pageId >= 8){
         this.userData.shownIntro(true);
       }
       this.introPageComponent = this.componentMap[this.pageId];

@@ -213,13 +213,8 @@
       "message":"What you cannot do alone, you can do together. This app helps your group save, support, and grow as one."
     },
     "page-2": {
-      "card-message": "You can continue entering transactions or review the current totals",
-      "title": "Meeting status",
-      "message":"This indicator shows the current status of the meeting. This meeting is currently active. You can continue entering transactions or review the current totals. A new meeting can be started once this one is closed"
-    },
-    "page-6": {
-      "title": "Last meeting summary",
-      "message": "A quick overview of the last meeting. Here you can see how many group members attended the meeting. For example, we currently see that 18 out of 22 participants attended. Balance shows how many contributed to their personal accounts. And you can see the total amount collected during the meeting."
+      "title": "Let's see how it works",
+      "message":"MA'AT helps your group manage savings, track contributions, and make decisions together, all in one place. Everything is simple, transparent, and designed to support your community."
     },
     "page-3": {
       "title": "Shared resources",
@@ -230,9 +225,18 @@
       "message":"This shows how the group fund is helping members right now. Maats are given by the group and return to the group over time."
     },
     "page-5": {
-      "message":"Use this tab to quickly switch between groups you manage."
+      "card-message": "You can continue entering transactions or review the current totals.",
+      "title": "The fund grows during the meetings.",
+      "message": "Here you can see the current status of the meeting. This meeting is currently active. You can continue entering transactions or review the current totals."
+    },
+    "page-6": {
+      "title": "Last meeting summary",
+      "message": "A quick overview of the last meeting. Here you can see how many group members attended the meeting. For example, we currently see that 18 out of 22 participants attended. Balance shows how many contributed to their personal accounts. And you can see the total amount collected during the meeting."
     },
     "page-7": {
+      "message":"Use this tab to quickly switch between groups you manage."
+    },
+    "page-8": {
       "title": "Let's get started",
       "message":"You' re ready to join your group and move forward together."
     }

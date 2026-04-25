@@ -34,10 +34,10 @@
 
  @if(show_details){
     <div class="details-container ion-padding-top">
-      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+      <!--<div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'maats_received_total' | translate}}</span>
         <span class="value">{{(group?.account?.balance ?? 0)| number: '.1'}} {{country?.currency}}</span>
-      </div>
+      </div>-->
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'maats_repayments_total' | translate}}</span>
         <span class="value">{{(group?.account?.rembousements ?? 0)| number:'.1'}} {{country?.currency}}</span>
