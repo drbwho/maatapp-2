@@ -49,7 +49,12 @@
         }
         @if (account.loancategories) {
           <ion-row>
-            <ion-col size="8" class="ion-padding-start"><ion-text color="tertiary">&nbsp;<strong>{{account.loancategories}}</strong></ion-text></ion-col>
+            <ion-col size="8" class="ion-padding-start"><ion-text color="warning">&nbsp;<strong>{{account.loancategories}}</strong></ion-text></ion-col>
+          </ion-row>
+        }
+        @if (account.inputnotes) {
+          <ion-row>
+            <ion-col size="8" class="ion-padding-start"><ion-text color="warning">&nbsp;<strong>{{account.inputnotes}}</strong></ion-text></ion-col>
           </ion-row>
         }
         <ion-row>
@@ -91,13 +96,13 @@
     <ion-card-content>
       <ion-grid>
           <ion-row>
-            <ion-col size="8">{{'reg_contributions_due' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_reg | number:'.2'}}</strong></ion-text></ion-col>
+            <ion-col size="8">{{'reg_contributions_due' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="pf(account.due_reg) > 0 ? 'danger' : ''"><strong>{{account.due_reg | number:'.2'}}</strong></ion-text></ion-col>
           </ion-row>
           <ion-row>
-            <ion-col size="8">SF {{'contributions_due' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_sf | number:'.2'}}</strong></ion-text></ion-col>
+            <ion-col size="8">SF {{'contributions_due' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="pf(account.due_sf) > 0 ? 'danger' : ''"><strong>{{account.due_sf | number:'.2'}}</strong></ion-text></ion-col>
           </ion-row>
           <ion-row>
-            <ion-col size="8">{{'facilitator_payments_due' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text color="danger"><strong>{{account.due_facp | number:'.2'}}</strong></ion-text></ion-col>
+            <ion-col size="8">{{'facilitator_payments_due' | translate}}:</ion-col><ion-col class="ion-text-end"><ion-text [color]="pf(account.due_facp) > 0 ? 'danger' : ''"><strong>{{account.due_facp | number:'.2'}}</strong></ion-text></ion-col>
           </ion-row>
       </ion-grid>
     </ion-card-content>

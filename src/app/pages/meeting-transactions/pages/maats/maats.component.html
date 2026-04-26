@@ -97,7 +97,7 @@
             <ion-badge class="alert text-12">{{'maats_unavailable' | translate}}</ion-badge>
           }
         </div>
-        @if(acc.due){
+        @if(pf(acc.due) > 0){
           <p class="text-12">{{'overdue_contributions' | translate}}</p>
         }
       </ion-label>

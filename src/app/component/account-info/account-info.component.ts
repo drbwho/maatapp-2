@@ -24,6 +24,7 @@ export class AccountInfoComponent  implements OnInit {
   show_details = false;
   loans_expired = false;
   sfloans_expired = false;
+  public pf = parseFloat;
 
   constructor(private modalCtrl: ModalController) { }
 

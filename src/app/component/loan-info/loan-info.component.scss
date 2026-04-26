@@ -46,7 +46,8 @@ ion-title {
 .purple-border-input {
   --background: #f4f5f8;
   border-radius: 25px;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
+  border-color: #dddcdc;
   --padding-start: 16px;
   font-size: 14px;
   --highlight-color-focused: transparent;

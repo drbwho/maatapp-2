@@ -98,7 +98,7 @@ export class ContributionsComponent  implements OnInit {
         // treat specific account
         if(account.selected){
           amount += this.has_contributions_dues(account, prm);
-          amount < 0 ? amount = 0 : null;
+          amount < 0 ? amount = 0 : null; //contributions surplus?
           result = await this.operationTools.newOperation(
               this.meeting.id, account, this.group, prm.id, prm.name, amount, categories, notes);
           if(result.status != 'success'){
@@ -185,7 +185,7 @@ export class ContributionsComponent  implements OnInit {
   // Animation Hint
   playSlidingHint() {
     const hasSeenHint = localStorage.getItem('sliding_hint_done');
-   //if (hasSeenHint) return;
+    if (hasSeenHint) return;
 
     setTimeout(async () => {
       if (this.firstSlideItem) {

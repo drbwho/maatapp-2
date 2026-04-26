@@ -119,16 +119,16 @@ export class MeetingHistoryPage implements OnInit {
 
         acc.missing_contribs = false;
         if(!account_totals.transactions.get('RCB') && parseFloat(this.group.settings.regcontribution) > 0){
-          acc.missing_rcb = this.group.settings.regcontribution;
-          acc.missing_contribs = true;
+          acc.missing_rcb = (parseFloat(acc.due_reg) < 0 ? parseFloat(acc.due_reg) : 0.0) + this.group.settings.regcontribution; //contributions surplus?
+          acc.missing_rcb < 0 ? acc.missing_rcb = 0 : acc.missing_contribs = true;
         }
         if(!account_totals.transactions.get('AST') && parseFloat(this.group.settings.regfacilpayment) > 0){
-          acc.missing_fcp = this.group.settings.regfacilpayment;
-          acc.missing_contribs = true;
+          acc.missing_fcp = (parseFloat(acc.due_sf) < 0 ? parseFloat(acc.due_sf) : 0.0) + this.group.settings.regfacilpayment;
+          acc.missing_fcp < 0 ? acc.missing_fcp = 0 : acc.missing_contribs = true;
         }
         if(!account_totals.transactions.get('AID') && parseFloat(this.group.settings.regsfcontribution) > 0){
-          acc.missing_sfcb = this.group.settings.regsfcontribution;
-          acc.missing_contribs = true;
+          acc.missing_sfcb = (parseFloat(acc.due_facp) < 0 ? parseFloat(acc.due_facp) : 0.0) + this.group.settings.regsfcontribution;
+          acc.missing_sfcb < 0 ? acc.missing_sfcb = 0 : acc.missing_contribs = true;
         }
         if(account_totals.transactions.get('FIN')){
           acc.appliedfines = account_totals.transactions.get('FIN');

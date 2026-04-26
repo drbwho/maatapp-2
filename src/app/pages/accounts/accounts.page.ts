@@ -53,7 +53,7 @@ export class AccountsPage implements OnInit {
     this.country = this.dataProvider.current.country;
 
     await this.load_accounts();
-    this.show_progress();
+    //this.show_progress();
   }
 
   load_accounts(){
@@ -104,7 +104,7 @@ export class AccountsPage implements OnInit {
 
         // dues
         acc.status = "happy";
-        if(acc.due){
+        if(parseFloat(acc.due) > 0){
           acc.status = "neutral";
         }
         if(acc.loans_expired || acc.sfloans_expired){

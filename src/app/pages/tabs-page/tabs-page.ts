@@ -50,6 +50,7 @@ export class TabsPage {
     this.storage.remove(this.config.GET_FILE('meetings'));
     this.storage.remove(this.config.GET_FILE('accounts'));
     this.storage.remove(this.config.GET_FILE('params'));
+    localStorage.removeItem('sliding_hint_done');
     const toast = await this.toast.create({
       message: 'Cache cleared!',
       cssClass: 'toast-success',
