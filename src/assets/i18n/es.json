@@ -49,6 +49,7 @@
   "pending_transactions": "Transacciones pendientes",
   "new_transactions_info": "Las nuevas transacciones se almacenarán localmente hasta que se carguen desde la página del Grupo",
   "enter_support_message": "Ingrese su mensaje de soporte a continuación",
+  "country_has_no_groups": "El país no tiene grupos",
   "group_has_no_meetings": "El grupo no tiene reuniones",
   "group_has_no_accounts": "El grupo no tiene cuentas",
   "no_accounts_available": "No hay cuentas disponibles",
@@ -185,6 +186,9 @@
   "not_eligible_for_maat": "¡No elegible para maat!",
   "maats_received_total": "Maats recibidos total",
   "maats_repayments_total": "Reembolsos de maats total",
+  "maats_requests": "Solicitudes de maats",
+  "since_last_meeting": "Desde la última reunión",
+  "members_have_pending_payments": "Los miembros tienen pagos pendientes",
   "maats_current": "Maats actuales",
   "group_review": "Revisión del grupo",
   "solidarity_contributed_total": "Solidaridad contribuida total",
@@ -231,6 +235,10 @@
     "page-7": {
       "title": "Empecemos",
       "message": "Estás listo para unirte a tu grupo y avanzar juntos."
+    },
+    "page-8": {
+      "title": "Empecemos",
+      "message":"Estás listo para unirte a tu grupo y avanzar juntos."
     }
   },
   "meeting-card": {

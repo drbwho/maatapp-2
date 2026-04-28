@@ -48,8 +48,7 @@
   "initial_amount":"初始金额",
   "pending_transactions":"待处理交易",
   "new_transactions_info":"新交易将在本地存储，直到从组页面上传",
-  "enter_support_message":"在下面输入您的支持消息",
-  "group_has_no_meetings":"组没有会议",
+  "enter_support_message":"在下面输入您的支持消息",  "country_has_no_groups": "国家没有组",  "group_has_no_meetings":"组没有会议",
   "group_has_no_accounts":"组没有账户",
   "no_accounts_available": "没有可用账户",
   "no_accounts_with_open_maats": "没有账户有开放的 maats",
@@ -233,6 +232,10 @@
       "message":"使用这个标签快速切换你管理的组。"
     },
     "page-7": {
+      "title": "让我们开始",
+      "message":"你准备加入你的组并一起前进。"
+    },
+    "page-8": {
       "title": "让我们开始",
       "message":"你准备加入你的组并一起前进。"
     }

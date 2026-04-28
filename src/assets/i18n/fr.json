@@ -49,6 +49,7 @@
   "pending_transactions": "Transactions en attente",
   "new_transactions_info": "Les nouvelles transactions seront stockées localement jusqu'à leur téléchargement depuis la page du Groupe",
   "enter_support_message": "Entrez votre message de support ci-dessous",
+  "country_has_no_groups": "Le pays n'a pas de groupes",
   "group_has_no_meetings": "Le groupe n'a pas de réunions",
   "group_has_no_accounts": "Le groupe n'a pas de comptes",
   "no_accounts_available": "Aucun compte disponible",
@@ -185,6 +186,9 @@
   "not_eligible_for_maat": "Pas éligible pour maat !",
   "maats_received_total": "Maats reçus total",
   "maats_repayments_total": "Remboursements de maats total",
+  "maats_requests": "Demandes de maats",
+  "since_last_meeting": "Depuis la dernière réunion",
+  "members_have_pending_payments": "Les membres ont des paiements en attente",
   "maats_current": "Maats actuels",
   "group_review": "Révision du groupe",
   "solidarity_contributed_total": "Solidarité contribuée total",
@@ -229,6 +233,10 @@
       "message": "Utilisez cet onglet pour basculer rapidement entre les groupes que vous gérez."
     },
     "page-7": {
+      "title": "Commençons",
+      "message": "Vous êtes prêt à rejoindre votre groupe et à avancer ensemble."
+    },
+    "page-8": {
       "title": "Commençons",
       "message": "Vous êtes prêt à rejoindre votre groupe et à avancer ensemble."
     }
