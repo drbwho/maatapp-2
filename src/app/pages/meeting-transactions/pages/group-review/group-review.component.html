@@ -41,6 +41,10 @@
         <span class="value">{{(meeting?.totals.transactions.get('REM') ?? 0)| number:'.1'}} {{country?.currency}}</span>
       </div>
       <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
+        <span class="label">{{'regular_contributed_total' | translate}}</span>
+        <span class="value">{{(meeting?.totals.transactions.get('RCB') ?? 0)| number:'.1'}} {{country?.currency}}</span>
+      </div>
+      <div class="details-row ion-display-flex ion-justify-content-between ion-align-items-center">
         <span class="label">{{'solidarity_contributed_total' | translate}}</span>
         <span class="value">{{(meeting?.totals.transactions.get('AID') ?? 0)| number:'.1'}} {{country?.currency}}</span>
       </div>
