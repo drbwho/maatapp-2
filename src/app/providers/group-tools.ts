@@ -84,6 +84,85 @@ export class GroupTools {
 
   async get_meeting_health(meeting: any, group: any){
     let totals = await this.operTools.estimate_meeting_totals(null, meeting.id);
+
+    //1. Ontime loan repayments
+    let num_reimbursements = new Map(
+      [...totals.transactions].filter(([key, value]) => key == 'REM')
+    ).size;
+
+    let num_noexpired_loans = 0;
+    await this.dataProvider.fetch_data('accounts', group.id, true, true).then(async (data: any)=> {
+      let accounts = data.filter((s)=> s.statut == 0 && s.type == 1); //active accounts & member acounts
+      accounts.forEach(async (acc) => {
+        //Number of overdue loans during meeting
+        if( acc.dateecheance != null && (new Date(acc.dateecheance) <= (new Date(meeting.startedat)))){
+          num_noexpired_loans++;
+        }
+      });
+    });
+
+    let ontime_repayments = 0;
+    (num_reimbursements > num_noexpired_loans) || num_noexpired_loans == 0 ?
+      ontime_repayments = 100 : ontime_repayments = (num_reimbursements / num_noexpired_loans) * 100;
+    ontime_repayments *= 0.3 // weight 30%
+  
+    //2. Regular contributions
+    let num_rcb = new Map(
+      [...totals.transactions].filter(([key, value]) => key == 'RCB')
+    ).size;
+    let perc_rcb = (num_rcb / group.numberofmembers) * 100;
+    perc_rcb *= 0.2 // weight 20%
+
+    //3. Attendance
+    let perc_attendance = 0;
+    !meeting.attendance ? 
+      perc_attendance = 100 : perc_attendance = (meeting.attendance / group.numberofmembers) * 100;
+    perc_attendance *= 0.15; // weight 15%
+
+    //4. Balance + loans
+    let ECP_total = totals.transactions.get('ECP');
+    let EMP_total = totals.transactions.get('EMP');
+    let balance_loans = 0;
+    ECP_total > EMP_total ? balance_loans = 100 : balance_loans = 0;
+    balance_loans *= 0.1 // weight 15%
+
+    //5. Value of Credit
+    let perc_credit_req = 0;
+    let num_credit_req = new Map(
+      [...totals.transactions].filter(([key, value]) => key == 'AID') //??????
+    ).size;
+    let num_ecp = new Map(
+      [...totals.transactions].filter(([key, value]) => key == 'ECP')
+    ).size;
+    num_credit_req > 0 && num_ecp > 0 ? perc_credit_req = (num_credit_req / num_ecp) * 100 : perc_credit_req = 0;
+    perc_credit_req *= 0.1; //weight 10%
+
+    //6. Collective activity
+    let collective_act = 0;
+    let num_coll_act = new Map(
+      [...totals.transactions].filter(([key, value]) => key == 'PCO') //?????????
+    ).size;
+    num_coll_act > 0 ? collective_act = 100 : collective_act = 0;
+    collective_act *= 0.1 //weight 10%;
+
+    let total = ontime_repayments + perc_rcb + perc_attendance + balance_loans + perc_credit_req + collective_act;
+    console.log(ontime_repayments,perc_rcb,perc_attendance,balance_loans,perc_credit_req,collective_act);
+
+    console.log(total)
+    if(total < 50){
+      return 'action';
+    }
+    if(total <= 60){
+      return 'stable';
+    }
+    if(total < 80){
+      return 'good';
+    }
+    return 'great';
+  }
+
+  async get_meeting_health_OLD(meeting: any, group: any){
+    let totals = await this.operTools.estimate_meeting_totals(null, meeting.id);
     let trans = new Map(
       [...totals.transactions].filter(([key, value]) => this.operTools.contrib_operations.includes(key))
     );
