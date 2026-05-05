@@ -84,32 +84,47 @@ export class GroupTools {
 
   async get_meeting_health(meeting: any, group: any){
     let totals = await this.operTools.estimate_meeting_totals(null, meeting.id);
+    let params = await this.storage.get(this.config.GET_FILE('params'));
+    
+    let alltransactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
+    let uploaded = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
+    //merge local and uploaded transactions
+    if(alltransactions && uploaded){
+      alltransactions = [...alltransactions, ...uploaded];
+    }else if(uploaded){
+      alltransactions = uploaded;
+    }
+    alltransactions = alltransactions.filter((tr)=> tr.idmeeting === meeting.id);
 
     //1. Ontime loan repayments
-    let num_reimbursements = new Map(
-      [...totals.transactions].filter(([key, value]) => key == 'REM')
-    ).size;
+    let paramid = (params.find((s) => s.code == 'REM')).id;
+    let transactions = alltransactions.filter((tr)=> tr.idparameter === paramid);
 
-    let num_noexpired_loans = 0;
+    let num_noexpired_repayments = 0;
+    let num_current_loans = 0;
     await this.dataProvider.fetch_data('accounts', group.id, true, true).then(async (data: any)=> {
-      let accounts = data.filter((s)=> s.statut == 0 && s.type == 1); //active accounts & member acounts
-      accounts.forEach(async (acc) => {
-        //Number of overdue loans during meeting
-        if( acc.dateecheance != null && (new Date(acc.dateecheance) <= (new Date(meeting.startedat)))){
-          num_noexpired_loans++;
+      let accounts = data;
+      transactions.forEach((tr:any) => {
+        let acc = accounts.find(ac => ac.id == tr.idorigin);
+        if( acc && acc.dateecheance != null && (new Date(acc.dateecheance) >= (new Date(meeting.startedat)))){
+          num_noexpired_repayments++;
         }
       });
+      accounts.forEach((acc:any)=>{
+        if(acc.dateecheance != null && (new Date(acc.dateecheance) >= (new Date(meeting.startedat)))){
+          num_current_loans++;
+        }
+      })
     });
 
     let ontime_repayments = 0;
-    (num_reimbursements > num_noexpired_loans) || num_noexpired_loans == 0 ?
-      ontime_repayments = 100 : ontime_repayments = (num_reimbursements / num_noexpired_loans) * 100;
+    num_current_loans == 0 ? ontime_repayments = 0 : ontime_repayments = (num_noexpired_repayments / num_current_loans) * 100;
     ontime_repayments *= 0.3 // weight 30%
   
     //2. Regular contributions
-    let num_rcb = new Map(
-      [...totals.transactions].filter(([key, value]) => key == 'RCB')
-    ).size;
+    paramid = (params.find((s) => s.code == 'RCB')).id;
+    transactions = alltransactions.filter((tr)=> tr.idparameter === paramid);
+    let num_rcb = transactions.length;
     let perc_rcb = (num_rcb / group.numberofmembers) * 100;
     perc_rcb *= 0.2 // weight 20%
 
@@ -128,27 +143,22 @@ export class GroupTools {
 
     //5. Value of Credit
     let perc_credit_req = 0;
-    let num_credit_req = new Map(
-      [...totals.transactions].filter(([key, value]) => key == 'AID') //??????
-    ).size;
-    let num_ecp = new Map(
-      [...totals.transactions].filter(([key, value]) => key == 'ECP')
-    ).size;
-    num_credit_req > 0 && num_ecp > 0 ? perc_credit_req = (num_credit_req / num_ecp) * 100 : perc_credit_req = 0;
+    let num_credit_req = totals.transactions.get('DPR');
+    let num_ecp = totals.transactions.get('ECP');
+    num_ecp > 0 ? perc_credit_req = (num_credit_req / num_ecp) * 100 : perc_credit_req = 0;
     perc_credit_req *= 0.1; //weight 10%
 
     //6. Collective activity
     let collective_act = 0;
     let num_coll_act = new Map(
-      [...totals.transactions].filter(([key, value]) => key == 'PCO') //?????????
+      [...totals.transactions].filter(([key, value]) => key == 'PCO')
     ).size;
     num_coll_act > 0 ? collective_act = 100 : collective_act = 0;
     collective_act *= 0.1 //weight 10%;
 
     let total = ontime_repayments + perc_rcb + perc_attendance + balance_loans + perc_credit_req + collective_act;
-    console.log(ontime_repayments,perc_rcb,perc_attendance,balance_loans,perc_credit_req,collective_act);
+    console.log(ontime_repayments,perc_rcb,perc_attendance,balance_loans,perc_credit_req,collective_act,'=',total);
 
-    console.log(total)
     if(total < 50){
       return 'action';
     }
@@ -156,39 +166,6 @@ export class GroupTools {
       return 'stable';
     }
     if(total < 80){
-      return 'good';
-    }
-    return 'great';
-  }
-
-  async get_meeting_health_OLD(meeting: any, group: any){
-    let totals = await this.operTools.estimate_meeting_totals(null, meeting.id);
-    let trans = new Map(
-      [...totals.transactions].filter(([key, value]) => this.operTools.contrib_operations.includes(key))
-    );
-    
-    let paid_contribs = 0.0;
-    let expected_contribs = 0.0;
-    for (const [code, value] of trans) {
-      paid_contribs += value as number;
-    }
-    for (const code of this.operTools.contrib_operations) {
-      expected_contribs += parseFloat(group.settings[this.operTools.map_default_to_settings[code]]);
-    }
-    expected_contribs *= group.numberofmembers;
-
-    let has_ECP = totals.transactions.get('ECP') ? true : false;
-    let percentage = 0.0;
-    if(trans){
-      percentage = paid_contribs / expected_contribs;
-    }
-    if(percentage < 0.5){
-      return 'action';
-    }
-    if(percentage <= 0.8){
-      return 'stable';
-    }
-    if(percentage < 0.9){
       return 'good';
     }
     return 'great';

@@ -35,7 +35,7 @@ export class MeetingsActionViews {
           buttons.push({text: 'continue', color: 'light', action:'view'});
           break;
         default:
-          information = "<h1>"+ (meeting.collection > 0 ? "+" : "-") + meeting.collection.toLocaleString(ɵDEFAULT_LOCALE_ID) +"</h1>";
+          information = "<h1>"+ (meeting.collection > 0 ? "+" : "") + meeting.collection.toLocaleString(ɵDEFAULT_LOCALE_ID) +"</h1>";
           subinformation = "messages.meetings.added_at_the_meeting";
           buttons.push({text: 'messages.meetings.'+ meeting_status +'.button', color: 'primary', action:'view'});
           break;
