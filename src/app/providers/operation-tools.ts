@@ -43,7 +43,10 @@ export class OperationTools {
     private user: UserData
   ) { }
 
-  // Save locally new Operation
+  /*
+  * Save locally a new Operation
+  *
+  */
   newOperation(idmeeting, account, group, idparameter, parametername, amount, categories="", notes=""): Promise<any>{
     var trn: Transaction = {
       idmeeting: idmeeting,
@@ -87,7 +90,7 @@ export class OperationTools {
   delOperation(tr: any){
     return new Promise(async (resolve)=>{
       let transactions = await this.storage.get(this.config.TRANSACTIONS_FILE);
-      //find index
+      //find operation index
       let index = transactions.findIndex(s => s.idaccount == tr.idaccount && s.idmeeting == tr.idmeeting && s.idparameter == tr.idparameter && s.amount == tr.amount);
       transactions.splice(index, 1);//remove element from array
       this.storage.set(this.config.TRANSACTIONS_FILE, transactions).then(()=>{
@@ -314,7 +317,7 @@ export class OperationTools {
 
 
   /*
-  * Sync operations to Server
+  * Sync a single operation to Server
   *
   */
   async syncOperation(tr){
@@ -360,7 +363,7 @@ export class OperationTools {
   }
 
   /*
-  * Sync operations to Server
+  * Bulk Sync operations to Server
   *
   */
   async bulkSyncOperations(trs: Transaction[], idmeeting: string){

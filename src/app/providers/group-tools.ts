@@ -62,6 +62,10 @@ export class GroupTools {
     return false;
   }
 
+  /*
+  * Get Meeting Status (Closed, need syncing etc.)
+  *
+  */
   async get_group_meeting_status(meetings, groupId: string){
     var upload_status = await this.has_to_upload(groupId);
     if(!meetings.length || !meetings){
@@ -82,6 +86,10 @@ export class GroupTools {
     return null;
   }
 
+  /*
+  * Calculate Meeting Health index
+  *
+  */
   async get_meeting_health(meeting: any, group: any){
     let totals = await this.operTools.estimate_meeting_totals(null, meeting.id);
     let params = await this.storage.get(this.config.GET_FILE('params'));
@@ -135,16 +143,16 @@ export class GroupTools {
     perc_attendance *= 0.15; // weight 15%
 
     //4. Balance + loans
-    let ECP_total = totals.transactions.get('ECP');
-    let EMP_total = totals.transactions.get('EMP');
+    let ECP_total = totals.transactions.get('ECP') ?? 0;
+    let EMP_total = totals.transactions.get('EMP') ?? 0;
     let balance_loans = 0;
     ECP_total > EMP_total ? balance_loans = 100 : balance_loans = 0;
     balance_loans *= 0.1 // weight 15%
 
     //5. Value of Credit
     let perc_credit_req = 0;
-    let num_credit_req = totals.transactions.get('DPR');
-    let num_ecp = totals.transactions.get('ECP');
+    let num_credit_req = totals.transactions.get('DPR') ?? 0;
+    let num_ecp = totals.transactions.get('ECP') ?? 0;
     num_ecp > 0 ? perc_credit_req = (num_credit_req / num_ecp) * 100 : perc_credit_req = 0;
     perc_credit_req *= 0.1; //weight 10%
 
