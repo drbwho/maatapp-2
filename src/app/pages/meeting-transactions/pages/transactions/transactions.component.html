@@ -137,6 +137,9 @@
       <h5>{{ parameter?.name }}</h5>
       @if(parameter?.code == 'EMP'){
         <p class="ion-no-margin">{{'maats_available' | translate}}: {{account?.creditdisponible | number:'.0'}} {{country.currency}}</p>
+        @if(pf(account.besoinsliquidite) > 0){
+          <p class="ion-no-margin"><ion-note color="primary" class="text-12">{{'maats_requests' | translate}}: {{account?.besoinsliquidite | number:'.0'}} {{country.currency}}</ion-note></p>
+        }
       }
       @if(param_error[parameter?.id]){
         <p class="error-note"><ion-note color="danger" class="text-12">{{'error' | translate}}: {{param_error[parameter?.id]}}</ion-note></p>

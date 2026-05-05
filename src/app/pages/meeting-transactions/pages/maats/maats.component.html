@@ -98,7 +98,10 @@
           }
         </div>
         @if(pf(acc.due) > 0){
-          <p class="text-12">{{'overdue_contributions' | translate}}</p>
+          <ion-label class="warning text-12" color="danger">{{'overdue_contributions' | translate}}</ion-label>
+        }
+        @if(pf(acc.besoinsliquidite) > 0){
+          <ion-label class="warning text-12" color="primary">{{'maats_requests' | translate}}: {{acc?.besoinsliquidite | number:'.0'}}</ion-label>
         }
       </ion-label>
       @if(pf(acc.creditdisponible) > 0 && acc?.totals?.loans > 0){

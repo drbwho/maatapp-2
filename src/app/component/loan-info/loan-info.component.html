@@ -16,6 +16,9 @@
       <p class="user-availability ion-no-margin">
         {{'maats_available' | translate}}: {{account.creditdisponible}} {{country.currency}}
       </p>
+      @if(pf(account.besoinsliquidite) > 0){
+        <p class="ion-no-margin"><ion-note color="primary" class="text-12">{{'maats_requests' | translate}}: {{account?.besoinsliquidite | number:'.0'}} {{country.currency}}</ion-note></p>
+      }
     </div>
     <div class="numeric-input-wrapper">
       <ion-input type="number" placeholder="0" class="centered-numeric-input" [(ngModel)]="amount"></ion-input>

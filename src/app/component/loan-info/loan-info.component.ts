@@ -13,6 +13,7 @@ export class LoanInfoComponent  implements OnInit {
   @Input() loan_info?: any = {};
   notes: string;
   amount: number;
+  public pf=parseFloat;
 
   constructor(private modalCtrl: ModalController) { }
 
