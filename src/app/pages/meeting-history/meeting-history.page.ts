@@ -31,6 +31,8 @@ export class MeetingHistoryPage implements OnInit {
   attendance = 0;
   selectedAll: boolean = false;
   selectedAccounts = 0;
+  show_group_transactions = false;
+  group_transactions: any = null;
   public pf = parseFloat;
 
   constructor(
@@ -87,6 +89,10 @@ export class MeetingHistoryPage implements OnInit {
     let upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
 
     this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
+      // Group transactions
+      this.group.account = data.find((s)=> s.idowner == this.group.id);
+      this.group_transactions = transactions.filter(t => t.idaccount == this.group.account.id);
+      
       this.allaccounts = data.filter((s)=> s.statut == 0); //active accounts
       // load pending transactions for each account
       this.allaccounts.forEach(async (acc) => {
