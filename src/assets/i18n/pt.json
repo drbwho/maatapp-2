@@ -103,6 +103,7 @@
   "amount_exceeds_group_credit_available": "O valor excede o crédito disponível do grupo",
   "max_num_loans_exceeded": "Limite de empréstimos em aberto excedido",
   "max_num_sfloans_exceeded": "Limite de empréstimos SF em aberto excedido",
+  "amounts_cannot_be_negative": "Os valores não podem ser negativos",
   "loan_info": "Informações do empréstimo",
   "categories": "Categorias",
   "notes": "Notas",
@@ -191,6 +192,7 @@
   "members_have_pending_payments": "Os membros têm pagamentos pendentes",
   "maats_current": "Maats atuais",
   "group_review": "Revisão do grupo",
+  "regular_contributed_total": "Total contribuído regular",
   "solidarity_contributed_total": "Solidariedade contribuída total",
   "solidarity_received_total": "Solidariedade recebida total",
   "facilitator_payments_total": "Pagamentos do facilitador total",
@@ -213,7 +215,6 @@
       "message": "O que você não pode fazer sozinho, pode fazer junto. Este aplicativo ajuda seu grupo a economizar, apoiar e crescer como um."
     },
     "page-2": {
-      "card-message": "Você pode continuar inserindo transações ou revisar os totais atuais",
       "title": "Status da reunião",
       "message": "Este indicador mostra o status atual da reunião. Esta reunião está atualmente ativa. Você pode continuar inserindo transações ou revisar os totais atuais. Uma nova reunião pode ser iniciada assim que esta for fechada"
     },
@@ -226,14 +227,15 @@
       "message": "Este é o dinheiro compartilhado do seu grupo. Ele cresce através de todas as contribuições e apoia os membros quando mais precisam."
     },
     "page-5": {
+      "card-message": "Você pode continuar inserindo transações ou revisar os totais atuais.",
       "title": "Maats",
       "message": "Isso mostra como o fundo do grupo está ajudando os membros agora. Os maats são dados pelo grupo e retornam ao grupo com o tempo."
     },
     "page-6": {
+      "title": "Resumo da última reunião",
       "message": "Use esta aba para alternar rapidamente entre os grupos que você gerencia."
     },
     "page-7": {
-      "title": "Vamos começar",
       "message": "Você está pronto para se juntar ao seu grupo e avançar juntos."
     },
     "page-8": {

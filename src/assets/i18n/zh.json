@@ -190,6 +190,7 @@
   "members_have_pending_payments": "成员有待处理付款",
   "maats_current": "当前 maats",
   "group_review": "组审查",
+  "regular_contributed_total": "总贡献定期",
   "solidarity_contributed_total":"总贡献团结",
   "solidarity_received_total":"总接收团结",
   "facilitator_payments_total":"总协调员付款",
@@ -212,7 +213,6 @@
       "message":"你一个人做不到的事，你可以一起做。这个应用程序帮助你的组节省、支持和作为一个整体成长。"
     },
     "page-2": {
-      "card-message": "你可以继续输入交易或审查当前总数",
       "title": "会议状态",
       "message":"这个指标显示会议的当前状态。这个会议目前是活跃的。你可以继续输入交易或审查当前总数。一旦这个会议关闭，可以开始新会议"
     },
@@ -225,14 +225,15 @@
       "message":"这是你组的共享资金。它通过所有贡献增长，并在成员最需要时支持他们。"
     },
     "page-5": {
+      "card-message": "您可以继续输入交易或审查当前总数。",
       "title": "Maats",
       "message":"这显示了组基金现在如何帮助成员。Maats 由组给出，并随着时间返回组。"
     },
     "page-6": {
+      "title": "最后会议摘要",
       "message":"使用这个标签快速切换你管理的组。"
     },
     "page-7": {
-      "title": "让我们开始",
       "message":"你准备加入你的组并一起前进。"
     },
     "page-8": {

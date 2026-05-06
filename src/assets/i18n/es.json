@@ -103,6 +103,7 @@
   "amount_exceeds_group_credit_available": "El monto excede el crédito disponible del grupo",
   "max_num_loans_exceeded": "Se superó el límite de préstamos abiertos",
   "max_num_sfloans_exceeded": "Se superó el límite de préstamos SF abiertos",
+  "amounts_cannot_be_negative": "Las cantidades no pueden ser negativas",
   "loan_info": "Información del préstamo",
   "categories": "Categorías",
   "notes": "Notas",
@@ -191,6 +192,7 @@
   "members_have_pending_payments": "Los miembros tienen pagos pendientes",
   "maats_current": "Maats actuales",
   "group_review": "Revisión del grupo",
+  "regular_contributed_total": "Total contribuido regular",
   "solidarity_contributed_total": "Solidaridad contribuida total",
   "solidarity_received_total": "Solidaridad recibida total",
   "facilitator_payments_total": "Pagos del facilitador total",
@@ -213,7 +215,6 @@
       "message": "Lo que no puedes hacer solo, puedes hacerlo juntos. Esta aplicación ayuda a tu grupo a ahorrar, apoyar y crecer como uno."
     },
     "page-2": {
-      "card-message": "Puedes continuar ingresando transacciones o revisar los totales actuales",
       "title": "Estado de la reunión",
       "message": "Este indicador muestra el estado actual de la reunión. Esta reunión está actualmente activa. Puedes continuar ingresando transacciones o revisar los totales actuales. Se puede iniciar una nueva reunión una vez que esta se cierre"
     },
@@ -226,14 +227,15 @@
       "message": "Este es el dinero compartido de tu grupo. Crece a través de todas las contribuciones y apoya a los miembros cuando más lo necesitan."
     },
     "page-5": {
+      "card-message": "Puedes continuar ingresando transacciones o revisar los totales actuales.",
       "title": "Maats",
       "message": "Esto muestra cómo el fondo del grupo está ayudando a los miembros en este momento. Los maats se dan por el grupo y regresan al grupo con el tiempo."
     },
     "page-6": {
+      "title": "Resumen de la última reunión",
       "message": "Usa esta pestaña para cambiar rápidamente entre grupos que administras."
     },
     "page-7": {
-      "title": "Empecemos",
       "message": "Estás listo para unirte a tu grupo y avanzar juntos."
     },
     "page-8": {

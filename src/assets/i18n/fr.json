@@ -103,6 +103,7 @@
   "amount_exceeds_group_credit_available": "Le montant dépasse le crédit disponible du groupe",
   "max_num_loans_exceeded": "Limite de prêts ouverts dépassée",
   "max_num_sfloans_exceeded": "Limite de prêts SF ouverts dépassée",
+  "amounts_cannot_be_negative": "Les montants ne peuvent pas être négatifs",
   "loan_info": "Informations sur le prêt",
   "categories": "Catégories",
   "notes": "Notes",
@@ -191,6 +192,7 @@
   "members_have_pending_payments": "Les membres ont des paiements en attente",
   "maats_current": "Maats actuels",
   "group_review": "Révision du groupe",
+  "regular_contributed_total": "Total contribué régulier",
   "solidarity_contributed_total": "Solidarité contribuée total",
   "solidarity_received_total": "Solidarité reçue total",
   "facilitator_payments_total": "Paiements du facilitateur total",
@@ -213,7 +215,6 @@
       "message": "Ce que vous ne pouvez pas faire seul, vous pouvez le faire ensemble. Cette application aide votre groupe à épargner, à se soutenir et à grandir comme un seul."
     },
     "page-2": {
-      "card-message": "Vous pouvez continuer à saisir des transactions ou consulter les totaux actuels",
       "title": "Statut de la réunion",
       "message": "Cet indicateur montre le statut actuel de la réunion. Cette réunion est actuellement active. Vous pouvez continuer à saisir des transactions ou consulter les totaux actuels. Une nouvelle réunion peut être démarrée une fois celle-ci fermée"
     },
@@ -226,14 +227,15 @@
       "message": "C'est l'argent partagé de votre groupe. Il grandit grâce à toutes les contributions et soutient les membres quand ils en ont le plus besoin."
     },
     "page-5": {
+      "card-message": "Vous pouvez continuer à saisir des transactions ou consulter les totaux actuels.",
       "title": "Maats",
       "message": "Cela montre comment le fonds du groupe aide les membres en ce moment. Les maats sont donnés par le groupe et retournent au groupe avec le temps."
     },
     "page-6": {
+      "title": "Résumé de la dernière réunion",
       "message": "Utilisez cet onglet pour basculer rapidement entre les groupes que vous gérez."
     },
     "page-7": {
-      "title": "Commençons",
       "message": "Vous êtes prêt à rejoindre votre groupe et à avancer ensemble."
     },
     "page-8": {

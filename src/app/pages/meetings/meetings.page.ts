@@ -183,6 +183,7 @@ export class MeetingsPage implements OnInit {
                     this.dataProvider.current.meeting = meeting;
                     this.navCtrl.navigateForward('/meeting-history');
                   }
+                  this.load_currents(); // refreshing...
                 });
               }
               this.load_currents();
