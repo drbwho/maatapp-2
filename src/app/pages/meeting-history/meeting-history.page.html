@@ -57,7 +57,7 @@
     <ion-grid class="group-transactions">
       @for(tr of group_transactions; track tr.id){
         <ion-row>
-          <ion-col size="7">{{tr.parametername}}</ion-col><ion-col class="ion-text-end">{{tr.amount | number:'.2'}} {{country?.currency}}</ion-col>
+          <ion-col size="7">{{tr.parametername ?? tr.operation}}</ion-col><ion-col class="ion-text-end">{{tr.amount ?? (tr.credit ?? tr.debit) | number:'.2'}} {{country?.currency}}</ion-col>
         </ion-row>
       }
     </ion-grid>

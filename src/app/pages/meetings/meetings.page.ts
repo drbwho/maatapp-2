@@ -215,15 +215,19 @@ export class MeetingsPage implements OnInit {
         let meet_status = '';
         if(meeting.pending || meeting.haspending){
           meet_status = 'upload-close';
+        //}else{
+        //  meet_status = await this.groupTools.get_meeting_health(meeting, this.group);
+        //}
+          this.meetActionViews.show_action_view_transactions(meeting, meet_status, this.country.currency).then(data =>{
+            if(data!='close' && data!='return'){
+              this.dataProvider.current.meeting = meeting;
+              this.navCtrl.navigateForward('/meeting-history');
+            }
+          });
         }else{
-          meet_status = await this.groupTools.get_meeting_health(meeting, this.group);
+          this.dataProvider.current.meeting = meeting;
+          this.navCtrl.navigateForward('/meeting-history');
         }
-        this.meetActionViews.show_action_view_transactions(meeting, meet_status, this.country.currency).then(data =>{
-          if(data!='close' && data!='return'){
-            this.dataProvider.current.meeting = meeting;
-            this.navCtrl.navigateForward('/meeting-history');
-          }
-        });
         break;
       //--- cancel/suspend meeting
       case 'cancel':

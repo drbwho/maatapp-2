@@ -14,9 +14,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ContributionsComponent } from './pages/contributions/contributions.component';
 import { BalanceComponent } from './pages/balance/balance.component';
 import { Router } from '@angular/router';
-import { NavController, Platform } from '@ionic/angular';
+import { ModalController, NavController, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AutofitService } from '../../directives/auto-fit-text.service';
+import { ActionViewComponent } from '../../component/action-view/action-view.component';
 
 @Component({
   selector: 'app-meeting-transactions',
@@ -58,7 +59,7 @@ export class MeetingTransactionsPage implements OnInit {
       5: {component: MaatsComponent, button: 'final_settlement'},
       6: {component: SettlementComponent, button: 'our_group'},
       7: {component: GroupReviewComponent, button: 'continue'},
-      8: {component: EndComponent, button: 'continue', action: '/app/tabs/meetings', load: 'close-meeting'}
+      8: {component: EndComponent, button: 'continue', action: 'meeting-health', target: '/app/tabs/meetings', load: 'close-meeting'}
     };
 
   constructor(
@@ -67,17 +68,22 @@ export class MeetingTransactionsPage implements OnInit {
     private translate: TranslateService,
     private router: Router,
     private platform: Platform,
-    private autoFit: AutofitService
+    private autoFit: AutofitService,
+    private modalCtrl: ModalController
   ) {
     const navigation = this.router.currentNavigation();
     this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString();
   }
 
-  //Override device back button
   ngOnInit() {
+    //Override device back button
     this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(99, () => {
       this.previousPage();
     });
+
+    // Show Group health
+    this.group = this.dataProvider.current.group;
+    this.show_progress();
   }
 
   ionViewWillLeave(){
@@ -142,13 +148,13 @@ export class MeetingTransactionsPage implements OnInit {
     // Reset autofit text service for amount views
     this.autoFit.resetGroups();
 
-    if(this.pageIndex > 2 && this.componentMap[this.pageIndex-1].action != undefined){
+    if(this.pageIndex > 2 && this.componentMap[this.pageIndex-1].target != undefined){
       this.dataProvider.current.meeting = this.meeting;
       this.dataProvider.setCurrent(this.dataProvider.current).then(()=>{
         if(this.componentMap[this.pageIndex-1].load){
           this.dataProvider.pageAction = this.componentMap[this.pageIndex-1].load;
         }
-        this.router.navigate([this.componentMap[this.pageIndex-1].action], {state: {direction: 'root'}});
+        this.router.navigate([this.componentMap[this.pageIndex-1].target], {state: {direction: 'root'}});
         this.resetPageIndex();
       });
       return;
@@ -159,4 +165,52 @@ export class MeetingTransactionsPage implements OnInit {
       this.transactionsPageComponent = this.componentMap[this.pageIndex].component;
     });
   }
+
+    async show_progress(){
+        let group_health: string;
+        if(this.group.grouphealth >= 2.8){
+          group_health = 'great';
+        }else if(this.group.grouphealth >= 2.6){
+          group_health = 'well';
+        }else if(this.group.grouphealth >= 2.5){
+          group_health = 'stable';
+        }else{
+          group_health = 'attention';
+        }
+  
+        let lastcollection = this.group.lastmeeting ? this.group.lastmeeting.collection : 0;
+        let keys = ["total_outstanding_maats", "since_last_meeting", "overdue", "members_have_pending_payments"];
+  
+        this.translate.get(keys).subscribe(async (keys)=>{
+          let info: string;
+          let badge: any = null;
+          if(group_health == 'great' || group_health == 'well'){
+            info = "<h1 class='emphassis'>"+ this.group.totals.balance +"</h1> \
+              <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
+            badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']}
+          }else if(group_health == 'stable'){
+             info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
+              <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
+          }else if(group_health == 'attention' && this.group.numdueloans > 0){
+            info = "<h1 class='ion-no-margin'>"+ this.group.totals.restearembourser +"</h1>\
+              <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>";
+            badge = {class: 'danger', information: this.group.numdueloans + " "+ keys['overdue']} }
+  
+          const modal = await this.modalCtrl.create({
+            component: ActionViewComponent,
+            componentProps: {
+              alttitle: this.group.name,
+              heading: 'messages.accounts.'+ group_health +'.heading',
+              description: 'messages.accounts.'+ group_health +'.description',
+              information: info,
+              badge: badge,
+              image: 'assets/img/action-views/'+ group_health +'-group.png',
+              hasBackButton: false,
+              buttons: [{text: 'continue', color: 'primary'}]
+            },
+            cssClass: ''
+          });
+          await modal.present();
+        });
+      }
 }

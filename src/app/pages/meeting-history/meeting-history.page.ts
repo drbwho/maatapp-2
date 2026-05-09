@@ -91,8 +91,9 @@ export class MeetingHistoryPage implements OnInit {
     this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
       // Group transactions
       this.group.account = data.find((s)=> s.idowner == this.group.id);
-      this.group_transactions = transactions.filter(t => t.idaccount == this.group.account.id);
-      
+      this.group_transactions = transactions.filter(t => t.idaccount == this.group.account.id && 
+          ((t.idorigin && t.idorigin == this.group.account.id) || !t.idorigin)); // local saved transactions contain only idaccount field
+
       this.allaccounts = data.filter((s)=> s.statut == 0); //active accounts
       // load pending transactions for each account
       this.allaccounts.forEach(async (acc) => {

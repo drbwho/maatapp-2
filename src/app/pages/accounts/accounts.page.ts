@@ -4,7 +4,6 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
-import { ActionViewComponent } from '../../component/action-view/action-view.component';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 
 @Component({
@@ -53,7 +52,6 @@ export class AccountsPage implements OnInit {
     this.country = this.dataProvider.current.country;
 
     await this.load_accounts();
-    //this.show_progress();
   }
 
   load_accounts(){
@@ -189,53 +187,5 @@ export class AccountsPage implements OnInit {
       }
     });
   }
-
-  async show_progress(){
-      let group_health: string;
-      if(this.group.grouphealth >= 2.8){
-        group_health = 'great';
-      }else if(this.group.grouphealth >= 2.6){
-        group_health = 'well';
-      }else if(this.group.grouphealth >= 2.5){
-        group_health = 'stable';
-      }else{
-        group_health = 'attention';
-      }
-
-      let lastcollection = this.group.lastmeeting ? this.group.lastmeeting.collection : 0;
-      let keys = ["total_outstanding_maats", "since_last_meeting", "overdue", "members_have_pending_payments"];
-
-      this.translate.get(keys).subscribe(async (keys)=>{
-        let info: string;
-        let badge: any = null;
-        if(group_health == 'great' || group_health == 'well'){
-          info = "<h1 class='emphassis'>"+ this.group.totals.balance +"</h1> \
-            <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
-          badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']}
-        }else if(group_health == 'stable'){
-           info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
-            <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
-        }else if(group_health == 'attention' && this.group.numdueloans > 0){
-          info = "<h1 class='ion-no-margin'>"+ this.group.totals.restearembourser +"</h1>\
-            <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>";
-          badge = {class: 'danger', information: this.group.numdueloans + " "+ keys['overdue']} }
-
-        const modal = await this.modalCtrl.create({
-          component: ActionViewComponent,
-          componentProps: {
-            alttitle: this.group.name,
-            heading: 'messages.accounts.'+ group_health +'.heading',
-            description: 'messages.accounts.'+ group_health +'.description',
-            information: info,
-            badge: badge,
-            image: 'assets/img/action-views/'+ group_health +'-group.png',
-            hasBackButton: false,
-            buttons: [{text: 'messages.accounts.view_members_details', color: 'primary'}]
-          },
-          cssClass: ''
-        });
-        await modal.present();
-      });
-    }
 }
 
