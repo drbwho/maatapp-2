@@ -188,7 +188,7 @@
   "maats_received_total":"Maats received total",
   "maats_repayments_total":"Maats repayments total",
   "maats_requests": "Maats requests",
-  "since_last_meeting": "Since last meeting",
+  "since_last_meeting": "since last meeting",
   "members_have_pending_payments": "Members have pending payments",
   "maats_current": "Maats current",
   "group_review": "Group review",
@@ -316,7 +316,7 @@
         "button": "View meeting details"
       },
       "action":{
-        "heading": "Action needed",
+        "heading": "Action needed!",
         "description": "Some issues need to be addressed before the next meeting.",
         "button": "View meeting details"
       }

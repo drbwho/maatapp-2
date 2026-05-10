@@ -177,8 +177,8 @@ export class MeetingTransactionsPage implements OnInit {
       group_health = 'attention';
     }
   
-    let lastcollection = this.group.lastmeeting ? this.group.lastmeeting.collection : 0;
-    let keys = ["total_outstanding_maats", "since_last_meeting", "overdue", "members_have_pending_payments"];
+    let lastcollection = this.group.lastmeeting ? parseFloat(this.group.lastmeeting.collection).toFixed(0) : 0;
+    let keys = ["total_group_fund", "total_outstanding_maats", "since_last_meeting", "overdue", "members_have_pending_payments"];
   
     this.translate.get(keys).subscribe(async (keys)=>{
       let info: string;
@@ -188,8 +188,14 @@ export class MeetingTransactionsPage implements OnInit {
           <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
         badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']}
       }else if(group_health == 'stable'){
-        info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
-          <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
+        if(this.group.numdueloans > 0){
+          info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
+            <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
+        }else{
+          info = "<h1 class='emphassis'>"+ parseFloat(this.group.totals.balance).toLocaleString(ɵDEFAULT_LOCALE_ID, { maximumFractionDigits: 0 }) +"</h1> \
+            <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
+          badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']}
+        }
       }else if(group_health == 'attention'){
         info = "<h1 class='ion-no-margin'>"+ parseFloat(this.group.totals.restearembourser).toLocaleString(ɵDEFAULT_LOCALE_ID, { maximumFractionDigits: 0 }) + "</h1>\
           <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>";

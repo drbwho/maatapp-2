@@ -188,7 +188,7 @@
   "maats_received_total": "Maats reçus total",
   "maats_repayments_total": "Remboursements de maats total",
   "maats_requests": "Demandes de maats",
-  "since_last_meeting": "Depuis la dernière réunion",
+  "since_last_meeting": "depuis la dernière réunion",
   "members_have_pending_payments": "Les membres ont des paiements en attente",
   "maats_current": "Maats actuels",
   "group_review": "Révision du groupe",
@@ -300,7 +300,7 @@
         "button_1": "Garder la réunion"
       },
       "great": {
-        "heading": "Excellente réunion !",
+        "heading": "Excellente réunion!",
         "description": "La plupart des membres sont actifs, le fonds du groupe croît constamment.",
         "button": "Voir les détails de la réunion"
       },
@@ -315,7 +315,7 @@
         "button": "Voir les détails de la réunion"
       },
       "action": {
-        "heading": "Action nécessaire",
+        "heading": "Action nécessaire!",
         "description": "Certains problèmes doivent être abordés avant la prochaine réunion.",
         "button": "Voir les détails de la réunion"
       }

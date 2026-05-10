@@ -188,7 +188,7 @@
   "maats_received_total": "Maats recebidos total",
   "maats_repayments_total": "Reembolsos de maats total",
   "maats_requests": "Solicitações de maats",
-  "since_last_meeting": "Desde a última reunião",
+  "since_last_meeting": "desde a última reunião",
   "members_have_pending_payments": "Os membros têm pagamentos pendentes",
   "maats_current": "Maats atuais",
   "group_review": "Revisão do grupo",
@@ -315,7 +315,7 @@
         "button": "Ver detalhes da reunião"
       },
       "action": {
-        "heading": "Ação necessária",
+        "heading": "Ação necessária!",
         "description": "Alguns problemas precisam ser abordados antes da próxima reunião.",
         "button": "Ver detalhes da reunião"
       }
