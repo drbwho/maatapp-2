@@ -59,7 +59,7 @@ export class MeetingTransactionsPage implements OnInit {
       5: {component: MaatsComponent, button: 'final_settlement'},
       6: {component: SettlementComponent, button: 'our_group'},
       7: {component: GroupReviewComponent, button: 'continue'},
-      8: {component: EndComponent, button: 'continue', action: 'meeting-health', target: '/app/tabs/meetings', load: 'close-meeting'}
+      8: {component: EndComponent, button: 'continue', target: '/app/tabs/meetings', load: 'close-meeting'}
     };
 
   constructor(
@@ -83,7 +83,7 @@ export class MeetingTransactionsPage implements OnInit {
 
     // Show Group health
     this.group = this.dataProvider.current.group;
-    this.show_progress();
+    this.show_group_health();
   }
 
   ionViewWillLeave(){
@@ -166,51 +166,52 @@ export class MeetingTransactionsPage implements OnInit {
     });
   }
 
-    async show_progress(){
-        let group_health: string;
-        if(this.group.grouphealth >= 2.8){
-          group_health = 'great';
-        }else if(this.group.grouphealth >= 2.6){
-          group_health = 'well';
-        }else if(this.group.grouphealth >= 2.5){
-          group_health = 'stable';
-        }else{
-          group_health = 'attention';
-        }
+  async show_group_health(){
+    let group_health: string;
+    if(this.group.grouphealth >= 2.8){
+      group_health = 'great';
+    }else if(this.group.grouphealth >= 2.6){
+      group_health = 'well';
+    }else if(this.group.grouphealth >= 2.5){
+      group_health = 'stable';
+    }else{
+      group_health = 'attention';
+    }
   
-        let lastcollection = this.group.lastmeeting ? this.group.lastmeeting.collection : 0;
-        let keys = ["total_outstanding_maats", "since_last_meeting", "overdue", "members_have_pending_payments"];
+    let lastcollection = this.group.lastmeeting ? this.group.lastmeeting.collection : 0;
+    let keys = ["total_outstanding_maats", "since_last_meeting", "overdue", "members_have_pending_payments"];
   
-        this.translate.get(keys).subscribe(async (keys)=>{
-          let info: string;
-          let badge: any = null;
-          if(group_health == 'great' || group_health == 'well'){
-            info = "<h1 class='emphassis'>"+ this.group.totals.balance +"</h1> \
-              <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
-            badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']}
-          }else if(group_health == 'stable'){
-             info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
-              <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
-          }else if(group_health == 'attention' && this.group.numdueloans > 0){
-            info = "<h1 class='ion-no-margin'>"+ this.group.totals.restearembourser +"</h1>\
-              <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>";
-            badge = {class: 'danger', information: this.group.numdueloans + " "+ keys['overdue']} }
-  
-          const modal = await this.modalCtrl.create({
-            component: ActionViewComponent,
-            componentProps: {
-              alttitle: this.group.name,
-              heading: 'messages.accounts.'+ group_health +'.heading',
-              description: 'messages.accounts.'+ group_health +'.description',
-              information: info,
-              badge: badge,
-              image: 'assets/img/action-views/'+ group_health +'-group.png',
-              hasBackButton: false,
-              buttons: [{text: 'continue', color: 'primary'}]
-            },
-            cssClass: ''
-          });
-          await modal.present();
-        });
+    this.translate.get(keys).subscribe(async (keys)=>{
+      let info: string;
+      let badge: any = null;
+      if(group_health == 'great' || group_health == 'well'){
+        info = "<h1 class='emphassis'>"+ this.group.totals.balance +"</h1> \
+          <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
+        badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']}
+      }else if(group_health == 'stable'){
+        info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
+          <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
+      }else if(group_health == 'attention' && this.group.numdueloans > 0){
+        info = "<h1 class='ion-no-margin'>"+ this.group.totals.restearembourser +"</h1>\
+          <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>";
+        badge = {class: 'danger', information: this.group.numdueloans + " "+ keys['overdue']}
       }
+  
+      const modal = await this.modalCtrl.create({
+        component: ActionViewComponent,
+        componentProps: {
+          alttitle: this.group.name,
+          heading: 'messages.accounts.'+ group_health +'.heading',
+          description: 'messages.accounts.'+ group_health +'.description',
+          information: info,
+          badge: badge,
+          image: 'assets/img/action-views/'+ group_health +'-group.png',
+          hasBackButton: false,
+          buttons: [{text: 'continue', color: 'primary'}]
+        },
+        cssClass: ''
+      });
+      await modal.present();
+    });
+  }
 }

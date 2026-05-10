@@ -1,9 +1,9 @@
 
 <div class="ion-text-center ion-margin-bottom ion-padding-top">
-  <img src="assets/img/action-views/great-group.png" alt="Well done">
-  <h2 class="ion-no-margin ion-padding-top ion-text-bold">{{'well_done' | translate}}!</h2>
+  <img [src]="image" alt="meeting status">
+  <h2 class="ion-no-margin ion-padding-top ion-text-bold">{{heading | translate}}!</h2>
   <p class="ion-margin ion-padding-bottom">
-    {{'messages.groups.message_1' | translate}}
+    {{description | translate}}
   </p>
 </div>
 
@@ -64,5 +64,7 @@
   </ion-col>
 </ion-row>
 </ion-grid>
+
+ <ion-button class="sustain-btn ion-margin" expand="block" shape="round" (click)="open_url()">{{'check_sustainability' | translate}}</ion-button>
 
 

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Browser } from '@capacitor/browser';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { GroupTools } from '../../../../providers/group-tools';
 
@@ -18,6 +19,9 @@ export class EndComponent  implements OnInit {
   show_max = false;
   max_loans = 0;
   max_collection = 0;
+  image = "";
+  description = "";
+  heading = "";
 
   constructor(
     private operTools: OperationTools,
@@ -50,6 +54,15 @@ export class EndComponent  implements OnInit {
     meetings = meetings.filter(m => m.id != this.meeting.id);
     this.max_loans = Math.max(...meetings.map(meeting => meeting.loans));
     this.max_collection = Math.max(...meetings.map(meeting => meeting.collection));
+
+    let meeting_status = await this.groupTools.get_meeting_health(this.meeting, this.group);
+    this.heading = 'messages.meetings.'+ meeting_status +'.heading';
+    this.description = 'messages.meetings.'+ meeting_status +'.description';
+    this.image = 'assets/img/action-views/'+ meeting_status +'-meeting.png';
+  }
+
+  async open_url() {
+    await Browser.open({ url: 'https://admin.maatpeasant.com/sustain' });
   }
 
 }
