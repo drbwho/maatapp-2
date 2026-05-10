@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, ɵDEFAULT_LOCALE_ID } from '@angular/core';
 import { AttendanceComponent } from './pages/attendance/attendance.component';
 import { EndComponent } from './pages/end/end.component';
 import { GroupReviewComponent } from './pages/group-review/group-review.component';
@@ -185,16 +184,18 @@ export class MeetingTransactionsPage implements OnInit {
       let info: string;
       let badge: any = null;
       if(group_health == 'great' || group_health == 'well'){
-        info = "<h1 class='emphassis'>"+ this.group.totals.balance +"</h1> \
+        info = "<h1 class='emphassis'>"+ parseFloat(this.group.totals.balance).toLocaleString(ɵDEFAULT_LOCALE_ID, { maximumFractionDigits: 0 }) +"</h1> \
           <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
         badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']}
       }else if(group_health == 'stable'){
         info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
           <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
-      }else if(group_health == 'attention' && this.group.numdueloans > 0){
-        info = "<h1 class='ion-no-margin'>"+ this.group.totals.restearembourser +"</h1>\
+      }else if(group_health == 'attention'){
+        info = "<h1 class='ion-no-margin'>"+ parseFloat(this.group.totals.restearembourser).toLocaleString(ɵDEFAULT_LOCALE_ID, { maximumFractionDigits: 0 }) + "</h1>\
           <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>";
-        badge = {class: 'danger', information: this.group.numdueloans + " "+ keys['overdue']}
+        if(this.group.numdueloans > 0){
+          badge = {class: 'danger', information: this.group.numdueloans + " "+ keys['overdue']}
+        }
       }
   
       const modal = await this.modalCtrl.create({
