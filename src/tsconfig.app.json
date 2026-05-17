@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "baseUrl": "./",
+   // "baseUrl": "./",
    // Matrix tests..
    // "paths": {
    //   "fs": ["./node_modules/fs-web"],

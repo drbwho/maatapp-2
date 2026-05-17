@@ -34,7 +34,9 @@ export class AttendanceComponent  implements OnInit {
   togglePresence(account: any) {
     //prohibition of changes if transactions exist
     if(this.meeting.haspending || this.meeting.has_transactions){
-      return;
+      if(account.isPresent){
+        return;
+      }
     }
     account.isPresent = !account.isPresent;
     this.calcAttendance();
