@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.maatpeasant.app',
+  appId: 'io.sidi.maat',
   appName: 'MAAT App',
   webDir: 'www',
   cordova: {

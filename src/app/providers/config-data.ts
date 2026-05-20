@@ -7,7 +7,7 @@ export class ConfigData {
 
   ENABLE_PUSH_NOTIFICATIONS = false;
 
-  HTTP_HOST = "https://maatpeasant.com";
+  HTTP_HOST = "https://dev.maatpeasant.com"; //https://maatpeasant.com ->production
   API_URL = this.HTTP_HOST + '/api';
   API_CSRF_URL = this.HTTP_HOST + '/sanctum/csrf-cookie';
 
