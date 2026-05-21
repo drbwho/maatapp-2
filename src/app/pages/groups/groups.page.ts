@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-groups',
@@ -13,14 +14,15 @@ import { NavController } from '@ionic/angular';
     standalone: false
 })
 export class GroupsPage implements OnInit {
+  private backButtonSubscription: Subscription;
   country: any;
   groups: any;
   countryname: any;
   queryText: string;
   searchPlaceholder: string;
   currentid: 0;
+  group_selected = false;
   
-
   constructor(
     private dataProvider: DataProvider,
     private route: ActivatedRoute,
@@ -28,13 +30,26 @@ export class GroupsPage implements OnInit {
     private config: ConfigData,
     private translate: TranslateService,
     private navController: NavController,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
+    //Override device back button
+    if(!this.dataProvider.current.group){
+      this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(99, () => {
+        return;
+      });
+    }
   }
 
   async ionViewWillEnter() {
     const countryId = this.route.snapshot.paramMap.get('countryId');
+
+    if(!this.dataProvider.current.group){
+      this.group_selected = false;
+    }else{
+      this.group_selected = true;
+    }
 
     this.dataProvider.fetch_data('countries', null, false, true).then(async (data: any) =>{
       this.country = data.find((s) => s.id == countryId);

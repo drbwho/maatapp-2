@@ -104,6 +104,10 @@ export class MeetingsActionViews {
         if(res.status.toLowerCase() == 'error'){
           resolve(false);
         }else{
+          // force to refresh group data from API (see dashboard)
+          let current = await this.dataProvider.getCurrent();
+          current.need_refresh = true;
+          this.dataProvider.setCurrent(current);
           resolve(true);
         }
       });

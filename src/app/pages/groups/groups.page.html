@@ -5,7 +5,7 @@
   <ion-toolbar>
     <ion-label class="text-14">Back</ion-label>
     <ion-buttons slot="start">
-      <ion-back-button icon="chevron-back-outline" ></ion-back-button>
+      <ion-back-button [disabled]="!group_selected" icon="chevron-back-outline" ></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>

@@ -17,6 +17,7 @@ import { ModalController, NavController, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AutofitService } from '../../directives/auto-fit-text.service';
 import { ActionViewComponent } from '../../component/action-view/action-view.component';
+import { GroupTools } from '../../providers/group-tools';
 
 @Component({
   selector: 'app-meeting-transactions',
@@ -68,13 +69,14 @@ export class MeetingTransactionsPage implements OnInit {
     private router: Router,
     private platform: Platform,
     private autoFit: AutofitService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private groupTools: GroupTools
   ) {
     const navigation = this.router.currentNavigation();
     this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     //Override device back button
     this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(99, () => {
       this.previousPage();
@@ -82,7 +84,10 @@ export class MeetingTransactionsPage implements OnInit {
 
     // Show Group health
     this.group = this.dataProvider.current.group;
-    this.show_group_health();
+    let meetings = await this.groupTools.get_meetings(this.group);
+    if(meetings.length > 1){ //Is this the first meeting?
+      this.show_group_health();
+    }
   }
 
   ionViewWillLeave(){
@@ -98,6 +103,7 @@ export class MeetingTransactionsPage implements OnInit {
     this.meetingplace = this.meeting.place;
     this.meetingdate = this.meeting.startedat;
     this.group = this.dataProvider.current.group;
+
     this.groupname = this.group.name;
     this.groupid = this.group.id;
     this.country = this.dataProvider.current.country;
@@ -188,7 +194,7 @@ export class MeetingTransactionsPage implements OnInit {
           <p class='text-12 ion-no-margin'>" + keys['total_group_fund'] + "</p>";
         badge = {class: 'success', information: lastcollection + " " + keys['since_last_meeting']}
       }else if(group_health == 'stable'){
-        if(this.group.numdueloans > 0){
+        if(parseFloat(this.group.numdueloans) > 0){
           info = "<h1 class='emphassis'>"+ this.group.numdueloans +"</h1>\
             <p class='text-12 ion-no-margin'>" + keys['members_have_pending_payments'] + "</p>";
         }else{
@@ -199,7 +205,7 @@ export class MeetingTransactionsPage implements OnInit {
       }else if(group_health == 'attention'){
         info = "<h1 class='ion-no-margin'>"+ parseFloat(this.group.totals.restearembourser).toLocaleString(ɵDEFAULT_LOCALE_ID, { maximumFractionDigits: 0 }) + "</h1>\
           <p class='text-12 ion-no-margin'>" + keys['total_outstanding_maats'] + "</p>";
-        if(this.group.numdueloans > 0){
+        if(parseFloat(this.group.numdueloans) > 0){
           badge = {class: 'danger', information: this.group.numdueloans + " "+ keys['overdue']}
         }
       }

@@ -16,6 +16,7 @@ export interface Current {
   country?: any;
   group?: any;
   meeting?: any;
+  need_refresh?: boolean;
 }
 
 export interface Meeting {

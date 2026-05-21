@@ -42,11 +42,13 @@ export class EndComponent  implements OnInit {
         this.loans_completed++;
       }
       //calc loans dues
-      const givenDate = new Date(acc.dateecheance);
-      const diffInMs = givenDate.getTime() - today.getTime();
-      const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-      if(diffInDays < 7){
-        this.loans_to_due++;
+      if(acc.restearembourser > 0 && acc.dateecheance){
+        const givenDate = new Date(acc.dateecheance);
+        const diffInMs = givenDate.getTime() - today.getTime();
+        const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+        if(diffInDays < 7){
+          this.loans_to_due++;
+        }
       }
     });
 
