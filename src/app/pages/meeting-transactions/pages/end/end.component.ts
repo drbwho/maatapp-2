@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { GroupTools } from '../../../../providers/group-tools';
+import * as confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-end',
@@ -57,6 +58,12 @@ export class EndComponent  implements OnInit {
     this.max_loans = Math.max(...meetings.map(meeting => meeting.loans));
     this.max_collection = Math.max(...meetings.map(meeting => meeting.collection));
 
+    // trigger fireworks?
+    if((this.meeting?.totals?.credit - this.meeting?.totals?.debit) > this.max_collection ||
+        this.meeting?.totals?.loans > this.max_loans){
+      this.triggerFireworks();
+    }
+
     let meeting_status = await this.groupTools.get_meeting_health(this.meeting, this.group);
     this.heading = 'messages.meetings.'+ meeting_status +'.heading';
     this.description = 'messages.meetings.'+ meeting_status +'.description';
@@ -65,6 +72,36 @@ export class EndComponent  implements OnInit {
 
   async open_url() {
     await Browser.open({ url: 'https://admin.maatpeasant.com/sustain' });
+  }
+
+  triggerFireworks() {
+    const duration = 5 * 1000; // Total duration: 5secs
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+    const randomInRange = (min: number, max: number) => {
+      return Math.random() * (max - min) + min;
+    };
+    const interval: any = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+
+      confetti.default({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+      });
+      confetti.default({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+      });
+    }, 250); // Every 250ms trigger a firework
   }
 
 }
