@@ -85,9 +85,9 @@ export class MeetingTransactionsPage implements OnInit {
     // Show Group health
     this.group = this.dataProvider.current.group;
     let meetings = await this.groupTools.get_meetings(this.group);
-    if(meetings.length > 1){ //Is this the first meeting?
-      this.show_group_health();
-    }
+    //if(meetings.length > 1){ //Is this the first meeting?
+    //  this.show_group_health();
+   // } Temporary deactivation ******
   }
 
   ionViewWillLeave(){
