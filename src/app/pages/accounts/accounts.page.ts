@@ -21,6 +21,7 @@ export class AccountsPage implements OnInit {
   accounts: any;
   status: string;
   fullDate: string;
+  currency: string;
   num_ECP = 0;
   new_totals: MeetingTotals = {
     debit: 0.00,
@@ -50,6 +51,7 @@ export class AccountsPage implements OnInit {
     this.groupname = this.group?.name;
     this.groupid = this.group?.id;
     this.country = this.dataProvider.current.country;
+    this.currency = this.country.currency;
 
     await this.load_accounts();
   }
