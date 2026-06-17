@@ -55,7 +55,7 @@
   "no_accounts_available": "No accounts available",
   "no_accounts_with_open_maats": "No accounts with open maats",
   "account_info":"Account Info",
-  "balance":"Balance",
+  "balance":"Savings",
   "cash":"Cash",
   "credit_av":"Maats av",
   "credit_available":"Maats available",
@@ -96,7 +96,7 @@
   "loan_exceeds_credit_available":"Maat exceeds credit available",
   "loan_exceeds_group_credit_available":"Maat exceeds group credit available",
   "withdrawl_not_permitted_open_loans":"Withdrawl is not permitted when open maats exist",
-  "withdrawl_exceeds_balance":"Withdrawl exceeds balance",
+  "withdrawl_exceeds_balance":"Withdrawl exceeds savings",
   "loan_exceeds_group_totals":"Maat exceeds group SF or total credit available",
   "reimbursement_exceeds_loan_debt":"Reimbursement exceeds maat debt",
   "reimbursement_exceeds_sf_loan_debt":"Reimbursement exceeds SF maat debt",
@@ -123,9 +123,9 @@
   "total_outstanding_maats": "Total outstanding maats",
   "number_of_active_maats": "Number of active maats",
   "lets_confirm_who_is_present_today": "Let's confirm who is present today",
-  "does_anyone_wants_to_add_balance": "Does anyone want to add money to their personal balance?",
+  "does_anyone_wants_to_add_balance": "Does anyone want to add money to their personal savings?",
   "what_are_we_doing_as_a_group_today": "What are we doing as a group today?",
-  "total_added_to_balance_today": "Total added to balance today",
+  "total_added_to_balance_today": "Total added to savings today",
   "available_for_group_investment": "Available for group investment",
   "proceed_to_maats": "Proceed to Maats",
   "final_settlement": "Final settlement",
@@ -234,7 +234,7 @@
     },
     "page-6": {
       "title": "Last meeting summary",
-      "message": "A quick overview of the last meeting. Here you can see how many group members attended the meeting. For example, we currently see that 18 out of 22 participants attended. Balance shows how many contributed to their personal accounts. And you can see the total amount collected during the meeting."
+      "message": "A quick overview of the last meeting. Here you can see how many group members attended the meeting. For example, we currently see that 18 out of 22 participants attended. Savings shows how many contributed to their personal accounts. And you can see the total amount collected during the meeting."
     },
     "page-7": {
       "message":"Use this tab to quickly switch between groups you manage."
