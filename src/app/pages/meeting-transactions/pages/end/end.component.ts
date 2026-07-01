@@ -59,8 +59,8 @@ export class EndComponent  implements OnInit {
     this.max_collection = Math.max(...meetings.map(meeting => meeting.collection));
 
     // trigger fireworks?
-    if((this.meeting?.totals?.credit - this.meeting?.totals?.debit) > this.max_collection ||
-        this.meeting?.totals?.loans > this.max_loans){
+    if((((this.meeting?.totals?.credit - this.meeting?.totals?.debit) > this.max_collection) && this.max_collection) ||
+        ((this.meeting?.totals?.loans > this.max_loans) && this.max_loans)){
       this.triggerFireworks();
     }
 
