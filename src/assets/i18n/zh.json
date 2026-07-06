@@ -210,6 +210,7 @@
   "select_profile_picture":"选择个人资料图片",
   "camera":"从相机",
   "photo_collection":"从照片库",
+  "upload_errors":"上传失败",
   "intro": {
     "page-1": {
       "title":"欢迎使用 MA'AT",

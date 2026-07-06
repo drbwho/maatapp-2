@@ -210,6 +210,7 @@
   "select_profile_picture":"Selecionar foto de perfil",
   "camera":"Da câmera",
   "photo_collection":"Da galeria de fotos",
+  "upload_errors":"Erros de upload",
   "intro": {
     "page-1": {
       "title":"Bem-vindo ao MA'AT",

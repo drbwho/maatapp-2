@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
-import { NavController } from '@ionic/angular';
+import { IonModal, ModalController, NavController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController } from '@ionic/angular';
@@ -20,7 +20,9 @@ import { UserData } from '../../providers/user-data';
   styleUrls: ['./meetings.page.scss'],
   standalone: false
 })
+
 export class MeetingsPage implements OnInit {
+  @ViewChild(IonModal) modal!: IonModal;
   user: any = null;
   group = {id:"", name:"", ville:"", numberofmembers: 0}
   country = {id:"", name:"", currency:"", flagcode:"gb"};
@@ -28,6 +30,8 @@ export class MeetingsPage implements OnInit {
   meeting_status = "";
   meetings: Meeting[] = [];
   show_all = false;
+  selmeeting: any = null;
+  upload_errors: any = [];
 
   constructor(
     private dataProvider: DataProvider,
@@ -40,7 +44,8 @@ export class MeetingsPage implements OnInit {
     private userData: UserData,
     private storage: Storage,
     private config: ConfigData,
-    private platform: Platform
+    private platform: Platform,
+    private modalCtrl: ModalController
   ) { }
 
   async ngOnInit() {
@@ -81,7 +86,7 @@ export class MeetingsPage implements OnInit {
   *
   */
   async openOptions(meeting: Meeting) {
-    this.translate.get(['continue_meeting','upload_data','close_meeting', 'view_transactions', 'download_excel', 'cancel_meeting', 'return']).subscribe(async (keys: any)=>{
+    this.translate.get(['continue_meeting','upload_data','close_meeting', 'view_transactions', 'download_excel', 'cancel_meeting', 'upload_errors', 'return']).subscribe(async (keys: any)=>{
       let buttons = [];
 
       if(this.user.role > 1){
@@ -146,6 +151,21 @@ export class MeetingsPage implements OnInit {
           });
         }
       }
+
+      this.upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
+      this.upload_errors = this.upload_errors.filter((s)=> s.idmeeting == meeting.id);
+      if(this.upload_errors.length)
+      {
+        buttons.push({
+          text: keys['upload_errors'],
+          icon: 'warning-outline',
+          handler: () => {
+            this.selmeeting = meeting;
+            this.showUploadErrors();
+          }
+        });
+      }
+
       buttons.push({
         text: keys['return'],
         role: 'cancel',
@@ -292,6 +312,14 @@ export class MeetingsPage implements OnInit {
     } catch (error) {
       console.error('Error saving excel file', error);
     }
+  }
+
+  async showUploadErrors(){
+    this.modal.present();
+  }
+
+  closeModal(){
+    this.modal.dismiss();
   }
 
 }

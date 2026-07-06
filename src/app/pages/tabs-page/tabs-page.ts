@@ -85,7 +85,7 @@ export class TabsPage {
     this.navCtrl.navigateForward('/new-meeting');
   }
 
-  async openSettings() {
+  async openSettings() {       
     this.translate.get(['settings','language','account','clear_cache', 'cancel', 'introduction']).subscribe(async (keys: any)=>{
       const actionSheet = await this.actionSheetCtrl.create({
         header: keys['settings'],

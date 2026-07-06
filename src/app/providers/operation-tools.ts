@@ -348,7 +348,6 @@ export class OperationTools {
           {headers})
         .subscribe({
           next: (data: any) => {
-            console.log(data);
             loading.dismiss().then(()=>{
               resolve(data);
             });
@@ -402,7 +401,6 @@ export class OperationTools {
           {headers})
         .subscribe({
           next: (data: any) => {
-            console.log(data);
             loading.dismiss().then(()=>{
               resolve(data);
             });

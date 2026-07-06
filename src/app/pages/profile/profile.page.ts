@@ -29,6 +29,7 @@ export class ProfilePage implements OnInit {
       org: '',
       email: '',
       city: '',
+      countryflag: null,
       country: null,
       photo: null
     };
