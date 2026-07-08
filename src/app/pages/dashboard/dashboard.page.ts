@@ -59,7 +59,7 @@ export class DashboardPage implements OnInit {
       //Refresh group data from API - necessary after uploading a new meeting
       if(current.need_refresh){
         console.log('Force data refresh...')
-        let countries = await this.dataProvider.fetch_data('countries', null, false, true) as any;
+        let countries = await this.dataProvider.fetch_data('countries', null, true, true) as any;
         let country = countries.find((s) => s.id == this.country.id);
         let group = country.groups.find(g => g.id == this.group.id);
         this.group = group;

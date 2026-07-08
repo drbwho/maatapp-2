@@ -85,6 +85,7 @@ export class GroupsPage implements OnInit {
     // Set current group
     var current = await this.dataProvider.getCurrent();
     current.group = group;
+    current.need_refresh = true; // Force refresh
     this.dataProvider.setCurrent(current).then(()=>{
       this.navController.navigateRoot('/app/tabs/dashboard',{
         animated: true,
