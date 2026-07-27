@@ -128,7 +128,7 @@ export class GroupTools {
     let ontime_repayments = 0;
     num_current_loans == 0 ? ontime_repayments = 0 : ontime_repayments = (num_noexpired_repayments / num_current_loans) * 100;
     ontime_repayments *= 0.3 // weight 30%
-  
+
     //2. Regular contributions
     paramid = (params.find((s) => s.code == 'RCB')).id;
     transactions = alltransactions.filter((tr)=> tr.idparameter === paramid);
