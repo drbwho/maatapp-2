@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 import { OperationTools } from '../../../../providers/operation-tools';
-import { GroupTools } from '../../../../providers/group-tools';
+import { GroupTools, MeetingHealth } from '../../../../providers/group-tools';
 import * as confetti from 'canvas-confetti';
 
 @Component({
@@ -64,10 +64,10 @@ export class EndComponent  implements OnInit {
       this.triggerFireworks();
     }
 
-    let meeting_status = await this.groupTools.get_meeting_health(this.meeting, this.group);
-    this.heading = 'messages.meetings.'+ meeting_status +'.heading';
-    this.description = 'messages.meetings.'+ meeting_status +'.description';
-    this.image = 'assets/img/action-views/'+ meeting_status +'-meeting.png';
+    let meeting_health: MeetingHealth = await this.groupTools.get_meeting_health(this.meeting, this.group);
+    this.heading = 'messages.meetings.'+ meeting_health.health_status +'.heading';
+    this.description = 'messages.meetings.'+ meeting_health.health_status +'.description';
+    this.image = 'assets/img/action-views/'+ meeting_health.health_status +'-meeting.png';
   }
 
   async open_url() {
