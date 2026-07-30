@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 import { OperationTools } from '../../../../providers/operation-tools';
-import { GroupTools, MeetingHealth } from '../../../../providers/group-tools';
+import { GroupTools } from '../../../../providers/group-tools';
 import * as confetti from 'canvas-confetti';
 
 @Component({
@@ -18,8 +18,10 @@ export class EndComponent  implements OnInit {
   loans_completed = 0;
   loans_to_due = 0;
   show_max = false;
+  show_metrics = false;
   max_loans = 0;
   max_collection = 0;
+  meeting_health: any;
   image = "";
   description = "";
   heading = "";
@@ -64,10 +66,10 @@ export class EndComponent  implements OnInit {
       this.triggerFireworks();
     }
 
-    let meeting_health: MeetingHealth = await this.groupTools.get_meeting_health(this.meeting, this.group);
-    this.heading = 'messages.meetings.'+ meeting_health.health_status +'.heading';
-    this.description = 'messages.meetings.'+ meeting_health.health_status +'.description';
-    this.image = 'assets/img/action-views/'+ meeting_health.health_status +'-meeting.png';
+    this.meeting_health = await this.groupTools.get_meeting_health(this.meeting, this.group);console.log(this.meeting_health)
+    this.heading = 'messages.meetings.'+ this.meeting_health.health_status +'.heading';
+    this.description = 'messages.meetings.'+ this.meeting_health.health_status +'.description';
+    this.image = 'assets/img/action-views/'+ this.meeting_health.health_status +'-meeting.png';
   }
 
   async open_url() {

@@ -10,47 +10,39 @@ export interface HealthMetric {
   weight: number;
 }
 
-export interface IMeetingHealth {
-  ontime_repayments: HealthMetric;
-  perc_rcb: HealthMetric;
-  perc_attendance: HealthMetric;
-  balance_loans: HealthMetric;
-  perc_credit_req: HealthMetric;
-  collective_act: HealthMetric;
-}
+type MeetingMetrics = Record<string, HealthMetric>;
 
-export class MeetingHealth {
-  ontime_repayments: HealthMetric = {
+let meeting_metrics: MeetingMetrics = {
+  ontime_repayments: { 
     value: 0.0,
     message: 'ontime_repayments',
     weight: 0.3
-  }
-  perc_rcb: HealthMetric = {
+  },
+  perc_rcb: {
     value: 0.0,
     message: 'percentage_of_rcb',
     weight: 0.2
-  }
-  perc_attendance: HealthMetric = {
+  },
+  perc_attendance: {
     value: 0.0,
     message: 'percentage__of_attendance',
     weight: 0.15
-  }
-  balance_loans: HealthMetric = {
+  },
+  balance_loans: {
     value: 0.0,
     message: 'value_balance_plus_loans',
     weight: 0.15
-  }
-  perc_credit_req: HealthMetric = {
+  },
+  perc_credit_req: {
     value: 0.0,
     message: 'percentage_of_credit_requested',
     weight: 0.1
-  }
-  collective_act: HealthMetric = {
+  },
+  collective_act: {
     value: 0.0,
     message: 'sign_of_collective_activities',
     weight: 0.1
   }
-  health_status = null;
 }
 
 @Injectable({
@@ -139,8 +131,11 @@ export class GroupTools {
   * Calculate Meeting Health index
   *
   */
-  async get_meeting_health(meeting: any, group: any): Promise<MeetingHealth>{
-    let meeting_health = new MeetingHealth();
+  async get_meeting_health(meeting: any, group: any){
+    //zero metrics
+    Object.values(meeting_metrics).forEach(metric => {
+      metric.value = 0;
+    });
 
     let totals = await this.operTools.estimate_meeting_totals(null, meeting.id);
     let params = await this.storage.get(this.config.GET_FILE('params'));
@@ -178,34 +173,34 @@ export class GroupTools {
 
     let ontime_repayments = 0;
     num_current_loans == 0 ? ontime_repayments = 0 : ontime_repayments = (num_noexpired_repayments / num_current_loans) * 100;
-    meeting_health.ontime_repayments.value = ontime_repayments;
+    meeting_metrics.ontime_repayments.value = ontime_repayments;
 
     //2. Regular contributions
     paramid = (params.find((s) => s.code == 'RCB')).id;
     transactions = alltransactions.filter((tr)=> tr.idparameter === paramid);
     let num_rcb = transactions.length;
     let perc_rcb = (num_rcb / group.numberofmembers) * 100;
-    meeting_health.perc_rcb.value = perc_rcb;
+    meeting_metrics.perc_rcb.value = perc_rcb;
 
     //3. Attendance
     let perc_attendance = 0;
     !meeting.attendance ? 
       perc_attendance = 100 : perc_attendance = (meeting.attendance / group.numberofmembers) * 100;
-    meeting_health.perc_attendance.value = perc_attendance; 
+    meeting_metrics.perc_attendance.value = perc_attendance; 
 
     //4. Balance + loans
     let ECP_total = totals.transactions.get('ECP') ?? 0;
     let EMP_total = totals.transactions.get('EMP') ?? 0;
     let balance_loans = 0;
     ECP_total > EMP_total ? balance_loans = 100 : balance_loans = 0;
-    meeting_health.balance_loans.value = balance_loans;
+    meeting_metrics.balance_loans.value = balance_loans;
 
     //5. Value of Credit
     let perc_credit_req = 0;
     let num_credit_req = totals.transactions.get('DPR') ?? 0;
     let num_ecp = totals.transactions.get('ECP') ?? 0;
     num_ecp > 0 ? perc_credit_req = (num_credit_req / num_ecp) * 100 : perc_credit_req = 0;
-    meeting_health.perc_credit_req.value = perc_credit_req;
+    meeting_metrics.perc_credit_req.value = perc_credit_req;
 
     //6. Collective activity
     let collective_act = 0;
@@ -213,27 +208,26 @@ export class GroupTools {
       [...totals.transactions].filter(([key, value]) => key == 'PCO')
     ).size;
     num_coll_act > 0 ? collective_act = 100 : collective_act = 0;
-    meeting_health.collective_act.value = collective_act;
+    meeting_metrics.collective_act.value = collective_act;
 
-    let total =  meeting_health.ontime_repayments.value * meeting_health.ontime_repayments.weight
-     + meeting_health.perc_rcb.value * meeting_health.perc_rcb.weight 
-     + meeting_health.perc_attendance.value * meeting_health.perc_attendance.weight
-     + meeting_health.balance_loans.value * meeting_health.balance_loans.weight
-     + meeting_health.perc_credit_req.value * meeting_health.perc_credit_req.weight
-     + meeting_health.collective_act.value * meeting_health.collective_act.weight;
+    //Calculate total health index
+    let total = Object.values(meeting_metrics).reduce((sum, metric) => {
+      return sum + (metric.value * metric.weight);
+    }, 0);
+
     console.log(ontime_repayments,perc_rcb,perc_attendance,balance_loans,perc_credit_req,collective_act,'=',total);
 
-    meeting_health.health_status = 'great';
+    let health_status = 'great';
     if(total < 80){
-      meeting_health.health_status = 'good';
+      health_status = 'good';
     }
     if(total <= 60){
-      meeting_health.health_status = 'stable';
+      health_status = 'stable';
     }
     if(total < 50){
-      meeting_health.health_status = 'action';
+      health_status = 'action';
     }
-    return meeting_health;
+    return {health_status: health_status, meeting_metrics: meeting_metrics}
   }
 
   async get_last_meeting(meetings){

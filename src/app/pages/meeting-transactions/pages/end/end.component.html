@@ -1,13 +1,27 @@
 
-<div class="ion-text-center ion-margin-bottom ion-padding-top">
+<div class="ion-text-center ion-margin-bottom ion-padding-top" (click)="show_metrics = !show_metrics">
   <div class="image-wrapper">
     <img [src]="image" alt="">
   </div>
   <h2 class="ion-no-margin ion-padding-top ion-text-bold">{{heading | translate}}</h2>
   <p class="ion-margin ion-padding-bottom">
     {{description | translate}}
+    <ion-icon name="chevron-forward"></ion-icon>
   </p>
 </div>
+
+@if(show_metrics){
+<div class="ion-padding-horizontal text-12">
+  <ion-grid>
+   @for (metr of meeting_health.meeting_metrics | keyvalue; track metr.key) {
+      <ion-row>
+        <ion-col size="7">{{metr.value.message | translate}}</ion-col>
+        <ion-col class="ion-text-end">{{metr.value.value}}</ion-col>
+      </ion-row>
+    }
+  </ion-grid>
+</div>
+}
 
 <ion-grid>
 <ion-row>
