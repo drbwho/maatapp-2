@@ -25,7 +25,7 @@ let meeting_metrics: MeetingMetrics = {
   },
   perc_attendance: {
     value: 0.0,
-    message: 'percentage__of_attendance',
+    message: 'percentage_of_attendance',
     weight: 0.15
   },
   balance_loans: {
@@ -40,7 +40,7 @@ let meeting_metrics: MeetingMetrics = {
   },
   collective_act: {
     value: 0.0,
-    message: 'sign_of_collective_activities',
+    message: 'index_of_collective_activities',
     weight: 0.1
   }
 }
@@ -172,7 +172,7 @@ export class GroupTools {
     });
 
     let ontime_repayments = 0;
-    num_current_loans == 0 ? ontime_repayments = 0 : ontime_repayments = (num_noexpired_repayments / num_current_loans) * 100;
+    num_current_loans == 0 ? ontime_repayments = 100 : ontime_repayments = (num_noexpired_repayments / num_current_loans) * 100;
     meeting_metrics.ontime_repayments.value = ontime_repayments;
 
     //2. Regular contributions

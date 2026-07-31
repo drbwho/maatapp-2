@@ -6,12 +6,11 @@
   <h2 class="ion-no-margin ion-padding-top ion-text-bold">{{heading | translate}}</h2>
   <p class="ion-margin ion-padding-bottom">
     {{description | translate}}
-    <ion-icon name="chevron-forward"></ion-icon>
   </p>
 </div>
 
 @if(show_metrics){
-<div class="ion-padding-horizontal text-12">
+<div class="ion-margin-horizontal ion-border-rounded-10 text-12 metrics-card">
   <ion-grid>
    @for (metr of meeting_health.meeting_metrics | keyvalue; track metr.key) {
       <ion-row>

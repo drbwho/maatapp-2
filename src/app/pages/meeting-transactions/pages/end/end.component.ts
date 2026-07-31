@@ -66,7 +66,7 @@ export class EndComponent  implements OnInit {
       this.triggerFireworks();
     }
 
-    this.meeting_health = await this.groupTools.get_meeting_health(this.meeting, this.group);console.log(this.meeting_health)
+    this.meeting_health = await this.groupTools.get_meeting_health(this.meeting, this.group);
     this.heading = 'messages.meetings.'+ this.meeting_health.health_status +'.heading';
     this.description = 'messages.meetings.'+ this.meeting_health.health_status +'.description';
     this.image = 'assets/img/action-views/'+ this.meeting_health.health_status +'-meeting.png';
