@@ -184,8 +184,8 @@ export class GroupTools {
 
     //3. Attendance
     let perc_attendance = 0;
-    !meeting.attendance ? 
-      perc_attendance = 100 : perc_attendance = (meeting.attendance / group.numberofmembers) * 100;
+    !meeting.absences.length ? 
+      perc_attendance = 100 : perc_attendance = ((group.numberofmembers - meeting.absences.length) / group.numberofmembers) * 100;
     meeting_metrics.perc_attendance.value = perc_attendance; 
 
     //4. Balance + loans

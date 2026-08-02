@@ -211,6 +211,12 @@
   "camera":"Desde la cámara",
   "photo_collection":"Desde la galería",
   "upload_errors": "Errores de carga",
+  "ontime_repayments": "Pagos a tiempo (%)",
+  "percentage_of_rcb": "Contribuciones regulares (%)",
+  "percentage_of_attendance": "Asistencia (%)",
+  "value_balance_plus_loans": "Índice de saldo - préstamos",
+  "percentage_of_credit_requested": "Crédito solicitado (%)",
+  "index_of_collective_activities": "Índice de actividades colectivas",
   "intro": {
     "page-1": {
       "title":"Bienvenido a MA'AT",

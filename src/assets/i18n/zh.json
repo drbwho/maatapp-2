@@ -211,6 +211,12 @@
   "camera":"从相机",
   "photo_collection":"从照片库",
   "upload_errors":"上传失败",
+  "ontime_repayments": "按时还款率 (%)",
+  "percentage_of_rcb": "定期捐缴比例 (%)",
+  "percentage_of_attendance": "出勤率 (%)",
+  "value_balance_plus_loans": "余额-贷款指数",
+  "percentage_of_credit_requested": "申请信用比例 (%)",
+  "index_of_collective_activities": "集体活动指数",
   "intro": {
     "page-1": {
       "title":"欢迎使用 MA'AT",

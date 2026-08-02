@@ -113,7 +113,7 @@ export class MeetingTransactionsPage implements OnInit {
       this.country.parameters = data;
     });
 
-    this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {console.log(data)
+    this.dataProvider.fetch_data('accounts', this.group.id, true, true).then(async (data: any)=> {
       this.accounts = data.filter((s)=> s.statut == 0 && s.type == 1); //active accounts & member acounts
       this.group.account = data.find((s)=> s.idowner == this.group.id);
       this.new_totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id);

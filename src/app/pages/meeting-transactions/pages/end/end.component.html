@@ -15,7 +15,7 @@
    @for (metr of meeting_health.meeting_metrics | keyvalue; track metr.key) {
       <ion-row>
         <ion-col size="7">{{metr.value.message | translate}}</ion-col>
-        <ion-col class="ion-text-end">{{metr.value.value}}</ion-col>
+        <ion-col class="ion-text-end">{{metr.value.value | number: '.2'}}</ion-col>
       </ion-row>
     }
   </ion-grid>

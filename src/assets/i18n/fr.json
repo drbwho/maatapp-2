@@ -211,6 +211,12 @@
   "camera":"Depuis l'appareil photo",
   "photo_collection":"Depuis la collection de photos",
   "upload_errors":"Erreurs de chargement",
+  "ontime_repayments": "Remboursements dans les temps (%)",
+  "percentage_of_rcb": "Cotisations régulières (%)",
+  "percentage_of_attendance": "Présence (%)",
+  "value_balance_plus_loans": "Indice solde - prêts",
+  "percentage_of_credit_requested": "Crédit demandé (%)",
+  "index_of_collective_activities": "Indice d'activités collectives",
   "intro": {
     "page-1": {
       "title":"Bienvenue sur MA'AT",

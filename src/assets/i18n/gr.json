@@ -212,6 +212,12 @@
   "photo_collection":"Από συλλογή φωτογραφιών",
   "of": "από",
   "upload_errors":"Σφάλματα μεταφόρτωσης",
+  "ontime_repayments": "Εγκαιρες αποπληρωμές (%)",
+  "percentage_of_rcb": "Τακτικές εισφορές (%)",
+  "percentage_of_attendance": "Παρουσίες (%)",
+  "value_balance_plus_loans": "Δείκτης υπολοίπου - δανείων",
+  "percentage_of_credit_requested": "Αιτούμενη πίστωση (%)",
+  "index_of_collective_activities": "Δείκτης συλλογικών δραστηριοτήτων",
   "intro":{
     "page-1":{
       "title":"Καλώς ήρθατε στο MA'AT",
