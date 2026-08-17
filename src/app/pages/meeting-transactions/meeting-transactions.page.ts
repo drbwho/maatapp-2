@@ -1,4 +1,4 @@
-import { Component, OnInit, ɵDEFAULT_LOCALE_ID } from '@angular/core';
+import { Component, OnInit, ɵDEFAULT_LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
 import { AttendanceComponent } from './pages/attendance/attendance.component';
 import { EndComponent } from './pages/end/end.component';
 import { GroupReviewComponent } from './pages/group-review/group-review.component';
@@ -23,6 +23,7 @@ import { GroupTools } from '../../providers/group-tools';
   selector: 'app-meeting-transactions',
   templateUrl: './meeting-transactions.page.html',
   styleUrls: ['./meeting-transactions.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class MeetingTransactionsPage implements OnInit {

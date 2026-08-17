@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-groups',
     templateUrl: './groups.page.html',
     styleUrls: ['./groups.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class GroupsPage implements OnInit {

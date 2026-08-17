@@ -1,11 +1,12 @@
 import { TranslateService } from '@ngx-translate/core';
 import { DataProvider } from '../../providers/provider-data';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'about',
     templateUrl: './about.page.html',
     styleUrls: ['./about.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

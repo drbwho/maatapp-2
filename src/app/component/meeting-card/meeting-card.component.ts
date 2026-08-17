@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, computed, signal, input, effect } from '@angular/core';
+import { Component, Input, OnInit, computed, signal, input, effect, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 
 @Component({
   selector: 'app-meeting-card',
   templateUrl: './meeting-card.component.html',
   styleUrls: ['./meeting-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class MeetingCardComponent  implements OnInit {

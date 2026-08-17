@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UserData } from '../../providers/user-data';
 import { Platform } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
@@ -16,6 +16,7 @@ import { Page8Component } from './pages/page-8/page-8.component';
   selector: 'app-intro',
   templateUrl: './intro.page.html',
   styleUrls: ['./intro.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class IntroPage implements OnInit {

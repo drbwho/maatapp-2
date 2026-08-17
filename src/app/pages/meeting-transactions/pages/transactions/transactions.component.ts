@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DataProvider } from '../../../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
@@ -10,6 +10,7 @@ import { Transaction } from '../../../../interfaces/data-interfaces';
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class TransactionsComponent  implements OnInit {

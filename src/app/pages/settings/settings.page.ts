@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { NavController } from '@ionic/angular';
 import { ConfigData } from '../../providers/config-data';
@@ -10,6 +10,7 @@ import { ToastController } from '@ionic/angular';
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SettingsPage implements OnInit {

@@ -27,7 +27,7 @@
   <ion-list>
     <ion-item lines="none" color="light" class="ion-border-rounded-10 ion-margin-start ion-margin-end ion-margin-bottom">
         <ion-avatar class="flag-circle">
-          <img [src]="'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg'" />
+          <img [src]="'assets/flags/' + $safeNavigationMigration(country?.flagcode?.toLowerCase()) + '.svg'" />
         </ion-avatar>
         <ion-label color="dark" class="ion-no-margin">
           <ion-text>

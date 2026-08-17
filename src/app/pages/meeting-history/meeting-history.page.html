@@ -9,7 +9,7 @@
     <ion-buttons slot="end">
       <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
         <ion-avatar class="flag-circle">
-          <img [src]="'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg'"/>
+          <img [src]="'assets/flags/' + $safeNavigationMigration(country?.flagcode?.toLowerCase()) + '.svg'"/>
         </ion-avatar>
       </ion-button>
     </ion-buttons>
@@ -39,7 +39,7 @@
     <ion-grid class="ion-no-padding ion-margin-top">
       <ion-row>
         <ion-col class="ion-text-center text-dark">
-          <h1 class="stat-value ion-no-margin">@if(meeting?.collection > 0){ {{ meeting?.collection | number:'.0'}} }@else{ 0 }</h1>
+          <h1 class="stat-value ion-no-margin">@if(meeting?.collection > 0){ {{ $safeNavigationMigration(meeting?.collection) | number:'.0'}} }@else{ 0 }</h1>
           <p class="stat-label text-12">{{country?.currency}} {{'collected' | translate}}</p>
         </ion-col>
         <ion-col class="ion-text-center text-grey">
@@ -80,7 +80,7 @@
             <ion-col size="2">
               <ion-avatar [class]="'avatar-' + account?.status">
                 <div class="status-icon">
-                  <ion-icon [name]="account?.status == 'sad'? account?.status : 'happy'"></ion-icon>
+                  <ion-icon [name]="account?.status == 'sad'? $safeNavigationMigration(account?.status) : 'happy'"></ion-icon>
                 </div>
               </ion-avatar>
             </ion-col>
@@ -91,13 +91,13 @@
             </ion-col>
             <ion-col size="5">
               <div class="badge-container">
-                @if (pf(account?.loans) > 0) {
+                @if (pf($safeNavigationMigration(account?.loans)) > 0) {
                 <div [class]="account?.loans_expired ? 'custom-badge maat-badge-due' : 'custom-badge maat-badge'" slot="end">
                   <span class="val text-16">{{ account.loans }}</span>
                   <span class="lab text-12">Maat</span>
                 </div>
                 }
-                @if (pf(account?.meeting_balance) > 0) {
+                @if (pf($safeNavigationMigration(account?.meeting_balance)) > 0) {
                 <div class="custom-badge balance-badge">
                   <span class="val text-16">{{ account.meeting_balance }}</span>
                   <span class="lab text-12">Balance</span>
@@ -130,16 +130,16 @@
                   </p>
                   }
                 }
-                @if(pf(account?.appliedfines) > 0){
+                @if(pf($safeNavigationMigration(account?.appliedfines)) > 0){
                 <p class="warning-text">
                   <ion-icon [name]="account?.icon || 'warning-outline'" color="warning"></ion-icon>
                   {{ 'fine_applied' | translate }} {{account?.appliedfines}} {{country?.currency}}
                 </p>
                 }
-                @if(pf(account?.loans_expired) > 0 || pf(account?.sfloans_expired)){
+                @if(pf($safeNavigationMigration(account?.loans_expired)) > 0 || pf($safeNavigationMigration(account?.sfloans_expired))){
                 <p class="warning-text">
                   <ion-icon [name]="account?.icon || 'warning-outline'" color="warning"></ion-icon>
-                  {{ 'maats_overdue' | translate }} {{pf(account?.restearembourser) + pf(account?.sfrestearembourser)}} {{country?.currency}}
+                  {{ 'maats_overdue' | translate }} {{pf($safeNavigationMigration(account?.restearembourser)) + pf($safeNavigationMigration(account?.sfrestearembourser))}} {{country?.currency}}
                 </p>
                 }
               </div>

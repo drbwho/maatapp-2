@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     selector: 'app-account-info',
     templateUrl: './account-info.component.html',
     styleUrls: ['./account-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [IonicModule, CommonModule, TranslateModule]
 })
 export class AccountInfoComponent  implements OnInit {

@@ -4,7 +4,7 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@angular/build:application",
       "options": {
         "progress": false,
         "outputPath": {
@@ -69,7 +69,7 @@
       ]
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@angular/build:dev-server",
       "options": {
         "buildTarget": "app:build"
       },
@@ -80,7 +80,7 @@
       }
     },
     "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "executor": "@angular/build:extract-i18n",
       "options": {
         "buildTarget": "app:build"
       }

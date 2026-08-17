@@ -16,11 +16,11 @@
   <ion-grid class="ion-no-margin">
     <ion-row>
       <ion-col size="4" class="ion-text-center stat-col">
-        <div appAutofitText autofitGroup="summaryRowReview" class="stat-value">{{meeting?.totals.newbalance | number:'.0'}}</div>
+        <div appAutofitText autofitGroup="summaryRowReview" class="stat-value">{{$safeNavigationMigration(meeting?.totals.newbalance) | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'balance' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center stat-col">
-        <div appAutofitText autofitGroup="summaryRowReview" class="stat-value">{{meeting?.totals.newcreditdisponible | number:'.0'}}</div>
+        <div appAutofitText autofitGroup="summaryRowReview" class="stat-value">{{$safeNavigationMigration(meeting?.totals.newcreditdisponible) | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'maats_available' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center stat-col">
@@ -75,7 +75,7 @@
     <ion-label>
       <p class="dashboard-label text-22">{{'Available for group investment' | translate}}</p>
       <div class="amount-container">
-        <span class="amount">{{ group?.totals.balance - group?.persontotal | number:'.0'}}</span>
+        <span class="amount">{{ $safeNavigationMigration(group?.totals.balance) - $safeNavigationMigration(group?.persontotal) | number:'.0'}}</span>
         <span class="currency">{{country?.currency}}</span>
       </div>
     </ion-label>
@@ -106,13 +106,13 @@
     <ion-label class="ion-text-wrap">
       <h5>{{ parameter?.name }}</h5>
     </ion-label>
-    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]" (change)="update_transaction(parameter?.id, $event)"
+    <ion-input slot="end" type="number" [(ngModel)]="amount[parameter?.id]" (change)="update_transaction($safeNavigationMigration(parameter?.id), $event)"
       placeholder="0"
       class="amount-input ion-no-padding"
       [style.width.ch]="amount[parameter?.id]?.toString().length > 2 ? amount[parameter?.id].toString().length + 3 : 5">
     </ion-input>
     <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
-      (click)="clear_amount(parameter?.id)"
+      (click)="clear_amount($safeNavigationMigration(parameter?.id))"
       [class.disabled]="!(amount?.[parameter?.id] > 0)">></ion-icon>
   </ion-item>
 </ng-template>

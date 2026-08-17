@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { AlertController, ToastController } from '@ionic/angular';
@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
     selector: 'page-support',
     templateUrl: 'support.html',
     styleUrls: ['./support.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SupportPage {

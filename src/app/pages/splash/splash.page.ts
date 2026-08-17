@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Animation, createAnimation, NavController } from '@ionic/angular';
 import { UserData } from '../../providers/user-data';
@@ -7,6 +7,7 @@ import { UserData } from '../../providers/user-data';
   selector: 'app-splash',
   templateUrl: './splash.page.html',
   styleUrls: ['./splash.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SplashPage implements OnInit {

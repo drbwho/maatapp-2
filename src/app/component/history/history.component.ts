@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
     selector: 'app-history',
     templateUrl: './history.component.html',
     styleUrls: ['./history.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HistoryComponent implements OnInit {

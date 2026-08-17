@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 
@@ -15,6 +15,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   selector: 'app-action-view',
   templateUrl: './action-view.component.html',
   styleUrls: ['./action-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonicModule, CommonModule, TranslateModule]
 })
 export class ActionViewComponent {

@@ -16,5 +16,8 @@
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "strict": false
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": false
   }
 }

@@ -9,7 +9,7 @@
   <ion-grid class="ion-no-padding ion-no-margin">
     <ion-row>
       <ion-col size="4" class="ion-text-center">
-        <div class="stat-value">{{group?.numloans | number:'.0'}}</div>
+        <div class="stat-value">{{$safeNavigationMigration(group?.numloans) | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'number_of_active_maats' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center">
@@ -63,7 +63,7 @@
         <ion-icon name="checkmark-circle-sharp" slot="end" size="small" color="primary" class="ion-no-margin"
           (click)="set_default(acc)"></ion-icon>
       }
-      <ion-input slot="end" type="number" disabled [value]="(acc?.totals?.reimbursements ?? 0) > 0 ? acc?.totals?.reimbursements : ''" [placeholder]="acc?.restearembourser" class="amount-input ion-no-padding"></ion-input>
+      <ion-input slot="end" type="number" disabled [value]="(acc?.totals?.reimbursements ?? 0) > 0 ? $safeNavigationMigration(acc?.totals?.reimbursements) : ''" [placeholder]="$safeNavigationMigration(acc?.restearembourser)" class="amount-input ion-no-padding"></ion-input>
       <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
         (click)="clear_amount(acc)"
         [class.disabled]="!(acc?.totals?.reimbursements > 0)">></ion-icon>
@@ -101,7 +101,7 @@
           <ion-label class="warning text-12" color="danger">{{'overdue_contributions' | translate}}</ion-label>
         }
         @if(pf(acc.besoinsliquidite) > 0){
-          <ion-label class="warning text-12" color="primary">{{'maats_requests' | translate}}: {{acc?.besoinsliquidite | number:'.0'}}</ion-label>
+          <ion-label class="warning text-12" color="primary">{{'maats_requests' | translate}}: {{$safeNavigationMigration(acc?.besoinsliquidite) | number:'.0'}}</ion-label>
         }
       </ion-label>
       @if(pf(acc.creditdisponible) > 0 && acc?.totals?.loans > 0){

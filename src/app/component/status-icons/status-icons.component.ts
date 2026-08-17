@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Events } from '../../providers/events';
 import { AppComponent } from '../../app.component';
 import { Storage } from '@ionic/storage-angular';
@@ -9,6 +9,7 @@ import { DataProvider } from '../../providers/provider-data';
     selector: 'app-status-icons',
     templateUrl: './status-icons.component.html',
     styleUrls: ['./status-icons.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class StatusIconsComponent  implements OnInit {

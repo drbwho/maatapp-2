@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
@@ -11,6 +11,7 @@ import { HistoryComponent } from '../../component/history/history.component';
     selector: 'app-meeting-history',
     templateUrl: './meeting-history.page.html',
     styleUrls: ['./meeting-history.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MeetingHistoryPage implements OnInit {

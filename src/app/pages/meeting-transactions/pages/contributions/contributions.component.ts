@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { IonItemSliding, ModalController } from '@ionic/angular';
 
 import { DataProvider } from '../../../../providers/provider-data';
@@ -10,6 +10,7 @@ import { AccountInfoComponent } from '../../../../component/account-info/account
   selector: 'app-contributions',
   templateUrl: './contributions.component.html',
   styleUrls: ['./contributions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ContributionsComponent  implements OnInit {

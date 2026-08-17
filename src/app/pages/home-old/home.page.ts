@@ -1,5 +1,5 @@
 import { Platform } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
@@ -15,6 +15,7 @@ import { TranslateService, TranslatePipe } from '@ngx-translate/core';
     selector: 'home',
     templateUrl: './home.page.html',
     styleUrls: ['./home.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

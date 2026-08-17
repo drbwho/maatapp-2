@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../../../providers/provider-data';
 
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class AttendanceComponent  implements OnInit {

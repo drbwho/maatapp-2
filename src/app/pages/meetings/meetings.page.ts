@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 import { IonModal, ModalController, NavController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
@@ -18,6 +18,7 @@ import { UserData } from '../../providers/user-data';
   selector: 'app-meetings',
   templateUrl: './meetings.page.html',
   styleUrls: ['./meetings.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

@@ -46,7 +46,7 @@
       <ion-col>
         <div class="stats-info">
           <div class="stats-numbers">
-            {{ meeting?.collection | number:'.0'}}
+            {{ $safeNavigationMigration(meeting?.collection) | number:'.0'}}
           </div>
           <div class="stats-sub-label text-12">{{'collected' | translate}}</div>
         </div>

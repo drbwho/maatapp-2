@@ -9,7 +9,7 @@
     <ion-buttons slot="end">
       <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
         <ion-avatar class="flag-circle">
-          <img [src]="(country?.flagcode ? 'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg' : '')" />
+          <img [src]="(country?.flagcode ? 'assets/flags/' + $safeNavigationMigration(country?.flagcode?.toLowerCase()) + '.svg' : '')" />
         </ion-avatar>
       </ion-button>
     </ion-buttons>
@@ -50,7 +50,7 @@
       <ion-label class="ion-text-wrap">
         <div class="header-row">
           <h2 class="title">{{'last_meeting' | translate}}</h2>
-          <span class="meta-info">{{lastmeeting?.startedat | date:'MMM d'}} @if(lastmeeting.endedat){ · {{'closed' | translate}} }</span>
+          <span class="meta-info">{{$safeNavigationMigration(lastmeeting?.startedat) | date:'MMM d'}} @if(lastmeeting.endedat){ · {{'closed' | translate}} }</span>
         </div>
         @if(show_meeting_detail){
         <div class="stats-row">
@@ -63,7 +63,7 @@
             <div class="caption">{{'balance' | translate}}</div>
           </div>
           <div class="stat-box">
-            <div class="value">@if(!lastmeeting?.collection){ 0 } @else{ {{lastmeeting?.collection | number:'.0'}} }</div>
+            <div class="value">@if(!lastmeeting?.collection){ 0 } @else{ {{$safeNavigationMigration(lastmeeting?.collection) | number:'.0'}} }</div>
             <div class="caption">{{country?.currency}} {{'collected' | translate}}</div>
           </div>
         </div>
@@ -79,7 +79,7 @@
       <ion-label>
         <p class="dashboard-label text-22">{{'group_fund' | translate}}</p>
         <div class="amount-container">
-          <span class="amount">{{totals?.balance | number:'.2'}}</span>
+          <span class="amount">{{$safeNavigationMigration(totals?.balance) | number:'.2'}}</span>
           <span class="currency">{{country?.currency}}</span>
         </div>
       </ion-label>
@@ -89,7 +89,7 @@
       <ion-label>
         <p class="dashboard-label text-22">{{'active_maats' | translate}}</p>
         <div class="amount-container">
-          <span class="amount">{{totals?.restearembourser | number:'.2'}}</span>
+          <span class="amount">{{$safeNavigationMigration(totals?.restearembourser) | number:'.2'}}</span>
           <span class="currency">{{country?.currency}}</span>
         </div>
       </ion-label>

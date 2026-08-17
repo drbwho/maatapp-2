@@ -14,7 +14,7 @@
     @for (lang of available_langs; track lang) {
     <ion-item lines="none" color="light" class="ion-border-rounded-30 ion-margin-start ion-margin-end ion-margin-bottom" (click)="updateAppLang(lang)">
       <ion-avatar class="flag-circle">
-        <img [src]="'assets/flags/' + (lang?.code == 'en' ? 'gb' : lang.code?.toLowerCase()) + '.svg'" />
+        <img [src]="'assets/flags/' + (lang?.code == 'en' ? 'gb' : $safeNavigationMigration(lang.code?.toLowerCase())) + '.svg'" />
       </ion-avatar>
       <ion-label color="dark">
         <ion-text>

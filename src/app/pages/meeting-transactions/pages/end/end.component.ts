@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { GroupTools } from '../../../../providers/group-tools';
@@ -8,6 +8,7 @@ import * as confetti from 'canvas-confetti';
   selector: 'app-end',
   templateUrl: './end.component.html',
   styleUrls: ['./end.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class EndComponent  implements OnInit {

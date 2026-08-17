@@ -31,7 +31,7 @@
           {{'total_collected' | translate}}
           <ion-icon name="chevron-forward"></ion-icon>
         </p>
-        <h3 class="card-value">{{(meeting?.totals?.credit - meeting?.totals?.debit) | number: '.0'}} <span class="currency">{{country.currency}}</span></h3>
+        <h3 class="card-value">{{($safeNavigationMigration(meeting?.totals?.credit) - $safeNavigationMigration(meeting?.totals?.debit)) | number: '.0'}} <span class="currency">{{country.currency}}</span></h3>
         @if(show_max){
         <div class="max-values">
           <p class="max-label">{{'highest' | translate}}</p>

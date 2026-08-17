@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { TransactionsComponent } from '../transactions/transactions.component';
@@ -8,6 +8,7 @@ import { AccountInfoComponent } from '../../../../component/account-info/account
   selector: 'app-balance',
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class BalanceComponent  implements OnInit {

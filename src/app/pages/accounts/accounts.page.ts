@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { AlertController, ModalController } from '@ionic/angular';
 import { OperationTools } from '../../providers/operation-tools';
@@ -10,6 +10,7 @@ import { AccountInfoComponent } from '../../component/account-info/account-info.
     selector: 'app-accounts',
     templateUrl: './accounts.page.html',
     styleUrls: ['./accounts.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AccountsPage implements OnInit {

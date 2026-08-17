@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { Events } from '../../providers/events';
@@ -9,6 +9,7 @@ import { ModalController } from '@ionic/angular';
   selector: 'app-select-lang',
   templateUrl: './select-lang.component.html',
   styleUrls: ['./select-lang.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SelectLangComponent  implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { TransactionsComponent } from '../transactions/transactions.component';
 import { ModalController } from '@ionic/angular';
 import { OperationTools } from '../../../../providers/operation-tools';
@@ -11,6 +11,7 @@ import { AccountInfoComponent } from '../../../../component/account-info/account
   selector: 'app-maats',
   templateUrl: './maats.component.html',
   styleUrls: ['./maats.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class MaatsComponent  implements OnInit {

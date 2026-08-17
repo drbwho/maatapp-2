@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
@@ -11,6 +11,7 @@ import { UserData } from '../../providers/user-data';
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class DashboardPage implements OnInit {

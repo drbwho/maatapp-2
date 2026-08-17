@@ -1,4 +1,4 @@
-import { Component, OnInit, ɵDEFAULT_LOCALE_ID } from '@angular/core';
+import { Component, OnInit, ɵDEFAULT_LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 import { NavController } from '@ionic/angular';
 import { formatDate, Location } from '@angular/common';
@@ -14,6 +14,7 @@ import { GroupTools } from '../../providers/group-tools';
   selector: 'app-new-meeting',
   templateUrl: './new-meeting.page.html',
   styleUrls: ['./new-meeting.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class NewMeetingPage implements OnInit {

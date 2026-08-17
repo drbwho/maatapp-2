@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ProfilePage } from '../profile/profile.page';
 import { ActionSheetController } from '@ionic/angular';
@@ -14,6 +14,7 @@ import { UserData } from '../../providers/user-data';
 
 @Component({
     templateUrl: 'tabs-page.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TabsPage {

@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, ViewChild, ɵDEFAULT_LOCALE_ID } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ɵDEFAULT_LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
     selector: 'app-new-meeting-form',
     templateUrl: './new-meeting-form.component.html',
     styleUrls: ['./new-meeting-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NewMeetingFormComponent  implements OnInit {

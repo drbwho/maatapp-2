@@ -33,7 +33,7 @@
     <ion-label>
       <p class="dashboard-label text-22">{{'total_collected' | translate}}</p>
       <div class="amount-container">
-        <span class="amount">{{(meetingTotals?.credit - meetingTotals?.debit) | number:'.2'}}</span>
+        <span class="amount">{{($safeNavigationMigration(meetingTotals?.credit) - $safeNavigationMigration(meetingTotals?.debit)) | number:'.2'}}</span>
         <span class="currency">{{country?.currency}}</span>
       </div>
     </ion-label>

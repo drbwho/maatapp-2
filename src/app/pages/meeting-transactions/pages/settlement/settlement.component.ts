@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { OperationTools } from '../../../../providers/operation-tools';
 
 @Component({
   selector: 'app-settlement',
   templateUrl: './settlement.component.html',
   styleUrls: ['./settlement.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SettlementComponent  implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -12,6 +12,7 @@ import { UserOptions } from '../../interfaces/user-options';
     selector: 'page-signup',
     templateUrl: 'signup.html',
     styleUrls: ['./signup.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SignupPage {
