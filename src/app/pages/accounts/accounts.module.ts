@@ -9,14 +9,8 @@ import { AccountsPageRoutingModule } from './accounts-routing.module';
 import { AccountsPage } from './accounts.page';
 
 // needed fot translate pipe activation
-import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { TranslatePipe } from '@ngx-translate/core';
 import { AutoFitTextModule } from '../../directives/auto-fit-text.module';
-
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader();
-}
 
 @NgModule({
   imports: [
@@ -24,13 +18,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     IonicModule,
     AccountsPageRoutingModule,
-    TranslateModule.forChild({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
+    TranslatePipe,
     AutoFitTextModule
   ],
   declarations: [AccountsPage]

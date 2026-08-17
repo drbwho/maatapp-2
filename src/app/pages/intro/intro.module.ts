@@ -17,13 +17,7 @@ import { Page7Component } from './pages/page-7/page-7.component';
 import { Page8Component } from './pages/page-8/page-8.component';
 
 // needed fot translate pipe activation
-import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader();
-}
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -32,13 +26,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     IonicModule,
     IntroPageRoutingModule,
     // enable translate pipe
-    TranslateModule.forChild({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+    TranslatePipe
   ],
   declarations: [IntroPage, Page1Component, Page2Component, Page3Component, Page4Component, Page5Component, Page6Component, Page7Component, Page8Component]
 })

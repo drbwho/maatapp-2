@@ -9,13 +9,7 @@ import { CountriesPageRoutingModule } from './countries-routing.module';
 import { StatusIconsModule } from '../../component/status-icons/status-icons.module';
 
 // needed fot translate pipe activation
-import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader();
-}
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -25,13 +19,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CountriesPageRoutingModule,
     StatusIconsModule,
     // enable translate pipe
-    TranslateModule.forChild({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+    TranslatePipe
   ],
   declarations: [CountriesPage]
 })

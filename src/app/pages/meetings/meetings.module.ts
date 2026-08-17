@@ -12,13 +12,7 @@ import { ActionViewComponent } from '../../component/action-view/action-view.com
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // needed fot translate pipe activation
-import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader();
-}
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -28,13 +22,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MeetingsPageRoutingModule,
     ActionViewComponent,
     ScrollingModule,
-    TranslateModule.forChild({
-          loader: {
-            provide: TranslateLoader,
-            useFactory: HttpLoaderFactory,
-            deps: [HttpClient]
-          }
-        })    
+    TranslatePipe
   ],
   declarations: [MeetingsPage, MeetingCardComponent]
 })

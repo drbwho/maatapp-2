@@ -27,6 +27,8 @@ export class EndComponent  implements OnInit {
   description = "";
   heading = "";
 
+  public pf = parseFloat;
+
   constructor(
     private operTools: OperationTools,
     private groupTools: GroupTools

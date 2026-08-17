@@ -3,20 +3,14 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 
 // needed fot translate pipe activation
-import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader();
-}
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-action-view',
   templateUrl: './action-view.component.html',
   styleUrls: ['./action-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [IonicModule, CommonModule, TranslateModule]
+  imports: [IonicModule, CommonModule, TranslatePipe]
 })
 export class ActionViewComponent {
   @Input() title?: string;

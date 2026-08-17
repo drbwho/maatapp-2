@@ -6,10 +6,9 @@ import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Storage, Drivers } from '@ionic/storage';
 
-import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader, TranslatePipe, TranslateStore } from '@ngx-translate/core';
-import { provideTranslateService } from "@ngx-translate/core";
-import { provideTranslateHttpLoader, TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,15 +19,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import {enableProdMode} from '@angular/core';
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader();
-}
-
 enableProdMode();
 
 @NgModule({ schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [AppComponent],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent], 
+    imports: [BrowserModule,
         AppRoutingModule,
         IonicModule.forRoot({ innerHTMLTemplatesEnabled: true }),
         IonicStorageModule.forRoot({
@@ -41,22 +37,17 @@ enableProdMode();
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production
         }),
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            }
-        })],
-        providers: [TranslatePipe, TranslateStore, Calendar, SocialSharing, Storage, provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        TranslatePipe
+        ],
+        providers: [ Calendar, SocialSharing, Storage, provideHttpClient(withXhr(), withInterceptorsFromDi()),
+            provideHttpClient(),
             provideTranslateService({
-                lang: 'en',
                 fallbackLang: 'en',
                 loader: provideTranslateHttpLoader({
-                    prefix: './assets/i18n/',
-                    suffix: '.json'
+                prefix: './assets/i18n/',
+                suffix: '.json'
                 })
-            }),
+            })
         ]
     })
 export class AppModule {}

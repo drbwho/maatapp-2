@@ -26,7 +26,7 @@ export class AboutPage implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
-    this.curLang = (this.translate.currentLang ? this.translate.currentLang : 'en');
+    this.curLang = (this.translate.currentLang() ? this.translate.currentLang() : 'en');
   }
 
 }

@@ -4,19 +4,14 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 
 // needed fot translate pipe activation
-import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { TranslatePipe } from '@ngx-translate/core';
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader();
-}
 @Component({
     selector: 'app-account-info',
     templateUrl: './account-info.component.html',
     styleUrls: ['./account-info.component.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [IonicModule, CommonModule, TranslateModule]
+    imports: [IonicModule, CommonModule, TranslatePipe]
 })
 export class AccountInfoComponent  implements OnInit {
   @Input() account: any;
