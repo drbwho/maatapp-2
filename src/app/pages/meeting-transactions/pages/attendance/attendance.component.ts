@@ -1,14 +1,22 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../../../providers/provider-data';
+import { IonList, IonItem, IonAvatar, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false
+  standalone: true,
+  imports: [
+    CommonModule,
+    TranslatePipe
+  ]
 })
 export class AttendanceComponent  implements OnInit {
+
   @Input() group: any;
   @Input() accounts: any;
   @Input() meeting: any;

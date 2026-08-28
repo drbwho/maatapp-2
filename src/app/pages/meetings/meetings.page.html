@@ -9,14 +9,14 @@
     <ion-buttons slot="end">
       <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
         <ion-avatar class="flag-circle">
-          <img [src]="'assets/flags/' + $safeNavigationMigration(country?.flagcode?.toLowerCase()) + '.svg'" />
+          <img [src]="'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg'" />
         </ion-avatar>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
      <ion-buttons slot="start">
-      <ion-back-button icon="chevron-back-outline" defaultHref="/app/tabs/dashboard">
+      <ion-back-button icon="chevron-back-outline" defaultHref="/app/dashboard">
       </ion-back-button>
       <ion-label>Back</ion-label>
     </ion-buttons>
@@ -98,7 +98,7 @@
       <ion-content class="ion-padding">
         <ion-label>
           <strong>{{selmeeting?.place}} </strong>
-          {{$safeNavigationMigration(selmeeting?.startedat) | date: 'MMM d'}}
+          {{selmeeting?.startedat | date: 'MMM d'}}
         </ion-label>
         @for (uperror of upload_errors; track uperror) {
           <ion-item lines="none" class="ion-margin-top">

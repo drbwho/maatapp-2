@@ -1,9 +1,10 @@
-import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { NgForm, FormsModule } from '@angular/forms';
 
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonList, IonItem, IonLabel, IonTextarea, IonText, IonButton } from '@ionic/angular/standalone';
 import { DataProvider } from '../../providers/provider-data';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -11,85 +12,102 @@ import { TranslateService } from '@ngx-translate/core';
     templateUrl: 'support.html',
     styleUrls: ['./support.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        TranslatePipe,
+        IonHeader,
+        IonToolbar,
+        IonButtons,
+        IonBackButton,
+        IonTitle,
+        IonContent,
+        IonList,
+        IonItem,
+        IonLabel,
+        IonTextarea,
+        IonText,
+        IonButton
+    ]
 })
 export class SupportPage {
-  submitted = false;
-  supportMessage: string;
-  tickets = [];
+    submitted = false;
+    supportMessage: string;
+    tickets = [];
 
-  constructor(
-    public alertCtrl: AlertController,
-    public toastCtrl: ToastController,
-    private dataProvider: DataProvider,
-    private translate: TranslateService
-  ) { }
+    constructor(
+        public alertCtrl: AlertController,
+        public toastCtrl: ToastController,
+        private dataProvider: DataProvider,
+        private translate: TranslateService
+    ) { }
 
-  ionViewWillEnter() {
-    this.update_tickets();
-  }
-
-  update_tickets(){
-    this.dataProvider.getTickets().then((data: any)=> {this.tickets = data;});
-  }
-
-  async submit(form: NgForm) {
-    this.submitted = true;
-
-    if (form.valid) {
-      this.submitted = false;
-
-      this.dataProvider.newTicket(this.supportMessage).then(async (res:any)=>{
-        if(res.status != undefined && res.status == 'error'){
-          this.translate.get(['error']).subscribe(async (keys: any)=>{
-            const alert = await this.alertCtrl.create({
-              header: keys['error'],
-              message: res.message,
-              buttons: [
-              {
-                text: 'Ok',
-              },
-              ],
-            });
-            await alert.present();
-          });
-          return;
-        }else{
-          this.supportMessage = '';
-          this.translate.get(['support_request_sent']).subscribe(async (keys: any)=>{
-            const toast = await this.toastCtrl.create({
-              message: keys['support_request_sent'],
-              cssClass: 'toast-success',
-              duration: 3000
-            });
-            await toast.present();
-            this.update_tickets();
-          });
-          return;
-        }
-      })
+    ionViewWillEnter() {
+        this.update_tickets();
     }
-  }
 
-  // If the user enters text in the support question and then navigates
-  // without submitting first, ask if they meant to leave the page
-  // async ionViewCanLeave(): Promise<boolean> {
-  //   // If the support message is empty we should just navigate
-  //   if (!this.supportMessage || this.supportMessage.trim().length === 0) {
-  //     return true;
-  //   }
+    update_tickets() {
+        this.dataProvider.getTickets().then((data: any) => { this.tickets = data; });
+    }
 
-  //   return new Promise((resolve: any, reject: any) => {
-  //     const alert = await this.alertCtrl.create({
-  //       title: 'Leave this page?',
-  //       message: 'Are you sure you want to leave this page? Your support message will not be submitted.',
-  //       buttons: [
-  //         { text: 'Stay', handler: reject },
-  //         { text: 'Leave', role: 'cancel', handler: resolve }
-  //       ]
-  //     });
+    async submit(form: NgForm) {
+        this.submitted = true;
 
-  //     await alert.present();
-  //   });
-  // }
+        if (form.valid) {
+            this.submitted = false;
+
+            this.dataProvider.newTicket(this.supportMessage).then(async (res: any) => {
+                if (res.status != undefined && res.status == 'error') {
+                    this.translate.get(['error']).subscribe(async (keys: any) => {
+                        const alert = await this.alertCtrl.create({
+                            header: keys['error'],
+                            message: res.message,
+                            buttons: [
+                                {
+                                    text: 'Ok',
+                                },
+                            ],
+                        });
+                        await alert.present();
+                    });
+                    return;
+                } else {
+                    this.supportMessage = '';
+                    this.translate.get(['support_request_sent']).subscribe(async (keys: any) => {
+                        const toast = await this.toastCtrl.create({
+                            message: keys['support_request_sent'],
+                            cssClass: 'toast-success',
+                            duration: 3000
+                        });
+                        await toast.present();
+                        this.update_tickets();
+                    });
+                    return;
+                }
+            })
+        }
+    }
+
+    // If the user enters text in the support question and then navigates
+    // without submitting first, ask if they meant to leave the page
+    // async ionViewCanLeave(): Promise<boolean> {
+    //   // If the support message is empty we should just navigate
+    //   if (!this.supportMessage || this.supportMessage.trim().length === 0) {
+    //     return true;
+    //   }
+
+    //   return new Promise((resolve: any, reject: any) => {
+    //     const alert = await this.alertCtrl.create({
+    //       title: 'Leave this page?',
+    //       message: 'Are you sure you want to leave this page? Your support message will not be submitted.',
+    //       buttons: [
+    //         { text: 'Stay', handler: reject },
+    //         { text: 'Leave', role: 'cancel', handler: resolve }
+    //       ]
+    //     });
+
+    //     await alert.present();
+    //   });
+    // }
 }

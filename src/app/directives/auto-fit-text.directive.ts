@@ -4,8 +4,9 @@ import { RendererStyleFlags2 } from '@angular/core';
 
 @Directive({
     selector: '[appAutofitText]',
-    standalone: false
+    standalone: true
 })
+
 
 export class AutofitTextDirective implements AfterViewInit {
   @Input() autofitGroup: string = 'default';

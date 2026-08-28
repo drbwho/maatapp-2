@@ -1,41 +1,63 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { addIcons } from "ionicons";
+import { checkmarkCircle } from "ionicons/icons";
+import { IonHeader, IonToolbar, IonTitle, IonLabel, IonButtons, IonBackButton, IonContent, IonList, IonItem, IonAvatar, IonIcon } from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-countries',
     templateUrl: './countries.page.html',
     styleUrls: ['./countries.page.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: true,
+    imports: [
+        CommonModule,
+        TranslatePipe,
+        IonHeader,
+        IonToolbar,
+        IonTitle,
+        IonLabel,
+        IonButtons,
+        IonBackButton,
+        IonContent,
+        IonList,
+        IonItem,
+        IonAvatar,
+        IonIcon
+    ]
 })
 export class CountriesPage implements OnInit {
-  countries: any;
-  currentid = 0;
+    countries: any;
+    currentid = 0;
 
-  constructor(
-    private dataProvider: DataProvider,
-    private router: Router
-    ) { }
-
-  ngOnInit() {
-  }
-
-  async ionViewWillEnter() {
-    this.dataProvider.fetch_data('countries', null, false, true).then((data: any)=> {this.countries = data;});
-    var current = await this.dataProvider.getCurrent();
-    if(current && current.country){
-      this.currentid = current.country.id;
+    constructor(
+        private dataProvider: DataProvider,
+        private router: Router
+    ) {
+        addIcons({ checkmarkCircle });
     }
-  }
 
-  async navto(country){
-    // Set current Country
-    var current = await this.dataProvider.getCurrent();
-    current.country = country;
-    current.group = null;
-    this.dataProvider.setCurrent(current);
-    this.router.navigate(['/country/'+ country.id+'/groups'], {state: {direction: 'forward'}});
-  }
+    ngOnInit() {
+    }
+
+    async ionViewWillEnter() {
+        this.dataProvider.fetch_data('countries', null, false, true).then((data: any) => { this.countries = data; });
+        var current = await this.dataProvider.getCurrent();
+        if (current && current.country) {
+            this.currentid = current.country.id;
+        }
+    }
+
+    async navto(country) {
+        // Set current Country
+        var current = await this.dataProvider.getCurrent();
+        current.country = country;
+        current.group = null;
+        this.dataProvider.setCurrent(current);
+        this.router.navigate(['/country/' + country.id + '/groups'], { state: { direction: 'forward' } });
+    }
 
 }

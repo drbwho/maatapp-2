@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UserData } from '../../providers/user-data';
-import { Platform } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
+import { Platform, IonHeader, IonProgressBar, IonContent, IonFooter, IonButton } from '@ionic/angular/standalone';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Page1Component } from './pages/page-1/page-1.component';
 import { Page2Component } from './pages/page-2/page-2.component';
@@ -13,52 +14,61 @@ import { Page7Component } from './pages/page-7/page-7.component';
 import { Page8Component } from './pages/page-8/page-8.component';
 
 @Component({
-  selector: 'app-intro',
-  templateUrl: './intro.page.html',
-  styleUrls: ['./intro.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false
+    selector: 'app-intro',
+    templateUrl: './intro.page.html',
+    styleUrls: ['./intro.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: true,
+    imports: [
+        CommonModule,
+        IonHeader,
+        IonProgressBar,
+        IonContent,
+        IonFooter,
+        IonButton,
+        RouterLink
+    ]
 })
 export class IntroPage implements OnInit {
-  pageId = 1;
-  nextPage = 2;
-  introPageComponent = null;
+    pageId = 1;
+    nextPage = 2;
+    introPageComponent = null;
 
-  readonly componentMap = {
-    1: Page1Component,
-    2: Page2Component,
-    3: Page3Component,
-    4: Page4Component,
-    5: Page5Component,
-    6: Page6Component,
-    7: Page7Component,
-    8: Page8Component,
-  };
+    readonly componentMap = {
+        1: Page1Component,
+        2: Page2Component,
+        3: Page3Component,
+        4: Page4Component,
+        5: Page5Component,
+        6: Page6Component,
+        7: Page7Component,
+        8: Page8Component,
+    };
 
-  constructor(
-    private plt: Platform,
-    private userData: UserData,
-    private route: ActivatedRoute
+    constructor(
+        private plt: Platform,
+        private userData: UserData,
+        private route: ActivatedRoute
     ) { }
 
-  async ngOnInit() {
-    if (this.plt.width() > 500) {
-      //this.backimage = '/assets/img/Start_BG_screen_without_logo_flat.jpg';
-    } else {
-      //this.backimage = '/assets/img/8-sm.png';//Start_BG_screen_without_logo.jpg';
-    }
+    async ngOnInit() {
+        if (this.plt.width() > 500) {
+            //this.backimage = '/assets/img/Start_BG_screen_without_logo_flat.jpg';
+        } else {
+            //this.backimage = '/assets/img/8-sm.png';//Start_BG_screen_without_logo.jpg';
+        }
 
-    this.route.paramMap.subscribe(params => {
-      const curId = parseInt(params.get('pageId'));
-      if(curId){
-        this.pageId = curId;
-        this.nextPage = curId + 1;
-      }
-      if(this.pageId >= 8){
-        this.userData.shownIntro(true);
-      }
-      this.introPageComponent = this.componentMap[this.pageId];
-    });
-    
-  }
+        this.route.paramMap.subscribe(params => {
+            const curId = parseInt(params.get('pageId'));
+            if (curId) {
+                this.pageId = curId;
+                this.nextPage = curId + 1;
+            }
+            if (this.pageId >= 8) {
+                this.userData.shownIntro(true);
+            }
+            this.introPageComponent = this.componentMap[this.pageId];
+        });
+
+    }
 }

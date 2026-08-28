@@ -13,7 +13,7 @@
   <ion-list class="ion-margin">
     @for (tr of transactions; track tr.id) {
       <ion-item lines="none" class="ion-margin-vertical ion-no-padding">
-        <ion-icon slot="start" color="primary" [src]="tr?.icon ? 'assets/img/icons/transactions/'+ $safeNavigationMigration(tr?.icon) +'.svg' : ''"></ion-icon>
+        <ion-icon slot="start" color="primary" [src]="tr?.icon ? 'assets/img/icons/transactions/'+ tr?.icon +'.svg' : ''"></ion-icon>
         <ion-label color="primary">
           {{tr.name}}
         </ion-label>

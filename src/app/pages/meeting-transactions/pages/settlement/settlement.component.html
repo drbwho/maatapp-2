@@ -9,15 +9,15 @@
   <ion-grid class="ion-no-margin">
     <ion-row>
       <ion-col size="4" class="ion-text-center stat-col">
-        <div appAutofitText autofitGroup="summaryRowSettlement" class="stat-value">{{$safeNavigationMigration(meeting?.totals?.credit) | number:'.0'}}</div>
+        <div appAutofitText autofitGroup="summaryRowSettlement" class="stat-value">{{meeting?.totals?.credit | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'total_collected' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center stat-col">
-        <div appAutofitText autofitGroup="summaryRowSettlement" class="stat-value">{{ $safeNavigationMigration(meeting?.totals?.debit) | number:'.0'}}</div>
+        <div appAutofitText autofitGroup="summaryRowSettlement" class="stat-value">{{ meeting?.totals?.debit | number:'.0'}}</div>
         <div class="stat-label ion-padding-horizontal">{{'total_to_payout' | translate}}</div>
       </ion-col>
       <ion-col size="4" class="ion-text-center stat-col">
-        <div appAutofitText autofitGroup="summaryRowSettlement" class="stat-value">{{ ($safeNavigationMigration(meeting?.totals?.credit) -  $safeNavigationMigration(meeting?.totals?.debit)) | number: '.0' }}</div>
+        <div appAutofitText autofitGroup="summaryRowSettlement" class="stat-value">{{ (meeting?.totals?.credit -  meeting?.totals?.debit) | number: '.0' }}</div>
         <div class="stat-label">{{'net_cash_change' | translate}}</div>
       </ion-col>
     </ion-row>
@@ -36,12 +36,12 @@
         <h5>{{ acc?.owner }}</h5>
       </div>
       <p class="detail-header" (click)="acc.show_details = !acc.show_details">
-        <span>@if((acc?.totals?.credit - acc?.totals?.debit) > 0){ + } {{($safeNavigationMigration(acc?.totals?.credit) - $safeNavigationMigration(acc?.totals?.debit)) | number:'.0'}} {{country.currency}}</span>
+        <span>@if((acc?.totals?.credit - acc?.totals?.debit) > 0){ + } {{(acc?.totals?.credit - acc?.totals?.debit) | number:'.0'}} {{country.currency}}</span>
       </p>
       @if(acc.show_details){
       <div class="cash-details">
-        <p class="text-12"><ion-icon name="add-circle" color="success"></ion-icon>{{'pays_cash' | translate}}: {{$safeNavigationMigration(acc?.totals?.credit) | number:'.0'}} {{country.currency}}</p>
-        <p class="text-12"><ion-icon name="remove-circle" color="primary"></ion-icon>{{'receives_cash' | translate}}: {{$safeNavigationMigration(acc?.totals?.debit) | number:'.0'}} {{country.currency}}</p>
+        <p class="text-12"><ion-icon name="add-circle" color="success"></ion-icon>{{'pays_cash' | translate}}: {{acc?.totals?.credit | number:'.0'}} {{country.currency}}</p>
+        <p class="text-12"><ion-icon name="remove-circle" color="primary"></ion-icon>{{'receives_cash' | translate}}: {{acc?.totals?.debit | number:'.0'}} {{country.currency}}</p>
       </div>
       }
     </ion-label>

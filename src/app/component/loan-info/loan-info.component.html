@@ -17,7 +17,7 @@
         {{'maats_available' | translate}}: {{account.creditdisponible}} {{country.currency}}
       </p>
       @if(pf(account.besoinsliquidite) > 0){
-        <p class="ion-no-margin"><ion-note color="primary" class="text-12">{{'maats_requests' | translate}}: {{$safeNavigationMigration(account?.besoinsliquidite) | number:'.0'}} {{country.currency}}</ion-note></p>
+        <p class="ion-no-margin"><ion-note color="primary" class="text-12">{{'maats_requests' | translate}}: {{account?.besoinsliquidite | number:'.0'}} {{country.currency}}</ion-note></p>
       }
     </div>
     <div class="numeric-input-wrapper">

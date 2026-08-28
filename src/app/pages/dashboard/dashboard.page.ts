@@ -1,101 +1,123 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
-import { NavController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
+import { NavController, IonRouterLink, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonContent, IonList, IonItem, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GroupTools } from '../../providers/group-tools';
 import { OperationTools } from '../../providers/operation-tools';
 import { UserData } from '../../providers/user-data';
-
+import { addIcons } from "ionicons";
+import { chevronForwardOutline } from "ionicons/icons";
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.page.html',
-  styleUrls: ['./dashboard.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.page.html',
+    styleUrls: ['./dashboard.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: true,
+    imports: [
+        CommonModule,
+        IonRouterLink,
+        IonHeader,
+        IonToolbar,
+        IonTitle,
+        IonButtons,
+        IonButton,
+        IonAvatar,
+        IonContent,
+        IonList,
+        IonItem,
+        IonLabel,
+        IonIcon,
+        RouterLink,
+        TranslatePipe
+    ]
 })
 export class DashboardPage implements OnInit {
-  user: any = null;
-  group: any = null;
-  country: any = null;
-  meetings: any = {};
-  lastmeeting: any = {};
-  last_attendance = 0;
-  totals: any = {};
-  meeting_status = "";
-  show_meeting_detail = false;
-  upload_status = false;
-  network_status = false;
-  num_ECP = 0;
-  collected = 0;
+    user: any = null;
+    group: any = null;
+    country: any = null;
+    meetings: any = null;
+    lastmeeting: any = null;
+    last_attendance = 0;
+    totals: any = null;
+    meeting_status = "";
+    show_meeting_detail = false;
+    upload_status = false;
+    network_status = false;
+    num_ECP = 0;
+    collected = 0;
 
-  constructor(
-    private dataProvider: DataProvider,
-    private navCtrl: NavController,
-    private route: ActivatedRoute,
-    private userData: UserData,
-    private groupTools: GroupTools,
-    private operationTools: OperationTools
-  ) {}
-
-  ngOnInit() {
-    this.route.url.subscribe(() => {
-      this.load_currents(); // Hack to force refreshing page in every visit!
-    });
-
-    // disable introduction
-    this.userData.shownIntro(true);
-   }
-
-  async load_currents(){
-    var current = await this.dataProvider.getCurrent();
-    if(!current || current.country == undefined){
-      this.navCtrl.navigateForward('/countries');
-    }else if(!current.group){
-      this.navCtrl.navigateForward('/country/' + current.country.id + '/groups');
-    }else {
-      this.country = current.country;
-      this.group = current.group;
-
-      //Refresh group data from API - necessary after uploading a new meeting
-      if(current.need_refresh){
-        console.log('Force data refresh...')
-        let countries = await this.dataProvider.fetch_data('countries', null, true, true) as any;
-        let country = countries.find((s) => s.id == this.country.id);
-        let group = country.groups.find(g => g.id == this.group.id);
-        this.group = group;
-        current.group = this.group;
-        current.need_refresh = false;
-        this.dataProvider.setCurrent(current);
-      }
-
-      this.meetings = await this.groupTools.get_meetings(this.group)
-      this.totals = current.group.totals;
-      this.meeting_status = await this.groupTools.get_group_meeting_status(this.meetings, this.group.id);
-      this.lastmeeting = await this.groupTools.get_last_meeting(this.meetings);
-      if(this.lastmeeting){
-        this.last_attendance = this.lastmeeting.absences ? this.group.numberofmembers - this.lastmeeting.absences.length : 0;
-        this.num_ECP = await this.operationTools.get_num_of_ECP(this.lastmeeting, this.country.id);
-      }else{
-        this.last_attendance = 0;
-        this.num_ECP = 0;
-      }
+    constructor(
+        private dataProvider: DataProvider,
+        private navCtrl: NavController,
+        private route: ActivatedRoute,
+        private userData: UserData,
+        private groupTools: GroupTools,
+        private operationTools: OperationTools
+    ) {
+        addIcons({ chevronForwardOutline });
     }
-    this.user = await this.userData.getUser();
-  }
 
-  navToGroups(){
-    var curcountry = this.dataProvider.current.country;
-    if(!curcountry || !curcountry.id){
-      this.navCtrl.navigateForward('/countries');
-    }else{
-      this.navCtrl.navigateForward('/country/' + curcountry.id + '/groups');
+    ngOnInit() {
+        this.route.url.subscribe(() => {
+            this.load_currents(); // Hack to force refreshing page in every visit!
+        });
+
+        // disable introduction
+        this.userData.shownIntro(true);
     }
-  }
 
-  async open_details(){
-    this.dataProvider.current.meeting = this.lastmeeting;
-    this.navCtrl.navigateForward('/meeting-transactions');
-  }
+    async load_currents() {
+        var current = await this.dataProvider.getCurrent();
+        if (!current || current.country == undefined) {
+            this.navCtrl.navigateForward('/countries');
+        } else if (!current.group) {
+            this.navCtrl.navigateForward('/country/' + current.country.id + '/groups');
+        } else {
+            this.country = current.country;
+            this.group = current.group;
+
+            //Refresh group data from API - necessary after uploading a new meeting
+            if (current.need_refresh) {
+                console.log('Force data refresh...')
+                let countries = await this.dataProvider.fetch_data('countries', null, true, true) as any;
+                let country = countries.find((s) => s.id == this.country.id);
+                let group = country.groups.find(g => g.id == this.group.id);
+                this.group = group;
+                current.group = this.group;
+                current.need_refresh = false;
+                this.dataProvider.setCurrent(current);
+            }
+
+            this.meetings = await this.groupTools.get_meetings(this.group)
+            this.totals = current.group.totals;
+            this.meeting_status = await this.groupTools.get_group_meeting_status(this.meetings, this.group.id);
+            this.lastmeeting = await this.groupTools.get_last_meeting(this.meetings);
+            if (this.lastmeeting) {
+                this.last_attendance = this.lastmeeting.absences ? this.group.numberofmembers - this.lastmeeting.absences.length : 0;
+                this.num_ECP = await this.operationTools.get_num_of_ECP(this.lastmeeting, this.country.id);
+            } else {
+                this.last_attendance = 0;
+                this.num_ECP = 0;
+            }
+        }
+        this.user = await this.userData.getUser();
+    }
+
+    navToGroups() {
+        var curcountry = this.dataProvider.current.country;
+        if (!curcountry || !curcountry.id) {
+            this.navCtrl.navigateForward('/countries');
+        } else {
+            this.navCtrl.navigateForward('/country/' + curcountry.id + '/groups');
+        }
+    }
+
+    async open_details() {
+        this.dataProvider.current.meeting = this.lastmeeting;
+        this.navCtrl.navigateForward('/meeting-transactions');
+    }
 
 }

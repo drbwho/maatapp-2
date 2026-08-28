@@ -1,7 +1,6 @@
 import { ConfigData } from './../../providers/config-data';
-import {} from '@angular/common/http';
 import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 
@@ -9,85 +8,100 @@ import { UserData } from '../../providers/user-data';
 
 import { UserOptions } from '../../interfaces/user-options';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AlertController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import { AlertController, IonHeader, IonContent, IonText, IonList, IonItem, IonInput, IonNote, IonFooter, IonButton } from '@ionic/angular/standalone';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'page-login',
     templateUrl: 'login.html',
     styleUrls: ['./login.scss'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonHeader,
+        IonContent,
+        IonText,
+        IonList,
+        IonItem,
+        IonInput,
+        IonNote,
+        IonFooter,
+        IonButton,
+        TranslatePipe
+    ]
 })
 export class LoginPage {
-  login: UserOptions = { username: '', password: '' };
-  submitted = false;
+    login: UserOptions = { username: '', password: '' };
+    submitted = false;
 
-  constructor(
-    public userData: UserData,
-    public router: Router,
-    public http: HttpClient,
-    public alertController: AlertController,
-    public config: ConfigData,
-    public storage: Storage,
-    public translate: TranslateService
-  ) { }
+    constructor(
+        public userData: UserData,
+        public router: Router,
+        public http: HttpClient,
+        public alertController: AlertController,
+        public config: ConfigData,
+        public storage: Storage,
+        public translate: TranslateService
+    ) { }
 
-  async onLogin(form: NgForm) {
-    this.submitted = true;
+    async onLogin(form: NgForm) {
+        this.submitted = true;
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    });
-
-    if (form.valid) {
-      const device_id = await this.storage.get(this.config.DEVICE_ID);
-      this.http.post(this.config.API_LOGIN_URL, {"email": this.login.username, "password": this.login.password, "device_name": device_id}, {headers: headers, withCredentials: true})
-        .subscribe( async (data: any) => {
-          console.log('logged in:' + data.user.username);
-          if (data.status) {
-            this.userData.login(data.user);
-            this.router.navigateByUrl('/intro');
-          } else {
-            this.translate.get(['error','user_or_password_dont_match']).subscribe(async (keys: any)=>{
-              const alert = await this.alertController.create({
-                header: keys['error'],
-                message: keys['user_or_password_dont_match'],
-                buttons: [
-                {
-                text: 'Ok',
-                handler: () => {
-                  console.log('Confirm Okay');
-                  }
-                }
-                ]
-              });
-              await alert.present();
-            });
-          }
-        }, async error => {
-          console.log(error);
-          this.translate.get(['error','authentication_error']).subscribe(async (keys: any)=>{
-            const alert = await this.alertController.create({
-              header: keys['error'],
-              message: keys['authentication_error'],
-              buttons: [
-              {
-                text: 'Ok',
-                handler: () => {
-                  console.log('Confirm Okay');
-                }
-              }
-              ]
-            });
-            await alert.present();
-          });
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         });
-    }
-  }
 
-  onSignup() {
-    this.router.navigateByUrl('/signup');
-  }
+        if (form.valid) {
+            const device_id = await this.storage.get(this.config.DEVICE_ID);
+            this.http.post(this.config.API_LOGIN_URL, { "email": this.login.username, "password": this.login.password, "device_name": device_id }, { headers: headers, withCredentials: true })
+                .subscribe(async (data: any) => {
+                    console.log('logged in:' + data.user.username);
+                    if (data.status) {
+                        this.userData.login(data.user);
+                        this.router.navigateByUrl('/intro');
+                    } else {
+                        this.translate.get(['error', 'user_or_password_dont_match']).subscribe(async (keys: any) => {
+                            const alert = await this.alertController.create({
+                                header: keys['error'],
+                                message: keys['user_or_password_dont_match'],
+                                buttons: [
+                                    {
+                                        text: 'Ok',
+                                        handler: () => {
+                                            console.log('Confirm Okay');
+                                        }
+                                    }
+                                ]
+                            });
+                            await alert.present();
+                        });
+                    }
+                }, async error => {
+                    console.log(error);
+                    this.translate.get(['error', 'authentication_error']).subscribe(async (keys: any) => {
+                        const alert = await this.alertController.create({
+                            header: keys['error'],
+                            message: keys['authentication_error'],
+                            buttons: [
+                                {
+                                    text: 'Ok',
+                                    handler: () => {
+                                        console.log('Confirm Okay');
+                                    }
+                                }
+                            ]
+                        });
+                        await alert.present();
+                    });
+                });
+        }
+    }
+
+    onSignup() {
+        this.router.navigateByUrl('/signup');
+    }
 }

@@ -25,7 +25,7 @@
 <ion-content [fullscreen]="true" class="ion-margin">
   <div class="owner-container">
     <h2 class="ion-margin-start">{{account?.owner}}</h2>
-    @if(pf($safeNavigationMigration(account?.creditdisponible))){
+    @if(pf(account?.creditdisponible)){
     <ion-badge class="success text-12">{{'maats_available' | translate}}</ion-badge>
     }@else{
     <ion-badge class="alert text-12">{{'maats_unavailable' | translate}}</ion-badge>
@@ -42,15 +42,15 @@
     <ion-grid class="ion-no-padding ion-no-margin">
       <ion-row>
         <ion-col size="4" class="ion-text-center stat-col">
-          <div appAutofitText autofitGroup="summaryRowTransactions" class="stat-value">{{$safeNavigationMigration(account?.balance) | number:'.0'}}</div>
+          <div appAutofitText autofitGroup="summaryRowTransactions" class="stat-value">{{account?.balance | number:'.0'}}</div>
           <div class="stat-label primary ion-padding-horizontal">{{'balance' | translate}}</div>
         </ion-col>
         <ion-col size="4" class="ion-text-center stat-col">
-          <div appAutofitText autofitGroup="summaryRowTransactions" class="stat-value secondary">{{$safeNavigationMigration(account?.openloans) | number:'.0'}}</div>
+          <div appAutofitText autofitGroup="summaryRowTransactions" class="stat-value secondary">{{account?.openloans | number:'.0'}}</div>
           <div class="stat-label ion-padding-horizontal">{{'active_maats' | translate}}</div>
         </ion-col>
         <ion-col size="4" class="ion-text-center stat-col">
-          <div appAutofitText autofitGroup="summaryRowTransactions" class="stat-value secondary">{{loans_expired ? ($safeNavigationMigration(account?.restearembourser) | number:'.0') : 0}}</div>
+          <div appAutofitText autofitGroup="summaryRowTransactions" class="stat-value secondary">{{loans_expired ? (account?.restearembourser | number:'.0') : 0}}</div>
           <div class="stat-label">{{'overdue_amount' | translate}}</div>
         </ion-col>
       </ion-row>
@@ -136,9 +136,9 @@
     <ion-label class="ion-text-wrap">
       <h5>{{ parameter?.name }}</h5>
       @if(parameter?.code == 'EMP'){
-        <p class="ion-no-margin">{{'maats_available' | translate}}: {{$safeNavigationMigration(account?.creditdisponible) | number:'.0'}} {{country.currency}}</p>
+        <p class="ion-no-margin">{{'maats_available' | translate}}: {{account?.creditdisponible | number:'.0'}} {{country.currency}}</p>
         @if(pf(account.besoinsliquidite) > 0){
-          <p class="ion-no-margin"><ion-note color="primary" class="text-12">{{'maats_requests' | translate}}: {{$safeNavigationMigration(account?.besoinsliquidite) | number:'.0'}} {{country.currency}}</ion-note></p>
+          <p class="ion-no-margin"><ion-note color="primary" class="text-12">{{'maats_requests' | translate}}: {{account?.besoinsliquidite | number:'.0'}} {{country.currency}}</ion-note></p>
         }
       }
       @if(param_error[parameter?.id]){
@@ -158,7 +158,7 @@
       [style.width.ch]="amount[parameter?.id]?.toString().length > 2 ? amount[parameter?.id].toString().length + 3 : 5"
       class="amount-input ion-no-padding"></ion-input>
     <ion-icon slot="end" name="close" class="close-icon ion-no-margin"
-      (click)="clear_amount($safeNavigationMigration(parameter?.id))"
+      (click)="clear_amount(parameter?.id)"
       [class.disabled]="!(amount?.[parameter?.id] > 0)">></ion-icon>
   </ion-item>
 </ng-template>
