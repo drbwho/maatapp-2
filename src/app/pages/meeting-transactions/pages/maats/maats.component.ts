@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { TransactionsComponent } from '../transactions/transactions.component';
-import { ModalController, IonGrid, IonRow, IonCol, IonSegment, IonSegmentButton, IonLabel, IonList, IonItem, IonAvatar, IonIcon, IonNote, IonCard } from '@ionic/angular/standalone';
+import { ModalController, IonGrid, IonRow, IonCol, IonSegment, IonSegmentButton, IonLabel, IonList, IonItem, IonAvatar, IonIcon, IonNote, IonCard, IonItemOption, IonItemOptions, IonItemSliding, IonInput, IonBadge } from '@ionic/angular/standalone';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { LoanInfoComponent } from '../../../../component/loan-info/loan-info.component';
 import { Storage } from '@ionic/storage-angular';
@@ -32,8 +32,13 @@ import { TranslatePipe } from '@ngx-translate/core';
     IonList,
     IonItem,
     IonIcon,
-    IonCard
-]
+    IonCard,
+    IonInput,
+    IonBadge,
+    IonItemOption,
+    IonItemOptions,
+    IonItemSliding
+    ]
 })
 export class MaatsComponent implements OnInit {
     @Input() group: any;

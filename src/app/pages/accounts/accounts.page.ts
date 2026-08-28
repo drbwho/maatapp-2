@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
-import { AlertController, ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonBackButton, IonLabel, IonSearchbar, IonContent, IonIcon, IonList, IonItem, IonNote, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
+import { AlertController, ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonBackButton, IonLabel, IonSearchbar, IonContent, IonIcon, IonList, IonItem, IonNote, IonGrid, IonRow, IonCol, IonBadge } from '@ionic/angular/standalone';
 import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
@@ -38,6 +38,7 @@ import { AutofitTextDirective } from '../../directives/auto-fit-text.directive';
         IonGrid,
         IonRow,
         IonCol,
+        IonBadge,
         RouterLink,
         AutofitTextDirective
     ]

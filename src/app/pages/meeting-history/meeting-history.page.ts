@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { NavController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonList, IonItem, IonLabel, IonAvatar, IonNote, IonIcon, ModalController, IonButton, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
+import { NavController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonList, IonItem, IonLabel, IonAvatar, IonNote, IonIcon, ModalController, IonButton, IonGrid, IonRow, IonCol, IonBadge } from '@ionic/angular/standalone';
 import { DataProvider } from '../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
@@ -36,7 +36,8 @@ import { MeetingTotals } from '../../interfaces/data-interfaces';
         IonNote,
         IonIcon,
         IonRow,
-        IonCol
+        IonCol,
+        IonBadge
     ]
 })
 export class MeetingHistoryPage implements OnInit {

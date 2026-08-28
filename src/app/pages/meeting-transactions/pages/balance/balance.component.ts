@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { ModalController, IonList, IonItem, IonLabel, IonAvatar, IonIcon, IonNote } from '@ionic/angular/standalone';
+import { ModalController, IonList, IonItem, IonLabel, IonAvatar, IonIcon, IonNote, IonItemOptions, IonItemOption, IonItemSliding, IonInput } from '@ionic/angular/standalone';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { TransactionsComponent } from '../transactions/transactions.component';
 import { AccountInfoComponent } from '../../../../component/account-info/account-info.component';
@@ -7,6 +7,7 @@ import { addIcons } from "ionicons";
 import { close, informationCircle } from "ionicons/icons";
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-balance',
@@ -16,12 +17,17 @@ import { TranslatePipe } from '@ngx-translate/core';
     standalone: true,
     imports: [
         CommonModule,
+        FormsModule,
         TranslatePipe,
         DecimalPipe,
         IonList,
         IonItem,
         IonLabel,
-        IonIcon
+        IonIcon,
+        IonInput,
+        IonItemOptions,
+        IonItemOption,
+        IonItemSliding,
     ]
 })
 export class BalanceComponent implements OnInit {

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { NavController, Platform, IonHeader, IonToolbar, IonTitle, IonLabel, IonButtons, IonBackButton, IonSearchbar, IonContent, IonList, IonItem, IonAvatar, IonIcon, IonNote } from '@ionic/angular/standalone';
+import { NavController, Platform, IonHeader, IonToolbar, IonTitle, IonLabel, IonButtons, IonBackButton, IonSearchbar, IonContent, IonList, IonItem, IonAvatar, IonIcon, IonNote, IonBadge } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { addIcons } from "ionicons";
 import { checkmarkCircle } from "ionicons/icons";
@@ -31,7 +31,8 @@ import { FormsModule } from '@angular/forms';
         IonContent,
         IonList,
         IonItem,
-        IonIcon
+        IonIcon,
+        IonBadge
     ]
 })
 export class GroupsPage implements OnInit {

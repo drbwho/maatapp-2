@@ -5,7 +5,7 @@ import { GroupTools } from '../../../../providers/group-tools';
 import * as confetti from 'canvas-confetti';
 import { addIcons } from "ionicons";
 import { chevronForward } from "ionicons/icons";
-import { IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonIcon, IonButton } from '@ionic/angular/standalone';
+import { IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonIcon, IonButton, IonPickerColumn } from '@ionic/angular/standalone';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -25,7 +25,7 @@ import { TranslatePipe } from '@ngx-translate/core';
         IonCard,
         IonCardContent,
         IonIcon,
-        IonButton
+        IonButton,
     ]
 })
 export class EndComponent implements OnInit {
