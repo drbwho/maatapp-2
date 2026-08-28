@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { Router, RouterLink } from '@angular/router';
 import { addIcons } from "ionicons";
-import { checkmarkCircle } from "ionicons/icons";
+import { checkmarkCircle, chevronBackOutline } from "ionicons/icons";
 import { IonHeader, IonToolbar, IonTitle, IonLabel, IonButtons, IonBackButton, IonContent, IonList, IonItem, IonAvatar, IonIcon } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -37,7 +37,7 @@ export class CountriesPage implements OnInit {
         private dataProvider: DataProvider,
         private router: Router
     ) {
-        addIcons({ checkmarkCircle });
+        addIcons({ checkmarkCircle, chevronBackOutline });
     }
 
     ngOnInit() {

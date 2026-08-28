@@ -62,7 +62,7 @@ export class DashboardPage implements OnInit {
 
     ngOnInit() {
         this.route.url.subscribe(() => {
-            this.load_currents(); // Hack to force refreshing page in every visit!
+          this.load_currents(); // Hack to force refreshing page in every visit!
         });
 
         // disable introduction
