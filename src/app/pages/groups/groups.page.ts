@@ -7,7 +7,7 @@ import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NavController, Platform, IonHeader, IonToolbar, IonTitle, IonLabel, IonButtons, IonBackButton, IonSearchbar, IonContent, IonList, IonItem, IonAvatar, IonIcon, IonNote, IonBadge } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { addIcons } from "ionicons";
-import { checkmarkCircle } from "ionicons/icons";
+import { checkmarkCircle, chevronBackOutline } from "ionicons/icons";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -54,7 +54,7 @@ export class GroupsPage implements OnInit {
         private navController: NavController,
         private platform: Platform
     ) {
-        addIcons({ checkmarkCircle });
+        addIcons({ checkmarkCircle, chevronBackOutline });
     }
 
     ngOnInit() {
