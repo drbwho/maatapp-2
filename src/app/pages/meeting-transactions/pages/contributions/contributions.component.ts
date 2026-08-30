@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { IonItemSliding, ModalController, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonToggle, IonAvatar, IonIcon, IonNote, IonCard, IonItemOption, IonItemOptions } from '@ionic/angular';
 
 import { DataProvider } from '../../../../providers/provider-data';
@@ -57,7 +57,8 @@ export class ContributionsComponent implements OnInit {
         private modalCtrl: ModalController,
         private dataProvider: DataProvider,
         private operationTools: OperationTools,
-        private el: ElementRef
+        private el: ElementRef,
+        private crd: ChangeDetectorRef
     ) {
         addIcons({ informationCircle });
     }
@@ -71,6 +72,7 @@ export class ContributionsComponent implements OnInit {
 
         this.dataProvider.fetch_data('params', this.country.id, true).then((data: any) => {
             this.parameters = data;
+            this.crd.detectChanges();
         });
     }
 
@@ -108,6 +110,7 @@ export class ContributionsComponent implements OnInit {
 
         this.accounts.forEach(async (acc: any) => {
             acc.totals = await this.operationTools.estimate_meeting_totals(acc, this.meeting.id);
+            this.crd.detectChanges();
         });
     }
 

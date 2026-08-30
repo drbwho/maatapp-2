@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ModalController, IonList, IonItem, IonLabel, IonAvatar, IonIcon, IonNote, IonItemOptions, IonItemOption, IonItemSliding, IonInput } from '@ionic/angular';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { TransactionsComponent } from '../transactions/transactions.component';
@@ -45,6 +45,7 @@ export class BalanceComponent implements OnInit {
     constructor(
         private modalCtrl: ModalController,
         private operationTools: OperationTools,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ close, informationCircle });
     }
@@ -56,6 +57,10 @@ export class BalanceComponent implements OnInit {
         this.parameters = this.country.parameters;
         this.param_balance = this.parameters.find(p => p.code == 'ECP');
 
+        this.readTotals();
+    }
+
+    ionViewWillEnter(){
         this.readTotals();
     }
 
@@ -72,6 +77,7 @@ export class BalanceComponent implements OnInit {
                 acc.ecp = acctotals.transactions.get('ECP');
             });
         }
+        this.cdr.detectChanges();
     }
 
     async clear_amount(account: any) {

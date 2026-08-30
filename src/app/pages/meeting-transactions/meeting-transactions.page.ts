@@ -86,7 +86,8 @@ export class MeetingTransactionsPage implements OnInit {
         private platform: Platform,
         private autoFit: AutofitService,
         private modalCtrl: ModalController,
-        private groupTools: GroupTools
+        private groupTools: GroupTools,
+        private cdr: ChangeDetectorRef
     ) {
         const navigation = this.router.currentNavigation();
         this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString();
@@ -186,6 +187,7 @@ export class MeetingTransactionsPage implements OnInit {
             this.buttonText = key;
             this.params = { group: this.group, accounts: this.accounts, meeting: this.meeting, country: this.country };
             this.transactionsPageComponent = this.componentMap[this.pageIndex].component;
+            this.cdr.detectChanges();
         });
     }
 
