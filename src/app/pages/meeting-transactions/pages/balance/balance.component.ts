@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { ModalController, IonList, IonItem, IonLabel, IonAvatar, IonIcon, IonNote, IonItemOptions, IonItemOption, IonItemSliding, IonInput } from '@ionic/angular/standalone';
+import { ModalController, IonList, IonItem, IonLabel, IonAvatar, IonIcon, IonNote, IonItemOptions, IonItemOption, IonItemSliding, IonInput } from '@ionic/angular';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { TransactionsComponent } from '../transactions/transactions.component';
 import { AccountInfoComponent } from '../../../../component/account-info/account-info.component';

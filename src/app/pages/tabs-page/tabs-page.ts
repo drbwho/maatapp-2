@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { ModalController, ActionSheetController, ToastController, NavController, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/angular/standalone';
+import { ModalController, ActionSheetController, ToastController, NavController, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/angular';
 import { ProfilePage } from '../profile/profile.page';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage-angular';

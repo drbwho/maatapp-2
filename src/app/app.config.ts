@@ -1,4 +1,5 @@
-import { provideIonicAngular } from '@ionic/angular/standalone';
+import 'zone.js';
+import { provideIonicAngular } from '@ionic/angular';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom, isDevMode, provideZoneChangeDetection } from '@angular/core';

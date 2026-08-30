@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
-import { AlertController, ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonBackButton, IonLabel, IonSearchbar, IonContent, IonIcon, IonList, IonItem, IonNote, IonGrid, IonRow, IonCol, IonBadge } from '@ionic/angular/standalone';
+import { AlertController, ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonBackButton, IonLabel, IonSearchbar, IonContent, IonIcon, IonList, IonItem, IonNote, IonGrid, IonRow, IonCol, IonBadge } from '@ionic/angular';
 import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
@@ -71,7 +71,8 @@ export class AccountsPage implements OnInit {
         private modalCtrl: ModalController,
         private alertCtrl: AlertController,
         private operTools: OperationTools,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ chevronForwardOutline, chevronBackOutline, happy });
     }
@@ -145,6 +146,7 @@ export class AccountsPage implements OnInit {
                 }
             });
             this.accounts = this.allaccounts;
+            this.cdr.detectChanges();
         });
     }
 

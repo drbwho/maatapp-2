@@ -8,7 +8,7 @@ import { UserData } from '../../providers/user-data';
 
 import { UserOptions } from '../../interfaces/user-options';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AlertController, IonHeader, IonContent, IonText, IonList, IonItem, IonInput, IonNote, IonFooter, IonButton } from '@ionic/angular/standalone';
+import { AlertController, IonHeader, IonContent, IonText, IonList, IonItem, IonInput, IonNote, IonFooter, IonButton } from '@ionic/angular';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 

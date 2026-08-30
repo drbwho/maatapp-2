@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { IonItem, IonLabel, IonText } from "@ionic/angular/standalone";
+import { IonItem, IonLabel, IonText } from "@ionic/angular";
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

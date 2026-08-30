@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 
-import { AlertController, ToastController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonList, IonItem, IonLabel, IonTextarea, IonText, IonButton } from '@ionic/angular/standalone';
+import { AlertController, ToastController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonList, IonItem, IonLabel, IonTextarea, IonText, IonButton } from '@ionic/angular';
 import { DataProvider } from '../../providers/provider-data';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';

@@ -1,5 +1,5 @@
 import { ConfigData } from './config-data';
-import { AlertController, ToastController, LoadingController } from '@ionic/angular/standalone';
+import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';

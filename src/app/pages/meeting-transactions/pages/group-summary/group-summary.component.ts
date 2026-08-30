@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { IonGrid, IonRow, IonCol, IonCard, IonButton } from '@ionic/angular/standalone';
+import { IonGrid, IonRow, IonCol, IonCard, IonButton } from '@ionic/angular';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutofitTextDirective } from '../../../../directives/auto-fit-text.directive';

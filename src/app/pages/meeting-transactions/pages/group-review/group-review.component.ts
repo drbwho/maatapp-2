@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 import { OperationTools } from '../../../../providers/operation-tools';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';
-import { ModalController, IonCard, IonIcon, IonGrid, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonAvatar, IonNote, IonInput } from '@ionic/angular/standalone';
+import { ModalController, IonCard, IonIcon, IonGrid, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonAvatar, IonNote, IonInput } from '@ionic/angular';
 import { AccountInfoComponent } from '../../../../component/account-info/account-info.component';
 import { addIcons } from "ionicons";
 import { chevronForwardOutline, close } from "ionicons/icons";

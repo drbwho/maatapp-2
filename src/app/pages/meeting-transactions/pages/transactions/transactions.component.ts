@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonLabel, IonAvatar, IonNote, IonInput, IonList, IonItem, IonFooter, IonCard, IonBadge } from '@ionic/angular/standalone';
+import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonLabel, IonAvatar, IonNote, IonInput, IonList, IonItem, IonFooter, IonCard, IonBadge } from '@ionic/angular';
 import { DataProvider } from '../../../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';

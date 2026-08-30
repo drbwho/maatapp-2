@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 import { OperationTools } from '../../../../providers/operation-tools';
 import { addIcons } from "ionicons";
 import { addCircle, removeCircle } from "ionicons/icons";
-import { IonCard, IonGrid, IonRow, IonCol, IonIcon, IonButton, IonList, IonItem, IonLabel, IonAvatar, IonNote } from '@ionic/angular/standalone';
+import { IonCard, IonGrid, IonRow, IonCol, IonIcon, IonButton, IonList, IonItem, IonLabel, IonAvatar, IonNote } from '@ionic/angular';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutofitTextDirective } from '../../../../directives/auto-fit-text.directive';

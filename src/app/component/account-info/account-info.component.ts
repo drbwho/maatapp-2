@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonText } from '@ionic/angular/standalone';
+import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonText } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 
 // needed fot translate pipe activation

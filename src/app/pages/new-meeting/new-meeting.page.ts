@@ -1,6 +1,6 @@
 import { Component, OnInit, ɵDEFAULT_LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
-import { NavController, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonContent, IonList, IonItem, IonAvatar, IonLabel, IonText, IonIcon, IonNote, IonFooter, IonButton, ModalController, AlertController } from '@ionic/angular/standalone';
+import { NavController, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonContent, IonList, IonItem, IonAvatar, IonLabel, IonText, IonIcon, IonNote, IonFooter, IonButton, ModalController, AlertController } from '@ionic/angular';
 import { formatDate, Location, CommonModule, DatePipe } from '@angular/common';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { GroupTools } from '../../providers/group-tools';

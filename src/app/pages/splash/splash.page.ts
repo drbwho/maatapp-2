@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Animation, createAnimation, NavController, IonContent } from '@ionic/angular/standalone';
+import { Animation, createAnimation, NavController, IonContent } from '@ionic/angular';
 import { UserData } from '../../providers/user-data';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';

@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { Events } from '../../providers/events';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, IonList, IonItem, IonLabel } from '@ionic/angular';
 import { addIcons } from "ionicons";
 import { chevronBackOutline, checkmarkCircle } from "ionicons/icons";
 import { CommonModule } from '@angular/common';

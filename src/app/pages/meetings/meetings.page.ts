@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, signal, ChangeDetectorRef } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
-import { IonModal, NavController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonContent, IonList, IonItem, IonLabel, IonIcon, IonNote, ActionSheetController, IonBackButton } from '@ionic/angular/standalone';
+import { IonModal, NavController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonContent, IonList, IonItem, IonLabel, IonIcon, IonNote, ActionSheetController, IonBackButton } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -8,7 +8,7 @@ import { MeetingsActionViews } from './meetings.action-views';
 import * as XLSX from 'xlsx';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
-import { Platform } from '@ionic/angular/standalone';
+import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { UserData } from '../../providers/user-data';
@@ -69,7 +69,8 @@ export class MeetingsPage implements OnInit {
         private userData: UserData,
         private storage: Storage,
         private config: ConfigData,
-        private platform: Platform
+        private platform: Platform,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({
           closeOutline, chevronBackOutline, warningOutline, caretForwardOutline, cloudUpload,
@@ -107,6 +108,7 @@ export class MeetingsPage implements OnInit {
                 m.attendance = this.group.numberofmembers - (m.absences ? m.absences.length : 0);
             })
         }
+        this.cdr.detectChanges();
     }
 
     /*

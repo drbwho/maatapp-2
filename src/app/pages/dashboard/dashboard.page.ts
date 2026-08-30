@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
-import { NavController, IonRouterLink, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonContent, IonList, IonItem, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { NavController, IonRouterLink, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonContent, IonList, IonItem, IonLabel, IonIcon } from '@ionic/angular';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GroupTools } from '../../providers/group-tools';
 import { OperationTools } from '../../providers/operation-tools';
@@ -55,7 +55,8 @@ export class DashboardPage implements OnInit {
         private route: ActivatedRoute,
         private userData: UserData,
         private groupTools: GroupTools,
-        private operationTools: OperationTools
+        private operationTools: OperationTools,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ chevronForwardOutline });
     }
@@ -104,6 +105,7 @@ export class DashboardPage implements OnInit {
             }
         }
         this.user = await this.userData.getUser();
+        this.cdr.detectChanges();
     }
 
     navToGroups() {

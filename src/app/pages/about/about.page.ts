@@ -3,7 +3,7 @@ import { DataProvider } from '../../providers/provider-data';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { addIcons } from "ionicons";
 import { closeOutline } from "ionicons/icons";
-import { IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonText, IonFooter } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonText, IonFooter } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 

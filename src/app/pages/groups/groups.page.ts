@@ -1,13 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { NavController, Platform, IonHeader, IonToolbar, IonTitle, IonLabel, IonButtons, IonBackButton, IonSearchbar, IonContent, IonList, IonItem, IonAvatar, IonIcon, IonNote, IonBadge } from '@ionic/angular/standalone';
+import { NavController, Platform, IonHeader, IonToolbar, IonTitle, IonLabel, IonButtons, IonBackButton, IonSearchbar, IonContent, IonList, IonItem, IonAvatar, IonIcon, IonNote, IonBadge } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { addIcons } from "ionicons";
-import { checkmarkCircle } from "ionicons/icons";
+import { checkmarkCircle, chevronBackOutline } from "ionicons/icons";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -52,9 +52,10 @@ export class GroupsPage implements OnInit {
         private config: ConfigData,
         private translate: TranslateService,
         private navController: NavController,
-        private platform: Platform
+        private platform: Platform,
+        private cdr: ChangeDetectorRef
     ) {
-        addIcons({ checkmarkCircle });
+        addIcons({ checkmarkCircle, chevronBackOutline });
     }
 
     ngOnInit() {
@@ -75,7 +76,7 @@ export class GroupsPage implements OnInit {
             this.group_selected = true;
         }
 
-        this.dataProvider.fetch_data('countries', null, false, true).then(async (data: any) => {
+        await this.dataProvider.fetch_data('countries', null, false, true).then(async (data: any) => {
             this.country = data.find((s) => s.id == countryId);
             this.groups = this.country.groups.filter(g => g.type == 1); //filter Direction Groups
             this.countryname = this.country.name;
@@ -103,6 +104,9 @@ export class GroupsPage implements OnInit {
         if (current && current.group) {
             this.currentid = current.group.id;
         }
+
+        // zoneless update changes
+        this.cdr.detectChanges();
     }
 
     async navto(group) {

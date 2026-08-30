@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { addIcons } from "ionicons";
 import { chevronForwardOutline } from "ionicons/icons";
-import { IonItem, IonIcon, IonText, IonLabel, IonList, IonButton } from '@ionic/angular/standalone';
+import { IonItem, IonIcon, IonText, IonLabel, IonList, IonButton } from '@ionic/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

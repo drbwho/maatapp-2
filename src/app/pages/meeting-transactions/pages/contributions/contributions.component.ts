@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { IonItemSliding, ModalController, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonToggle, IonAvatar, IonIcon, IonNote, IonCard, IonItemOption, IonItemOptions } from '@ionic/angular/standalone';
+import { IonItemSliding, ModalController, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonToggle, IonAvatar, IonIcon, IonNote, IonCard, IonItemOption, IonItemOptions } from '@ionic/angular';
 
 import { DataProvider } from '../../../../providers/provider-data';
 import { OperationTools } from '../../../../providers/operation-tools';

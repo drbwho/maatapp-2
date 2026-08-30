@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { NavController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonText, IonContent, IonList, IonItem, IonLabel, IonSelect, IonButton, ToastController } from '@ionic/angular/standalone';
+import { NavController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonText, IonContent, IonList, IonItem, IonLabel, IonSelect, IonButton, ToastController } from '@ionic/angular';
 import { ConfigData } from '../../providers/config-data';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { Events } from '../../providers/events';

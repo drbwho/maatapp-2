@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { DataProvider } from '../../../../providers/provider-data';
-import { IonList, IonItem, IonAvatar, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { IonList, IonItem, IonAvatar, IonLabel, IonIcon } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 

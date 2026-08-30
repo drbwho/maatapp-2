@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ApplicationRef, ChangeDetectorRef } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
 import { Router, RouterLink } from '@angular/router';
 import { addIcons } from "ionicons";
 import { checkmarkCircle, chevronBackOutline } from "ionicons/icons";
-import { IonHeader, IonToolbar, IonTitle, IonLabel, IonButtons, IonBackButton, IonContent, IonList, IonItem, IonAvatar, IonIcon } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonLabel, IonButtons, IonBackButton, IonContent, IonList, IonItem, IonAvatar, IonIcon } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -35,7 +35,8 @@ export class CountriesPage implements OnInit {
 
     constructor(
         private dataProvider: DataProvider,
-        private router: Router
+        private router: Router,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ checkmarkCircle, chevronBackOutline });
     }
@@ -44,11 +45,13 @@ export class CountriesPage implements OnInit {
     }
 
     async ionViewWillEnter() {
-        this.dataProvider.fetch_data('countries', null, false, true).then((data: any) => { this.countries = data; });
+        await this.dataProvider.fetch_data('countries', null, false, true).then((data: any) => { this.countries = data;});
         var current = await this.dataProvider.getCurrent();
         if (current && current.country) {
             this.currentid = current.country.id;
         }
+        // zoneless update changes
+        this.cdr.detectChanges();
     }
 
     async navto(country) {

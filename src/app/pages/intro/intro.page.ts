@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UserData } from '../../providers/user-data';
-import { Platform, IonHeader, IonProgressBar, IonContent, IonFooter, IonButton } from '@ionic/angular/standalone';
+import { Platform, IonHeader, IonProgressBar, IonContent, IonFooter, IonButton } from '@ionic/angular';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 

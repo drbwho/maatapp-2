@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, ɵDEFAULT_LOCALE_ID } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonLabel, IonContent, ModalController, Platform, IonFooter } from '@ionic/angular/standalone';
+import { Component, OnInit, ChangeDetectionStrategy, ɵDEFAULT_LOCALE_ID, ChangeDetectorRef } from '@angular/core';
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonLabel, IonContent, ModalController, Platform, IonFooter } from '@ionic/angular';
 import { DataProvider } from '../../providers/provider-data';
 import { OperationTools } from '../../providers/operation-tools';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -102,6 +102,7 @@ export class MeetingTransactionsPage implements OnInit {
         // Show Group health
         this.group = this.dataProvider.current.group;
         let meetings = await this.groupTools.get_meetings(this.group);
+        
         //if(meetings.length > 1){ //Is this the first meeting?
         //  this.show_group_health();
         // } Temporary deactivation ******
@@ -171,7 +172,7 @@ export class MeetingTransactionsPage implements OnInit {
         this.autoFit.resetGroups();
 
         if (this.pageIndex > 2 && this.componentMap[this.pageIndex - 1].target != undefined) {
-            this.dataProvider.current.meeting = this.meeting;
+            this.dataProvider.current.meeting = {...this.meeting};
             this.dataProvider.setCurrent(this.dataProvider.current).then(() => {
                 if (this.componentMap[this.pageIndex - 1].load) {
                     this.dataProvider.pageAction = this.componentMap[this.pageIndex - 1].load;

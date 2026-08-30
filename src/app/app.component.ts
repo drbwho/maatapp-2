@@ -5,7 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { SplashScreen } from '@capacitor/splash-screen';
 
-import { Platform, ToastController, AlertController, LoadingController, ModalController, IonApp, IonSplitPane, IonMenu, IonHeader, IonToolbar, IonContent, IonList, IonMenuToggle, IonItem, IonIcon, IonLabel, IonListHeader, IonRouterOutlet } from '@ionic/angular/standalone';
+import { Platform, ToastController, AlertController, LoadingController, ModalController, IonApp, IonSplitPane, IonMenu, IonHeader, IonToolbar, IonContent, IonList, IonMenuToggle, IonItem, IonIcon, IonLabel, IonListHeader, IonRouterOutlet } from '@ionic/angular';
 
 import { Storage } from '@ionic/storage';
 import { Network } from '@capacitor/network';

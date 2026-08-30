@@ -6,7 +6,7 @@ import { ConfigData } from '../../providers/config-data';
 import { DataProvider } from '../../providers/provider-data';
 import { addIcons } from "ionicons";
 import { cloudUpload, flashOff, flash } from "ionicons/icons";
-import { IonIcon } from '@ionic/angular/standalone';
+import { IonIcon } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 
 @Component({

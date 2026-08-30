@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { IonItem, IonGrid, IonRow, IonCol, IonIcon } from '@ionic/angular/standalone';
+import { IonItem, IonGrid, IonRow, IonCol, IonIcon } from '@ionic/angular';
 import { addIcons } from "ionicons";
 import { chevronForwardOutline } from "ionicons/icons";
 import { CommonModule, DatePipe } from '@angular/common';

@@ -2,13 +2,13 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { ActionSheetController, LoadingController, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonAvatar, IonList, IonItem, IonLabel, IonNote, IonFooter } from '@ionic/angular/standalone';
+import { ActionSheetController, LoadingController, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonAvatar, IonList, IonItem, IonLabel, IonNote, IonFooter } from '@ionic/angular';
 
-import { AlertController, Platform } from '@ionic/angular/standalone';
+import { AlertController, Platform } from '@ionic/angular';
 
 import { UserData } from '../../providers/user-data';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { ModalController } from '@ionic/angular/standalone';
+import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { addIcons } from "ionicons";
