@@ -12,7 +12,7 @@ import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { addIcons } from "ionicons";
-import { closeOutline, paperPlane, chatboxEllipses, informationCircle, logOutOutline } from "ionicons/icons";
+import { closeOutline, paperPlane, chatboxEllipses, informationCircle, logOutOutline, cameraOutline, imageOutline } from "ionicons/icons";
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -68,7 +68,7 @@ export class ProfilePage implements OnInit {
         private loadingcontroller: LoadingController,
         private config: ConfigData
     ) {
-        addIcons({ closeOutline, paperPlane, chatboxEllipses, informationCircle, logOutOutline });
+        addIcons({ closeOutline, paperPlane, chatboxEllipses, informationCircle, logOutOutline, cameraOutline, imageOutline });
     }
 
     async ngOnInit() {
@@ -203,7 +203,7 @@ export class ProfilePage implements OnInit {
                     },
                     {
                         text: keys['cancel'],
-                        icon: 'close',
+                        icon: 'close-outline',
                         role: 'cancel'
                     }
                 ]
