@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Animation, createAnimation, NavController, IonContent } from '@ionic/angular';
 import { UserData } from '../../providers/user-data';
@@ -23,7 +23,8 @@ export class SplashPage implements OnInit {
     constructor(
         private router: Router,
         private userData: UserData,
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit() {
@@ -33,6 +34,8 @@ export class SplashPage implements OnInit {
         this.userData.isLoggedIn().then((value) => {
             setTimeout(() => {
                 this.showWelcome = true;
+                this.cdr.detectChanges();
+
                 setTimeout(() => {
                     if (!value) {
                         this.navCtrl.navigateRoot('/login',
