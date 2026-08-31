@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../../../providers/config-data';
@@ -53,7 +53,8 @@ export class GroupReviewComponent implements OnInit {
         private operTools: OperationTools,
         private storage: Storage,
         private config: ConfigData,
-        private modalCtrl: ModalController
+        private modalCtrl: ModalController,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ chevronForwardOutline, close });
     }
@@ -75,24 +76,27 @@ export class GroupReviewComponent implements OnInit {
             // Group Transactions // TODO check if group transactions!!!!
             if (trns) {
                 let transactions = trns.filter((s) => s.idaccount == this.group.account.id && s.idmeeting == this.meeting.id);
-                transactions.forEach((tr) => {
+                for(const tr of transactions){
                     this.amount[tr.idparameter] = tr.amount;
-                })
+                }
             }
+            this.cdr.detectChanges();
         });
     }
 
     async clear_amount(parameterId) {
         delete (this.amount[parameterId]);
         await this.operTools.delOperationByParameter(this.group.account.id, this.meeting.id, parameterId);
-        this.meeting.totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id)
+        this.meeting.totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id);
+        this.cdr.detectChanges();
     }
 
     async update_transaction(parameterId, e: Event) {
         let paramname = (this.parameters.find(p => p.id == parameterId)).name;
         await this.operTools.newOperation(
             this.meeting.id, this.group.account, this.group, parameterId, paramname, this.amount[parameterId], "", "");
-        this.meeting.totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id)
+        this.meeting.totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id);
+        this.cdr.detectChanges();
     }
 
     async showAccountInfo() {

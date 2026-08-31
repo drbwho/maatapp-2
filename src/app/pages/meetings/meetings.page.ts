@@ -185,7 +185,8 @@ export class MeetingsPage implements OnInit {
             this.upload_errors = await this.storage.get(this.config.UPLOAD_ERRORS_FILE);
             if (this.upload_errors && this.upload_errors.length) {
                 this.upload_errors = this.upload_errors.filter((s) => s.idmeeting == meeting.id);
-                buttons.push({
+                if(this.upload_errors.length){
+                  buttons.push({
                     text: keys['upload_errors'],
                     icon: 'warning-outline',
                     role: 'destructive',
@@ -193,7 +194,8 @@ export class MeetingsPage implements OnInit {
                         this.selmeeting = meeting;
                         this.showUploadErrors();
                     }
-                });
+                  });
+                }
             }
 
             buttons.push({

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { TransactionsComponent } from '../transactions/transactions.component';
 import { ModalController, IonGrid, IonRow, IonCol, IonSegment, IonSegmentButton, IonLabel, IonList, IonItem, IonAvatar, IonIcon, IonNote, IonCard, IonItemOption, IonItemOptions, IonItemSliding, IonInput, IonBadge } from '@ionic/angular';
 import { OperationTools } from '../../../../providers/operation-tools';
@@ -62,7 +62,8 @@ export class MaatsComponent implements OnInit {
         private modalCtrl: ModalController,
         private operationTools: OperationTools,
         private storage: Storage,
-        private config: ConfigData
+        private config: ConfigData,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ checkmarkSharp, checkmarkCircleSharp, close, informationCircle });
     }
@@ -84,7 +85,7 @@ export class MaatsComponent implements OnInit {
 
     async readTotals() {
         this.reimbursements = 0;
-        this.accounts.forEach(async acc => {
+        for(const acc of this.accounts){
             acc.totals = await this.operationTools.estimate_meeting_totals(acc, this.meeting.id);
             if (acc.totals.reimbursements > 0) {
                 this.reimbursements++;
@@ -92,7 +93,8 @@ export class MaatsComponent implements OnInit {
             if (acc.dateecheance != null && (new Date(acc.dateecheance) < (new Date()))) {
                 acc.loans_expired = true;
             }
-        });
+        };
+        this.cdr.detectChanges();
     }
 
     async clear_amount(account: any) {

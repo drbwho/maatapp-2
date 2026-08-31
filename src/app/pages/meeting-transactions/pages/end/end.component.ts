@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { GroupTools } from '../../../../providers/group-tools';
@@ -48,7 +48,8 @@ export class EndComponent implements OnInit {
 
     constructor(
         private operTools: OperationTools,
-        private groupTools: GroupTools
+        private groupTools: GroupTools,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ chevronForward });
     }
@@ -92,6 +93,7 @@ export class EndComponent implements OnInit {
         this.heading = 'messages.meetings.' + this.meeting_health.health_status + '.heading';
         this.description = 'messages.meetings.' + this.meeting_health.health_status + '.description';
         this.image = 'assets/img/action-views/' + this.meeting_health.health_status + '-meeting.png';
+        this.cdr.detectChanges();
     }
 
     async open_url() {

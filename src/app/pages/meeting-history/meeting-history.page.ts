@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NavController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonList, IonItem, IonLabel, IonAvatar, IonNote, IonIcon, ModalController, IonButton, IonGrid, IonRow, IonCol, IonBadge } from '@ionic/angular';
 import { DataProvider } from '../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
@@ -68,6 +68,7 @@ export class MeetingHistoryPage implements OnInit {
         private storage: Storage,
         private config: ConfigData,
         private operTools: OperationTools,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ happy, close });
     }
@@ -125,7 +126,8 @@ export class MeetingHistoryPage implements OnInit {
 
             this.allaccounts = data.filter((s) => s.statut == 0); //active accounts
             // load pending transactions for each account
-            this.allaccounts.forEach(async (acc) => {
+            for(const acc of this.allaccounts){
+
                 if (transactions) {
                     //append upload errors to transactions
                     acc.transactions = transactions.filter((s) => (s.idaccount == acc.id || s.idorigin == acc.id) && s.idmeeting == this.meeting.id);
@@ -182,9 +184,10 @@ export class MeetingHistoryPage implements OnInit {
                 if (acc.loans_expired || acc.sfloans_expired) {
                     acc.status = "sad";
                 }
-            });
+            };
             // Show only member accounts
             this.accounts = this.allaccounts.filter((a) => a.type == 1);
+            this.cdr.detectChanges();
         });
     }
 

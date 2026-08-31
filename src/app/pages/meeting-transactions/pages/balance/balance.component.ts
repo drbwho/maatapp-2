@@ -60,10 +60,6 @@ export class BalanceComponent implements OnInit {
         this.readTotals();
     }
 
-    ionViewWillEnter(){
-        this.readTotals();
-    }
-
     async readTotals(account = null) {
         let meetingTotals = await this.operationTools.estimate_meeting_totals(null, this.meeting.id);
         this.meetingBalance = meetingTotals.transactions.get('ECP');
@@ -72,10 +68,10 @@ export class BalanceComponent implements OnInit {
             let acctotals = await this.operationTools.estimate_meeting_totals(account, this.meeting.id);
             account.ecp = acctotals.transactions.get('ECP');
         } else {
-            this.accounts.forEach(async acc => {
+            for (const acc of this.accounts) {
                 let acctotals = await this.operationTools.estimate_meeting_totals(acc, this.meeting.id);
                 acc.ecp = acctotals.transactions.get('ECP');
-            });
+            };
         }
         this.cdr.detectChanges();
     }
