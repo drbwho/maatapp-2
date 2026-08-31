@@ -84,6 +84,10 @@ export class GroupReviewComponent implements OnInit {
         });
     }
 
+    toggle_details(){
+        this.show_details = !this.show_details;
+    }
+
     async clear_amount(parameterId) {
         delete (this.amount[parameterId]);
         await this.operTools.delOperationByParameter(this.group.account.id, this.meeting.id, parameterId);

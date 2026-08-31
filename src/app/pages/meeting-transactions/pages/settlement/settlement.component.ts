@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { addIcons } from "ionicons";
 import { addCircle, removeCircle } from "ionicons/icons";
@@ -37,23 +37,25 @@ export class SettlementComponent implements OnInit {
     numberofmembers = 0;
 
     constructor(
-        private operTools: OperationTools
+        private operTools: OperationTools,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ addCircle, removeCircle });
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.numberofmembers = this.group.numberofmembers;
         this.accounts = this.accounts.filter(m => m.isPresent);
         this.attendance = this.accounts.length;
-        this.accounts.forEach(async acc => {
+        for(const acc of this.accounts){
             acc.show_details = false;
             await this.operTools.estimate_meeting_totals(acc, this.meeting.id).then(data => {
                 acc.totals = data;
             });
-        });
+        };
         this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id).then(data => {
             this.meeting.totals = data;
+            this.cdr.detectChanges();
         })
     }
 

@@ -53,7 +53,7 @@
       </ion-row>
     </ion-grid>
 
-    @if(show_group_transactions){
+    @if(show_group_transactions()){
     <ion-grid class="group-transactions">
       @for(tr of group_transactions; track tr.id){
         <ion-row>
@@ -64,8 +64,8 @@
     }
 
     <div class="ion-text-center">
-      <ion-button fill="clear" class="review-btn ion-no-margin" (click)="show_group_transactions = !show_group_transactions">
-        {{(show_group_transactions ? 'hide' : 'review_details') | translate}}
+      <ion-button fill="clear" class="review-btn ion-no-margin" (click)="toggle_group_transactions()">
+        {{(show_group_transactions() ? 'hide' : 'review_details') | translate}}
       </ion-button>
     </div>
   </div>

@@ -80,8 +80,10 @@ export class EndComponent implements OnInit {
 
         let meetings: any = await this.groupTools.get_meetings(this.group);
         meetings = meetings.filter(m => m.id != this.meeting.id);
-        this.max_loans = meetings && meetings.length ? Math.max(...meetings.map(meeting => meeting.loans)) : 0;
-        this.max_collection = meetings && meetings.length ? Math.max(...meetings.map(meeting => meeting.collection)) : 0;
+        this.max_loans = meetings && meetings.length 
+            ? Math.max(...meetings.map(meeting => Number(meeting.loans) || 0)) : 0;
+        this.max_collection = meetings && meetings.length 
+            ? Math.max(...meetings.map(meeting => Number(meeting.collection) || 0)) : 0;
 
         // trigger fireworks?
         if ((((this.meeting?.totals?.credit - this.meeting?.totals?.debit) > this.max_collection) && this.max_collection) ||

@@ -6,7 +6,7 @@ import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { addIcons } from "ionicons";
-import { chevronBackOutline, chevronForwardOutline, happy } from "ionicons/icons";
+import { chevronBackOutline, chevronForwardOutline, close, happy, sad, warningOutline } from "ionicons/icons";
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -74,7 +74,7 @@ export class AccountsPage implements OnInit {
         private translate: TranslateService,
         private cdr: ChangeDetectorRef
     ) {
-        addIcons({ chevronForwardOutline, chevronBackOutline, happy });
+        addIcons({ chevronForwardOutline, chevronBackOutline, happy, sad, close, warningOutline });
     }
 
     ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
 import { NavController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonList, IonItem, IonLabel, IonAvatar, IonNote, IonIcon, ModalController, IonButton, IonGrid, IonRow, IonCol, IonBadge } from '@ionic/angular';
 import { DataProvider } from '../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
@@ -58,7 +58,7 @@ export class MeetingHistoryPage implements OnInit {
     attendance = 0;
     selectedAll: boolean = false;
     selectedAccounts = 0;
-    show_group_transactions = false;
+    show_group_transactions = signal<boolean>(false);
     group_transactions: any = null;
     public pf = parseFloat;
 
@@ -91,6 +91,10 @@ export class MeetingHistoryPage implements OnInit {
 
         this.calc_status();
         await this.load_accounts();
+    }
+
+    toggle_group_transactions(){
+        this.show_group_transactions.update(val => !val);
     }
 
     calc_status() {

@@ -108,12 +108,11 @@ export class ContributionsComponent implements OnInit {
                 + this.meetingTotals.transactions.get('AID')
                 + this.meetingTotals.transactions.get('AST') > 0 ? true : false;
 
-        this.accounts.forEach(async (acc: any) => {
+        for(const acc of this.accounts){        
             acc.totals = await this.operationTools.estimate_meeting_totals(acc, this.meeting.id);
             this.crd.detectChanges();
-        });
+        };
     }
-
 
     async submit_contrib_operations(account: any = null) {
         let contribs = this.operationTools.contrib_operations;
