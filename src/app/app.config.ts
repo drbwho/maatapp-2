@@ -1,8 +1,7 @@
-import 'zone.js';
 import { provideIonicAngular } from '@ionic/angular';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
-import { ApplicationConfig, importProvidersFrom, isDevMode, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, isDevMode, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Drivers } from '@ionic/storage';
@@ -17,7 +16,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
     provideIonicAngular({ innerHTMLTemplatesEnabled: true }),
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     importProvidersFrom(
       IonicStorageModule.forRoot({
         storeName: '_castorage',

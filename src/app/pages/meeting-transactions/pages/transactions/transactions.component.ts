@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonLabel, IonAvatar, IonNote, IonInput, IonList, IonItem, IonFooter, IonCard, IonBadge } from '@ionic/angular';
 import { DataProvider } from '../../../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
@@ -63,7 +63,8 @@ export class TransactionsComponent implements OnInit {
         private modalCtrl: ModalController,
         private operTools: OperationTools,
         private storage: Storage,
-        private config: ConfigData
+        private config: ConfigData,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ closeOutline, chevronBackOutline, checkmarkSharp, checkmarkCircleSharp, close });
     }
@@ -74,7 +75,7 @@ export class TransactionsComponent implements OnInit {
         this.parameters = this.country.parameters.filter((s: any) => (account_type == 1 ? s.type == 1 : s.type == 2)); //paysants/group operations
         //this.fsparameters = data.filter((s) => s.type == 3); //solidarity operations
         // default contribs
-        this.parameters.forEach((p: any) => {
+        for(const p of this.parameters){
             p.showdefault = false;
             if (this.operTools.contrib_operations.includes(p.code)) {
                 let amount = parseFloat(this.group.settings[this.operTools.map_default_to_settings[p.code]]);
@@ -86,14 +87,14 @@ export class TransactionsComponent implements OnInit {
                 }
                 p.showdefault = true;
             }
-        })
+        }
         if (this.account) {
             //load account's pending operations
             this.storage.get(this.config.TRANSACTIONS_FILE).then((trns) => {
                 if (trns) {
                     let transactions = trns.filter((s: any) => s.idaccount == this.account.id && s.idmeeting == this.meeting.id);
                     if (transactions) {
-                        transactions.forEach((tr: any) => {
+                        for(const tr of transactions){
                             this.amount[tr.idparameter] = tr.amount;
                             //if(tr.categories.length){
                             //  this.loan_info.categories = tr.categories;
@@ -101,14 +102,16 @@ export class TransactionsComponent implements OnInit {
                             //if(tr.notes){
                             // this.loan_info.notes = tr.notes;
                             //}
-                        })
+                        }
                     }
                 }
+                this.cdr.detectChanges();
             });
             if (this.account.dateecheance != null && (new Date(this.account.dateecheance) < (new Date()))) {
                 this.loans_expired = true;
             }
         }
+        this.cdr.detectChanges();
     }
 
     set_default(parameter: any) {
@@ -116,6 +119,7 @@ export class TransactionsComponent implements OnInit {
         if (parameter.default != undefined) {
             this.amount[parameter.id] = parameter.default;
         }
+        this.cdr.detectChanges();
     }
 
     has_contributions_dues(account: any, prm: any): any {
@@ -132,6 +136,7 @@ export class TransactionsComponent implements OnInit {
     clear_amount(parameterId: string) {
         delete (this.amount[parameterId as keyof typeof this.amount]);
         delete (this.param_error[parameterId as keyof typeof this.param_error]);
+        this.cdr.detectChanges();
     }
 
     async dismiss(returndata = false) {
