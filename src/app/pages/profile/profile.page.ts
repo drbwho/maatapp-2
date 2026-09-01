@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -66,7 +66,8 @@ export class ProfilePage implements OnInit {
         private actionSheetCtrl: ActionSheetController,
         private storage: Storage,
         private loadingcontroller: LoadingController,
-        private config: ConfigData
+        private config: ConfigData,
+        private cdr: ChangeDetectorRef
     ) {
         addIcons({ closeOutline, paperPlane, chatboxEllipses, informationCircle, logOutOutline, cameraOutline, imageOutline });
     }
@@ -75,6 +76,7 @@ export class ProfilePage implements OnInit {
         await this.getUser();
         if (this.platform.is('hybrid')) { // device
             this.appinfo = await App.getInfo();
+            this.cdr.detectChanges();
         }
     }
 
