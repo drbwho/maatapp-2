@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -38,7 +38,7 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class ProfilePage implements OnInit {
-    user =
+    user = signal(
         {
             username: '',
             uid: 0,
@@ -51,9 +51,9 @@ export class ProfilePage implements OnInit {
             countryflag: null,
             country: null,
             photo: null
-        };
-    role = "";
-    appinfo = null;
+        });
+    role = signal("");
+    appinfo = signal(null);
     http_host = null;
 
     constructor(
@@ -66,8 +66,7 @@ export class ProfilePage implements OnInit {
         private actionSheetCtrl: ActionSheetController,
         private storage: Storage,
         private loadingcontroller: LoadingController,
-        private config: ConfigData,
-        private cdr: ChangeDetectorRef
+        private config: ConfigData
     ) {
         addIcons({ closeOutline, paperPlane, chatboxEllipses, informationCircle, logOutOutline, cameraOutline, imageOutline });
     }
@@ -75,8 +74,7 @@ export class ProfilePage implements OnInit {
     async ngOnInit() {
         await this.getUser();
         if (this.platform.is('hybrid')) { // device
-            this.appinfo = await App.getInfo();
-            this.cdr.detectChanges();
+            this.appinfo.set(await App.getInfo());
         }
     }
 
@@ -100,7 +98,7 @@ export class ProfilePage implements OnInit {
                 {
                     type: 'text',
                     name: 'username',
-                    value: this.user.username,
+                    value: this.user().username,
                     placeholder: 'username'
                 }
             ]
@@ -110,19 +108,19 @@ export class ProfilePage implements OnInit {
 
     getUser() {
         this.userData.getUser().then((user: any) => {
-            this.user = user;
+            this.user.set(user);
             switch (user.role) {
                 case 1:
-                    this.role = 'Farmer';
+                    this.role.set('Farmer');
                     break;
                 case 2:
-                    this.role = 'Leader';
+                    this.role.set('Leader');
                     break;
                 case 3:
-                    this.role = 'Manager';
+                    this.role.set('Manager');
                     break;
                 case 4:
-                    this.role = 'Administrator';
+                    this.role.set('Administrator');
                     break;
             }
         });
@@ -233,7 +231,7 @@ export class ProfilePage implements OnInit {
             let imageFile = new File([blob], `profile_${Date.now()}.jpg`, { type: 'image/jpeg' });
 
             this.userData.updateProfilePhoto(imageFile).then((res: any) => {
-                this.user.photo = res.url;
+                this.user().photo = res.url;
                 this.storage.set(this.userData.USER_FILE, this.user);
                 loading.dismiss();
             })

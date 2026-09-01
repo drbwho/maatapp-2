@@ -11,7 +11,7 @@
 <ion-content class="ion-padding">
   <div class="profile-header ion-text-center">
     <div class="avatar-container">
-      <img [src]="user.photo ? user.photo : 'assets/img/avatar.png'" alt="avatar">
+      <img [src]="user().photo ? user().photo : 'assets/img/avatar.png'" alt="avatar">
     </div>
     <ion-button fill="clear" size="small" class="change-photo-btn" (click)="changePhoto()">
       {{'change_profile_photo' | translate}}
@@ -21,27 +21,27 @@
   <div class="details-section">
     <div class="detail-item">
       <label>{{'name' | translate}}</label>
-      <p>{{user.fname}} {{user.lname}}</p>
+      <p>{{user().fname}} {{user().lname}}</p>
     </div>
 
     <div class="detail-item">
       <label>Email</label>
-      <p>{{user.email}}</p>
+      <p>{{user().email}}</p>
     </div>
 
     <div class="detail-item">
       <label>Location</label>
       <div class="location-row">
-        @if(user.country){
-          <img [src]="'assets/flags/' + user.countryflag + '.svg'" class="mini-flag" />
-          <p>{{user.country}} @if(user.city){• {{user.city}} }</p>
+        @if(user().country){
+          <img [src]="'assets/flags/' + user().countryflag + '.svg'" class="mini-flag" />
+          <p>{{user().country}} @if(user().city){• {{user().city}} }</p>
         }
       </div>
     </div>
 
     <div class="detail-item">
       <label>{{'role'}}</label>
-      <p>{{role}}</p>
+      <p>{{role()}}</p>
     </div>
   </div>
 
@@ -78,5 +78,5 @@
 </ion-content>
 
 <ion-footer class="ion-text-center">
-  <ion-note >Version {{appinfo?.version}} ({{appinfo?.build}})</ion-note>
+  <ion-note >Version {{appinfo()?.version}} ({{appinfo()?.build}})</ion-note>
 </ion-footer>
