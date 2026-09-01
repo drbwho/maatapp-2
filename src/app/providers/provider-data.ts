@@ -45,6 +45,7 @@ export class DataProvider {
     accounts: [];
     current: Current = {};
     networkStatus = false;
+    isFirstLaunch  = true;
     pageAction = null; // Pass parameters between pages
 
     constructor(
