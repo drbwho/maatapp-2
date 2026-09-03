@@ -54,6 +54,7 @@ export class GroupReviewComponent implements OnInit {
         private storage: Storage,
         private config: ConfigData,
         private modalCtrl: ModalController,
+        private operationTools: OperationTools,
         private cdr: ChangeDetectorRef
     ) {
         addIcons({ chevronForwardOutline, close });
@@ -97,8 +98,11 @@ export class GroupReviewComponent implements OnInit {
 
     async update_transaction(parameterId, e: Event) {
         let paramname = (this.parameters.find(p => p.id == parameterId)).name;
-        await this.operTools.newOperation(
+        let res = await this.operTools.newOperation(
             this.meeting.id, this.group.account, this.group, parameterId, paramname, this.amount[parameterId], "", "");
+        if(res.status != 'success'){
+           this.operationTools.show_alert(res.message);
+        }
         this.meeting.totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id);
         this.cdr.detectChanges();
     }

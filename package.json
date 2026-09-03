@@ -27,6 +27,7 @@
     "@awesome-cordova-plugins/calendar": "9.5.0",
     "@awesome-cordova-plugins/core": "9.5.0",
     "@awesome-cordova-plugins/social-sharing": "9.5.0",
+    "@capacitor-community/text-to-speech": "^8.0.2",
     "@capacitor/android": "8.5.0",
     "@capacitor/app": "^8.1.1",
     "@capacitor/browser": "8.0.4",

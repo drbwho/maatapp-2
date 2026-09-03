@@ -144,6 +144,7 @@ export class TransactionsComponent implements OnInit {
             if (await this.check_operations()) {
                 this.modalCtrl.dismiss(this.amount);
             }
+            this.cdr.detectChanges();
         } else {
             this.modalCtrl.dismiss();
         }
