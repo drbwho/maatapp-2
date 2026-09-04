@@ -10,6 +10,7 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AutofitTextDirective } from '../../../../directives/auto-fit-text.directive';
+import { MeetingTransactionsPage } from '../../meeting-transactions.page';
 
 @Component({
     selector: 'app-group-review',
@@ -48,6 +49,7 @@ export class GroupReviewComponent implements OnInit {
     current_maats = 0;
     details: any = {};
     show_details = false;
+    error_transactions = [];
 
     constructor(
         private operTools: OperationTools,
@@ -55,7 +57,8 @@ export class GroupReviewComponent implements OnInit {
         private config: ConfigData,
         private modalCtrl: ModalController,
         private operationTools: OperationTools,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private meetParentComp: MeetingTransactionsPage
     ) {
         addIcons({ chevronForwardOutline, close });
     }
@@ -93,15 +96,29 @@ export class GroupReviewComponent implements OnInit {
         delete (this.amount[parameterId]);
         await this.operTools.delOperationByParameter(this.group.account.id, this.meeting.id, parameterId);
         this.meeting.totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id);
+        //update error index
+        this.error_transactions = this.error_transactions.filter(id => id != parameterId);
+        if(!this.error_transactions.length){
+          this.meetParentComp.allowNavigation = true;
+        }
         this.cdr.detectChanges();
     }
 
-    async update_transaction(parameterId, e: Event) {
+    async update_transaction(parameterId, e: Event) {console.log(this.error_transactions)
         let paramname = (this.parameters.find(p => p.id == parameterId)).name;
+
+        this.meetParentComp.allowNavigation = false; //disable page navigation until check finish
+        this.error_transactions = this.error_transactions.filter(id => id != parameterId);
+
         let res = await this.operTools.newOperation(
             this.meeting.id, this.group.account, this.group, parameterId, paramname, this.amount[parameterId], "", "");
         if(res.status != 'success'){
-           this.operationTools.show_alert(res.message);
+          this.operationTools.show_alert(res.message);
+          this.error_transactions.push(parameterId);
+        }else{
+          if(!this.error_transactions.length){
+            this.meetParentComp.allowNavigation = true;
+          }
         }
         this.meeting.totals = await this.operTools.estimate_meeting_totals(this.group.account, this.meeting.id);
         this.cdr.detectChanges();

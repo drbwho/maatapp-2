@@ -66,6 +66,7 @@ export class MeetingTransactionsPage implements OnInit {
     buttonText: string;
     previousUrl = "";
     pageIndex = 0;
+    public allowNavigation:boolean = true;
 
     readonly componentMap = {
         1: { component: GroupSummaryComponent, button: 'confirm_attendance' },
@@ -103,7 +104,7 @@ export class MeetingTransactionsPage implements OnInit {
         // Show Group health
         this.group = this.dataProvider.current.group;
         let meetings = await this.groupTools.get_meetings(this.group);
-        
+
         //if(meetings.length > 1){ //Is this the first meeting?
         //  this.show_group_health();
         // } Temporary deactivation ******
@@ -151,11 +152,17 @@ export class MeetingTransactionsPage implements OnInit {
     }
 
     nextPage() {
+        if(!this.allowNavigation){
+          return;
+        }
         this.pageIndex++;
         this.gotoPage();
     }
 
     previousPage() {
+       if(!this.allowNavigation){
+          return;
+        }
         this.pageIndex--;
         if (this.pageIndex < 1) {
             if (this.previousUrl == '/new-meeting') { //prevent of going back to new-meeting page

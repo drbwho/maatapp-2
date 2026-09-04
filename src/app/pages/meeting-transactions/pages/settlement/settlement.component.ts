@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { OperationTools } from '../../../../providers/operation-tools';
 import { addIcons } from "ionicons";
-import { addCircle, removeCircle } from "ionicons/icons";
+import { addCircle, megaphone, megaphoneOutline, removeCircle } from "ionicons/icons";
 import { IonCard, IonGrid, IonRow, IonCol, IonIcon, IonButton, IonList, IonItem, IonLabel, IonAvatar, IonNote } from '@ionic/angular';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -47,7 +47,7 @@ export class SettlementComponent implements OnInit {
         private config: ConfigData,
         private dataProvider: DataProvider
     ) {
-        addIcons({ addCircle, removeCircle });
+        addIcons({ addCircle, removeCircle, megaphone });
     }
 
     async ngOnInit() {
@@ -69,28 +69,27 @@ export class SettlementComponent implements OnInit {
         })
     }
 
-
-    async read_amounts(account_label, amount){
+    async read_amounts(account){
         var curLang = this.translate.getCurrentLang();
         //get lang iso code
         curLang = await this.config.AVAILABLE_LANGUAGES.find((l) => l.code == curLang).iso_code;
 
         await TextToSpeech.speak({
-          text: account_label,
-          lang: curLang,        
-          rate: 1.0,           
-          pitch: 1.0,     
-          volume: 1.0          
+          text: account.owner,
+          lang: curLang,
+          rate: 1.0,
+          pitch: 1.0,
+          volume: 1.0
         }).then(async ()=>{
-          for(let operationid in amount){ 
-            if(amount[operationid] && amount[operationid] > 0){
-              let parameter = this.parameters.find((s)=> s.id == operationid);
+          for (const [pcode, amount] of account.totals.transactions as [string, number][]) {
+            if(amount > 0){
+              let parameter = this.parameters.find((s)=> s.code == pcode);
               await TextToSpeech.speak({
-                text: parameter.name + ', ' + amount[operationid].toString(),
-                lang: curLang,        
-                rate: 1.0,           
-                pitch: 1.0,     
-                volume: 1.0          
+                text: parameter.name + ', ' + amount.toString(),
+                lang: curLang,
+                rate: 1.0,
+                pitch: 1.0,
+                volume: 1.0
               });
             }
           }

@@ -73,7 +73,7 @@
 <ion-list class="ion-no-padding">
   <ion-item lines="none" class="fund-item dashboard-item ion-margin ion-border-rounded-20">
     <ion-label>
-      <p class="dashboard-label text-22">{{'Available for group investment' | translate}}</p>
+      <p class="dashboard-label text-22">{{'available_for_group_investment' | translate}}</p>
       <div class="amount-container">
         <span class="amount">{{ group?.totals.balance - group?.persontotal | number:'.0'}}</span>
         <span class="currency">{{country?.currency}}</span>
@@ -91,7 +91,6 @@
     </ng-container>
   }
 </ion-list>
-
 
 <!-- *** Item Component *** -->
 <ng-template #transactionItem

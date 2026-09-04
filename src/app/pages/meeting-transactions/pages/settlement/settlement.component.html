@@ -33,7 +33,7 @@
   <ion-item>
     <ion-label class="owner-container ion-text-wrap">
       <div class="title-row">
-        <h5>{{ acc?.owner }}</h5>
+        <h5>{{ acc?.owner }}</h5><ion-icon name="megaphone" color="warning" (click)="read_amounts(acc)"></ion-icon>
       </div>
       <p class="detail-header" (click)="acc.show_details = !acc.show_details">
         <span>@if((acc?.totals?.credit - acc?.totals?.debit) > 0){ + } {{(acc?.totals?.credit - acc?.totals?.debit) | number:'.0'}} {{country.currency}}</span>
