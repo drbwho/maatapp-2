@@ -218,6 +218,8 @@
   "value_balance_plus_loans": "Δείκτης υπολοίπου - δανείων",
   "percentage_of_credit_requested": "Αιτούμενη πίστωση (%)",
   "index_of_collective_activities": "Δείκτης συλλογικών δραστηριοτήτων",
+  "attendance": "Παρουσίες",
+  "collected": "συλλεχθέντα",
   "intro":{
     "page-1":{
       "title":"Καλώς ήρθατε στο MA'AT",

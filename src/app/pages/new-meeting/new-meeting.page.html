@@ -44,7 +44,7 @@
     <ion-item button detail="true" lines="none" color="light" class="ion-margin-horizontal" (click)="openDate()">
       <ion-icon name="location-outline" size="small" slot="start" class="ion-no-margin"></ion-icon>
       <ion-label class="ion-padding-start"><p>{{'place' | translate}}</p></ion-label>
-      <ion-note slot="end">{{place}} </ion-note>
+      <ion-note slot="end">{{place()}} </ion-note>
     </ion-item>
     <ion-item  detail="true" lines="none" color="light" class="ion-margin-horizontal">
       <ion-icon name="calendar-outline" size="small" slot="start" class="ion-no-margin"></ion-icon>

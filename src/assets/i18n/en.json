@@ -217,6 +217,8 @@
   "value_balance_plus_loans":"Balance - loans index",
   "percentage_of_credit_requested": "Credit requested (%)",
   "index_of_collective_activities":"Index of collective activities",
+  "attendance": "Attendance",
+  "collected": "collected",
   "intro": {
     "page-1": {
       "title": "Welcome to MA'AT",

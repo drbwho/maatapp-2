@@ -217,6 +217,8 @@
   "value_balance_plus_loans": "Indice solde - prêts",
   "percentage_of_credit_requested": "Crédit demandé (%)",
   "index_of_collective_activities": "Indice d'activités collectives",
+  "attendance": "Présence",
+  "collected": "collecté",
   "intro": {
     "page-1": {
       "title":"Bienvenue sur MA'AT",

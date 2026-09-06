@@ -217,6 +217,8 @@
   "value_balance_plus_loans": "余额-贷款指数",
   "percentage_of_credit_requested": "申请信用比例 (%)",
   "index_of_collective_activities": "集体活动指数",
+  "attendance": "出勤",
+  "collected": "收集的",
   "intro": {
     "page-1": {
       "title":"欢迎使用 MA'AT",

@@ -63,11 +63,13 @@
     </ion-grid>
     }
 
+    @if(group_transactions?.length){
     <div class="ion-text-center">
       <ion-button fill="clear" class="review-btn ion-no-margin" (click)="toggle_group_transactions()">
         {{(show_group_transactions() ? 'hide' : 'review_details') | translate}}
       </ion-button>
     </div>
+    }
   </div>
 
   <ion-list class="ion-margin-top" lines="none">

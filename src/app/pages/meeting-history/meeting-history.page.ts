@@ -7,7 +7,7 @@ import { OperationTools } from '../../providers/operation-tools';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { addIcons } from "ionicons";
-import { happy, close } from "ionicons/icons";
+import { happy, close, chevronBackOutline, sad, warningOutline } from 'ionicons/icons';
 import { HistoryComponent } from '../../component/history/history.component';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
 
@@ -70,7 +70,7 @@ export class MeetingHistoryPage implements OnInit {
         private operTools: OperationTools,
         private cdr: ChangeDetectorRef
     ) {
-        addIcons({ happy, close });
+        addIcons({ chevronBackOutline, happy, close, sad, warningOutline });
     }
 
     ngOnInit() {
@@ -82,6 +82,9 @@ export class MeetingHistoryPage implements OnInit {
         this.country = this.dataProvider.current.country;
         this.num_ECP = await this.operTools.get_num_of_ECP(this.meeting, this.country.id);
         this.new_totals = await this.operTools.estimate_meeting_totals(null, this.meeting.id);
+        if(!('collection' in this.meeting)){ //calculate collection if its a new meeting
+            this.meeting.collection = this.new_totals.credit - this.new_totals.debit;
+        }
 
         this.attendance = this.meeting.absences ? this.group.numberofmembers - this.meeting.absences.length : this.group.numberofmembers;
 
@@ -90,7 +93,7 @@ export class MeetingHistoryPage implements OnInit {
         });
 
         this.calc_status();
-        await this.load_accounts();
+        this.load_accounts();
     }
 
     toggle_group_transactions(){

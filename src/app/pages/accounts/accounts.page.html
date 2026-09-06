@@ -76,7 +76,7 @@
               @if(pf(account?.creditdisponible) > 0){
                 {{ 'eligible_for_maat' | translate }}: {{account?.creditdisponible | number:'.0'}} {{currency}}
               }@else{
-                 {{ 'not_eligible_for_maat' | translate }}
+                {{ 'not_eligible_for_maat' | translate }}
               }
               </p>
             </ion-col>

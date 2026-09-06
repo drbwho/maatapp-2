@@ -1,11 +1,11 @@
-import { Component, OnInit, ɵDEFAULT_LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ɵDEFAULT_LOCALE_ID, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
 import { NavController, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonContent, IonList, IonItem, IonAvatar, IonLabel, IonText, IonIcon, IonNote, IonFooter, IonButton, ModalController, AlertController } from '@ionic/angular';
 import { formatDate, Location, CommonModule, DatePipe } from '@angular/common';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { GroupTools } from '../../providers/group-tools';
 import { addIcons } from "ionicons";
-import { locationOutline, calendarOutline } from "ionicons/icons";
+import { locationOutline, calendarOutline, chevronBackOutline } from "ionicons/icons";
 import { RouterLink } from '@angular/router';
 import { NewMeetingFormComponent } from '../../component/new-meeting-form/new-meeting-form.component';
 import { format, parseISO } from 'date-fns';
@@ -43,7 +43,7 @@ export class NewMeetingPage implements OnInit {
     group: any = null;
     meetings: any = []
     startedat: any = null;
-    place = "";
+    place = signal("");
 
     constructor(
         private dataProvider: DataProvider,
@@ -52,9 +52,10 @@ export class NewMeetingPage implements OnInit {
         private translate: TranslateService,
         private alertCtrl: AlertController,
         private groupTools: GroupTools,
-        private location: Location
+        private location: Location,
+        private cdr: ChangeDetectorRef
     ) {
-        addIcons({ locationOutline, calendarOutline });
+        addIcons({ locationOutline, calendarOutline, chevronBackOutline });
     }
 
     ngOnInit() {
@@ -77,12 +78,13 @@ export class NewMeetingPage implements OnInit {
             this.group = current.group;
             this.meetings = await this.groupTools.get_meetings(this.group);
         }
+        this.cdr.detectChanges();
     }
 
     async openDate() {
         const modal = await this.modalCtrl.create({
             component: NewMeetingFormComponent,
-            componentProps: { place: this.place },
+            componentProps: { place: this.place() },
             initialBreakpoint: 0.3,
             breakpoints: [0, 0.3, 0.5],
             handle: true,
@@ -90,7 +92,8 @@ export class NewMeetingPage implements OnInit {
         });
         await modal.present();
 
-        this.place = (await modal.onWillDismiss()).data as string;
+        await modal.onWillDismiss().then((ret:any)=>{ this.place.set(ret.data.trim()) });
+
     }
 
     async submit_meeting() {
@@ -104,7 +107,7 @@ export class NewMeetingPage implements OnInit {
             }
         })
 
-        if (this.place == undefined || !this.place.trim()) {
+        if (this.place() == undefined || !this.place().trim()) {
             this.translate.get(['error', 'place_cannot_be_empty']).subscribe(async (keys: any) => {
                 const alert = await this.alertCtrl.create({
                     header: keys['error'],
@@ -134,7 +137,7 @@ export class NewMeetingPage implements OnInit {
                 await alert.present();
             });
         } else {
-            this.dataProvider.newMeeting(this.group.id, this.place, date).then(async (data: any) => {
+            this.dataProvider.newMeeting(this.group.id, this.place(), date).then(async (data: any) => {
                 if (data.meeting) {
                     this.dataProvider.current.meeting = data.meeting;
                     /*const modal = await this.modalCtrl.create({
