@@ -1,5 +1,5 @@
 {
-  "name": "io.sidi.maat",
+  "name": "com.maatpeasant.app",
   "version": "2.0.0",
   "description": "MAAT Peasant",
   "author": "Bkk <info@bkk-apps.com>",
@@ -100,11 +100,6 @@
     "Firefox > 118",
     "Edge > 118",
     "Safari > 16.6",
-    "iOS > 16.7",
-    "Chrome >=107",
-    "Firefox >=106",
-    "Edge >=107",
-    "Safari >=16.1",
-    "iOS >=16.1"
+    "iOS > 16.7"
   ]
 }
