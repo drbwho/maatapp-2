@@ -41,3 +41,31 @@ app/src/main/res/values/styles.xml
 
 To support different icons for splash and app copy ./res files to /app/src/main/res
 
+Enable R8 code optimization
+android/app/build.gradle -> block buildTypes -> release
+   minifyEnabled true   
+   shrinkResources true
+
+Add rules android/app/proguard-rules.pro:
+
+# Capacitor Native Bridge & Plugins
+-keep class com.getcapacitor.** { *; }
+-keep class com.getcapacitor.community.** { *; }
+-keep interface com.getcapacitor.** { *; }
+
+# Javascript Interface Protection
+-keepattributes JavascriptInterface
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# WebKit & Cordova compatibility
+-keep class android.webkit.** { *; }
+-keep class org.apache.cordova.** { *; }
+
+# Firebase
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+# Keep annotations & signatures
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
