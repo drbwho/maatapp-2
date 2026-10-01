@@ -70,7 +70,7 @@ export class SettlementComponent implements OnInit {
     }
 
     async read_amounts(account){
-        var curLang = this.translate.getCurrentLang();
+        var curLang = this.translate.getCurrentLang() || 'en';
         //get lang iso code
         curLang = await this.config.AVAILABLE_LANGUAGES.find((l) => l.code == curLang).iso_code;
 
