@@ -176,6 +176,7 @@
   "close_meeting":"结束会议",
   "upload_data":"上传数据",
   "cancel_meeting":"取消会议",
+  "delete_meeting": "删除会议",
   "download_excel":"下载 Excel",
   "view_transactions":"查看交易历史",
   "missing_regular_contribs":"缺少：常规",
@@ -219,6 +220,7 @@
   "index_of_collective_activities": "集体活动指数",
   "attendance": "出勤",
   "collected": "收集的",
+  "cancelled": "已取消",
   "intro": {
     "page-1": {
       "title":"欢迎使用 MA'AT",
@@ -306,7 +308,7 @@
       "cancel": {
         "heading":"取消并暂停会议记录",
         "description":"此会议将被取消，任何尚未上传的数据将丢失。此操作无法撤销..",
-        "button":"取消/暂停记录",
+        "button":"删除/暂停记录",
         "button_1":"保留会议"
       },
       "great":{

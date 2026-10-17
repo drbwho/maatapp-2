@@ -39,14 +39,21 @@ app/src/main/res/values/styles.xml
       <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
     </style>
 
-To support different icons for splash and app copy ./res files to /app/src/main/res
+----- To support different icons for splash and app copy ./res files to /app/src/main/res
 
-Enable R8 code optimization
+----- Enable R8 code optimization
 android/app/build.gradle -> block buildTypes -> release
    minifyEnabled true   
    shrinkResources true
 
-Add rules android/app/proguard-rules.pro:
+
+----- Modify gradle.properties:
+android.r8.strictFullModeForKeepRules=true
+android.r8.optimizedResourceShrinking=true
+android.enableR8.fullMode=true
+
+
+----- Add rules android/app/proguard-rules.pro:
 
 # Capacitor Native Bridge & Plugins
 -keep class com.getcapacitor.** { *; }

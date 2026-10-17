@@ -176,6 +176,7 @@
   "close_meeting":"Cerrar reunión",
   "upload_data":"Cargar datos",
   "cancel_meeting":"Cancelar reunión",
+  "delete_meeting": "Eliminar la reunión",
   "download_excel":"Descargar Excel",
   "view_transactions":"Ver historial de transacciones",
   "missing_regular_contribs":"Faltante: regular",
@@ -219,6 +220,7 @@
   "index_of_collective_activities": "Índice de actividades colectivas",
   "attendance": "Asistencia",
   "collected": "recolectado",
+  "cancelled": "Cancelado",
   "intro": {
     "page-1": {
       "title":"Bienvenido a MA'AT",

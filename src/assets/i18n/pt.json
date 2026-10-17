@@ -176,6 +176,7 @@
   "close_meeting":"Fechar reunião",
   "upload_data":"Carregar dados",
   "cancel_meeting":"Cancelar reunião",
+  "delete_meeting": "Excluir reunião",
   "download_excel":"Baixar Excel",
   "view_transactions":"Ver histórico de transações",
   "missing_regular_contribs":"Faltando: Regular",
@@ -219,6 +220,7 @@
   "index_of_collective_activities": "Índice de atividades coletivas",
   "attendance": "Presença",
   "collected": "coletado",
+  "cancelled": "Cancelado",
   "intro": {
     "page-1": {
       "title":"Bem-vindo ao MA'AT",
@@ -304,9 +306,9 @@
         "button_1":"Continuar offline"
       },
       "cancel": {
-        "heading":"Cancelar e suspender os registros da reunião",
-        "description":"Esta reunião será cancelada e quaisquer dados não enviados serão perdidos. Esta ação não pode ser desfeita..",
-        "button":"Cancelar/Suspender registros",
+        "heading":"Suspender os registros da reunião",
+        "description":"Esta reunião será eliminado e quaisquer dados não enviados serão perdidos. Esta ação não pode ser desfeita..",
+        "button":"Excluir/Suspender registros",
         "button_1":"Manter reunião"
       },
       "great":{

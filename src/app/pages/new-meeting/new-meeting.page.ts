@@ -99,7 +99,7 @@ export class NewMeetingPage implements OnInit {
     async submit_meeting() {
         let date = format(parseISO(this.startedat), 'yyyy-MM-dd', { locale: enUS });
 
-        // Check if meeting exists the same date
+        // Check if open meeting exists or the same date
         let day_exists = false;
         this.meetings.forEach(async (m) => {
             if ((m.startedat == date || !m.endedat) && !m.cancelled) {

@@ -36,6 +36,9 @@ export class MeetingCardComponent implements OnInit {
     }
 
     status() {
+        if(this.meeting.cancelled){
+            return 'cancelled';
+        }
         if (this.meeting.endedat) {
             return 'closed' + ((this.meeting.haspending || this.meeting.pending) ? '-pending' : '');
         }

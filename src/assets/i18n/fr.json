@@ -176,6 +176,7 @@
   "close_meeting":"Clore la réunion",
   "upload_data":"Télécharger les données",
   "cancel_meeting":"Annuler la réunion",
+  "delete_meeting": "Supprimer la réunion",
   "download_excel":"Télécharger Excel",
   "view_transactions":"Voir l'historique des transactions",
   "missing_regular_contribs":"Manquant : régulier",
@@ -219,6 +220,7 @@
   "index_of_collective_activities": "Indice d'activités collectives",
   "attendance": "Présence",
   "collected": "collecté",
+  "cancelled": "Annulé",
   "intro": {
     "page-1": {
       "title":"Bienvenue sur MA'AT",
@@ -304,9 +306,9 @@
         "button_1":"Continuer hors ligne"
       },
       "cancel": {
-        "heading":"Annuler et suspendre les enregistrements de la réunion",
-        "description":"Cette réunion sera annulée et toutes les données non téléchargées seront perdues. Cette action ne peut pas être annulée..",
-        "button":"Annuler/Suspendre les enregistrements",
+        "heading":"Suspendre les enregistrements de la réunion",
+        "description":"Cette réunion sera supprimé et toutes les données non téléchargées seront perdues. Cette action ne peut pas être annulée..",
+        "button":"Supprimer/Suspendre les enregistrements",
         "button_1":"Maintenir la réunion"
       },
       "great":{

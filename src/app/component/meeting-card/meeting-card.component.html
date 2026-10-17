@@ -19,9 +19,16 @@
           <span class="status-text">{{(status() == 'closed' ? 'closed' : 'closed_sync') | translate}}</span>
         </div>
         }
+        @if(status() == 'cancelled'){
+        <div class="status-indicator text-12">
+          <span class="dot-red">●</span>
+          <span class="status-text">{{'cancelled' | translate}}</span>
+        </div>
+        }
       </ion-col>
     </ion-row>
 
+    @if (status() != 'cancelled') {
     <ion-row class="ion-align-items-center">
       <ion-col size="2" class="ion-no-padding">
         <div class="avatar-circle">
@@ -53,6 +60,7 @@
       </ion-col>
       }
     </ion-row>
+    }
 
   </ion-grid>
 </ion-item>

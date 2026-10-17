@@ -32,6 +32,7 @@ export interface Meeting {
     pending?: any,
     attendance?: number,
     collection?: number
+    cancelled?: number
 }
 
 @Injectable({

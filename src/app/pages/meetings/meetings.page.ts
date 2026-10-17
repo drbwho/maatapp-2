@@ -116,7 +116,10 @@ export class MeetingsPage implements OnInit {
     *
     */
     async openOptions(meeting: Meeting) {
-        this.translate.get(['continue_meeting', 'upload_data', 'close_meeting', 'view_transactions', 'download_excel', 'cancel_meeting', 'upload_errors', 'return']).subscribe(async (keys: any) => {
+        if(meeting.cancelled){
+            return;
+        }
+        this.translate.get(['continue_meeting', 'upload_data', 'close_meeting', 'view_transactions', 'download_excel', 'delete_meeting', 'upload_errors', 'return']).subscribe(async (keys: any) => {
             let buttons = [];
 
             if (this.user.role > 1) {
@@ -172,7 +175,7 @@ export class MeetingsPage implements OnInit {
             if (this.user.role > 1) {
                 if (meeting.pending) {
                     buttons.push({
-                        text: keys['cancel_meeting'],
+                        text: keys['delete_meeting'],
                         icon: 'close-circle',
                         role: 'destructive',
                         handler: () => {
@@ -307,10 +310,11 @@ export class MeetingsPage implements OnInit {
         let accounts = await this.dataProvider.fetch_data('accounts', this.group.id, true, true);
         let params = await this.dataProvider.fetch_data('params', this.country.id, true);
         let transactions = await this.storage.get(this.config.HISTORY_TRANSACTIONS_FILE);
+        transactions = transactions.filter(tr => tr.idmeeting == meeting.id);
         const data = transactions.map(tr => ({
-            'From account': (accounts.find(a => a.id == tr.idorigin)).owner,
-            'To account': (accounts.find(a => a.id == tr.idaccount)).owner,
-            'Operation': (params.find(p => p.id == tr.idparameter)).name,
+            'From account': (accounts.find(a => a.id == tr.idorigin))?.owner ?? '-',
+            'To account': (accounts.find(a => a.id == tr.idaccount))?.owner ?? '-',
+            'Operation': (params.find(p => p.id == tr.idparameter))?.name ?? '-',
             'Amount': tr.credit ? tr.credit : tr.debit,
             'Date': tr.operationdate,
             'Notes': tr.notes
@@ -332,7 +336,7 @@ export class MeetingsPage implements OnInit {
                 });
 
                 await Share.share({
-                    title: this.group.name + '/' + meeting.place + ':' + meeting.staertedat,
+                    title: this.group.name + '/' + meeting.place + ':' + meeting.startedat,
                     text: 'MAAT meeting transactions',
                     url: savedFile.uri,
                     dialogTitle: 'File open'
