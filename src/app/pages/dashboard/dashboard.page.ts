@@ -6,7 +6,7 @@ import { GroupTools } from '../../providers/group-tools';
 import { OperationTools } from '../../providers/operation-tools';
 import { UserData } from '../../providers/user-data';
 import { addIcons } from "ionicons";
-import { chevronForwardOutline } from "ionicons/icons";
+import { chevronForwardOutline, wifiOutline } from "ionicons/icons";
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 
@@ -48,6 +48,7 @@ export class DashboardPage implements OnInit {
     network_status = false;
     num_ECP = 0;
     collected = 0;
+    isOffline = true;
 
     constructor(
         private dataProvider: DataProvider,
@@ -58,7 +59,7 @@ export class DashboardPage implements OnInit {
         private operationTools: OperationTools,
         private cdr: ChangeDetectorRef
     ) {
-        addIcons({ chevronForwardOutline });
+        addIcons({wifiOutline,chevronForwardOutline});
     }
 
     ngOnInit() {

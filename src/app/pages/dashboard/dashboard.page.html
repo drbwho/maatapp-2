@@ -8,8 +8,13 @@
     </ion-title>
     <ion-buttons slot="end">
       <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
-        <ion-avatar class="flag-circle">
+        <ion-avatar class="flag-circle" [class.is-offline]="isOffline">
           <img [src]="(country?.flagcode ? 'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg' : '')" />
+          @if(isOffline){
+          <div class="offline-badge wifi-cut">
+            <ion-icon name="wifi-outline"></ion-icon>
+          </div>
+          }
         </ion-avatar>
       </ion-button>
     </ion-buttons>
