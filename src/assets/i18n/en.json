@@ -221,6 +221,7 @@
   "attendance": "Attendance",
   "collected": "collected",
   "cancelled": "Cancelled",
+  "group_changing_no_possible_offline": "Group changing is not possible in offline mode",
   "intro": {
     "page-1": {
       "title": "Welcome to MA'AT",

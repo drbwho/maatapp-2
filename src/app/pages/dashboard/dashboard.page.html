@@ -7,10 +7,13 @@
       </div>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
-        <ion-avatar class="flag-circle" [class.is-offline]="isOffline">
+      <ion-button 
+        [routerLink]="!isOnline() ? null : '/countries'" 
+        [disabled]="!isOnline"
+        routerDirection="forward" class="flag-button">
+        <ion-avatar class="flag-circle" [class.is-offline]="!isOnline()">
           <img [src]="(country?.flagcode ? 'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg' : '')" />
-          @if(isOffline){
+          @if(!isOnline()){
           <div class="offline-badge wifi-cut">
             <ion-icon name="wifi-outline"></ion-icon>
           </div>

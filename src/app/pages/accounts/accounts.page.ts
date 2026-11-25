@@ -1,12 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
 import { DataProvider } from '../../providers/provider-data';
-import { AlertController, ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonBackButton, IonLabel, IonSearchbar, IonContent, IonIcon, IonList, IonItem, IonNote, IonGrid, IonRow, IonCol, IonBadge } from '@ionic/angular';
+import { AlertController, ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonBackButton, IonLabel, IonSearchbar, IonContent, IonIcon, IonList, IonItem, IonNote, IonGrid, IonRow, IonCol, IonBadge, NavController } from '@ionic/angular';
 import { OperationTools } from '../../providers/operation-tools';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
 import { AccountInfoComponent } from '../../component/account-info/account-info.component';
 import { addIcons } from "ionicons";
-import { chevronBackOutline, chevronForwardOutline, close, happy, sad, warningOutline } from "ionicons/icons";
+import { chevronBackOutline, chevronForwardOutline, close, happy, sad, warningOutline, wifiOutline } from "ionicons/icons";
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -64,6 +64,7 @@ export class AccountsPage implements OnInit {
     selectedAccounts = 0;
     queryText: string = "";
     searchPlaceholder: string = "";
+    isOnline = signal<Boolean>(false);
     public pf = parseFloat;
 
     constructor(
@@ -72,12 +73,15 @@ export class AccountsPage implements OnInit {
         private alertCtrl: AlertController,
         private operTools: OperationTools,
         private translate: TranslateService,
+        private alertController: AlertController,
+        private navCtrl: NavController,
         private cdr: ChangeDetectorRef
     ) {
-        addIcons({ chevronForwardOutline, chevronBackOutline, happy, sad, close, warningOutline });
+        addIcons({wifiOutline,chevronForwardOutline,chevronBackOutline,happy,sad,close,warningOutline});
     }
 
     ngOnInit() {
+        this.isOnline = this.dataProvider.networkStatus;
     }
 
     async ionViewWillEnter() {
@@ -223,6 +227,33 @@ export class AccountsPage implements OnInit {
                 });
             }
         });
+    }
+
+    navToGroups() {
+        if(!this.isOnline()){
+            this.translate.get(['error', 'group_changing_no_possible_offline']).subscribe(async (keys: any) => {
+                const alert = await this.alertController.create({
+                    header: keys['error'],
+                    message: keys['group_changing_no_possible_offline'],
+                    buttons: [
+                        {
+                        text: 'Ok',
+                        handler: () => {
+                            console.log('Confirm Okay');
+                        }
+                        }
+                    ]
+                });
+                await alert.present();
+            });
+        }else{
+            var curcountry = this.dataProvider.current.country;
+            if (!curcountry || !curcountry.id) {
+                this.navCtrl.navigateForward('/countries');
+            } else {
+                this.navCtrl.navigateForward('/country/' + curcountry.id + '/groups');
+            }
+        }
     }
 }
 

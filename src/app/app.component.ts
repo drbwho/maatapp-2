@@ -212,7 +212,7 @@ export class AppComponent implements OnInit {
         // Check on init
         Network.getStatus().then((status) => {
             if (status.connected) {
-                this.dataprovider.networkStatus = true;
+                this.dataprovider.networkStatus.set(true);
             };
         })
 
@@ -221,7 +221,7 @@ export class AppComponent implements OnInit {
             console.log('Network status changed', status);
             if (status.connected) {
                 this.events.publish('network:connect');
-                this.dataprovider.networkStatus = true;
+                this.dataprovider.networkStatus.set(true);
                 /*const toast = await this.toast.create({
                   message: 'Network Connected!',
                   duration: 2000
@@ -229,10 +229,10 @@ export class AppComponent implements OnInit {
                 toast.present();*/
             } else {
                 this.events.publish('network:disconnect');
-                this.dataprovider.networkStatus = false;
+                this.dataprovider.networkStatus.set(false);
                 const toast = await this.toast.create({
                     message: 'Network disconnected...',
-                    duration: 2000
+                    duration: 500
                 });
                 toast.present();
             }

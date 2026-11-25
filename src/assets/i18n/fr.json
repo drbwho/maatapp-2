@@ -221,6 +221,7 @@
   "attendance": "Présence",
   "collected": "collecté",
   "cancelled": "Annulé",
+  "group_changing_no_possible_offline": "Le changement de groupe n'est pas possible en mode hors ligne !",
   "intro": {
     "page-1": {
       "title":"Bienvenue sur MA'AT",

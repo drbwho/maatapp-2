@@ -33,7 +33,7 @@ export class StatusIconsComponent implements OnInit {
 
     async ngOnInit() {
         // Set status on init
-        this.network_status = this.dataProvider.networkStatus;
+        this.network_status = this.dataProvider.networkStatus();
         this.upload_status = await this.check_upload_status();
 
         // Subscribe to changing events

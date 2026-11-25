@@ -1,15 +1,23 @@
-<ion-header [translucent]="false">
+<ion-header [translucent]="true">
   <ion-toolbar class="group-habs-header">
-    <ion-title role="button">
+    <ion-title role="button" (click)='navToGroups()'>
       <div class="title-container">
         <h2 class="main-group-title">{{'group' | translate}}: {{group?.name}}</h2>
         <p class="sub-location text-12">{{country?.name}} · {{group?.ville}}</p>
       </div>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/countries" routerDirection="forward" class="flag-button">
-        <ion-avatar class="flag-circle">
-          <img [src]="'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg'"/>
+      <ion-button 
+        [routerLink]="!isOnline() ? null : '/countries'" 
+        [disabled]="!isOnline"
+        routerDirection="forward" class="flag-button">
+        <ion-avatar class="flag-circle" [class.is-offline]="!isOnline()">
+          <img [src]="(country?.flagcode ? 'assets/flags/' + country?.flagcode?.toLowerCase() + '.svg' : '')" />
+          @if(!isOnline()){
+          <div class="offline-badge wifi-cut">
+            <ion-icon name="wifi-outline"></ion-icon>
+          </div>
+          }
         </ion-avatar>
       </ion-button>
     </ion-buttons>
@@ -26,7 +34,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="">
+<ion-content class="account-list">
 
   <div class="summary-card ion-padding ion-margin" (click)="showAccountInfo($event, group?.account)">
     <h3 class="serif-text ion-no-margin">

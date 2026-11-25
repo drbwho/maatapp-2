@@ -221,6 +221,7 @@
   "attendance": "出勤",
   "collected": "收集的",
   "cancelled": "已取消",
+  "group_changing_no_possible_offline": "離線模式下無法更改群組",
   "intro": {
     "page-1": {
       "title":"欢迎使用 MA'AT",

@@ -1,13 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
-import { NavController, IonRouterLink, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonContent, IonList, IonItem, IonLabel, IonIcon } from '@ionic/angular';
+import { NavController, IonRouterLink, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonContent, IonList, IonItem, IonLabel, IonIcon, AlertController } from '@ionic/angular';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GroupTools } from '../../providers/group-tools';
 import { OperationTools } from '../../providers/operation-tools';
 import { UserData } from '../../providers/user-data';
 import { addIcons } from "ionicons";
-import { chevronForwardOutline, wifiOutline } from "ionicons/icons";
-import { TranslatePipe } from '@ngx-translate/core';
+import { chevronForwardOutline, wifi, wifiOutline } from "ionicons/icons";
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -45,10 +45,9 @@ export class DashboardPage implements OnInit {
     meeting_status = "";
     show_meeting_detail = false;
     upload_status = false;
-    network_status = false;
     num_ECP = 0;
     collected = 0;
-    isOffline = true;
+    isOnline = signal<boolean>(false);
 
     constructor(
         private dataProvider: DataProvider,
@@ -57,9 +56,11 @@ export class DashboardPage implements OnInit {
         private userData: UserData,
         private groupTools: GroupTools,
         private operationTools: OperationTools,
+        private translate: TranslateService,
+        private alertController: AlertController,
         private cdr: ChangeDetectorRef
     ) {
-        addIcons({wifiOutline,chevronForwardOutline});
+        addIcons({wifi,chevronForwardOutline,wifiOutline});
     }
 
     ngOnInit() {
@@ -69,6 +70,8 @@ export class DashboardPage implements OnInit {
 
         // disable introduction
         this.userData.shownIntro(true);
+
+        this.isOnline = this.dataProvider.networkStatus;
     }
 
     async load_currents() {
@@ -92,6 +95,7 @@ export class DashboardPage implements OnInit {
                 current.group = this.group;
                 current.need_refresh = false;
                 this.dataProvider.setCurrent(current);
+                this.dataProvider.fetch_data('accounts', this.group.id, true, false); //reload also accounts 
             }
 
             this.meetings = await this.groupTools.get_meetings(this.group)
@@ -111,11 +115,29 @@ export class DashboardPage implements OnInit {
     }
 
     navToGroups() {
-        var curcountry = this.dataProvider.current.country;
-        if (!curcountry || !curcountry.id) {
-            this.navCtrl.navigateForward('/countries');
-        } else {
-            this.navCtrl.navigateForward('/country/' + curcountry.id + '/groups');
+        if(!this.isOnline()){
+            this.translate.get(['error', 'group_changing_no_possible_offline']).subscribe(async (keys: any) => {
+                const alert = await this.alertController.create({
+                    header: keys['error'],
+                    message: keys['group_changing_no_possible_offline'],
+                    buttons: [
+                        {
+                        text: 'Ok',
+                        handler: () => {
+                            console.log('Confirm Okay');
+                        }
+                        }
+                    ]
+                });
+                await alert.present();
+            });
+        }else{
+            var curcountry = this.dataProvider.current.country;
+            if (!curcountry || !curcountry.id) {
+                this.navCtrl.navigateForward('/countries');
+            } else {
+                this.navCtrl.navigateForward('/country/' + curcountry.id + '/groups');
+            }
         }
     }
 

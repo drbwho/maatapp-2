@@ -221,6 +221,7 @@
   "attendance": "Asistencia",
   "collected": "recolectado",
   "cancelled": "Cancelado",
+  "group_changing_no_possible_offline": "¡No es posible cambiar de grupo en modo sin conexión!",
   "intro": {
     "page-1": {
       "title":"Bienvenido a MA'AT",

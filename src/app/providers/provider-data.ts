@@ -2,7 +2,7 @@ import { ConfigData } from './config-data';
 import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, ɵDEFAULT_LOCALE_ID } from '@angular/core';
+import { Injectable, signal, ɵDEFAULT_LOCALE_ID } from '@angular/core';
 import { Network } from '@capacitor/network';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -45,7 +45,7 @@ export class DataProvider {
     meetings: [];
     accounts: [];
     current: Current = {};
-    networkStatus = false;
+    networkStatus = signal<boolean>(false);
     isFirstLaunch  = true;
     pageAction = null; // Pass parameters between pages
 
@@ -128,7 +128,7 @@ export class DataProvider {
                                 const toast = await this.toast.create({
                                     message: keys['network_error_no_updates'],
                                     cssClass: 'toast-alert',
-                                    duration: 3000
+                                    duration: 1000
                                 });
                                 toast.present();
                             });
@@ -436,7 +436,7 @@ export class DataProvider {
                 const toast = await this.toast.create({
                     message: 'Network error! Cannot get tickets...',
                     cssClass: 'toast-alert',
-                    duration: 3000
+                    duration: 1000
                 });
                 toast.present();
                 resolve([]);
@@ -466,7 +466,7 @@ export class DataProvider {
                         const toast = await this.toast.create({
                             message: 'Network error! Cannot get tickets...',
                             cssClass: 'toast-alert',
-                            duration: 3000
+                            duration: 1000
                         });
                         loading.dismiss().then(() => {
                             toast.present();

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, signal, ChangeDetectorRef } from '@angular/core';
 import { DataProvider, Meeting } from '../../providers/provider-data';
-import { IonModal, NavController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonContent, IonList, IonItem, IonLabel, IonIcon, IonNote, ActionSheetController, IonBackButton } from '@ionic/angular';
+import { IonModal, NavController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonAvatar, IonContent, IonList, IonItem, IonLabel, IonIcon, IonNote, ActionSheetController, IonBackButton, AlertController } from '@ionic/angular';
 import { GroupTools } from '../../providers/group-tools';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -13,7 +13,7 @@ import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
 import { UserData } from '../../providers/user-data';
 import { addIcons } from "ionicons";
-import { caretForwardOutline, chevronBack, chevronBackOutline, closeCircle, closeOutline, cloudUpload, pause, statsChart, warningOutline } from "ionicons/icons";
+import { caretForwardOutline, chevronBack, chevronBackOutline, closeCircle, closeOutline, cloudUpload, pause, statsChart, warningOutline, wifiOutline } from "ionicons/icons";
 import { CommonModule, DatePipe } from '@angular/common';
 import { MeetingCardComponent } from '../../component/meeting-card/meeting-card.component';
 
@@ -57,6 +57,7 @@ export class MeetingsPage implements OnInit {
     show_all = false;
     selmeeting: any = null;
     upload_errors: any = [];
+    isOnline = signal<boolean>(false);
 
     constructor(
         private dataProvider: DataProvider,
@@ -70,11 +71,10 @@ export class MeetingsPage implements OnInit {
         private storage: Storage,
         private config: ConfigData,
         private platform: Platform,
+        private alertController: AlertController,
         private cdr: ChangeDetectorRef
     ) {
-        addIcons({
-          closeOutline, chevronBackOutline, warningOutline, caretForwardOutline, cloudUpload,
-          pause, statsChart, closeCircle, chevronBack });
+        addIcons({wifiOutline,closeOutline,chevronBackOutline,warningOutline,caretForwardOutline,cloudUpload,pause,statsChart,closeCircle,chevronBack});
     }
 
     async ngOnInit() {
@@ -86,6 +86,8 @@ export class MeetingsPage implements OnInit {
                 this.show_action_view(null, 'upload-close');
             }
         });
+
+        this.isOnline = this.dataProvider.networkStatus;
     }
 
     ionViewWillEnter() {
@@ -356,6 +358,33 @@ export class MeetingsPage implements OnInit {
 
     closeModal() {
         this.modal.dismiss();
+    }
+
+    navToGroups() {
+        if(!this.isOnline()){
+            this.translate.get(['error', 'group_changing_no_possible_offline']).subscribe(async (keys: any) => {
+                const alert = await this.alertController.create({
+                    header: keys['error'],
+                    message: keys['group_changing_no_possible_offline'],
+                    buttons: [
+                        {
+                        text: 'Ok',
+                        handler: () => {
+                            console.log('Confirm Okay');
+                        }
+                        }
+                    ]
+                });
+                await alert.present();
+            });
+        }else{
+            var curcountry = this.dataProvider.current.country;
+            if (!curcountry || !curcountry.id) {
+                this.navCtrl.navigateForward('/countries');
+            } else {
+                this.navCtrl.navigateForward('/country/' + curcountry.id + '/groups');
+            }
+        }
     }
 
 }

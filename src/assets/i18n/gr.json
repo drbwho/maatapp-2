@@ -222,6 +222,7 @@
   "attendance": "Παρουσίες",
   "collected": "συλλεχθέντα",
   "cancelled": "Ακυρωμένη",
+  "group_changing_no_possible_offline": "Αλλαγή Ομάδας δεν είναι δυνατή εκτός δικτύου!",
   "intro":{
     "page-1":{
       "title":"Καλώς ήρθατε στο MA'AT",

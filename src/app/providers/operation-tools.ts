@@ -199,7 +199,7 @@ export class OperationTools {
                 const toast = await this.toast.create({
                     message: 'Network error! Cannot get history data...',
                     cssClass: 'toast-alert',
-                    duration: 3000
+                    duration: 600
                 });
                 toast.present();
                 resolve([]);
@@ -229,7 +229,7 @@ export class OperationTools {
                         const toast = await this.toast.create({
                             message: 'Network error! Cannot get history data...',
                             cssClass: 'toast-alert',
-                            duration: 3000
+                            duration: 600
                         });
                         loading.dismiss().then(() => {
                             toast.present();
