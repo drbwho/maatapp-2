@@ -197,9 +197,9 @@ export class OperationTools {
         if (!status.connected) {
             return new Promise(async (resolve) => {
                 const toast = await this.toast.create({
-                    message: 'Network error! Cannot get history data...',
+                    message: 'Network error! Cannot get all history data...',
                     cssClass: 'toast-alert',
-                    duration: 600
+                    duration: 500
                 });
                 toast.present();
                 resolve([]);
@@ -227,9 +227,9 @@ export class OperationTools {
                     },
                     error: async (error) => {
                         const toast = await this.toast.create({
-                            message: 'Network error! Cannot get history data...',
+                            message: 'Network error! Cannot get all history data...',
                             cssClass: 'toast-alert',
-                            duration: 600
+                            duration: 500
                         });
                         loading.dismiss().then(() => {
                             toast.present();

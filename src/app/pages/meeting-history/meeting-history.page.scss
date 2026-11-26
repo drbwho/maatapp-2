@@ -37,6 +37,48 @@
       object-fit: cover;
       //transform: scale(0.8);
     }
+
+        &.is-offline {
+      img {
+        filter: opacity(0.2);
+      }
+    }
+
+    .offline-badge {
+      position: absolute;
+      bottom: -5px;
+      right: 0px;
+      width: 22px;
+      height: 22px;
+      //background-color: #eb445a; 
+      //border: 1.5px solid var(--ion-background-color, #fff);
+      //border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      //box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+
+      overflow: hidden; 
+
+      ion-icon {
+        font-size: 22px;
+        color: #eb445a;
+      }
+
+      /*&.wifi-cut::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 16px;
+        background-color: #fff; 
+        transform: rotate(45deg);
+        top: 2px;
+        left: 11px; 
+        z-index: 11;
+        box-shadow: 0 0 1px rgba(0,0,0,0.5); 
+      }*/
+    }
   }
 }
 

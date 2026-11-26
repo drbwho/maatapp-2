@@ -15,7 +15,10 @@ import { Storage } from '@ionic/storage';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
-    provideIonicAngular({ innerHTMLTemplatesEnabled: true }),
+    provideIonicAngular({ 
+      innerHTMLTemplatesEnabled: true, 
+      loadingSpinner: null 
+    }),
     provideZonelessChangeDetection(),
     importProvidersFrom(
       IonicStorageModule.forRoot({

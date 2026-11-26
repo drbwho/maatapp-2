@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
-import { NavController, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonList, IonItem, IonLabel, IonAvatar, IonNote, IonIcon, ModalController, IonButton, IonGrid, IonRow, IonCol, IonBadge } from '@ionic/angular';
+import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonList, IonItem, IonLabel, IonAvatar, IonNote, IonIcon, ModalController, IonButton, IonGrid, IonRow, IonCol, IonBadge } from '@ionic/angular';
 import { DataProvider } from '../../providers/provider-data';
 import { Storage } from '@ionic/storage-angular';
 import { ConfigData } from '../../providers/config-data';
@@ -7,9 +7,10 @@ import { OperationTools } from '../../providers/operation-tools';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { addIcons } from "ionicons";
-import { happy, close, chevronBackOutline, sad, warningOutline } from 'ionicons/icons';
+import { happy, close, chevronBackOutline, sad, warningOutline, wifiOutline } from 'ionicons/icons';
 import { HistoryComponent } from '../../component/history/history.component';
 import { MeetingTotals } from '../../interfaces/data-interfaces';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-meeting-history',
@@ -21,6 +22,7 @@ import { MeetingTotals } from '../../interfaces/data-interfaces';
         CommonModule,
         TranslatePipe,
         DatePipe,
+        RouterLink,
         IonHeader,
         IonToolbar,
         IonButtons,
@@ -60,6 +62,7 @@ export class MeetingHistoryPage implements OnInit {
     selectedAccounts = 0;
     show_group_transactions = signal<boolean>(false);
     group_transactions: any = null;
+    isOnline = signal<boolean>(false);
     public pf = parseFloat;
 
     constructor(
@@ -70,10 +73,11 @@ export class MeetingHistoryPage implements OnInit {
         private operTools: OperationTools,
         private cdr: ChangeDetectorRef
     ) {
-        addIcons({ chevronBackOutline, happy, close, sad, warningOutline });
+        addIcons({wifiOutline,close,chevronBackOutline,happy,sad,warningOutline});
     }
 
     ngOnInit() {
+        this.isOnline = this.dataProvider.networkStatus;
     }
 
     async ionViewWillEnter() {

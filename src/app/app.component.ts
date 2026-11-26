@@ -232,6 +232,7 @@ export class AppComponent implements OnInit {
                 this.dataprovider.networkStatus.set(false);
                 const toast = await this.toast.create({
                     message: 'Network disconnected...',
+                    cssClass: 'toast-alert',
                     duration: 500
                 });
                 toast.present();

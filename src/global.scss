@@ -184,4 +184,49 @@ p {
 }
 
 
+//Our loading spinner
+ion-loading {
+  --background: #ffffff;
+  --backdrop-opacity: 0.35;
+
+  .loading-wrapper {
+    border-radius: 18px;
+    padding: 22px 28px;
+    //box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+
+    &::before {
+      content: '';
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 12px solid rgba(98, 102, 178, 0.2);
+      border-top-color: #6266b2; 
+      border-right-color: #2a7b76; 
+      opacity: 0.5;
+      animation: customSpin 1s cubic-bezier(.5,.5,.5,.1) infinite;
+    }
+
+    .loading-content {
+      margin-left: 0 !important;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333333;
+      text-align: center;
+    }
+  }
+
+  .loading-wrapper.sc-ion-loading-md {
+     box-shadow: none;
+     background: none;
+  }
+}
+
+@keyframes customSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
