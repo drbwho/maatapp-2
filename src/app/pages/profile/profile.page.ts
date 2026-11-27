@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Camera, MediaTypeSelection } from '@capacitor/camera';
 import { ActionSheetController, LoadingController, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonAvatar, IonList, IonItem, IonLabel, IonNote, IonFooter } from '@ionic/angular';
 
 import { AlertController, Platform } from '@ionic/angular';
@@ -191,14 +191,14 @@ export class ProfilePage implements OnInit {
                         text: keys['camera'],
                         icon: 'camera-outline',
                         handler: () => {
-                            this.takePicture(CameraSource.Camera);
+                            this.takePicture('camera');
                         }
                     },
                     {
                         text: keys['photo_collection'],
                         icon: 'image-outline',
                         handler: () => {
-                            this.takePicture(CameraSource.Photos);
+                            this.takePicture('gallery');
                         }
                     },
                     {
@@ -212,7 +212,62 @@ export class ProfilePage implements OnInit {
         })
     }
 
-    async takePicture(source: CameraSource) {
+    async takePicture(source: any) {
+        let loading: HTMLIonLoadingElement | null = null;
+
+        try {
+            let webPath: string | undefined;
+
+            if (source === 'camera') {
+                const result = await Camera.takePhoto({
+                    quality: 80,
+                    targetWidth: 800,
+                    targetHeight: 800, 
+                    editable: 'in-app', 
+                });
+                webPath = result.webPath;
+            } else {
+                const { results } = await Camera.chooseFromGallery({
+                    mediaType: MediaTypeSelection.Photo,
+                    allowMultipleSelection: false,
+                    quality: 80,
+                    targetWidth: 800,
+                    targetHeight: 800,
+                });
+                webPath = results[0]?.webPath;
+            }
+
+            if (!webPath) {
+                return; 
+            }
+
+            loading = await this.loadingcontroller.create({ showBackdrop: false });
+            await loading.present();
+
+            const response = await fetch(webPath);
+            const blob = await response.blob();
+            const imageFile = new File([blob], `profile_${Date.now()}.jpg`, { 
+                type: blob.type || 'image/jpeg' 
+            });
+
+            const res: any = await this.userData.updateProfilePhoto(imageFile);
+            //this.user().photo = this.config.HTTP_ADMIN_HOST + res.url; 
+            this.user.update(currentUser => ({
+                ...currentUser,
+                photo: this.config.HTTP_ADMIN_HOST + res.url //prepend api url
+            }));
+            await this.storage.set(this.userData.USER_FILE, this.user());
+
+        } catch (error) {
+            console.error('Camera/Gallery error or cancelled:', error);
+        } finally {
+            if (loading) {
+                await loading.dismiss();
+            }
+        }
+    }
+
+/*    async takePicture(source: CameraSource) {
         let loading = await this.loadingcontroller.create({ showBackdrop: false });
         try {
             const image = await Camera.getPhoto({
@@ -239,6 +294,6 @@ export class ProfilePage implements OnInit {
             console.error('cancelled:', error);
             loading.dismiss();
         }
-    }
+    }*/
 
 }

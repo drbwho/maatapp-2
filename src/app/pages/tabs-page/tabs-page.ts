@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { ModalController, ActionSheetController, ToastController, NavController, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/angular';
 import { ProfilePage } from '../profile/profile.page';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
@@ -59,6 +59,9 @@ export class TabsPage {
     }
 
     async clear_cache() {
+        if(!this.dataProvider.networkStatus()){
+            return;
+        }
         this.storage.remove(this.config.TRANSACTIONS_FILE);
         this.storage.remove(this.config.HISTORY_TRANSACTIONS_FILE);
         this.storage.remove(this.config.UPLOAD_ERRORS_FILE);
@@ -72,7 +75,7 @@ export class TabsPage {
         const toast = await this.toast.create({
             message: 'Cache cleared!',
             cssClass: 'toast-success',
-            duration: 5000
+            duration: 3000
         });
         toast.present();
     }
@@ -104,6 +107,8 @@ export class TabsPage {
     }
 
     async openSettings() {
+        let isOnline = this.dataProvider.networkStatus();
+
         this.translate.get(['settings', 'language', 'account', 'clear_cache', 'cancel', 'introduction']).subscribe(async (keys: any) => {
             const actionSheet = await this.actionSheetCtrl.create({
                 header: keys['settings'],
@@ -134,7 +139,11 @@ export class TabsPage {
                         text: keys['clear_cache'],
                         role: 'destructive',
                         icon: 'trash-outline',
+                        cssClass: isOnline ? '' : 'disabled-sheet-button',
                         handler: () => {
+                            if(!isOnline){
+                                return false;
+                            }
                             this.clear_cache();
                         },
                     },

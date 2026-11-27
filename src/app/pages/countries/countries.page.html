@@ -13,7 +13,8 @@
 <ion-content [fullscreen]="true">
   <ion-list>
     @for (country of countries; track country.id) {
-      <ion-item lines="none" color="light" class="ion-border-rounded-30 ion-margin-start ion-margin-end ion-margin-bottom" (click)="navto(country)">
+      <ion-item lines="none" color="light" class="ion-border-rounded-30 ion-margin-start ion-margin-end ion-margin-bottom" 
+        [class.country-disabled]="country?.groups?.length < 2" (click)="navto(country)">
         <ion-avatar class="flag-circle">
           <img [src]="'assets/flags/' + country.flagcode?.toLowerCase() + '.svg'" />
         </ion-avatar>

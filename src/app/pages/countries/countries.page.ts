@@ -55,6 +55,9 @@ export class CountriesPage implements OnInit {
     }
 
     async navto(country) {
+        if(country.groups.length  < 2){ //Country has no groups
+            return;
+        }
         // Set current Country
         var current = await this.dataProvider.getCurrent();
         current.country = country;

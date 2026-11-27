@@ -9,6 +9,7 @@ export class ConfigData {
 
   //HTTP_HOST = "https://dev.maatpeasant.com"; // development
   HTTP_HOST = "https://maatpeasant.com"; // production
+  HTTP_ADMIN_HOST = "https://admin.maatpeasant.com"; // used for direct storage access
   API_URL = this.HTTP_HOST + '/api';
   API_CSRF_URL = this.HTTP_HOST + '/sanctum/csrf-cookie';
 

@@ -183,6 +183,12 @@ p {
   color: #b4b3b3!important;
 }
 
+//Our disabled action sheet button
+.disabled-sheet-button {
+  opacity: 0.4 !important;
+  pointer-events: none !important;
+  cursor: not-allowed;
+}
 
 //Our loading spinner
 ion-loading {
@@ -207,7 +213,7 @@ ion-loading {
       border-top-color: #6266b2; 
       border-right-color: #2a7b76; 
       opacity: 0.5;
-      animation: customSpin 1s cubic-bezier(.5,.5,.5,.1) infinite;
+      animation: customSpin 0.8s cubic-bezier(.5,.5,.5,.1) infinite;
     }
 
     .loading-content {

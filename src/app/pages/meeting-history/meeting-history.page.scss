@@ -156,7 +156,7 @@ ion-badge.upload-error {
 }
 
 /* Avatars (Smiley faces) */
-ion-avatar {
+.history-list ion-avatar {
   background: #7CC4AE; border-radius: 50%;
   display: flex; align-items: end; justify-content: center;
   width: 32px; height: 32px;
